@@ -1,0 +1,19 @@
+version: 2.1
+
+jobs:
+  lint:
+    docker:
+      - image: circleci/node:16.13.0
+    steps:
+      - checkout
+      - run: yarn
+      - run: yarn eslint:dryrun
+      - run: yarn prettier:dryrun
+      - run: yarn tsc
+      - run: yarn bundlesize
+
+workflows:
+  version: 2
+  base:
+    jobs:
+      - lint

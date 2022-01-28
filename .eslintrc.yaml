@@ -1,0 +1,5 @@
+extends:
+  - impact-market
+rules:
+  react/require-default-props: off
+  react-hooks/exhaustive-deps: off
