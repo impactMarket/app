@@ -1,4 +1,4 @@
-import { OnlineStatusProvider } from '../utils/useOnlineStatus';
+import { OnlineStatusProvider } from '../app/utils/useOnlineStatus';
 import dynamic from 'next/dynamic';
 
 const Home = dynamic(() => import('./home'));

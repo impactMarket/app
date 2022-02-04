@@ -5,14 +5,14 @@ import {
 } from '@celo-tools/use-contractkit';
 
 function Wallet() {
-    const { connect, address } = useContractKit();
+    const { connect: connectToWallet, address } = useContractKit();
 
     return (
         <>
             {address ? (
                 <div>Connected to {address}</div>
             ) : (
-                <button onClick={connect}>Connect wallet</button>
+                <button onClick={connectToWallet}>Connect wallet</button>
             )}
         </>
     );

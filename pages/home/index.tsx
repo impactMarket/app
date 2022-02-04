@@ -1,7 +1,5 @@
+import { toToken } from '@impact-market/utils/toToken';
 import { useA2HS } from 'react-use-a2hs';
-import dynamic from 'next/dynamic';
-
-const Wallet = dynamic(() => import('../../components/Wallet'), { ssr: false });
 
 function Home() {
     const [promptEvent, promptToInstall] = useA2HS();
@@ -9,7 +7,7 @@ function Home() {
     return (
         <div>
             Welcome home
-            <Wallet />
+            {toToken(2)}
             <div>
                 {promptEvent && (
                     <button onClick={promptToInstall}>
