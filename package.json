@@ -19,14 +19,14 @@
     "dependencies": {
         "@celo-tools/use-contractkit": "npm:@poofcash/use-contractkit@1.0.10",
         "@celo/contractkit": "1.5.1",
-        "@ethersproject/providers": "^5.5.3",
+        "@ethersproject/providers": "5.5.3",
         "@impact-market/utils": "2.0.0-alpha.9",
-        "@reduxjs/toolkit": "^1.7.1",
+        "@reduxjs/toolkit": "1.7.1",
         "next": "11.0.1",
         "next-pwa": "5.4.4",
         "react": "17.0.2",
         "react-dom": "17.0.2",
-        "react-redux": "^7.2.6",
+        "react-redux": "7.2.6",
         "react-use-a2hs": "0.0.2"
     },
     "devDependencies": {
