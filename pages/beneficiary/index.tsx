@@ -1,12 +1,8 @@
 import { Counter } from '../../app/components/counter';
-import { JsonRpcProvider } from '@ethersproject/providers';
+import { provider } from '../../app/helpers';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import Community from '../../app/components/community';
 import ExchangeRate from '../../app/components/exchangeRate';
-
-const provider = new JsonRpcProvider(
-    'https://alfajores-forno.celo-testnet.org'
-);
 
 function Beneficiary() {
     const { isReady, claimCooldown } = useBeneficiary({
