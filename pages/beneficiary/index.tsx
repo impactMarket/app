@@ -16,14 +16,10 @@ function Beneficiary() {
         signer: null
     });
 
-    if (!isReady) {
-        return null;
-    }
-
     return (
         <div>
             <div>Welcome Beneficiary</div>
-            <div>{claimCooldown.toISOString()}</div>
+            <div>{isReady ? claimCooldown.toISOString() : 'loading...'}</div>
             <Counter />
             <ExchangeRate />
             <Community />
