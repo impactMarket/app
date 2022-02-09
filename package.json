@@ -13,7 +13,7 @@
         "eslint:write": "eslint --fix \"./**/*.{ts,tsx}\"",
         "prettier:dryrun": "prettier \"./**/*.{ts,tsx}\"",
         "eslint:dryrun": "eslint \"./**/*.{ts,tsx}\" --max-warnings=0",
-        "prebundlesize": "next build",
+        "prebundlesize": "CI_BUNDLESIZE=true next build",
         "bundlesize": "bundlesize"
     },
     "dependencies": {

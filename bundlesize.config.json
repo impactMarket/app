@@ -7,6 +7,10 @@
       {
         "path": "./.next/**/framework-*.js",
         "maxSize": "45 kB"
+      },
+      {
+        "path": "./.next/**/_app-*.js",
+        "maxSize": "35 kB"
       }
     ]
   }
