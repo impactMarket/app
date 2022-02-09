@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import * as React from 'react';
 import { useGetExchangeRatesQuery } from '../../api/generic';
+import React from 'react';
 
 export default function ExchangeRate() {
     // Using a query hook automatically fetches data and returns query values

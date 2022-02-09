@@ -1624,10 +1624,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/utils@2.0.0-alpha.11":
-  version "2.0.0-alpha.11"
-  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-2.0.0-alpha.11.tgz#0a22626687ce4b5db62b8c453f4945bd7d2276ef"
-  integrity sha512-gMTw+BF9BDNcNSJACg2YNcCHh4uZmHps3Ma/0IKIDIbP2slJYX9JRzHDYDitYp4CMP3l5DHOBlcF2LTIN5b0mw==
+"@impact-market/utils@2.0.0-alpha.13":
+  version "2.0.0-alpha.13"
+  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-2.0.0-alpha.13.tgz#790e249b2b1208a0b9eaed95efa3c50eb487123c"
+  integrity sha512-+k1YOh0zIuy4aregTedWNu+pSB1ACRhnnGo2936+qYC1IvQucVwmfPEJv0MS7OQ+0GIh6oEeJN4PDu8ySqw78g==
   dependencies:
     "@apollo/client" "^3.5.6"
     "@celo-tools/use-contractkit" "npm:@poofcash/use-contractkit@1.0.10"

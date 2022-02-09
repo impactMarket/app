@@ -1,5 +1,6 @@
 import { toToken } from '@impact-market/utils/toToken';
 import { useA2HS } from 'react-use-a2hs';
+import React from 'react';
 
 function Home() {
     const [promptEvent, promptToInstall] = useA2HS();
@@ -11,7 +12,7 @@ function Home() {
             <div>
                 {promptEvent && (
                     <button onClick={promptToInstall}>
-                        {'please install PWA'}
+                        please install PWA
                     </button>
                 )}
             </div>

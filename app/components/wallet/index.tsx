@@ -3,6 +3,7 @@ import {
     ContractKitProvider,
     useContractKit
 } from '@celo-tools/use-contractkit';
+import React from 'react';
 
 function Wallet() {
     const { connect: connectToWallet, address } = useContractKit();

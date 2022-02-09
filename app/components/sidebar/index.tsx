@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import React from 'react';
 import dynamic from 'next/dynamic';
 
 const Wallet = dynamic(() => import('../wallet'), {

@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
-import * as React from 'react';
 import { useGetCommunityByIdQuery } from '../../api/community';
+import React from 'react';
 
 export default function Community() {
     // Using a query hook automatically fetches data and returns query values
