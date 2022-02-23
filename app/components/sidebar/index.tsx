@@ -10,6 +10,7 @@ function Sidebar() {
     return (
         <>
             <Wallet />
+            <br />
             <Link href="/beneficiary">
                 <a>go beneficiary</a>
             </Link>
