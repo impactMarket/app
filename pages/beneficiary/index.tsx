@@ -14,7 +14,9 @@ function Beneficiary() {
     return (
         <div>
             <div>Welcome Beneficiary</div>
-            <div>{isReady ? claimCooldown.toISOString() : 'loading...'}</div>
+            <div>
+                {isReady ? new Date(claimCooldown).toISOString() : 'loading...'}
+            </div>
             <div>
                 {isReady ? (
                     <button onClick={claim}>claim</button>
