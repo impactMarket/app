@@ -1,6 +1,7 @@
 import { communityApi } from '../api/community';
 import { configureStore } from '@reduxjs/toolkit';
 import { genericApi } from '../api/generic';
+import { userApi } from '../api/user';
 import counterReducer from './slices/counter';
 
 export const store = configureStore({
@@ -9,12 +10,14 @@ export const store = configureStore({
     middleware: getDefaultMiddleware =>
         getDefaultMiddleware()
             .concat(genericApi.middleware)
-            .concat(communityApi.middleware),
+            .concat(communityApi.middleware)
+            .concat(userApi.middleware),
     reducer: {
         counter: counterReducer,
         // Add the generated reducer as a specific top-level slice
         [genericApi.reducerPath]: genericApi.reducer,
-        [communityApi.reducerPath]: communityApi.reducer
+        [communityApi.reducerPath]: communityApi.reducer,
+        [userApi.reducerPath]: userApi.reducer
     }
 });
 
