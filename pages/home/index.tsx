@@ -1,4 +1,3 @@
-import { toToken } from '@impact-market/utils/toToken';
 import { useA2HS } from 'react-use-a2hs';
 import React from 'react';
 
@@ -8,7 +7,6 @@ function Home() {
     return (
         <div>
             Welcome home
-            {toToken(2)}
             <div>
                 {promptEvent && (
                     <button onClick={promptToInstall}>
