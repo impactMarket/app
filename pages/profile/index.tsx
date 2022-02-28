@@ -1,37 +1,28 @@
-import { User, useCreateUserMutation } from '../../app/api/user';
+import { User } from '../../app/api/user';
+import { selectCurrentUser } from '../../app/state/slices/auth';
 import { useLocalStorage } from '../../app/utils/useStorage';
+import { useSelector } from 'react-redux';
 import { useSigner } from '../../app/utils/useSigner';
 import React from 'react';
 
 function Profile() {
-    const { address, signer } = useSigner();
-    const [localUser, setLocalUser] = useLocalStorage<User | undefined>(
-        'user',
-        undefined
-    );
-    const [createUser, createUserResult] = useCreateUserMutation();
-
-    const auth = async () => {
-        try {
-            const payload = await createUser({ address }).unwrap();
-
-            setLocalUser(payload);
-
-            console.log('fulfilled', payload);
-        } catch (error) {
-            console.error('rejected', error);
-        }
-    };
+    const { signer } = useSigner();
+    const [localUser] = useLocalStorage<User | undefined>('user', undefined);
+    const user = useSelector(selectCurrentUser);
 
     const sign = () => {
         signer.signMessage('hello').then(console.log);
     };
 
+    console.log('user', user);
+
     return (
         <>
-            {createUserResult.isLoading ? 'Loading...' : null}
-            <div>{localUser?.address}</div>
-            <button onClick={auth}>auth</button>
+            <br />
+            <div>{JSON.stringify(user)}</div>
+            <br />
+            <div>address: {localUser?.address}</div>
+            <br />
             <button onClick={sign}>sign</button>
         </>
     );

@@ -42,12 +42,12 @@ export function useLocalStorage<T>(key: string, initialValue: T) {
     // Remove value from local storage and set state to undefined
     const removeValue = () => {
         try {
-            // Save state
-            setStoredValue(undefined);
             // Save to local storage
             if (typeof window !== 'undefined') {
                 window.localStorage.removeItem(key);
             }
+            // Save state
+            setStoredValue(undefined);
         } catch (error) {
             // A more advanced implementation would handle the error case
             console.log(error);

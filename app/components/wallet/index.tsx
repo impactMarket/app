@@ -8,11 +8,16 @@ import {
 } from '@celo-tools/use-contractkit';
 import { Signer } from '@ethersproject/abstract-signer';
 import { SignerContext } from '../../utils/useSigner';
+import { User, useCreateUserMutation } from '../../api/user';
 import { provider } from '../../../app/helpers';
+import { setCredentials } from '../../state/slices/auth';
+import { useDispatch } from 'react-redux';
+import { useLocalStorage } from '../../utils/useStorage';
 import React, { useContext, useEffect, useState } from 'react';
 
 function Wallet() {
     const signer = useProviderOrSigner();
+    const dispatch = useDispatch();
     const { setSigner, setAddress } = useContext(SignerContext);
     const {
         connect: connectToWallet,
@@ -24,6 +29,11 @@ function Wallet() {
     const [providerNetworkChainId, setProviderNetworkChainId] = useState<
         number | undefined
     >();
+    const [, setLocalUser, removeLocalUser] = useLocalStorage<User | undefined>(
+        'user',
+        undefined
+    );
+    const [createUser, createUserResult] = useCreateUserMutation();
 
     useEffect(() => {
         const setChainId = async () => {
@@ -53,6 +63,29 @@ function Wallet() {
         setAddress(address);
     }, [signer, address]);
 
+    const connect = async () => {
+        try {
+            const connector = await connectToWallet();
+
+            const payload = await createUser({
+                address: connector.account,
+                phone: '0'
+            }).unwrap();
+
+            setLocalUser((payload as any).user);
+            dispatch(setCredentials({ token: payload.token, user: { id: 5 } }));
+
+            console.log('fulfilled', payload);
+        } catch (error) {
+            console.error('rejected', error);
+        }
+    };
+
+    const disconnect = async () => {
+        await destroy();
+        removeLocalUser();
+    };
+
     if (!initialised || !providerNetworkChainId) {
         return <div>Loading...</div>;
     }
@@ -68,10 +101,13 @@ function Wallet() {
             {address ? (
                 <>
                     <div>Connected to {address}</div>
-                    <button onClick={destroy}>Disconnect</button>
+                    <button onClick={disconnect}>Disconnect</button>
                 </>
             ) : (
-                <button onClick={connectToWallet}>Connect wallet</button>
+                <>
+                    {createUserResult.isLoading ? 'Loading...' : null}
+                    <button onClick={connect}>Connect wallet</button>
+                </>
             )}
         </>
     );

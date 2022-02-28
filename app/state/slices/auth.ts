@@ -12,23 +12,25 @@ type AuthState = {
 };
 
 const slice = createSlice({
-    initialState: { token: null, user: null } as AuthState,
+    initialState: {
+        token: null,
+        user: null
+    } as AuthState,
     name: 'auth',
     reducers: {
         setCredentials: (
             state,
-            {
-                payload: { user, token }
-            }: PayloadAction<{ user: User; token: string }>
+            action: PayloadAction<{ user: User; token: string }>
         ) => {
-            state.user = user;
-            state.token = token;
+            console.log('setCredentials', action);
+            state.user = action.payload.user;
+            state.token = action.payload.token;
         }
     }
 });
 
 export const { setCredentials } = slice.actions;
 
-export const selectCurrentUser = (state: RootState) => state.auth.user;
+export const selectCurrentUser = (state: RootState) => state.auth;
 
 export default slice.reducer;
