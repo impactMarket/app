@@ -1,6 +1,4 @@
-// Need to use the React-specific entry point to import createApi
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import config from '../config';
+import { emptySplitApi } from './index';
 
 export interface User {
     address: string;
@@ -20,10 +18,7 @@ interface PutPostUser {
     // recover: boolean;
 }
 // Define a service using a base URL and expected endpoints
-export const userApi = createApi({
-    baseQuery: fetchBaseQuery({
-        baseUrl: config.baseApiUrl
-    }),
+export const userApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
         // First connect. Either register or login.
         createUser: builder.mutation<User, PutPostUser>({
@@ -51,8 +46,7 @@ export const userApi = createApi({
             }),
             transformResponse: (response: { data: User }) => response.data
         })
-    }),
-    reducerPath: 'userApi'
+    })
 });
 
 // Export hooks for usage in functional components, which are
