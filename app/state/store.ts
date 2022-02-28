@@ -2,6 +2,7 @@ import { communityApi } from '../api/community';
 import { configureStore } from '@reduxjs/toolkit';
 import { genericApi } from '../api/generic';
 import { userApi } from '../api/user';
+import authReducer from './slices/auth';
 import counterReducer from './slices/counter';
 
 export const store = configureStore({
@@ -13,6 +14,7 @@ export const store = configureStore({
             .concat(communityApi.middleware)
             .concat(userApi.middleware),
     reducer: {
+        auth: authReducer,
         counter: counterReducer,
         // Add the generated reducer as a specific top-level slice
         [genericApi.reducerPath]: genericApi.reducer,
