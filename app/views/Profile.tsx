@@ -1,8 +1,8 @@
-import { User } from '../../app/api/user';
+import { User } from '../api/user';
 import { selectCurrentUser } from '../../app/state/slices/auth';
-import { useLocalStorage } from '../../app/utils/useStorage';
+import { useLocalStorage } from '../utils/useStorage';
 import { useSelector } from 'react-redux';
-import { useSigner } from '../../app/utils/useSigner';
+import { useSigner } from '../utils/useSigner';
 import React from 'react';
 
 function Profile() {

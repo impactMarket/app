@@ -1,0 +1,135 @@
+{
+  "id": "pwa-translations",
+  "label": "[PWA] Translations",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "strings": {
+      "string-alreadyClaimed": {
+        "config": {
+          "label": "alreadyClaimed",
+          "placeholder": "You have already claimed {{ claimed }} of {{ total }}"
+        },
+        "type": "Text"
+      },
+      "string-cancel": {
+        "config": {
+          "label": "Cancel",
+          "placeholder": "Cancel"
+        },
+        "type": "Text"
+      },
+      "string-claim": {
+        "config": {
+          "label": "claim",
+          "placeholder": "Claim"
+        },
+        "type": "Text"
+      },
+      "string-close": {
+        "config": {
+          "label": "close",
+          "placeholder": "Close"
+        },
+        "type": "Text"
+      },
+      "string-help": {
+        "config": {
+          "label": "help",
+          "placeholder": "Help"
+        },
+        "type": "Text"
+      },
+      "string-hours": {
+        "config": {
+          "label": "hours",
+          "placeholder": "Hours"
+        },
+        "type": "Text"
+      },
+      "string-learnAndEarn": {
+        "config": {
+          "label": "learnAndEarn",
+          "placeholder": "Learn & Earn"
+        },
+        "type": "Text"
+      },
+      "string-minutes": {
+        "config": {
+          "label": "minutes",
+          "placeholder": "Minutes"
+        },
+        "type": "Text"
+      },
+      "string-notifications": {
+        "config": {
+          "label": "notifications",
+          "placeholder": "Notifications"
+        },
+        "type": "Text"
+      },
+      "string-reportSuspiciousActivity": {
+        "config": {
+          "label": "reportSuspiciousActivity",
+          "placeholder": "Report Suspicious Activity"
+        },
+        "type": "Text"
+      },
+      "string-seconds": {
+        "config": {
+          "label": "seconds",
+          "placeholder": "Seconds"
+        },
+        "type": "Text"
+      },
+      "string-sendReport": {
+        "config": {
+          "label": "sendReport",
+          "placeholder": "Send Report"
+        },
+        "type": "Text"
+      },
+      "string-settings": {
+        "config": {
+          "label": "settings",
+          "placeholder": "Settings"
+        },
+        "type": "Text"
+      },
+      "string-stories": {
+        "config": {
+          "label": "stories",
+          "placeholder": "Stories"
+        },
+        "type": "Text"
+      },
+      "string-ubi": {
+        "config": {
+          "label": "ubi",
+          "placeholder": "UBI"
+        },
+        "type": "Text"
+      }
+    },
+    "messages": {
+      "message-communityFundsWillRunOut": {
+        "config": {
+          "label": "communityFundsWillRunOut",
+          "placeholder": "Community funds will run out",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "message-yourAccountHasBeenLocked": {
+        "config": {
+          "label": "yourAccountHasBeenLocked",
+          "placeholder": "User account has been locked",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      }
+    }
+  }
+}

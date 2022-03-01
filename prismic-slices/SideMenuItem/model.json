@@ -1,0 +1,96 @@
+{
+  "id": "side_menu_item",
+  "type": "SharedSlice",
+  "name": "SideMenuItem",
+  "description": "SideMenuItem",
+  "variations": [
+    {
+      "id": "default-slice",
+      "name": "Default slice",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "SideMenuItem",
+      "primary": {},
+      "items": {
+        "icon": {
+          "config": {
+            "label": "Icon",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "label": {
+          "config": {
+            "label": "Label",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "url": {
+          "config": {
+            "label": "Url",
+            "placeholder": ""
+          },
+          "type": "Text"
+        }
+      }
+    },
+    {
+      "id": "separator",
+      "name": "Separator",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "SideMenuItem",
+      "primary": {},
+      "items": {}
+    },
+    {
+      "id": "withHeader",
+      "name": "With Header",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "SideMenuItem",
+      "primary": {
+        "isCollapsable": {
+          "config": {
+            "label": "Is collapsable",
+            "placeholder_false": "false",
+            "placeholder_true": "true",
+            "default_value": false
+          },
+          "type": "Boolean"
+        },
+        "title": {
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          },
+          "type": "Text"
+        }
+      },
+      "items": {
+        "icon": {
+          "config": {
+            "label": "Icon",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "label": {
+          "config": {
+            "label": "Label",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "url": {
+          "config": {
+            "label": "Url",
+            "placeholder": ""
+          },
+          "type": "Text"
+        }
+      }
+    }
+  ]
+}

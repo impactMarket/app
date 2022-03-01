@@ -1,0 +1,103 @@
+{
+  "id": "pwa-config",
+  "label": "[PWA] Config",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "SEO": {
+      "seo-title": {
+        "config": {
+          "label": "Default title",
+          "placeholder": "SEO fallback title"
+        },
+        "type": "Text"
+      },
+      "seo-description": {
+        "config": {
+          "label": "Default description",
+          "placeholder": "SEO fallback description"
+        },
+        "type": "Text"
+      },
+      "seo-keywords": {
+        "config": {
+          "label": "Default keywords",
+          "placeholder": "SEO fallback keywords"
+        },
+        "type": "Text"
+      },
+      "seo-image": {
+        "config": {
+          "label": "Default Image",
+          "constraint": {},
+          "thumbnails": []
+        },
+        "type": "Image"
+      }
+    },
+    "aside-common-menu": {
+      "aside-common-menu": {
+        "config": {
+          "label": "aside-common-menu",
+          "placeholder": "",
+          "fields": {
+            "icon": {
+              "config": {
+                "label": "Icon",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "label": {
+              "config": {
+                "label": "Label",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "url": {
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              },
+              "type": "Text"
+            }
+          }
+        },
+        "type": "Group"
+      }
+    },
+    "aside-footer-menu": {
+      "aside-footer-menu": {
+        "config": {
+          "label": "aside-footer-menu",
+          "placeholder": "",
+          "fields": {
+            "icon": {
+              "config": {
+                "label": "Icon",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "label": {
+              "config": {
+                "label": "Label",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "url": {
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              },
+              "type": "Text"
+            }
+          }
+        },
+        "type": "Group"
+      }
+    }
+  }
+}
