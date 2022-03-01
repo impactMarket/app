@@ -10,7 +10,7 @@
       },
       {
         "path": "./.next/**/_app-*.js",
-        "maxSize": "35 kB"
+        "maxSize": "50 kB"
       }
     ]
   }
