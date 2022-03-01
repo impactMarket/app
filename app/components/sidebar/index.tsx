@@ -16,6 +16,11 @@ function Sidebar() {
                     <a>go beneficiary</a>
                 </Link>
             </Box>
+            <Box padding="3">
+                <Link href="/profile">
+                    <a>go profile</a>
+                </Link>
+            </Box>
         </>
     );
 }

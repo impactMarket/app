@@ -1,4 +1,3 @@
-import { Counter } from '../../app/components/counter';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
 import { provider } from '../../app/helpers';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
@@ -29,7 +28,6 @@ function Beneficiary() {
         <div>
             <div>Welcome Beneficiary</div>
             <Claim />
-            <Counter />
             <ExchangeRate />
             <Community />
         </div>
