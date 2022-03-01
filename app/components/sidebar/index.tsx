@@ -1,3 +1,4 @@
+import { Box } from '@impact-market/ui';
 import Link from 'next/link';
 import React from 'react';
 import dynamic from 'next/dynamic';
@@ -10,10 +11,11 @@ function Sidebar() {
     return (
         <>
             <Wallet />
-            <br />
-            <Link href="/beneficiary">
-                <a>go beneficiary</a>
-            </Link>
+            <Box padding="3">
+                <Link href="/beneficiary">
+                    <a>go beneficiary</a>
+                </Link>
+            </Box>
         </>
     );
 }
