@@ -21,6 +21,11 @@ function Sidebar() {
                     <a>go profile</a>
                 </Link>
             </Box>
+            <Box padding="3">
+                <Link href="/home">
+                    <a>go home</a>
+                </Link>
+            </Box>
         </>
     );
 }

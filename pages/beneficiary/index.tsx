@@ -4,7 +4,10 @@ import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { useSigner } from '../../app/utils/useSigner';
 import Community from '../../app/components/community';
 import ExchangeRate from '../../app/components/exchangeRate';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { selectCurrentUser } from '../../app/state/slices/auth';
 
 function Beneficiary() {
     const { isReady, claimCooldown, claim, isClaimable } = useBeneficiary(
@@ -35,7 +38,18 @@ function Beneficiary() {
 }
 
 function WrappedBeneficiary() {
+    const router = useRouter();
     const { address, signer } = useSigner();
+    const user = useSelector(selectCurrentUser);
+
+    console.log('user', user);
+
+    useEffect(() => {
+        if(!user?.token) {
+            router.push('/home');
+            return null;
+        }
+    }, []);
 
     if (address === null || signer === null) {
         return <div>Loading...</div>;
