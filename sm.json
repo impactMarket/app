@@ -1,0 +1,7 @@
+{
+  "apiEndpoint": "https://impact-market.prismic.io/api/v2",
+  "libraries": [
+    "@/prismic-slices"
+  ],
+  "_latest": "0.1.0"
+}

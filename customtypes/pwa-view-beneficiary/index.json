@@ -1,0 +1,134 @@
+{
+  "id": "pwa-view-beneficiary",
+  "label": "[PWA] [View] Beneficiary",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+        "seo-title": {
+          "config": {
+            "label": "SEO title",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "seo-description": {
+          "config": {
+            "label": "SEO description",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "seo-keywords": {
+          "config": {
+            "label": "SEO keywords",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "seo-image": {
+          "config": {
+            "label": "SEO Image",
+            "constraint": {},
+            "thumbnails": []
+          },
+          "type": "Image"
+        }
+      },
+      "heading": {
+        "heading-title": {
+          "config": {
+            "label": "Title",
+            "placeholder": ""
+          },
+          "type": "Text"
+        },
+        "heading-content": {
+          "config": {
+            "label": "Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
+          },
+          "type": "StructuredText"
+        }
+      },
+      "claim-card": {
+        "claim-card-states": {
+          "config": {
+            "label": "claim-card-states",
+            "placeholder": "",
+            "fields": {
+              "state": {
+                "config": {
+                  "label": "state",
+                  "placeholder": "",
+                  "options": [
+                    "no-funds",
+                    "waiting",
+                    "available"
+                  ]
+                },
+                "type": "Select"
+              },
+              "image": {
+                "config": {
+                  "label": "Image",
+                  "constraint": {
+                    "width": 750,
+                    "height": 750
+                  },
+                  "thumbnails": []
+                },
+                "type": "Image"
+              },
+              "title": {
+                "config": {
+                  "label": "Title",
+                  "placeholder": ""
+                },
+                "type": "Text"
+              },
+              "text": {
+                "config": {
+                  "label": "Text",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "single": "paragraph,em,strong,hyperlink"
+                },
+                "type": "StructuredText"
+              }
+            }
+          },
+          "type": "Group"
+        }
+      },
+      "FAQ": {
+        "faq": {
+          "config": {
+            "label": "FAQ",
+            "placeholder": "",
+            "fields": {
+              "title": {
+                "config": {
+                  "label": "Heading",
+                  "placeholder": ""
+                },
+                "type": "Text"
+              },
+              "content": {
+                "config": {
+                  "label": "Content",
+                  "placeholder": "",
+                  "allowTargetBlank": true,
+                  "multi": "paragraph,preformatted,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+                },
+                "type": "StructuredText"
+              }
+            }
+          },
+          "type": "Group"
+        }
+      }
+  }
+}

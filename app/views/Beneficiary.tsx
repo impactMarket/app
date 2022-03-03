@@ -1,12 +1,12 @@
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
-import { provider } from '../../app/helpers';
+import { provider } from '../helpers';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
-import { useSigner } from '../../app/utils/useSigner';
-import Community from '../../app/components/community';
-import ExchangeRate from '../../app/components/exchangeRate';
+import { useSigner } from '../utils/useSigner';
+import Community from '../components/community';
+import ExchangeRate from '../components/exchangeRate';
 import React from 'react';
 
-function Beneficiary() {
+const Beneficiary = () => {
     const { isReady, claimCooldown, claim, isClaimable } = useBeneficiary(
         '0x6dcf4B577309aF974216b46817e98833Ad27c0Ab'
     );
@@ -32,9 +32,9 @@ function Beneficiary() {
             <Community />
         </div>
     );
-}
+};
 
-function WrappedBeneficiary() {
+const WrappedBeneficiary = () => {
     const { address, signer } = useSigner();
 
     if (address === null || signer === null) {
@@ -46,6 +46,6 @@ function WrappedBeneficiary() {
             <Beneficiary />
         </ImpactProvider>
     );
-}
+};
 
 export default WrappedBeneficiary;

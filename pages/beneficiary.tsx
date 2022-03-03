@@ -1,6 +1,6 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
-import Home from '../app/views/Home';
+import Beneficiary from '../app/views/Beneficiary';
 import Prismic from '../libs/Prismic/Prismic';
 import getTypesToFetchWithConfigs from '../libs/Prismic/helpers/getTypesToFetchWithConfigs';
 
@@ -21,4 +21,4 @@ export const getStaticProps: GetStaticProps = async ({
     };
 };
 
-export default Home;
+export default Beneficiary;

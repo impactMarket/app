@@ -2,7 +2,7 @@
     "files": [
       {
         "path": "./.next/**/main-*.js",
-        "maxSize": "25 kB"
+        "maxSize": "35 kB"
       },
       {
         "path": "./.next/**/framework-*.js",

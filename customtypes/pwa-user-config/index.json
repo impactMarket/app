@@ -1,0 +1,89 @@
+{
+  "id": "pwa-user-config",
+  "label": "[PWA] User Config",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "main": {
+      "uid": {
+        "config": {
+          "label": "User type",
+          "placeholder": "beneficiary, manager, ambassador..."
+        },
+        "type": "UID"
+      }
+    },
+    "aside-menu": {
+      "aside-menu-with-common": {
+        "config": {
+          "label": "Aside Common Menu",
+          "placeholder_false": "false",
+          "placeholder_true": "true",
+          "default_value": true
+        },
+        "type": "Boolean"
+      },
+      "aside-menu-with-footer": {
+        "config": {
+          "label": "Aside Footer Menu",
+          "placeholder_false": "false",
+          "placeholder_true": "true",
+          "default_value": true
+        },
+        "type": "Boolean"
+      },
+      "aside-menu-items": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "side_menu_item": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "mobile-bottom-menu": {
+      "mobile-bottom-menu-is-active": {
+        "config": {
+          "label": "Is active",
+          "placeholder_false": "false",
+          "placeholder_true": "true",
+          "default_value": true
+        },
+        "type": "Boolean"
+      },
+      "mobile-bottom-menu-items": {
+        "config": {
+          "label": "Items",
+          "placeholder": "",
+          "fields": {
+            "icon": {
+              "config": {
+                "label": "Icon",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "label": {
+              "config": {
+                "label": "Label",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "url": {
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              },
+              "type": "Text"
+            }
+          }
+        },
+        "type": "Group"
+      }
+    }
+  }
+}

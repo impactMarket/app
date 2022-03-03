@@ -1,0 +1,129 @@
+{
+  "id": "pwa-modals",
+  "label": "[PWA] Modals",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "welcome-beneficiary": {
+      "welcome-beneficiary-image": {
+        "config": {
+          "label": "Image",
+          "constraint": {
+            "width": 400,
+            "height": 400
+          },
+          "thumbnails": []
+        },
+        "type": "Image"
+      },
+      "welcome-beneficiary-title": {
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "welcome-beneficiary-content": {
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "welcome-beneficiary-button-label": {
+        "config": {
+          "label": "Button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      }
+    },
+    "community-rules": {
+      "community-rules-title": {
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "community-rules-content": {
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "community-rules-items": {
+        "config": {
+          "label": "Rules",
+          "placeholder": "",
+          "fields": {
+            "icon": {
+              "config": {
+                "label": "Icon",
+                "constraint": {},
+                "thumbnails": []
+              },
+              "type": "Image"
+            },
+            "title": {
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "text": {
+              "config": {
+                "label": "Text",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "multi": "paragraph,em,strong,hyperlink,image"
+              },
+              "type": "StructuredText"
+            }
+          }
+        },
+        "type": "Group"
+      },
+      "community-rules-aside-image": {
+        "config": {
+          "label": "Aside Image",
+          "constraint": {
+            "width": 600,
+            "height": 600
+          },
+          "thumbnails": []
+        },
+        "type": "Image"
+      },
+      "community-rules-aside-title": {
+        "config": {
+          "label": "Aside title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "community-rules-aside-text": {
+        "config": {
+          "label": "Aside content",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,em,strong,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "community-rules-button-label": {
+        "config": {
+          "label": "Button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      }
+    }
+  }
+}

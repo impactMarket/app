@@ -1,0 +1,53 @@
+[
+  {
+    "variation": "default-slice",
+    "name": "Default slice",
+    "slice_type": "side_menu_item",
+    "items": [
+      {
+        "icon": "facilitate user-centric bandwidth",
+        "label": "engineer value-added partnerships",
+        "url": "synergize user-centric channels"
+      },
+      {
+        "icon": "monetize cross-media blockchains",
+        "label": "productize 24/365 interfaces",
+        "url": "matrix 24/7 niches"
+      },
+      {
+        "icon": "synthesize wireless infomediaries",
+        "label": "incentivize transparent niches",
+        "url": "productize ubiquitous supply-chains"
+      }
+    ],
+    "primary": {}
+  },
+  {
+    "variation": "separator",
+    "name": "Separator",
+    "slice_type": "side_menu_item",
+    "items": [],
+    "primary": {}
+  },
+  {
+    "variation": "withHeader",
+    "name": "With Header",
+    "slice_type": "side_menu_item",
+    "items": [
+      {
+        "icon": "unleash robust e-tailers",
+        "label": "seize value-added convergence",
+        "url": "incubate value-added metrics"
+      },
+      {
+        "icon": "brand ubiquitous functionalities",
+        "label": "mesh vertical web services",
+        "url": "streamline magnetic web-readiness"
+      }
+    ],
+    "primary": {
+      "isCollapsable": false,
+      "title": "innovate dynamic markets"
+    }
+  }
+]

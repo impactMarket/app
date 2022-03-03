@@ -1,0 +1,128 @@
+{
+  "_cts": {
+    "pwa-config": {
+      "aside-common-menu": {},
+      "aside-footer-menu": {}
+    },
+    "pwa-modals": {
+      "community-rules-items": {
+        "text": {
+          "config": {
+            "patternType": "PARAGRAPH",
+            "blocks": 1
+          }
+        }
+      },
+      "community-rules-aside-text": {
+        "config": {
+          "patternType": "PARAGRAPH",
+          "blocks": 1
+        }
+      },
+      "welcome-beneficiary-content": {
+        "config": {
+          "patternType": "PARAGRAPH",
+          "blocks": 1
+        }
+      },
+      "community-rules-content": {
+        "config": {
+          "patternType": "PARAGRAPH",
+          "blocks": 1
+        }
+      }
+    },
+    "pwa-view-view": {},
+    "pwa-view-ubi": {
+      "claim-card-states": {
+        "text": {
+          "config": {
+            "patternType": "PARAGRAPH",
+            "blocks": 1
+          }
+        }
+      },
+      "faq": {
+        "content": {
+          "config": {
+            "patternType": "PARAGRAPH",
+            "blocks": 1
+          }
+        }
+      },
+      "heading-content": {
+        "config": {
+          "patternType": "PARAGRAPH",
+          "blocks": 1
+        }
+      }
+    },
+    "pwa-translations": {
+      "message-a": {
+        "config": {
+          "patternType": "PARAGRAPH",
+          "blocks": 1
+        }
+      }
+    },
+    "pwa-user-config": {
+      "side-menu-top": {},
+      "mobile-bottom-menu-items": {}
+    },
+    "pwa-sidebar-menu": {
+      "items": {}
+    },
+    "pwa-view-beneficiary": {}
+  },
+  "prismic-slices": {
+    "SideMenu": {},
+    "SideMenuItem": [
+      {
+        "variation": "default-slice",
+        "name": "Default slice",
+        "slice_type": "side_menu_item",
+        "items": [
+          {
+            "icon": "implement best-of-breed e-commerce",
+            "label": "whiteboard virtual functionalities",
+            "url": "repurpose value-added models"
+          },
+          {
+            "icon": "optimize real-time metrics",
+            "label": "engage customized methodologies",
+            "url": "innovate user-centric initiatives"
+          }
+        ],
+        "primary": {}
+      },
+      {
+        "variation": "separator",
+        "name": "Separator",
+        "slice_type": "side_menu_item",
+        "items": [],
+        "primary": {}
+      },
+      {
+        "variation": "withHeader",
+        "name": "With Header",
+        "slice_type": "side_menu_item",
+        "items": [
+          {
+            "icon": "transition compelling initiatives",
+            "label": "innovate world-class systems",
+            "url": "innovate granular convergence"
+          },
+          {
+            "icon": "cultivate front-end eyeballs",
+            "label": "scale value-added eyeballs",
+            "url": "revolutionize cross-media systems"
+          }
+        ],
+        "primary": {
+          "isCollapsable": false,
+          "title": "strategize best-of-breed vortals"
+        }
+      }
+    ]
+  }
+}

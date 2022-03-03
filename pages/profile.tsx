@@ -1,7 +1,7 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
-import Home from '../app/views/Home';
 import Prismic from '../libs/Prismic/Prismic';
+import Profile from '../app/views/Profile';
 import getTypesToFetchWithConfigs from '../libs/Prismic/helpers/getTypesToFetchWithConfigs';
 
 export const getStaticProps: GetStaticProps = async ({
@@ -9,16 +9,16 @@ export const getStaticProps: GetStaticProps = async ({
     previewData
 }) => {
     const clientOptions = previewData as ClientConfig;
-    const types = getTypesToFetchWithConfigs(['pwa-view-beneficiary']);
+    const types = getTypesToFetchWithConfigs(['pwa-view-profile']);
 
     const data = await Prismic.getByTypes({ clientOptions, lang, types });
 
     return {
         props: {
             data,
-            view: 'beneficiary'
+            view: 'profile'
         }
     };
 };
 
-export default Home;
+export default Profile;
