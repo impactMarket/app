@@ -2178,7 +2178,7 @@
     "@prismicio/helpers" "^2.1.1"
     "@prismicio/types" "^0.1.24"
 
-"@prismicio/helpers@^2.1.1", "@prismicio/helpers@^2.2.0":
+"@prismicio/helpers@2.2.0", "@prismicio/helpers@^2.1.1", "@prismicio/helpers@^2.2.0":
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/@prismicio/helpers/-/helpers-2.2.0.tgz#75fedf38f8c8f82f88421dca3de489f7b6c9d2ee"
   integrity sha512-qgszdfBrPqn4NdmBiyNK+USfUWuI21HCCOMJMoq2R6jp4YDbxcXD7RjixNPK9mjZRtraHnrHzFO/ABK1gLgQIA==
@@ -2241,14 +2241,19 @@
     "@prismicio/types" "^0.1.22"
     "@slicemachine/core" "1.0.3-slicecanvas.2"
 
-"@prismicio/slice-simulator-react@^0.2.0":
+"@prismicio/slice-simulator-react@0.2.0":
   version "0.2.0"
   resolved "https://registry.yarnpkg.com/@prismicio/slice-simulator-react/-/slice-simulator-react-0.2.0.tgz#3c7d7e154d679ef4d331c90a1feb3a643e017d65"
   integrity sha512-P7IlRyG3vQs+Jp3DsbhWpm+pJpDxHUkwJbWyGsFjb+H+n66CZxakuJiCs/qw9x357S9Q9AGbPgSLMb7258pYeA==
   dependencies:
     "@prismicio/slice-simulator-core" "^0.2.0"
 
-"@prismicio/types@^0.1.22", "@prismicio/types@^0.1.24", "@prismicio/types@^0.1.26":
+"@prismicio/types@0.1.26":
+  version "0.1.26"
+  resolved "https://registry.yarnpkg.com/@prismicio/types/-/types-0.1.26.tgz#c232f72b06a465262af784028a1368ca938752f0"
+  integrity sha512-IIfnZU1eHtlyHMFe+5XFWpHwD4x+kdweuB36TpusR/tOeiF8MLsFFYosNOr5z/b8YFXK7u6JCAxjFxz/WDKmUA==
+
+"@prismicio/types@^0.1.22", "@prismicio/types@^0.1.24":
   version "0.1.27"
   resolved "https://registry.yarnpkg.com/@prismicio/types/-/types-0.1.27.tgz#7f2fd91f1781a6da62630438b828230df72ae2b3"
   integrity sha512-+Oc7EFcp6RGVMvFKQl9y9D4HtBhHeOtE0asfYhedCflQDf3OOzjE8POIu1bXTkk8i1kEWM3oYvz6yLN4yAyGWQ==
@@ -3647,9 +3652,9 @@ bip32@2.0.5:
     typeforce "^1.11.5"
     wif "^2.0.6"
 
-"bip39@git+https://github.com/bitcoinjs/bip39.git#d8ea080a18b40f301d4e2219a2991cd2417e83c2":
+"bip39@https://github.com/bitcoinjs/bip39#d8ea080a18b40f301d4e2219a2991cd2417e83c2":
   version "3.0.3"
-  resolved "git+https://github.com/bitcoinjs/bip39.git#d8ea080a18b40f301d4e2219a2991cd2417e83c2"
+  resolved "https://github.com/bitcoinjs/bip39#d8ea080a18b40f301d4e2219a2991cd2417e83c2"
   dependencies:
     "@types/node" "11.11.6"
     create-hash "^1.1.0"
@@ -3679,9 +3684,9 @@ blakejs@^1.1.0:
   resolved "https://registry.yarnpkg.com/blakejs/-/blakejs-1.1.1.tgz#bf313053978b2cd4c444a48795710be05c785702"
   integrity sha512-bLG6PHOCZJKNshTjGRBvET0vTciwQE6zFKOKKXPDJfwFBd4Ac0yBfPZqcGvGJap50l7ktvlpFqc2jGVaUgbJgg==
 
-"bls12377js@git+https://github.com/celo-org/bls12377js.git#cb38a4cfb643c778619d79b20ca3e5283a2122a6":
+"bls12377js@https://github.com/celo-org/bls12377js#cb38a4cfb643c778619d79b20ca3e5283a2122a6":
   version "0.1.0"
-  resolved "git+https://github.com/celo-org/bls12377js.git#cb38a4cfb643c778619d79b20ca3e5283a2122a6"
+  resolved "https://github.com/celo-org/bls12377js#cb38a4cfb643c778619d79b20ca3e5283a2122a6"
   dependencies:
     "@stablelib/blake2xs" "0.10.4"
     "@types/node" "^12.11.7"
@@ -6742,7 +6747,7 @@ html-dom-parser@1.1.0:
     domhandler "4.3.0"
     htmlparser2 "7.2.0"
 
-html-react-parser@^1.4.8:
+html-react-parser@1.4.8:
   version "1.4.8"
   resolved "https://registry.yarnpkg.com/html-react-parser/-/html-react-parser-1.4.8.tgz#27bc0f9dc294c875daeca8a21a48d5b845a1364e"
   integrity sha512-5XsBdFVhJLxdtRp7tWwZ6DwqOt6fJ+2lJc0lctwjX1yaxWNB41S5uzqii7vJcSCaabM+CK28U75e5f4wIMqdSg==
@@ -10887,7 +10892,7 @@ style-to-object@0.3.0:
   dependencies:
     inline-style-parser "0.1.1"
 
-styled-components@^5.3.3:
+styled-components@5.3.3:
   version "5.3.3"
   resolved "https://registry.yarnpkg.com/styled-components/-/styled-components-5.3.3.tgz#312a3d9a549f4708f0fb0edc829eb34bde032743"
   integrity sha512-++4iHwBM7ZN+x6DtPPWkCI4vdtwumQ+inA/DdAsqYd4SVgUKJie5vXyzotA00ttcFdQkCng7zc6grwlfIfw+lw==
