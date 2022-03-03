@@ -54,11 +54,11 @@ const serializer: SerializerFunction = ({
     return null;
 };
 
-type RichTextProps = {
+export type RichTextProps = {
     components?: {
         [key: string]: any;
     };
-    content: RichTextField;
+    content?: RichTextField | string;
     serializerProps?: {
         paragraph?: TextProps;
         hyperlink?: TextProps;
@@ -76,6 +76,16 @@ const RichText = (props: RichTextProps) => {
         variables,
         ...forwardProps
     } = props;
+
+    if (typeof content === 'string') {
+        const stringContent = bracked(content, variables);
+
+        return (
+            <Text as="div" {...forwardProps}>
+                {parse(stringContent)}
+            </Text>
+        );
+    }
 
     return (
         <Text as="div" {...forwardProps}>

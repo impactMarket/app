@@ -1,3 +1,4 @@
+import { RichTextField } from '@prismicio/types';
 import React, { createContext } from 'react';
 import baseConfig from '../../../config';
 import extractFromData from '../helpers/extractFromData';
@@ -67,10 +68,11 @@ export const usePrismicData = (options: UsePrismicDataOptions = {}) => {
         delete forwardData?.[viewName];
     }
 
-    const translations = {
-        messages: extractFromData(translationsFromProps?.data, 'message'),
-        strings: extractFromData(translationsFromProps?.data, 'string')
-    };
+    const translations = extractFromData(translationsFromProps?.data, 'string');
+    const messages = extractFromData(
+        translationsFromProps?.data,
+        'message'
+    ) as { [key: string]: RichTextField };
 
     const extractFromConfig = (key: string) =>
         extractFromData(config?.data || {}, key);
@@ -90,6 +92,7 @@ export const usePrismicData = (options: UsePrismicDataOptions = {}) => {
         console.log(`Data from prismic\n`, {
             config,
             data: dataToExport,
+            messages,
             modals,
             translations,
             url,
@@ -104,6 +107,7 @@ export const usePrismicData = (options: UsePrismicDataOptions = {}) => {
         extractFromConfig,
         extractFromModals,
         extractFromView,
+        messages,
         modals,
         translations,
         url,
