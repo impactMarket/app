@@ -6,6 +6,7 @@ import { useGetUserQuery } from '../app/api/user';
 import React from 'react';
 import Sidebar from '../app/components/sidebar';
 import type { AppProps } from 'next/app';
+import RouteGuard from '../app/components/routeGuard';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
     const { data, isLoading, isError } = useGetUserQuery();
@@ -25,7 +26,9 @@ function WrappedMyApp(props: AppProps): JSX.Element {
         <DesignSystemProvider>
             <SignerProvider>
                 <Provider store={store}>
-                    <MyApp {...props} />
+                    <RouteGuard>
+                        <MyApp {...props} />
+                    </RouteGuard>
                 </Provider>
             </SignerProvider>
         </DesignSystemProvider>

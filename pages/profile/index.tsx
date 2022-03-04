@@ -12,13 +12,13 @@ function Profile() {
     const [localUser] = useLocalStorage<User | undefined>('user', undefined);
     const user = useSelector(selectCurrentUser);
 
-    console.log('user', user);
-    useEffect(() => {
-        if(!user?.token) {
-            router.push('/home');
-            return null;
-        }
-    }, []);
+    //console.log('user', user);
+    // useEffect(() => {
+    //     if(!user?.token) {
+    //         router.push('/home');
+    //         return null;
+    //     }
+    // }, []);
 
     const sign = () => {
         signer.signMessage('hello').then(console.log);

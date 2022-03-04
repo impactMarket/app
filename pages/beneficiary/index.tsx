@@ -44,12 +44,12 @@ function WrappedBeneficiary() {
 
     console.log('user', user);
 
-    useEffect(() => {
-        if(!user?.token) {
-            router.push('/home');
-            return null;
-        }
-    }, []);
+    // useEffect(() => {
+    //     if(!user?.token) {
+    //         router.push('/home');
+    //         return null;
+    //     }
+    // }, []);
 
     if (address === null || signer === null) {
         return <div>Loading...</div>;
