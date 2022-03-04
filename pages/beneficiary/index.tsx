@@ -42,7 +42,7 @@ function WrappedBeneficiary() {
     const { address, signer } = useSigner();
     const user = useSelector(selectCurrentUser);
 
-    console.log('user', user);
+    //console.log('user', user);
 
     // useEffect(() => {
     //     if(!user?.token) {

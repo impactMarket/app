@@ -36,7 +36,7 @@ function RouteGuard({ children }: any) {
         console.log(url);
         if(!user?.token && !publicPaths.includes(path)) {
             //setAuthorized(false);
-            //router.push('/home');
+            router.push('/home');
         }
         else {
             setAuthorized(true);

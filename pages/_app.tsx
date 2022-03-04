@@ -3,15 +3,15 @@ import { Provider } from 'react-redux';
 import { SignerProvider } from '../app/utils/useSigner';
 import { store } from '../app/state/store';
 import { useGetUserQuery } from '../app/api/user';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from '../app/components/sidebar';
 import type { AppProps } from 'next/app';
 import RouteGuard from '../app/components/routeGuard';
 
 function MyApp({ Component, pageProps }: AppProps): JSX.Element {
-    const { data, isLoading, isError } = useGetUserQuery();
+    //const { data, isLoading, isError } = useGetUserQuery();
 
-    console.log({ data, isError, isLoading });
+    //console.log({ data, isError, isLoading });
 
     return (
         <>
@@ -22,6 +22,16 @@ function MyApp({ Component, pageProps }: AppProps): JSX.Element {
 }
 
 function WrappedMyApp(props: AppProps): JSX.Element {
+    useEffect(() => {
+        console.log('root: ', store.getState());
+
+        // if(pageProps?.user) {
+        //   store.dispatch(SaveUser(pageProps.user));
+        // }
+        
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+      }, [store]);
+
     return (
         <DesignSystemProvider>
             <SignerProvider>
