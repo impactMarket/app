@@ -8,24 +8,28 @@ import React from 'react';
 import Sidebar from '../app/components/sidebar';
 import config from '../config';
 import type { AppProps } from 'next/app';
+import RouteGuard from '../app/components/routeGuard';
+import cookies from 'next-cookies';
+import { setToken, setUser } from '../app/state/slices/auth';
 
 const { baseUrl } = config;
 
 const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
 
-    const { data, isLoading, isError } = useGetUserQuery();
-
-    console.log({ data, isError, isLoading });
+    if(pageProps.authToken) {
+        const user = useGetUserQuery();
+        store.dispatch(setUser({ user: user?.data }));
+    }
 
     // Todo
     //  - Add spinner
 
     return (
-        <>
+        <RouteGuard>
             <Sidebar />
             <Component {...pageProps} />
-        </>
+        </RouteGuard>
     );
 };
 
@@ -35,6 +39,8 @@ const App = (props: AppProps) => {
     const url = `${baseUrl}/${locale}${asPath}`;
 
     const { data, view } = pageProps;
+
+    if(pageProps.authToken) store.dispatch(setToken({ token: pageProps.authToken }));
 
     return (
         <PrismicDataProvider data={data} url={url} view={view}>
@@ -47,6 +53,16 @@ const App = (props: AppProps) => {
             </DesignSystemProvider>
         </PrismicDataProvider>
     );
+};
+
+App.getInitialProps = async ({ ctx }: any) => {
+    const { AUTH_TOKEN } = cookies(ctx);
+
+    return { 
+        pageProps: {
+            authToken: AUTH_TOKEN
+        } 
+    };
 };
 
 export default App;
