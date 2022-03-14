@@ -21,6 +21,11 @@ function Sidebar() {
                     <a>go profile</a>
                 </Link>
             </Box>
+            <Box padding="3">
+                <Link href="/">
+                    <a>go index</a>
+                </Link>
+            </Box>
         </>
     );
 }

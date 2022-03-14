@@ -3,6 +3,7 @@ import { emptySplitApi } from './index';
 export interface User {
     address: string;
     token: string;
+    id: number;
 }
 interface PutPostUser {
     address: string;
