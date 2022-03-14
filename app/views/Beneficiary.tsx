@@ -7,9 +7,13 @@ import ExchangeRate from '../components/exchangeRate';
 import React from 'react';
 
 const Beneficiary = () => {
-    const { isReady, claimCooldown, claim, isClaimable } = useBeneficiary(
+    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { hasFunds, maxClaim } } = useBeneficiary(
         '0x6dcf4B577309aF974216b46817e98833Ad27c0Ab'
     );
+
+    console.log('claimedAmount: ', claimedAmount);
+    console.log('hasFunds: ', hasFunds);
+    console.log('maxClaim: ', maxClaim);
 
     const Claim = () => {
         if (!isReady) {
