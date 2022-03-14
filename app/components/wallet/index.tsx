@@ -10,7 +10,7 @@ import { Signer } from '@ethersproject/abstract-signer';
 import { SignerContext } from '../../utils/useSigner';
 import { User, useCreateUserMutation } from '../../api/user';
 import { provider } from '../../../app/helpers';
-import { setCredentials, removeCredentials } from '../../state/slices/auth';
+import { removeCredentials, setCredentials } from '../../state/slices/auth';
 import { useDispatch } from 'react-redux';
 import { useLocalStorage } from '../../utils/useStorage';
 import React, { useContext, useEffect, useState } from 'react';
@@ -75,8 +75,9 @@ function Wallet() {
             setLocalUser((payload as any).user);
             dispatch(setCredentials({ token: payload.token, user: (payload as any).user }));
 
-            //Create cookie to save Auth Token
+            // Create cookie to save Auth Token
             const expiryDate = new Date();
+
             expiryDate.setTime(expiryDate.getTime()+(30*24*60*60*1000));
             document.cookie = `AUTH_TOKEN=${payload.token}; path=/; expires=${expiryDate.toUTCString()};`;
 

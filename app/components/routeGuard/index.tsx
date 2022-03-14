@@ -1,7 +1,7 @@
-import { useState, useEffect } from 'react';
+import { selectCurrentUser } from '../../state/slices/auth';
+import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { selectCurrentUser } from '../../state/slices/auth';
 
 const RouteGuard = ({ children }: any) => {
     const router = useRouter();
@@ -14,6 +14,7 @@ const RouteGuard = ({ children }: any) => {
 
         // on route change start - hide page content by setting authorized to false  
         const hideContent = () => setAuthorized(false);
+
         router.events.on('routeChangeStart', hideContent);
 
         // on route change complete - run auth check 
@@ -30,9 +31,9 @@ const RouteGuard = ({ children }: any) => {
 
     const authCheck = (url: string) => {
         const publicPaths = ['/', '/home'];
-        const path = url.split('?')[0];
+        const path = url.split('?');
 
-        if(!auth?.token && !publicPaths.includes(path)) {
+        if(!auth?.token && !publicPaths.includes(path[0])) {
             setAuthorized(false);
             router.push('/');
         }

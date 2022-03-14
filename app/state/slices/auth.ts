@@ -20,33 +20,33 @@ const slice = createSlice({
     } as AuthState,
     name: 'auth',
     reducers: {
+        removeCredentials: (
+            state
+        ) => {
+            // console.log('removeCredentials', action);
+            state.user = null;
+            state.token = null;
+        },
         setCredentials: (
             state,
             action: PayloadAction<{ user: User; token: string }>
         ) => {
-            //console.log('setCredentials', action);
+            // console.log('setCredentials', action);
             state.user = action.payload.user;
             state.token = action.payload.token;
-        },
-        removeCredentials: (
-            state
-        ) => {
-            //console.log('removeCredentials', action);
-            state.user = null;
-            state.token = null;
         },
         setToken: (
             state,
             action: PayloadAction<{ token: string }>
         ) => {
-            //console.log('setToken', action);
+            // console.log('setToken', action);
             state.token = action.payload.token;
         },
         setUser: (
             state,
             action: PayloadAction<{ user: User }>
         ) => {
-            //console.log('setUser', action);
+            // console.log('setUser', action);
             state.user = action.payload.user;
         }
     }
