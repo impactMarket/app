@@ -9,7 +9,7 @@ const config = {
     /**
      * Base URL to api
      */
-    baseApiUrl: `${process.env.NEXT_PUBLIC_BASE_API_URL}/api`,
+    baseApiUrl: `${process.env.NEXT_PUBLIC_BASE_API_URL}/api`!,
 
     /*
      * is Production
