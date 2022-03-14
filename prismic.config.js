@@ -11,6 +11,13 @@ const apiEndpoint = `https://${repoName}.cdn.prismic.io/api/v2`;
 // eslint-disable-next-line no-process-env
 const accessToken = process.env.PRISMIC_KEY;
 
+const configDocuments = [
+    'pwa-config',
+    'pwa-modals',
+    'pwa-translations',
+    'pwa-user-config'
+]
+
 // TODO
 // -- Route Resolver rules
 // Manages the url links to internal Prismic documents two levels deep (optionals)
@@ -24,6 +31,6 @@ const accessToken = process.env.PRISMIC_KEY;
 // };
 const Router = { routes: [] };
 
-const prismicConfiguration = { Router, accessToken, apiEndpoint, repoName };
+const prismicConfiguration = { Router, accessToken, apiEndpoint, configDocuments, repoName };
 
 module.exports = prismicConfiguration;
