@@ -68,12 +68,11 @@ function Wallet() {
             const connector = await connectToWallet();
 
             const payload = await createUser({
-                address: connector.account,
-                phone: '0'
+                address: connector.account
             }).unwrap();
 
-            setLocalUser((payload as any).user);
-            dispatch(setCredentials({ token: payload.token, user: (payload as any).user }));
+            setLocalUser({ ...payload });
+            dispatch(setCredentials({ token: payload.token, user: { ...payload }}));
 
             // Create cookie to save Auth Token
             const expiryDate = new Date();

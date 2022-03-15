@@ -3,41 +3,59 @@ import { selectCurrentUser } from '../../app/state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { useSelector } from 'react-redux';
 import { useSigner } from '../utils/useSigner';
-import Community from '../components/community';
-import ExchangeRate from '../components/exchangeRate';
-import React from 'react';
+// import Community from '../components/community';
+// import ExchangeRate from '../components/exchangeRate';
+import Countdown from 'react-countdown';
+import React, { useState } from 'react';
 import config from '../../config';
 
 const Beneficiary = () => {
+    const [loading, toggleLoading] = useState(false);
+
     const auth = useSelector(selectCurrentUser);
 
-    // Remove test beneficiary when it's no longer needed
-    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { hasFunds, maxClaim } } = useBeneficiary(
-        auth?.user?.beneficiary || '0x6dcf4B577309aF974216b46817e98833Ad27c0Ab'
+    if(!auth?.user?.beneficiary) return <div>User is not Beneficiary!</div>;
 
-    console.log('claimedAmount: ', claimedAmount);
-    console.log('hasFunds: ', hasFunds);
-    console.log('maxClaim: ', maxClaim);
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { hasFunds, maxClaim } } = useBeneficiary(
+        auth?.user?.beneficiary?.community
+    );
+
+    const claimFunds = () => {
+        toggleLoading(true);
+        
+        claim().then(() => toggleLoading(false)).catch(() => toggleLoading(false));
+    };
+    
+    const renderer = ({ hours, minutes, seconds, completed }: any) => {
+        if(completed) {
+            if(loading) return <div>Loading...</div>;
+
+            return <button onClick={claimFunds}>Claim</button>;
+        }
+        
+        return <span>claiming in: {hours} hours || {minutes} minutes || {seconds} seconds</span>;
+    };
 
     const Claim = () => {
-        if (!isReady) {
-            return <div>Loading...</div>;
-        }
-        if (!isClaimable) {
-            return (
-                <div>claiming in {new Date(claimCooldown).toISOString()}</div>
-            );
-        }
+        if(!hasFunds) return <div>No funds available!</div>;
 
-        return <button onClick={claim}>Claim</button>;
+        if(!isClaimable) return <Countdown date={new Date(claimCooldown)} renderer={renderer}/>;
+
+        if(loading) return <div>Loading...</div>;
+
+        return <button onClick={claimFunds}>Claim</button>;
     };
+
+    if(!isReady) return <div>Loading...</div>;
 
     return (
         <div>
             <div>Welcome Beneficiary</div>
             <Claim />
-            <ExchangeRate />
-            <Community />
+            <div>Already claimed ${claimedAmount} of ${maxClaim}</div>
+            {/* <ExchangeRate /> */}
+            {/* <Community /> */}
         </div>
     );
 };
@@ -45,9 +63,7 @@ const Beneficiary = () => {
 const WrappedBeneficiary = () => {
     const { address, signer } = useSigner();
 
-    if (address === null || signer === null) {
-        return <div>Loading...</div>;
-    }
+    if(address === null || signer === null) return <div>Loading...</div>;
 
     return (
         <ImpactProvider address={address} jsonRpc={config.networkRpcUrl} signer={signer}>

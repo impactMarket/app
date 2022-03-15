@@ -7,7 +7,7 @@ export interface User {
 }
 interface PutPostUser {
     address: string;
-    phone: string;
+    phone?: string;
     language?: string;
     currency?: string;
     pushNotificationToken?: string;
@@ -26,16 +26,15 @@ export const userApi = emptySplitApi.injectEndpoints({
             query: body => ({
                 body,
                 method: 'POST',
-                url: 'user/auth'
+                url: 'user'
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
-        // Edit profile
-        getUser: builder.query<User, void>({
+        // Get profile
+        getUser: builder.mutation<User, void>({
             query: () => ({
-                body: {},
-                method: 'POST',
-                url: 'user/welcome'
+                method: 'GET',
+                url: 'user'
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
@@ -55,6 +54,6 @@ export const userApi = emptySplitApi.injectEndpoints({
 // auto-generated based on the defined endpoints
 export const {
     useCreateUserMutation,
-    useGetUserQuery,
+    useGetUserMutation,
     useUpdateUserMutation
 } = userApi;

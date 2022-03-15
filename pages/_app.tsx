@@ -4,8 +4,8 @@ import { Provider } from 'react-redux';
 import { SignerProvider } from '../app/utils/useSigner';
 import { setToken, setUser } from '../app/state/slices/auth';
 import { store } from '../app/state/store';
-import { useGetUserQuery } from '../app/api/user';
-import React from 'react';
+import { useGetUserMutation } from '../app/api/user';
+import React, { useEffect } from 'react';
 import RouteGuard from '../app/components/routeGuard';
 import Sidebar from '../app/components/sidebar';
 import config from '../config';
@@ -16,13 +16,21 @@ const { baseUrl } = config;
 
 const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
+    
+    const [getUser] = useGetUserMutation();
 
-    if(pageProps.authToken) {
-        // eslint-disable-next-line react-hooks/rules-of-hooks
-        const user = useGetUserQuery();
+    useEffect(() => {
+        const init = async () => {
+            if(pageProps.authToken) {
+                // eslint-disable-next-line react-hooks/rules-of-hooks
+                const user = await getUser().unwrap();
 
-        store.dispatch(setUser({ user: user?.data }));
-    }
+                store.dispatch(setUser({ user }));
+            }
+        }
+        
+        init();
+    }, [getUser, pageProps.authToken]);    
 
     // Todo
     //  - Add spinner
