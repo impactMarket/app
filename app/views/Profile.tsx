@@ -14,7 +14,7 @@ function Profile() {
         signer.signMessage('hello').then(console.log);
     };
 
-    console.log('user', user);
+    // console.log('user', user);
 
     return (
         <>

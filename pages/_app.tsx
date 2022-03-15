@@ -2,11 +2,14 @@ import { DesignSystemProvider } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
 import { SignerProvider } from '../app/utils/useSigner';
+import { setToken, setUser } from '../app/state/slices/auth';
 import { store } from '../app/state/store';
 import { useGetUserQuery } from '../app/api/user';
 import React from 'react';
+import RouteGuard from '../app/components/routeGuard';
 import Sidebar from '../app/components/sidebar';
 import config from '../config';
+import cookies from 'next-cookies';
 import type { AppProps } from 'next/app';
 
 const { baseUrl } = config;
@@ -14,18 +17,21 @@ const { baseUrl } = config;
 const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
 
-    const { data, isLoading, isError } = useGetUserQuery();
+    if(pageProps.authToken) {
+        // eslint-disable-next-line react-hooks/rules-of-hooks
+        const user = useGetUserQuery();
 
-    console.log({ data, isError, isLoading });
+        store.dispatch(setUser({ user: user?.data }));
+    }
 
     // Todo
     //  - Add spinner
 
     return (
-        <>
+        <RouteGuard>
             <Sidebar />
             <Component {...pageProps} />
-        </>
+        </RouteGuard>
     );
 };
 
@@ -35,6 +41,8 @@ const App = (props: AppProps) => {
     const url = `${baseUrl}/${locale}${asPath}`;
 
     const { data, view } = pageProps;
+
+    if(pageProps.authToken) store.dispatch(setToken({ token: pageProps.authToken }));
 
     return (
         <PrismicDataProvider data={data} url={url} view={view}>
@@ -47,6 +55,16 @@ const App = (props: AppProps) => {
             </DesignSystemProvider>
         </PrismicDataProvider>
     );
+};
+
+App.getInitialProps = ({ ctx }: any) => {
+    const { AUTH_TOKEN } = cookies(ctx);
+
+    return { 
+        pageProps: {
+            authToken: AUTH_TOKEN
+        } 
+    };
 };
 
 export default App;
