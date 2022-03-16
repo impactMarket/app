@@ -1,4 +1,5 @@
 import React, { useContext, useState } from 'react';
+import Web3 from 'web3';
 import type { Signer } from '@ethersproject/abstract-signer';
 
 type SignerStateType = {
@@ -6,12 +7,16 @@ type SignerStateType = {
     setAddress: React.Dispatch<React.SetStateAction<string>>;
     setSigner: React.Dispatch<React.SetStateAction<Signer>>;
     signer: Signer | null;
+    web3: Web3 | null;
+    setWeb3: React.Dispatch<React.SetStateAction<Web3 | null>>;
 };
 const intialSignerStateData: SignerStateType = {
     address: null,
     setAddress: () => {},
     setSigner: () => {},
-    signer: null
+    setWeb3: () => {},
+    signer: null,
+    web3: null,
 };
 
 export const SignerContext = React.createContext<SignerStateType>(
@@ -23,6 +28,7 @@ export const SignerProvider = (props: {
 }) => {
     const [address, setAddress] = useState<string | null>(null);
     const [signer, setSigner] = useState<Signer | null>(null);
+    const [web3, setWeb3] = useState<Web3 | null>(null);
 
     return (
         <SignerContext.Provider
@@ -30,7 +36,9 @@ export const SignerProvider = (props: {
                 address,
                 setAddress,
                 setSigner,
-                signer
+                setWeb3,
+                signer,
+                web3
             }}
         >
             {props.children}
@@ -39,7 +47,7 @@ export const SignerProvider = (props: {
 };
 
 export const useSigner = () => {
-    const { address, signer } = useContext(SignerContext);
+    const { address, signer, web3 } = useContext(SignerContext);
 
-    return { address, signer };
+    return { address, signer, web3 };
 };

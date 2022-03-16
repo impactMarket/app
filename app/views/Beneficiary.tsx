@@ -40,14 +40,14 @@ const Beneficiary = () => {
 };
 
 const WrappedBeneficiary = () => {
-    const { address, signer } = useSigner();
+    const { address, signer, web3 } = useSigner();
 
-    if (address === null || signer === null) {
+    if (address === null || signer === null || web3 === null) {
         return <div>Loading...</div>;
     }
 
     return (
-        <ImpactProvider address={address} jsonRpc={config.networkRpcUrl} signer={signer}>
+        <ImpactProvider address={address} jsonRpc={config.networkRpcUrl} web3={web3}>
             <Beneficiary />
         </ImpactProvider>
     );

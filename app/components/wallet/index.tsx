@@ -18,13 +18,14 @@ import React, { useContext, useEffect, useState } from 'react';
 function Wallet() {
     const signer = useProviderOrSigner();
     const dispatch = useDispatch();
-    const { setSigner, setAddress } = useContext(SignerContext);
+    const { setSigner, setAddress, setWeb3 } = useContext(SignerContext);
     const {
         connect: connectToWallet,
         network: walletNetwork,
         destroy,
         address,
-        initialised
+        initialised,
+        kit
     } = useContractKit();
     const [providerNetworkChainId, setProviderNetworkChainId] = useState<
         number | undefined
@@ -62,6 +63,12 @@ function Wallet() {
         }
         setAddress(address);
     }, [signer, address]);
+
+    useEffect(() => {
+        if (kit) {
+            setWeb3(kit.web3);
+        }
+    }, [initialised]);
 
     const connect = async () => {
         try {
