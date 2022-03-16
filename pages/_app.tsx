@@ -1,4 +1,5 @@
-import { DesignSystemProvider } from '@impact-market/ui';
+/* eslint-disable sort-keys */
+import { AppContainer, DesignSystemProvider, Sidebar } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
 import { SignerProvider } from '../app/utils/useSigner';
@@ -7,12 +8,43 @@ import { store } from '../app/state/store';
 import { useGetUserMutation } from '../app/api/user';
 import React, { useEffect } from 'react';
 import RouteGuard from '../app/components/routeGuard';
-import Sidebar from '../app/components/sidebar';
+import SidebarTEMP from '../app/components/sidebar';
 import config from '../config';
 import cookies from 'next-cookies';
 import type { AppProps } from 'next/app';
 
 const { baseUrl } = config;
+
+const sidebarProps = {
+    commonMenu: [
+        { icon: 'users', label: 'Communities' },
+        { icon: 'tray', label: 'Governance' },
+        { icon: 'barChart2', label: 'Global Dashboard' },
+        { icon: 'impactMarket', label: 'About Us' }
+    ],
+    menus: [
+        [
+            { flag: 'Claim', icon: 'coins', isActive: true, label: 'UBI' },
+            { icon: 'bookOpen', label: 'Learn & Earn' },
+            { icon: 'flash', label: 'Stories', flag: 4 }
+        ]
+    ],
+    footerMenu: [
+        { icon: 'help', label: 'Help' },
+        { icon: 'settings', label: 'Settings' },
+        { icon: 'flag', label: 'Report Suspicious Activity' },
+        { icon: 'bell', label: 'Notifications' }
+    ],
+    userButton: {
+        action: 'function',
+        address: '0x43D2...34f7',
+        currency: 'Celo',
+        photo: {
+            url: 'https://picsum.photos/40'
+        },
+        name: 'Olivia Rhye'
+    }
+} as any;
 
 const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
@@ -35,10 +67,22 @@ const InnerApp = (props: AppProps) => {
     // Todo
     //  - Add spinner
 
+
+
+    
+    // SIDEBAR VEM DO PRISMIC!!!!
+
+
+
+
+
     return (
         <RouteGuard>
-            <Sidebar />
-            <Component {...pageProps} />
+            <SidebarTEMP />
+            <AppContainer>
+                <Sidebar {...sidebarProps} />
+                <Component {...pageProps} />
+            </AppContainer>
         </RouteGuard>
     );
 };

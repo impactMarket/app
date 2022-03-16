@@ -1530,10 +1530,10 @@
     bech32 "1.1.4"
     ws "7.4.6"
 
-"@ethersproject/providers@5.6.0", "@ethersproject/providers@^5.3.0":
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.6.0.tgz#08ec8e2666771e3a347e66c8f664a2af97366534"
-  integrity sha512-6+5PKXTWAttJWFWF8+xCDTCa2/dtq9BNrdKQHGl0IyIOwj99vM6OeThmIRcsIAzIOb8m0XS6w+1KFZwrf3j9nw==
+"@ethersproject/providers@5.6.1", "@ethersproject/providers@^5.3.0":
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/@ethersproject/providers/-/providers-5.6.1.tgz#9a05f00ecbac59565bf6907c8d2af8ac33303b48"
+  integrity sha512-w8Wx15nH+aVDvnoKCyI1f3x0B5idmk/bDJXMEUqCfdO8Eadd0QpDx9lDMTMmenhOmf9vufLJXjpSm24D3ZnVpg==
   dependencies:
     "@ethersproject/abstract-provider" "^5.6.0"
     "@ethersproject/abstract-signer" "^5.6.0"
@@ -1949,10 +1949,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.0.2":
-  version "1.0.2"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.0.2.tgz#e544c80c1a09ad0ca24608781f335379f393606d"
-  integrity sha512-o3r89VR6EliucdJMTaQUpD6uswIDmTb22N7X9yMDv3OtmX0Vu7j/+He+iI7MYR/uTYXFHpp1FVfCt0jgh18Tcg==
+"@impact-market/ui@1.0.4":
+  version "1.0.4"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.0.4.tgz#b11c5a673aa78ed6ca63e5a4e2d79c6ad1f4a40c"
+  integrity sha512-5PoQPFWddQgBSTVgprWKD2mua625Fd0Qtdwgatgc62hQUgBrCXelGbGTOkra77fSW3Hg/CfpemAEfrAIMquWKQ==
   dependencies:
     polished "^4.1.4"
     styled-gen "^1.4.8"
@@ -2381,9 +2381,9 @@
     picomatch "^2.2.2"
 
 "@rushstack/eslint-patch@^1.0.8":
-  version "1.1.0"
-  resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.1.0.tgz#7f698254aadf921e48dda8c0a6b304026b8a9323"
-  integrity sha512-JLo+Y592QzIE+q7Dl2pMUtt4q8SKYI5jDrZxrozEQxnGVOyYE+GWK9eLkwTaeN9DDctlaRAQ3TBmzZ1qdLE30A==
+  version "1.1.1"
+  resolved "https://registry.yarnpkg.com/@rushstack/eslint-patch/-/eslint-patch-1.1.1.tgz#782fa5da44c4f38ae9fd38e9184b54e451936118"
+  integrity sha512-BUyKJGdDWqvWC5GEhyOiUrGNi9iJUr4CU0O2WxJL6QJhHeeA/NVBalH+FeK0r/x/W0rPymXt5s78TDS7d6lCwg==
 
 "@sindresorhus/is@^0.14.0":
   version "0.14.0"
@@ -2412,12 +2412,12 @@
     prompt "^1.2.0"
 
 "@slicemachine/core@^1.1.1":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@slicemachine/core/-/core-1.1.2.tgz#0c0519a633b38590417b04d520d5b997ceccc819"
-  integrity sha512-4oSI0Tzpk9mWd8hazxc47fkNQqHOgWnQiZbAna09QkbnssT9oW0KsgQDYgLPh0MmYdkKveFrxzqpQrUu2Si4bg==
+  version "1.1.4"
+  resolved "https://registry.yarnpkg.com/@slicemachine/core/-/core-1.1.4.tgz#c569bbb18492069281cd983324fc94f8865b1873"
+  integrity sha512-cXPC5FcijxNxb2IzY8Rrr1gfH27xVWIjKTP/dD0sjGBzd4DAgs25NPNqZgu8XrS/Upi3ZbsJ+LiJio4gjUrmhg==
   dependencies:
     "@hapi/hapi" "^20.2.0"
-    axios "^0.22.0"
+    axios "^0.26.0"
     chalk "^4.1.2"
     cookie "^0.4.1"
     fp-ts "^2.11.5"
@@ -2687,9 +2687,9 @@
   integrity sha512-SZs7ekbP8CN0txVG2xVRH6EgKmEm31BOxA07vkFaETzZz1xh+cbt8BcI0slpymvwhx5dlFnQG2rTlPVQn+iRPQ==
 
 "@types/json-schema@^7.0.5", "@types/json-schema@^7.0.8", "@types/json-schema@^7.0.9":
-  version "7.0.9"
-  resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.9.tgz#97edc9037ea0c38585320b28964dde3b39e4660d"
-  integrity sha512-qcUXuemtEu+E5wZSJHNxUXeCZhAfXKQ41D+duX+VYPde7xyEVZci+/oXKJL13tnRs9lR2pr4fod59GT6/X1/yQ==
+  version "7.0.10"
+  resolved "https://registry.yarnpkg.com/@types/json-schema/-/json-schema-7.0.10.tgz#9b05b7896166cd00e9cbd59864853abf65d9ac23"
+  integrity sha512-BLO9bBq59vW3fxCpD4o0N4U+DXsvwvIcl+jofw0frQo/GrBFC+/jRZj1E7kgp6dvTyNmA4y6JCV5Id/r3mNP5A==
 
 "@types/json5@^0.0.29":
   version "0.0.29"
@@ -3468,6 +3468,13 @@ axios@^0.24.0:
   dependencies:
     follow-redirects "^1.14.4"
 
+axios@^0.26.0:
+  version "0.26.1"
+  resolved "https://registry.yarnpkg.com/axios/-/axios-0.26.1.tgz#1ede41c51fcf51bbbd6fd43669caaa4f0495aaa9"
+  integrity sha512-fPwcX4EvnSHuInCMItEhAGnaSEXRBjtzh9fOtsE6E1G6p7vl7edEeZe11QHf18+6+9gR5PbKV/sGKNaD8YaMeA==
+  dependencies:
+    follow-redirects "^1.14.8"
+
 axobject-query@^2.2.0:
   version "2.2.0"
   resolved "https://registry.yarnpkg.com/axobject-query/-/axobject-query-2.2.0.tgz#943d47e10c0b704aa42275e20edf3722648989be"
@@ -3836,12 +3843,12 @@ browserify-sign@^4.0.0:
     safe-buffer "^5.2.0"
 
 browserslist@^4.17.5, browserslist@^4.19.1:
-  version "4.20.0"
-  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.20.0.tgz#35951e3541078c125d36df76056e94738a52ebe9"
-  integrity sha512-bnpOoa+DownbciXj0jVGENf8VYQnE2LNWomhYuCsMmmx9Jd9lwq0WXODuwpSsp8AVdKM2/HorrzxAfbKvWTByQ==
+  version "4.20.2"
+  resolved "https://registry.yarnpkg.com/browserslist/-/browserslist-4.20.2.tgz#567b41508757ecd904dab4d1c646c612cd3d4f88"
+  integrity sha512-CQOBCqp/9pDvDbx3xfMi+86pr4KXIf2FDkTTdeuYw8OxS9t898LA1Khq57gtufFILXpfgsSx5woNgsBgvGjpsA==
   dependencies:
-    caniuse-lite "^1.0.30001313"
-    electron-to-chromium "^1.4.76"
+    caniuse-lite "^1.0.30001317"
+    electron-to-chromium "^1.4.84"
     escalade "^3.1.1"
     node-releases "^2.0.2"
     picocolors "^1.0.0"
@@ -3950,18 +3957,18 @@ bytes@3.1.2, bytes@^3.1.0:
   integrity sha512-/Nf7TyzTx6S3yRJObOAV7956r8cr2+Oj8AC5dt8wSP3BQAoeX58NoHyCU8P8zGkNXStjTSi6fzO6F0pBdcYbEg==
 
 cacache@^16.0.0:
-  version "16.0.0"
-  resolved "https://registry.yarnpkg.com/cacache/-/cacache-16.0.0.tgz#891149a9f9b0c8bbe6cd84d8ac246d6cf5ff429e"
-  integrity sha512-pMX6sqJSlGpxCM257by5syifGb7zH6C30CaJXeGXqmKNrHKqvMmwM8KgKmsZcUAsnNQkt7WvENH2Kl53RpFQuA==
+  version "16.0.1"
+  resolved "https://registry.yarnpkg.com/cacache/-/cacache-16.0.1.tgz#bad1d14963d9851840da3dd6c4db3b6a3bdb585d"
+  integrity sha512-tHPtfdZDqQpZ15eaEZeLspIqS5mK5fOBDZi6AjuqaIi53QNVXH3dQv6uKT3YuUu6uxV/8pjU9in0CoJ8fgaHqw==
   dependencies:
     "@npmcli/fs" "^1.0.0"
     "@npmcli/move-file" "^1.1.2"
     chownr "^2.0.0"
     fs-minipass "^2.1.0"
-    glob "^7.1.4"
+    glob "^7.2.0"
     infer-owner "^1.0.4"
-    lru-cache "^6.0.0"
-    minipass "^3.1.1"
+    lru-cache "^7.5.1"
+    minipass "^3.1.6"
     minipass-collect "^1.0.2"
     minipass-flush "^1.0.5"
     minipass-pipeline "^1.2.4"
@@ -4079,7 +4086,7 @@ camelize@^1.0.0:
   resolved "https://registry.yarnpkg.com/camelize/-/camelize-1.0.0.tgz#164a5483e630fa4321e5af07020e531831b2609b"
   integrity sha1-FkpUg+Yw+kMh5a8HAg5TGDGyYJs=
 
-caniuse-lite@^1.0.30001283, caniuse-lite@^1.0.30001313:
+caniuse-lite@^1.0.30001283, caniuse-lite@^1.0.30001317:
   version "1.0.30001317"
   resolved "https://registry.yarnpkg.com/caniuse-lite/-/caniuse-lite-1.0.30001317.tgz#0548fb28fd5bc259a70b8c1ffdbe598037666a1b"
   integrity sha512-xIZLh8gBm4dqNX0gkzrBeyI86J2eCjWzYAs40q88smG844YIrN4tVQl/RhquHvKEKImWWFIVh1Lxe5n1G/N+GQ==
@@ -5065,10 +5072,10 @@ ejs@^3.1.6:
   dependencies:
     jake "^10.6.1"
 
-electron-to-chromium@^1.4.76:
-  version "1.4.84"
-  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.84.tgz#2700befbcb49c42c4ee162e137ff392c07658249"
-  integrity sha512-b+DdcyOiZtLXHdgEG8lncYJdxbdJWJvclPNMg0eLUDcSOSO876WA/pYjdSblUTd7eJdIs4YdIxHWGazx7UPSJw==
+electron-to-chromium@^1.4.84:
+  version "1.4.85"
+  resolved "https://registry.yarnpkg.com/electron-to-chromium/-/electron-to-chromium-1.4.85.tgz#a3666ba42147026b9f34d4d8d4caf0740e80f751"
+  integrity sha512-K9AsQ41WS2bjZUFpRWfvaS4RjEcRCamEkBJN1Z1TQILBfP1H8QnJ9ti0wiLiMv0sRjX3EHKzgs9jDnmGFx2jXg==
 
 elliptic@6.5.4, elliptic@^6.4.0, elliptic@^6.5.2, elliptic@^6.5.3, elliptic@^6.5.4:
   version "6.5.4"
@@ -5694,9 +5701,9 @@ ethereumjs-util@^7.0.8:
     rlp "^2.2.4"
 
 ethers@^5.5.4:
-  version "5.6.0"
-  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.0.tgz#924eb965dc03963fad0a09ce687efdf49aca3b45"
-  integrity sha512-00FP71jt6bW3ndO5DhgH9mLIZhoCGnAKFLu8qig5KmV03ubEChKf2ilB3g6fX512tTYo+tSMDJ5WpCJWdBHkBQ==
+  version "5.6.1"
+  resolved "https://registry.yarnpkg.com/ethers/-/ethers-5.6.1.tgz#a56cd67f1595b745dc3dde0ccf2b5de53a41a6d0"
+  integrity sha512-qtl/2W+dwmUa5Z3JqwsbV3JEBZZHNARe5K/A2ePcNAuhJYnEKIgGOT/O9ouPwBijSqVoQnmQMzi5D48LFNOY2A==
   dependencies:
     "@ethersproject/abi" "5.6.0"
     "@ethersproject/abstract-provider" "5.6.0"
@@ -5716,7 +5723,7 @@ ethers@^5.5.4:
     "@ethersproject/networks" "5.6.0"
     "@ethersproject/pbkdf2" "5.6.0"
     "@ethersproject/properties" "5.6.0"
-    "@ethersproject/providers" "5.6.0"
+    "@ethersproject/providers" "5.6.1"
     "@ethersproject/random" "5.6.0"
     "@ethersproject/rlp" "5.6.0"
     "@ethersproject/sha2" "5.6.0"
@@ -6123,7 +6130,7 @@ flatted@^3.1.0:
   resolved "https://registry.yarnpkg.com/flatted/-/flatted-3.2.5.tgz#76c8584f4fc843db64702a6bd04ab7a8bd666da3"
   integrity sha512-WIWGi2L3DyTUvUrwRKgGi9TwxQMUEqPOPQBVi71R96jZXJdFskXEmf54BoZaS1kknGODoIGASGEzBUYdyMCBJg==
 
-follow-redirects@^1.14.0, follow-redirects@^1.14.4:
+follow-redirects@^1.14.0, follow-redirects@^1.14.4, follow-redirects@^1.14.8:
   version "1.14.9"
   resolved "https://registry.yarnpkg.com/follow-redirects/-/follow-redirects-1.14.9.tgz#dd4ea157de7bfaf9ea9b3fbd85aa16951f78d8d7"
   integrity sha512-MQDfihBQYMcyy5dhRDJUHcw7lb2Pv/TuE6xP1vyraLukNDHKbDxDNaOE3NbCAdKQApno+GPRyo1YAp89yCjK4w==
@@ -6407,7 +6414,7 @@ glob@7.1.7:
     once "^1.3.0"
     path-is-absolute "^1.0.0"
 
-glob@^7.0.3, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6, glob@^7.1.7:
+glob@^7.0.3, glob@^7.1.3, glob@^7.1.4, glob@^7.1.6, glob@^7.1.7, glob@^7.2.0:
   version "7.2.0"
   resolved "https://registry.yarnpkg.com/glob/-/glob-7.2.0.tgz#d15535af7732e02e948f4c41628bd910293f6023"
   integrity sha512-lmLf6gtyrPq8tTjSmrO94wBeQbFR3HbLHbuyD69wuyQkImp2hWqMGB47OX65FBkPffO641IP9jWa1z4ivqG26Q==
@@ -6440,9 +6447,9 @@ globals@^12.1.0:
     type-fest "^0.8.1"
 
 globals@^13.6.0, globals@^13.9.0:
-  version "13.12.1"
-  resolved "https://registry.yarnpkg.com/globals/-/globals-13.12.1.tgz#ec206be932e6c77236677127577aa8e50bf1c5cb"
-  integrity sha512-317dFlgY2pdJZ9rspXDks7073GpDmXdfbM3vYYp0HAMKGDh1FfWPleI2ljVNLQX5M5lXcAslTcPTrOrMEFOjyw==
+  version "13.13.0"
+  resolved "https://registry.yarnpkg.com/globals/-/globals-13.13.0.tgz#ac32261060d8070e2719dd6998406e27d2b5727b"
+  integrity sha512-EQ7Q18AJlPwp3vUDL4mKA0KXrXyNIQyWon6T6XQiBQF0XHvRsiCSrWmmeATpUzdJN2HhWZU6Pdl0a9zdep5p6A==
   dependencies:
     type-fest "^0.20.2"
 
@@ -9586,7 +9593,7 @@ rc@^1.2.7:
     minimist "^1.2.0"
     strip-json-comments "~2.0.1"
 
-react-countdown@^2.3.2:
+react-countdown@2.3.2:
   version "2.3.2"
   resolved "https://registry.yarnpkg.com/react-countdown/-/react-countdown-2.3.2.tgz#4cc27f28f2dcd47237ee66e4b9f6d2a21fc0b0ad"
   integrity sha512-Q4SADotHtgOxNWhDdvgupmKVL0pMB9DvoFcxv5AzjsxVhzOVxnttMbAywgqeOdruwEAmnPhOhNv/awAgkwru2w==
