@@ -1,6 +1,7 @@
 import { emptySplitApi as api } from '../api';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/auth';
+import ratesReducer from './slices/rates';
 
 export const store = configureStore({
     // Adding the api middleware enables caching, invalidation, polling,
@@ -9,6 +10,7 @@ export const store = configureStore({
         getDefaultMiddleware().concat(api.middleware),
     reducer: {
         auth: authReducer,
+        rates: ratesReducer,
         [api.reducerPath]: api.reducer
     }
 });

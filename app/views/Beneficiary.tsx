@@ -1,6 +1,7 @@
 /* eslint-disable no-nested-ternary */
-import { Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Spinner, Text, ViewContainer } from '@impact-market/ui';
+import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Spinner, Text, ViewContainer } from '@impact-market/ui';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
+import { currencyFormat } from '../hooks/currencyFormat';
 import { selectCurrentUser } from '../../app/state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -15,13 +16,12 @@ const Beneficiary = () => {
     const [loading, toggleLoading] = useState(false);
     const [claimAllowed, toggleClaim] = useState(false);
 
-    const { translations, view, extractFromView } = usePrismicData();
-
+    const { translations, view, config, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
-    const auth = useSelector(selectCurrentUser);
+    console.log(translations, view, config);
 
-    console.log(translations, view);
+    const auth = useSelector(selectCurrentUser);
 
     if(!auth?.user?.beneficiary) return <div>User is not Beneficiary!</div>;
 
@@ -38,26 +38,14 @@ const Beneficiary = () => {
 
     const allowClaim = () => toggleClaim(true);
     
-
-
-
-    //PASSAR PARA UMA PASTA HELPERS OU HOOKS TALVEZ!!!!
     const cardType = !hasFunds ? 1 : !isClaimable ? 0 : 2;
     const cardIcon = cardType === 0 ? "clock" : cardType === 1 ? "alertCircle" : "coinStack";
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
     const cardTitle = view.data.claimCardStates[cardType].title;
-    const cardMessage = view.data.claimCardStates[cardType].text[0].text;
+    const cardMessage = view.data.claimCardStates[cardType].text;
     const cardImage = cardType === 0 ? "beneficiary_wait.png" : cardType === 1 ? "beneficiary_no_funds.png" : "beneficiary_claim.png";
 
-    //if(!isReady) return <Spinner isActive p700 size={2}/>;
-
-
-
-
-
-    // VIEW CONTAINER FICA NO APP !!!!
-
-
+    // if(!isReady) return <Spinner isActive p700 size={2}/>;
 
     return (
         <ViewContainer isLoading={!isReady}>
@@ -78,7 +66,7 @@ const Beneficiary = () => {
                                         {cardTitle}
                                     </Text>
                                     <Text g500 mt={0.5} small>
-                                        {cardMessage}
+                                        <RichText content={cardMessage} /> 
                                     </Text>
                                 </Box>
                                 {
@@ -105,9 +93,23 @@ const Beneficiary = () => {
                 </Row>
             </Card>
             <Text g500 mt={2} small>
-                <String id="alreadyClaimed" variables={{ claimed: `$${claimedAmount}`, total: `$${maxClaim}` }} />
+                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, '$'), total: currencyFormat(maxClaim, '$') }} />
             </Text>
             <ProgressBar mt={0.5} progress={(claimedAmount / maxClaim) * 100}/>
+            {
+                view?.data?.faq?.length > 0 &&
+                <Accordion mt={2}>
+                    {
+                        view.data.faq.map((faq: any, index: number) => 
+                            <AccordionItem key={index} title={faq.title}>
+                                <Text>
+                                <RichText content={faq.content} />
+                                </Text>
+                            </AccordionItem>
+                        )
+                    }
+                </Accordion>
+            }
         </ViewContainer>
     );
 };

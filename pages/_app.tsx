@@ -1,10 +1,13 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable sort-keys */
 import { AppContainer, DesignSystemProvider, Sidebar } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
 import { SignerProvider } from '../app/utils/useSigner';
+import { setRates } from '../app/state/slices/rates';
 import { setToken, setUser } from '../app/state/slices/auth';
 import { store } from '../app/state/store';
+import { useGetExchangeRatesQuery, useGetExchangeRatesTestMutation } from '../app/api/generic';
 import { useGetUserMutation } from '../app/api/user';
 import React, { useEffect } from 'react';
 import RouteGuard from '../app/components/routeGuard';
@@ -50,11 +53,21 @@ const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
     
     const [getUser] = useGetUserMutation();
+    // const [getExchangeRatesTest] = useGetExchangeRatesTestMutation();
+
+    // const rates = useGetExchangeRatesQuery();
+
+    // console.log('ratesQuery: ', rates);
 
     useEffect(() => {
         const init = async () => {
+            // const rates = await getExchangeRatesTest().unwrap();
+
+            // console.log('ratesMutation: ', rates);
+
+            // store.dispatch(setRates({ rates }));
+            
             if(pageProps.authToken) {
-                // eslint-disable-next-line react-hooks/rules-of-hooks
                 const user = await getUser().unwrap();
 
                 store.dispatch(setUser({ user }));
@@ -62,19 +75,10 @@ const InnerApp = (props: AppProps) => {
         }
         
         init();
-    }, [getUser, pageProps.authToken]);    
+    }, [getUser, useGetExchangeRatesQuery, pageProps.authToken]); 
 
     // Todo
     //  - Add spinner
-
-
-
-    
-    // SIDEBAR VEM DO PRISMIC!!!!
-
-
-
-
 
     return (
         <RouteGuard>
