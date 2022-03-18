@@ -12,14 +12,13 @@ import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import config from '../../config';
 
-const Beneficiary = () => {
+const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
+    const { isLoading } = props;
     const [loading, toggleLoading] = useState(false);
     const [claimAllowed, toggleClaim] = useState(false);
 
     const { translations, view, config, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
-
-    console.log(translations, view, config);
 
     const auth = useSelector(selectCurrentUser);
 
@@ -32,12 +31,12 @@ const Beneficiary = () => {
 
     const claimFunds = () => {
         toggleLoading(true);
-        
+
         claim().then(() => toggleLoading(false)).catch(() => { toggleLoading(false); toggleClaim(false); });
     };
 
     const allowClaim = () => toggleClaim(true);
-    
+
     const cardType = !hasFunds ? 1 : !isClaimable ? 0 : 2;
     const cardIcon = cardType === 0 ? "clock" : cardType === 1 ? "alertCircle" : "coinStack";
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
@@ -45,14 +44,12 @@ const Beneficiary = () => {
     const cardMessage = view.data.claimCardStates[cardType].text;
     const cardImage = cardType === 0 ? "beneficiary_wait.png" : cardType === 1 ? "beneficiary_no_funds.png" : "beneficiary_claim.png";
 
-    // if(!isReady) return <Spinner isActive p700 size={2}/>;
-
     return (
-        <ViewContainer isLoading={!isReady}>
+        <ViewContainer isLoading={!isReady || isLoading}>
             <Display>
                 {title}
             </Display>
-            <Text g500>
+            <Text g500 mt={0.25}>
                 <RichText content={content} />
              </Text>
             <Card mt={2}>
@@ -66,21 +63,21 @@ const Beneficiary = () => {
                                         {cardTitle}
                                     </Text>
                                     <Text g500 mt={0.5} small>
-                                        <RichText content={cardMessage} /> 
+                                        <RichText content={cardMessage} />
                                     </Text>
                                 </Box>
                                 {
                                     hasFunds &&
                                     <Box margin="0 auto" maxW={22}>
-                                        { 
-                                            !isClaimable && 
-                                            <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} /> 
+                                        {
+                                            !isClaimable &&
+                                            <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
                                         }
-                                        { 
-                                            (isClaimable || claimAllowed) && 
+                                        {
+                                            (isClaimable || claimAllowed) &&
                                             <Button default isLoading={loading} large onClick={claimFunds}>
                                                 <String id="claim" />
-                                            </Button> 
+                                            </Button>
                                         }
                                     </Box>
                                 }
@@ -100,7 +97,7 @@ const Beneficiary = () => {
                 view?.data?.faq?.length > 0 &&
                 <Accordion mt={2}>
                     {
-                        view.data.faq.map((faq: any, index: number) => 
+                        view.data.faq.map((faq: any, index: number) =>
                             <AccordionItem key={index} title={faq.title}>
                                 <Text>
                                 <RichText content={faq.content} />
@@ -114,16 +111,4 @@ const Beneficiary = () => {
     );
 };
 
-const WrappedBeneficiary = () => {
-    const { address, signer } = useSigner();
-
-    if(address === null || signer === null) return <Spinner isActive p700 size={2}/>;
-
-    return (
-        <ImpactProvider address={address} jsonRpc={config.networkRpcUrl} signer={signer}>
-            <Beneficiary />
-        </ImpactProvider>
-    );
-};
-
-export default WrappedBeneficiary;
+export default Beneficiary;

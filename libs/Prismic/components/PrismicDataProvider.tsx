@@ -48,7 +48,7 @@ export const usePrismicData = (options: UsePrismicDataOptions = {}) => {
             .charAt(0)
             .toUpperCase()}${viewNameFromContext.slice(1)}`;
 
-    const parsedKeysObject = Object.entries(data).reduce(
+    const parsedKeysObject = Object.entries(data || {})?.reduce(
         (results, [key, obj]) => ({ ...results, [kebabToCamel(key)]: obj }),
         {}
     ) as any;

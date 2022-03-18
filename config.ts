@@ -19,7 +19,12 @@ const config = {
     /*
      * Network jSON RPC
      */
-    networkRpcUrl: process.env.NEXT_PUBLIC_NETWORK_JSON_RPC!
+    networkRpcUrl: process.env.NEXT_PUBLIC_NETWORK_JSON_RPC!,
+
+    /*
+     * Network jSON RPC
+     */
+    useTestNet: process.env.NEXT_PUBLIC_TESTNET === "true"
 };
 
 export default config;

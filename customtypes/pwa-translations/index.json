@@ -14,7 +14,7 @@
       },
       "string-cancel": {
         "config": {
-          "label": "Cancel",
+          "label": "cancel",
           "placeholder": "Cancel"
         },
         "type": "Text"
@@ -30,6 +30,13 @@
         "config": {
           "label": "close",
           "placeholder": "Close"
+        },
+        "type": "Text"
+      },
+      "string-connectWallet": {
+        "config": {
+          "label": "connectWallet",
+          "placeholder": "Connect Wallet"
         },
         "type": "Text"
       },

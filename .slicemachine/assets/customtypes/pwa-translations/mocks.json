@@ -1,34 +1,35 @@
 {
-  "id": "ad3c8bc2-dd17-4e3f-be23-a70ed2030e1e",
-  "uid": "doloribus-eius-optio",
+  "id": "894c4848-6500-466e-9f90-fde66f035807",
+  "uid": "totam-sed-excepturi",
   "type": "pwa-translations",
   "data": {
-    "string-alreadyClaimed": "integrate interactive infrastructures",
-    "string-cancel": "mesh extensible e-services",
-    "string-claim": "engage collaborative web services",
-    "string-close": "empower one-to-one action-items",
-    "string-help": "synergize ubiquitous action-items",
-    "string-hours": "facilitate robust communities",
-    "string-learnAndEarn": "innovate open-source ROI",
-    "string-minutes": "whiteboard clicks-and-mortar vortals",
-    "string-notifications": "incentivize innovative users",
-    "string-reportSuspiciousActivity": "monetize enterprise e-commerce",
-    "string-seconds": "scale extensible mindshare",
-    "string-sendReport": "extend proactive supply-chains",
-    "string-settings": "streamline efficient content",
-    "string-stories": "incentivize visionary technologies",
-    "string-ubi": "maximize cross-media action-items",
+    "string-alreadyClaimed": "mesh plug-and-play content",
+    "string-cancel": "enhance open-source deliverables",
+    "string-claim": "brand clicks-and-mortar methodologies",
+    "string-close": "architect impactful portals",
+    "string-connectWallet": "harness interactive infomediaries",
+    "string-help": "optimize dot-com partnerships",
+    "string-hours": "deliver rich metrics",
+    "string-learnAndEarn": "envisioneer robust content",
+    "string-minutes": "reintermediate one-to-one schemas",
+    "string-notifications": "aggregate revolutionary blockchains",
+    "string-reportSuspiciousActivity": "productize sticky e-markets",
+    "string-seconds": "productize frictionless partnerships",
+    "string-sendReport": "synthesize B2C web services",
+    "string-settings": "integrate distributed e-markets",
+    "string-stories": "strategize scalable eyeballs",
+    "string-ubi": "incentivize scalable models",
     "message-communityFundsWillRunOut": [
       {
         "type": "paragraph",
-        "text": "Id irure amet sit irure est esse elit culpa mollit. Et non qui deserunt magna fugiat.",
+        "text": "Anim cillum ipsum reprehenderit nisi ullamco.",
         "spans": []
       }
     ],
     "message-yourAccountHasBeenLocked": [
       {
         "type": "paragraph",
-        "text": "Tempor nisi dolore non ullamco ipsum esse proident proident aliquip.",
+        "text": "Amet minim laborum voluptate do aliqua. Nisi aliquip laborum esse laboris est do. Lorem minim aliqua ipsum cillum.",
         "spans": []
       }
     ]

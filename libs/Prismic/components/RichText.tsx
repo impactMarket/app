@@ -34,7 +34,7 @@ const serializer: SerializerFunction = ({
 
         return (
             <a key={key} {...linkProps}>
-                {children}
+               {children}
             </a>
         );
     }

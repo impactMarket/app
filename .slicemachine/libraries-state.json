@@ -162,17 +162,17 @@
         },
         "screenshotPaths": {
           "default-slice": {
-            "path": "/Users/psoares/projects/impact-market/app/prismic-slices/SideMenuItem/default-slice/preview.png",
+            "path": "/Users/psoares/projects/impactmarket/app/prismic-slices/SideMenuItem/default-slice/preview.png",
             "width": 2098,
             "height": 1040
           },
           "separator": {
-            "path": "/Users/psoares/projects/impact-market/app/prismic-slices/SideMenuItem/separator/preview.png",
+            "path": "/Users/psoares/projects/impactmarket/app/prismic-slices/SideMenuItem/separator/preview.png",
             "width": 2192,
             "height": 502
           },
           "withHeader": {
-            "path": "/Users/psoares/projects/impact-market/app/prismic-slices/SideMenuItem/withHeader/preview.png",
+            "path": "/Users/psoares/projects/impactmarket/app/prismic-slices/SideMenuItem/withHeader/preview.png",
             "width": 2212,
             "height": 1392
           }

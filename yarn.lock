@@ -1949,10 +1949,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.0.5":
-  version "1.0.5"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.0.5.tgz#83664c3314c22e56b4b64460ce6f4673fc0afc56"
-  integrity sha512-uhMKHFfwHMET4klgEp8qtvcf1jK7CuIVu70/3990KAt2741B1JIL5stEctncIRrtJzDfdGBhDET3hOiVeK0O8w==
+"@impact-market/ui@1.0.7":
+  version "1.0.7"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.0.7.tgz#6609a88304160f6ebe99e78b47853c99a3adeb7f"
+  integrity sha512-bXOK0vU04AUMWINCkI30ciCN0h6o2RAdg35DpfC+V6S/JQ2edtA8B0B/dHBF0nzSoSmJFRjN7GgbxAJvnFit7w==
   dependencies:
     polished "^4.1.4"
     styled-gen "^1.4.8"

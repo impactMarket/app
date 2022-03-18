@@ -2,7 +2,7 @@ const extractFromData = (
     data: { [key: string]: any | any[] },
     partial: string
 ) =>
-    Object.keys(data).reduce((result, key) => {
+    Object.keys(data || {}).reduce((result, key) => {
         const [, splitKey] = key.split(partial);
 
         return splitKey
