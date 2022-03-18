@@ -3,7 +3,7 @@ import {
     createClient,
     getRepositoryEndpoint
 } from '@prismicio/client';
-import config from '../../prismic.config';
+import config from '../../../prismic.config';
 
 const { accessToken, repoName } = config;
 const endpoint = getRepositoryEndpoint(repoName);

@@ -3,7 +3,7 @@ import { useRouter } from 'next/router';
 import React from 'react';
 import RichText, { RichTextProps } from './RichText';
 import isEmpty from 'lodash/isEmpty';
-import localesConfig from '../../../locales.config';
+import localesConfig from '../../../../locales.config';
 
 const defaultLocale = localesConfig.find(({ isDefault }) => isDefault)?.code?.toLowerCase() || 'en-us';
 

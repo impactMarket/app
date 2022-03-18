@@ -1,7 +1,7 @@
 import { usePrismicData } from '../components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import bracked from '../helpers/bracked';
-import localesConfig from '../../../locales.config';
+import localesConfig from '../../../../locales.config';
 
 const defaultLocale = localesConfig.find(({ isDefault }) => isDefault)?.code?.toLowerCase() || 'en-us';
 

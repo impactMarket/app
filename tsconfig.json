@@ -28,7 +28,7 @@
     "incremental": true
   },
   "include": [
-    "./pages/**/*",
+    "src/pages/**/*",
     "./utils/**/*",
   ],
   "exclude": [

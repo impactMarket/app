@@ -1,5 +1,5 @@
 import React, { createContext } from 'react';
-import baseConfig from '../../../config';
+import baseConfig from '../../../../config';
 import extractFromData from '../helpers/extractFromData';
 import kebabToCamel from '../helpers/kebabToCamel';
 

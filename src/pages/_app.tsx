@@ -1,15 +1,15 @@
 import { AppContainer, DesignSystemProvider, ViewContainer } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
-import { setToken } from '../src/state/slices/auth';
-import { store } from '../src/state/store';
+import { setToken } from '../state/slices/auth';
+import { store } from '../state/store';
 import ErrorPage from 'next/error';
 import React from 'react';
-import Sidebar from '../src/components/Sidebar';
-import WrapperProvider  from '../src/components/WrapperProvider';
-import config from '../config';
+import Sidebar from '../components/Sidebar';
+import WrapperProvider  from '../components/WrapperProvider';
+import config from '../../config';
 import cookies from 'next-cookies';
-import useGuard from '../src/hooks/useGuard';
+import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
 
 const { baseUrl } = config;

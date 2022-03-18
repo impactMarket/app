@@ -1,6 +1,6 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
-import Beneficiary from '../src/views/Beneficiary';
+import Home from '../views/Home';
 import Prismic from '../libs/Prismic/Prismic';
 
 export const getStaticProps: GetStaticProps = async ({
@@ -8,6 +8,7 @@ export const getStaticProps: GetStaticProps = async ({
     previewData
 }) => {
     const clientOptions = previewData as ClientConfig;
+
     const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-beneficiary' });
 
     return {
@@ -18,4 +19,4 @@ export const getStaticProps: GetStaticProps = async ({
     };
 };
 
-export default Beneficiary;
+export default Home;

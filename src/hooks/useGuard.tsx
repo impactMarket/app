@@ -32,12 +32,6 @@ const useGuard = () => {
             setIsLoading(true)
 
             try {
-                // const rates = await getExchangeRatesTest().unwrap();
-
-                // console.log('ratesMutation: ', rates);
-
-                // store.dispatch(setRates({ rates }));
-
                 if(auth?.token) {
                     const user = await getUser().unwrap();
 

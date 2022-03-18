@@ -1,13 +1,15 @@
+/* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currencyFormat';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
+import Image from '../libs/Prismic/components/Image';
 import React, { useState } from 'react';
-import RichText from '../../libs/Prismic/components/RichText';
-import String from '../../libs/Prismic/components/String';
+import RichText from '../libs/Prismic/components/RichText';
+import String from '../libs/Prismic/components/String';
 
 const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
@@ -16,7 +18,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
-    console.log(view);
+
     const auth = useSelector(selectCurrentUser);
 
     if(!auth?.user?.beneficiary) return <div>User is not Beneficiary!</div>;
@@ -39,7 +41,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
     const cardTitle = view.data.claimCardStates[cardType].title;
     const cardMessage = view.data.claimCardStates[cardType].text;
-    const cardImage = cardType === 0 ? "beneficiary_wait.png" : cardType === 1 ? "beneficiary_no_funds.png" : "beneficiary_claim.png";
+    const cardImage = view.data.claimCardStates[cardType].image;
 
     return (
         <ViewContainer isLoading={!isReady || isLoading}>
@@ -82,7 +84,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                         </Box>
                     </Col>
                     <Col colSize={5}>
-                        <Box bgImg={`/img/${cardImage}`} pt="100%" radius={0.5} />
+                        <Image {...cardImage} radius={0.5}/>
+                        {/* <Box bgImg={`/img/${cardImage}`} pt="100%" radius={0.5} /> */}
                     </Col>
                 </Row>
             </Card>

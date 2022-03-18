@@ -1,7 +1,7 @@
 import { Slice } from '@prismicio/types';
 import React, { ComponentType } from 'react';
 import componentCase from '../helpers/componentCase';
-import sliceComponents from '../../../prismic-slices/slices';
+import sliceComponents from '../../../../prismic-slices/slices';
 
 type SlicesProps = {
     components?: { [componentName: string]: ComponentType | Function };

@@ -1,9 +1,9 @@
 import { OnlineStatusProvider } from '../hooks/useOnlineStatus';
 import { useA2HS } from 'react-use-a2hs';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import Message from '../../libs/Prismic/components/Message';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+import Message from '../libs/Prismic/components/Message';
 import React from 'react';
-import String from '../../libs/Prismic/components/String';
+import String from '../libs/Prismic/components/String';
 
 const Home = () => {
     const [promptEvent, promptToInstall] = useA2HS();

@@ -1,5 +1,5 @@
 import { FilledLinkToDocumentField } from '@prismicio/types';
-import langConfig from '../../locales.config';
+import langConfig from '../../../locales.config';
 
 const exceptions = [] as string[];
 

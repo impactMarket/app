@@ -1,11 +1,11 @@
 import { ClientConfig, predicate } from '@prismicio/client';
 import { PrismicDocument } from '@prismicio/types';
-import { configDocuments } from '../../prismic.config';
+import { configDocuments } from '../../../prismic.config';
 import { getLocalizedDocuments } from './helpers/getLocalizedDocuments';
 import client from './client';
 import extractTranslations from './helpers/extractTranslations';
 import keysToCamel from './helpers/keysToCamel';
-import langConfig from '../../locales.config';
+import langConfig from '../../../locales.config';
 import toArray from './helpers/toArray';
 
 const defaultLang = langConfig.find(({ isDefault }) => isDefault)?.code;

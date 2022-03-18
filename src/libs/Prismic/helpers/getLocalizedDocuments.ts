@@ -1,5 +1,5 @@
 import { PrismicDocument } from '@prismicio/types';
-import langConfig from '../../../locales.config';
+import langConfig from '../../../../locales.config';
 
 const defaultLang = langConfig.find(({ isDefault }) => isDefault)?.code;
 

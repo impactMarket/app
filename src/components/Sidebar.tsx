@@ -1,13 +1,13 @@
 import { Sidebar as BaseSidebar, SidebarProps } from '@impact-market/ui';
 import { formatAddress } from '../utils/formatAddress';
 import { selectCurrentUser } from '../state/slices/auth';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Button from './Button';
 import React, { useEffect, useState } from 'react';
-import String from '../../libs/Prismic/components/String';
-import extractFromData from '../../libs/Prismic/helpers/extractFromData';
+import String from '../libs/Prismic/components/String';
+import extractFromData from '../libs/Prismic/helpers/extractFromData';
 import useWallet from '../hooks/useWallet';
 
 const Sidebar = () => {
