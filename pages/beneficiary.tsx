@@ -1,6 +1,6 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
-import Beneficiary from '../app/views/Beneficiary';
+import Beneficiary from '../src/views/Beneficiary';
 import Prismic from '../libs/Prismic/Prismic';
 
 export const getStaticProps: GetStaticProps = async ({

@@ -1,8 +1,8 @@
 import { User } from '../api/user';
 import { selectCurrentUser } from '../../app/state/slices/auth';
-import { useLocalStorage } from '../utils/useStorage';
+import { useLocalStorage } from '../hooks/useStorage';
 import { useSelector } from 'react-redux';
-import { useSigner } from '../utils/useSigner';
+import { useSigner } from '../hooks/useSigner';
 import React from 'react';
 
 function Profile() {
@@ -13,8 +13,6 @@ function Profile() {
     const sign = () => {
         signer.signMessage('hello').then(console.log);
     };
-
-    // console.log('user', user);
 
     return (
         <>

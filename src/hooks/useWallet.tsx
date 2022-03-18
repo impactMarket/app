@@ -3,7 +3,7 @@ import { AppContext } from '../components/WrapperProvider';
 import { User, useCreateUserMutation } from '../api/user';
 import { removeCredentials, setCredentials } from '../state/slices/auth';
 import { useDispatch } from 'react-redux';
-import { useLocalStorage } from '../utils/useStorage';
+import { useLocalStorage } from './useStorage';
 import React from 'react';
 import config from '../../config';
 

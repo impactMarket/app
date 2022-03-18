@@ -1,4 +1,4 @@
-import { OnlineStatusProvider } from '../utils/useOnlineStatus';
+import { OnlineStatusProvider } from '../hooks/useOnlineStatus';
 import { useA2HS } from 'react-use-a2hs';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import Message from '../../libs/Prismic/components/Message';

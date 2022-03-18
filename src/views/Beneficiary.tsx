@@ -1,25 +1,22 @@
 /* eslint-disable no-nested-ternary */
-import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Spinner, Text, ViewContainer } from '@impact-market/ui';
-import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
-import { currencyFormat } from '../hooks/currencyFormat';
-import { selectCurrentUser } from '../../app/state/slices/auth';
+import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer } from '@impact-market/ui';
+import { currencyFormat } from '../utils/currencyFormat';
+import { selectCurrentUser } from '../state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
-import { useSigner } from '../utils/useSigner';
 import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
-import config from '../../config';
 
 const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loading, toggleLoading] = useState(false);
     const [claimAllowed, toggleClaim] = useState(false);
-
-    const { translations, view, config, extractFromView } = usePrismicData();
+    
+    const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
-
+    console.log(view);
     const auth = useSelector(selectCurrentUser);
 
     if(!auth?.user?.beneficiary) return <div>User is not Beneficiary!</div>;

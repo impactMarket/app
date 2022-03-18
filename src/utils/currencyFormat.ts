@@ -1,4 +1,4 @@
-import { selectRates } from '../../app/state/slices/rates';
+import { selectRates } from '../state/slices/rates';
 import { useSelector } from 'react-redux';
 
 export const currencyFormat = (number: number, currency: string) => {
