@@ -4,6 +4,7 @@ export interface User {
     address: string;
     token: string;
     id: number;
+    type?: any
 }
 interface PutPostUser {
     address: string;

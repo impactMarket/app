@@ -1,13 +1,17 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currencyFormat';
 import { selectCurrentUser } from '../state/slices/auth';
+import { selectRates } from '../state/slices/rates';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
+import { useGetCommunityByIdQuery, useGetCommunityMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Image from '../libs/Prismic/components/Image';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 
@@ -15,15 +19,47 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loading, toggleLoading] = useState(false);
     const [claimAllowed, toggleClaim] = useState(false);
+    const [currency, setCurrency] = useState('USD');
     
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
     const auth = useSelector(selectCurrentUser);
+    const rates = useSelector(selectRates);
+    const router = useRouter();
 
-    if(!auth?.user?.beneficiary) return <div>User is not Beneficiary!</div>;
+    if(!auth?.user?.beneficiary) {
+        router.push('/');
+    }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
+    // const community = useGetCommunityByIdQuery(auth?.user?.beneficiary?.community) as any;
+    const [getCommunity] = useGetCommunityMutation();
+
+    // console.log(community);
+    // if(!community?.isSuccess || !community?.data?.data) {
+    //     returnHomepage();
+    // }
+
+    useEffect(() => {
+        const init = async () => {
+            const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
+
+            console.log(rates);
+
+            console.log(community);
+
+            if(!community) {
+                router.push('/');
+            }
+
+            if(community.currency !== 'USD') {
+                setCurrency(community.currency);
+            }
+        };
+
+        init();
+    }, []);
+
     const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { hasFunds, maxClaim } } = useBeneficiary(
         auth?.user?.beneficiary?.community
     );
@@ -85,12 +121,11 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                     </Col>
                     <Col colSize={5}>
                         <Image {...cardImage} radius={0.5}/>
-                        {/* <Box bgImg={`/img/${cardImage}`} pt="100%" radius={0.5} /> */}
                     </Col>
                 </Row>
             </Card>
             <Text g500 mt={2} small>
-                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, '$'), total: currencyFormat(maxClaim, '$') }} />
+                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, currency), total: currencyFormat(maxClaim, currency) }} />
             </Text>
             <ProgressBar mt={0.5} progress={(claimedAmount / maxClaim) * 100}/>
             {

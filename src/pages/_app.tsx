@@ -1,8 +1,10 @@
 import { AppContainer, DesignSystemProvider, ViewContainer } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
+import { setRates } from '../state/slices/rates';
 import { setToken } from '../state/slices/auth';
 import { store } from '../state/store';
+import { useGetExchangeRatesQuery } from '../api/generic';
 import ErrorPage from 'next/error';
 import React from 'react';
 import Sidebar from '../components/Sidebar';
@@ -18,6 +20,12 @@ const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
 
     const { authorized, isLoading } = useGuard();
+
+    const rates = useGetExchangeRatesQuery();
+    
+    if(!rates?.isLoading) {
+        store.dispatch(setRates(rates.data?.data));
+    }
 
     return (
         <AppContainer>
@@ -37,7 +45,7 @@ const App = (props: AppProps) => {
     const url = `${baseUrl}/${locale}${asPath}`;
 
     const { data, view } = pageProps;
-
+    
     if (!view) {
         return <ErrorPage statusCode={404} />;
     }

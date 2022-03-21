@@ -1,5 +1,5 @@
 import { User } from '../api/user';
-import { selectCurrentUser } from '../../app/state/slices/auth';
+import { selectCurrentUser } from '../state/slices/auth';
 import { useLocalStorage } from '../hooks/useStorage';
 import { useSelector } from 'react-redux';
 import { useSigner } from '../hooks/useSigner';

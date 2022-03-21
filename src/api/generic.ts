@@ -1,21 +1,18 @@
+import { Rate } from '../state/slices/rates';
 import { emptySplitApi } from './index';
 
-interface ExchangeRate {
-    currency: string;
-    rate: number;
-}
 // Define a service using a base URL and expected endpoints
 export const genericApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
-        getExchangeRates: builder.query<[ExchangeRate], void>({
+        getExchangeRates: builder.query<{ data: Rate[] }, void>({
             query: () => `/exchange-rates`
         }),
-        getExchangeRatesTest: builder.mutation<[ExchangeRate], void>({
+        getExchangeRatesTest: builder.mutation<Rate[], void>({
             query: () => ({
                 method: 'GET',
                 url: 'exchange-rates'
             }),
-            transformResponse: (response: { data: [ExchangeRate] }) => response.data
+            transformResponse: (response: { data: Rate[] }) => response.data
         })
     })
 });

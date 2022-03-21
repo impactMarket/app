@@ -1,9 +1,9 @@
 import { Alfajores, CeloMainnet } from '@celo-tools/use-contractkit';
 import { AppContext } from '../components/WrapperProvider';
-import { User, useCreateUserMutation } from '../api/user';
+import { getUserTypes } from '../utils/userTypes';
 import { removeCredentials, setCredentials } from '../state/slices/auth';
+import { useCreateUserMutation } from '../api/user';
 import { useDispatch } from 'react-redux';
-import { useLocalStorage } from './useStorage';
 import React from 'react';
 import config from '../../config';
 
@@ -16,11 +16,6 @@ const useWallet = () => {
 
     const wrongNetwork = network?.chainId !== walletNetwork?.chainId;
 
-    const [, setLocalUser, removeLocalUser] = useLocalStorage<User | undefined>(
-        'user',
-        undefined
-    );
-
     const [createUser, userConnection] = useCreateUserMutation();
 
     const connect = async (callback?: Function) => {
@@ -31,8 +26,7 @@ const useWallet = () => {
                 address: connector.account
             }).unwrap();
 
-            setLocalUser({ ...payload });
-            dispatch(setCredentials({ token: payload.token, user: { ...payload }}));
+            dispatch(setCredentials({ token: payload.token, user: { type: getUserTypes(payload), ...payload }}));
 
             // Create cookie to save Auth Token
             const expiryDate = new Date();
@@ -56,7 +50,6 @@ const useWallet = () => {
         try {
             await disconnectFromHook();
 
-            removeLocalUser();
             dispatch(removeCredentials());
             document.cookie = 'AUTH_TOKEN=; path=/; expires=Thu, 01 Jan 1970 00:00:00 UTC;';
 
