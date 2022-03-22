@@ -57,10 +57,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         init();
     }, []);
 
-    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { hasFunds, maxClaim } } = useBeneficiary(
+    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim } } = useBeneficiary(
         auth?.user?.beneficiary?.community
     );
-
+        
     const claimFunds = () => {
         toggleLoading(true);
 
@@ -69,12 +69,13 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
     const allowClaim = () => toggleClaim(true);
 
-    const cardType = !hasFunds ? 1 : !isClaimable ? 0 : 2;
+    const cardType = !hasFunds ? 1 : !isClaimable && !claimAllowed ? 0 : 2;
     const cardIcon = cardType === 0 ? "clock" : cardType === 1 ? "alertCircle" : "coinStack";
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
     const cardTitle = view.data.claimCardStates[cardType].title;
     const cardMessage = view.data.claimCardStates[cardType].text;
     const cardImage = view.data.claimCardStates[cardType].image;
+    const claimAmountDisplay = currencyFormat(claimAmount, currency);
 
     return (
         <ViewContainer isLoading={!isReady || isLoading}>
@@ -95,7 +96,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         {cardTitle}
                                     </Text>
                                     <Text g500 mt={0.5} small>
-                                        <RichText content={cardMessage} />
+                                        <RichText content={cardMessage} variables={{ amount: claimAmountDisplay }}/>
                                     </Text>
                                 </Box>
                                 {
@@ -108,7 +109,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         {
                                             (isClaimable || claimAllowed) &&
                                             <Button default isLoading={loading} large onClick={claimFunds}>
-                                                <String id="claim" />
+                                                <String id="claim" /> ~{claimAmountDisplay}
                                             </Button>
                                         }
                                     </Box>
