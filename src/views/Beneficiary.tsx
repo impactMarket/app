@@ -19,6 +19,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loading, toggleLoading] = useState(false);
     const [claimAllowed, toggleClaim] = useState(false);
+    const [community, setCommunity] = useState('');
     
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
@@ -27,12 +28,14 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const currency = auth?.user?.currency || 'USD';
     const router = useRouter();
 
+    // Check if current User has access to this page
     if(!auth?.user?.type?.includes(userBeneficiary)) {
         router.push('/');
 
         return null;
     }
 
+    // Check if there's a Community with the address associated with the User. If not, return to Homepage
     const [getCommunity] = useGetCommunityMutation();
 
     useEffect(() => {
@@ -40,7 +43,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
             try {
                 const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
 
-                // GUARDAR O NOME DA COMUNIDADE
+                setCommunity(community?.name);
             } 
             catch (error) {
                 console.log(error);
@@ -79,7 +82,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 {title}
             </Display>
             <Text g500 mt={0.25}>
-                <RichText content={content} />
+                <RichText content={content} variables={{ community }} />
              </Text>
             <Card mt={2}>
                 <Row fLayout="center">

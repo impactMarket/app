@@ -7,6 +7,7 @@ export const getStaticProps: GetStaticProps = async ({
     locale: lang,
     previewData
 }) => {
+    console.log("hello4");
     const clientOptions = previewData as ClientConfig;
     const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-beneficiary' });
 
