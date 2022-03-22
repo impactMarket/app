@@ -1,12 +1,11 @@
+import { Routes, beneficiaryRoutes, privateRoutes, publicRoutes } from '../utils/routes';
+import { getUserTypes, userBeneficiary } from '../utils/userTypes';
 import { selectCurrentUser, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useEffect, useState } from 'react';
 import { useGetUserMutation } from '../api/user';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-
-// TODO import as const from a routes file
-const publicPaths = ['/', '/home'];
 
 const useGuard = () => {
     const [authorized, setAuthorized] = useState(false);
@@ -16,10 +15,10 @@ const useGuard = () => {
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
-    const authCheck = (url: string) => {
+    const authCheck = (url: string, userPaths: Routes) => {
         const path = url.split('?');
 
-        if (!auth?.token && !publicPaths.includes(path[0])) {
+        if (!auth?.token || !userPaths.includes(path[0])) {
             setAuthorized(false);
             router.push('/');
         } else {
@@ -32,14 +31,26 @@ const useGuard = () => {
             setIsLoading(true)
 
             try {
+                // Build available User Paths based on his type
+                let userPaths = [...publicRoutes];
+
                 if(auth?.token) {
                     const user = await getUser().unwrap();
+                    const type = getUserTypes(user);
 
-                    store.dispatch(setUser({ user }));
+                    store.dispatch(setUser({ user: { ...user, type }}));
+
+                    // If there's a login, include the Private Paths
+                    userPaths = userPaths.concat(privateRoutes);
+
+                    // Beneficiary type - include the respective Paths
+                    if(type?.includes(userBeneficiary)) {
+                        userPaths = userPaths.concat(beneficiaryRoutes);
+                    }
                 }
 
                 // on initial load - run auth check
-                authCheck(router.asPath);
+                authCheck(router.asPath, userPaths);
 
                 setIsLoading(false);
             } catch (error) {

@@ -2,14 +2,14 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer } from '@impact-market/ui';
-import { currencyFormat } from '../utils/currencyFormat';
+import { currencyFormat } from '../utils/currency';
 import { selectCurrentUser } from '../state/slices/auth';
-import { selectRates } from '../state/slices/rates';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
-import { useGetCommunityByIdQuery, useGetCommunityMutation } from '../api/community';
+import { useGetCommunityMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import { userBeneficiary } from '../utils/userTypes';
 import Image from '../libs/Prismic/components/Image';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
@@ -19,41 +19,35 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loading, toggleLoading] = useState(false);
     const [claimAllowed, toggleClaim] = useState(false);
-    const [currency, setCurrency] = useState('USD');
     
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
     const auth = useSelector(selectCurrentUser);
-    const rates = useSelector(selectRates);
+    const currency = auth?.user?.currency || 'USD';
     const router = useRouter();
 
-    if(!auth?.user?.beneficiary) {
+    if(!auth?.user?.type?.includes(userBeneficiary)) {
         router.push('/');
+
+        return null;
     }
 
-    // const community = useGetCommunityByIdQuery(auth?.user?.beneficiary?.community) as any;
     const [getCommunity] = useGetCommunityMutation();
-
-    // console.log(community);
-    // if(!community?.isSuccess || !community?.data?.data) {
-    //     returnHomepage();
-    // }
 
     useEffect(() => {
         const init = async () => {
-            const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
+            try {
+                const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
 
-            console.log(rates);
+                // GUARDAR O NOME DA COMUNIDADE
+            } 
+            catch (error) {
+                console.log(error);
 
-            console.log(community);
-
-            if(!community) {
                 router.push('/');
-            }
-
-            if(community.currency !== 'USD') {
-                setCurrency(community.currency);
+                    
+                return false;
             }
         };
 

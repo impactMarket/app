@@ -4,9 +4,9 @@ import { Provider } from 'react-redux';
 import { setRates } from '../state/slices/rates';
 import { setToken } from '../state/slices/auth';
 import { store } from '../state/store';
-import { useGetExchangeRatesQuery } from '../api/generic';
+import { useGetExchangeRatesMutation } from '../api/generic';
 import ErrorPage from 'next/error';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import WrapperProvider  from '../components/WrapperProvider';
 import config from '../../config';
@@ -21,11 +21,22 @@ const InnerApp = (props: AppProps) => {
 
     const { authorized, isLoading } = useGuard();
 
-    const rates = useGetExchangeRatesQuery();
+    const [getRates] = useGetExchangeRatesMutation();
     
-    if(!rates?.isLoading) {
-        store.dispatch(setRates(rates.data?.data));
-    }
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const rates = await getRates().unwrap();
+
+                store.dispatch(setRates(rates));
+            } 
+            catch (error) {
+                console.log(error);
+            }
+        };
+
+        init();
+    }, []);
 
     return (
         <AppContainer>
@@ -51,7 +62,7 @@ const App = (props: AppProps) => {
     }
 
     if(pageProps?.authToken) {
-        store.dispatch(setToken({ token: pageProps.authToken }))
+        store.dispatch(setToken({ token: pageProps.authToken }));
     };
 
     return (

@@ -13,7 +13,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 method: 'GET',
                 url: `community/${id}`
             }),
-            transformResponse: (response: { data: Community }) => response.data
+            transformResponse: (response: { data?: Community }) => response.data
         }),
         getCommunityById: builder.query<Community, string>({
             query: id => `community/${id}`
