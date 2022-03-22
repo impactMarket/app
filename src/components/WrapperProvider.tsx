@@ -5,13 +5,12 @@ import {
     ContractKitProvider,
     Network,
     useContractKit,
-    useProviderOrSigner,
 } from '@celo-tools/use-contractkit';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
 import { provider } from '../helpers';
 import React, { useState } from 'react';
+import Web3 from 'web3';
 import config from '../../config';
-import type { Signer } from '@ethersproject/abstract-signer';
 
 // #region types
 type WithChildrenProps = {
@@ -24,7 +23,7 @@ type BaseState = {
     disconnect?: Function;
     isReady?: boolean;
     network?: Network;
-    signer?: Signer | null;
+    web3?: Web3 | null;
 }
 
 type BaseContext = BaseState & {
@@ -34,14 +33,14 @@ type BaseContext = BaseState & {
 
 // #region UtilsWrapper
 const UtilsWrapper = (props: WithChildrenProps & BaseState) => {
-    const { address, signer, children } = props;
+    const { address, web3, children } = props;
 
-    if (!address || !signer) {
+    if (!address || !web3) {
         return children;
     }
 
     return (
-        <ImpactProvider address={address} jsonRpc={config.networkRpcUrl} signer={signer}>
+        <ImpactProvider address={address} jsonRpc={config.networkRpcUrl} web3={web3}>
             {children}
         </ImpactProvider>
     )
@@ -67,13 +66,12 @@ const AppProvider = (props: WithChildrenProps & BaseState) => {
 // #region KitWrapper
 const KitWrapper = (props: WithChildrenProps) => {
     const { children } = props;
-    const signer = useProviderOrSigner() as Signer | undefined;
-    const { address, connect, destroy: disconnect, initialised: isReady, network } = useContractKit();
+    const { address, connect, destroy: disconnect, initialised: isReady, network, kit } = useContractKit();
 
-    const forwardData = { address, connect, disconnect, isReady, network, signer };
+    const forwardData = { address, connect, disconnect, isReady, network };
 
     return (
-        <UtilsWrapper address={address} signer={signer}>
+        <UtilsWrapper address={address} web3={kit.web3}>
             <AppProvider {...forwardData}>
                 {children}
             </AppProvider>
