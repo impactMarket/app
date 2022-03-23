@@ -19,7 +19,7 @@ const useWallet = () => {
 
     const [createUser, userConnection] = useCreateUserMutation();
 
-    const [, setCookie, removeCookie] = useCookies(['AUTH_TOKEN']);
+    const [, setCookie, removeCookie] = useCookies();
 
     const connect = async (callback?: Function) => {
         try {

@@ -62,7 +62,7 @@ const App = (props: AppProps) => {
     }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [cookies] = useCookies(['AUTH_TOKEN']);
+    const [cookies] = useCookies();
 
     if(cookies?.AUTH_TOKEN) {
         store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
