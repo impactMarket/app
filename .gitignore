@@ -42,4 +42,4 @@ workbox-*.js*
 tsconfig.tsbuildinfo
 
 # prismic
-/.slicemachine/libraries-state.json
+.slicemachine/
