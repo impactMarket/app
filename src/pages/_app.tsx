@@ -1,4 +1,5 @@
 import { AppContainer, DesignSystemProvider, ViewContainer } from '@impact-market/ui';
+import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
 import { setRates } from '../state/slices/rates';
@@ -10,7 +11,6 @@ import React, { useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import WrapperProvider  from '../components/WrapperProvider';
 import config from '../../config';
-import cookies from 'next-cookies';
 import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
 
@@ -57,35 +57,30 @@ const App = (props: AppProps) => {
 
     const { data, view } = pageProps;
     
-    if (!view) {
+    if(!view) {
         return <ErrorPage statusCode={404} />;
     }
 
-    if(pageProps?.authToken) {
-        store.dispatch(setToken({ token: pageProps.authToken }));
+    // eslint-disable-next-line react-hooks/rules-of-hooks
+    const [cookies] = useCookies();
+
+    if(cookies?.AUTH_TOKEN) {
+        store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
     };
 
     return (
-        <PrismicDataProvider data={data} url={url} view={view}>
-            <DesignSystemProvider>
-                <WrapperProvider>
-                    <Provider store={store}>
-                        <InnerApp {...props} />
-                    </Provider>
-                </WrapperProvider>
-            </DesignSystemProvider>
-        </PrismicDataProvider>
+        <CookiesProvider>
+            <PrismicDataProvider data={data} url={url} view={view}>
+                <DesignSystemProvider>
+                    <WrapperProvider>
+                        <Provider store={store}>
+                            <InnerApp {...props} />
+                        </Provider>
+                    </WrapperProvider>
+                </DesignSystemProvider>
+            </PrismicDataProvider>
+        </CookiesProvider>
     );
-};
-
-App.getInitialProps = ({ ctx }: any) => {
-    const { AUTH_TOKEN } = cookies(ctx);
-
-    return {
-        pageProps: {
-            authToken: AUTH_TOKEN
-        }
-    };
 };
 
 export default App;
