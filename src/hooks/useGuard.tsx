@@ -38,7 +38,7 @@ const useGuard = () => {
                 if(auth?.token) {
                     const user = await getUser().unwrap();
                     const type = getUserTypes(user);
-
+                    
                     store.dispatch(setUser({ user: { ...user, type }}));
 
                     // If there's a login, include the Private Paths
