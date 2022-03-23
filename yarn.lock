@@ -2027,10 +2027,10 @@
     styled-gen "^1.4.8"
     styled-reset "^4.3.4"
 
-"@impact-market/utils@2.0.0-beta.7":
-  version "2.0.0-beta.7"
-  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-2.0.0-beta.7.tgz#50d067949a3ec507bb3479ef751fe4e1a008fee0"
-  integrity sha512-rn6tE8Zx8Mif60u4aknV7jd+iZprmou+cCaijZiS6WQIn0GXlbA8EtLjbAmsjhjxgzpKxNTKghX/arUstRHilw==
+"@impact-market/utils@2.0.0-beta.8":
+  version "2.0.0-beta.8"
+  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-2.0.0-beta.8.tgz#bba5a42ceec47ff1b9d5cc90b076e13ebc339f19"
+  integrity sha512-ESoTPXFLAscFfu72dhcAYw3t9/kiTPcH3xg0pc8r+CV8Kk6SIvOVJj2FErG3q/zgl6jPvz4zTKUkaowN25iOUA==
   dependencies:
     "@celo/connect" "^2.0.0-alpha1"
     ethers "5.6.0"
