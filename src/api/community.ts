@@ -11,12 +11,12 @@ export const communityApi = emptySplitApi.injectEndpoints({
         getCommunity: builder.mutation<Community, void>({
             query: (id) => ({
                 method: 'GET',
-                url: `community/${id}`
+                url: `communities/${id}`
             }),
             transformResponse: (response: { data?: Community }) => response.data
         }),
         getCommunityById: builder.query<Community, string>({
-            query: id => `community/${id}`
+            query: id => `communities/${id}`
         })
     })
 });

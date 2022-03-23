@@ -27,7 +27,7 @@ export const userApi = emptySplitApi.injectEndpoints({
             query: body => ({
                 body,
                 method: 'POST',
-                url: 'user'
+                url: 'users'
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
@@ -35,7 +35,7 @@ export const userApi = emptySplitApi.injectEndpoints({
         getUser: builder.mutation<User, void>({
             query: () => ({
                 method: 'GET',
-                url: 'user'
+                url: 'users'
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
@@ -44,7 +44,7 @@ export const userApi = emptySplitApi.injectEndpoints({
             query: body => ({
                 body,
                 method: 'PUT',
-                url: 'user'
+                url: 'users'
             }),
             transformResponse: (response: { data: User }) => response.data
         })
