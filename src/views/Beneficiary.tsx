@@ -17,7 +17,8 @@ import String from '../libs/Prismic/components/String';
 
 const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
-    const [loading, toggleLoading] = useState(false);
+    const [loadingButton, toggleLoadingButton] = useState(false);
+    const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [claimAllowed, toggleClaim] = useState(false);
     const [community, setCommunity] = useState('');
     
@@ -44,6 +45,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
 
                 setCommunity(community?.name);
+
+                toggleLoadingCommunity(false);
             } 
             catch (error) {
                 console.log(error);
@@ -62,9 +65,9 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     );
         
     const claimFunds = () => {
-        toggleLoading(true);
+        toggleLoadingButton(true);
 
-        claim().then(() => toggleLoading(false)).catch(() => { toggleLoading(false); toggleClaim(false); });
+        claim().then(() => toggleLoadingButton(false)).catch(() => { toggleLoadingButton(false); toggleClaim(false); });
     };
 
     const allowClaim = () => toggleClaim(true);
@@ -78,7 +81,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const claimAmountDisplay = currencyFormat(claimAmount, currency);
 
     return (
-        <ViewContainer isLoading={!isReady || isLoading}>
+        <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
             <Display>
                 {title}
             </Display>
@@ -108,7 +111,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         }
                                         {
                                             (isClaimable || claimAllowed) &&
-                                            <Button default isLoading={loading} large onClick={claimFunds}>
+                                            <Button default isLoading={loadingButton} large onClick={claimFunds}>
                                                 <String id="claim" /> ~{claimAmountDisplay}
                                             </Button>
                                         }
