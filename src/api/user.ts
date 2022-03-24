@@ -7,7 +7,7 @@ export interface User {
     type?: any
 }
 interface PutPostUser {
-    address: string;
+    address?: string;
     phone?: string;
     language?: string;
     currency?: string;
@@ -18,7 +18,14 @@ interface PutPostUser {
     children?: number;
     overwrite?: boolean;
     recover?: boolean;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    age?: number;
+    bio?: string;
+    country?: string;
 }
+
 // Define a service using a base URL and expected endpoints
 export const userApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
