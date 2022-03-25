@@ -26,7 +26,7 @@ const useWallet = () => {
             const connector = await connectFromHook();
 
             const payload = await createUser({
-                address: connector.account
+                address: connector.kit.connection.config.from
             }).unwrap();
 
             dispatch(setCredentials({ token: payload.token, user: { type: getUserTypes(payload), ...payload }}));
