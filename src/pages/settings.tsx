@@ -1,7 +1,7 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
 import Prismic from '../libs/Prismic/Prismic';
-import Profile from '../views/profile/Profile';
+import Settings from '../views/settings/Settings';
 
 export const getStaticProps: GetStaticProps = async ({
     locale: lang,
@@ -9,14 +9,14 @@ export const getStaticProps: GetStaticProps = async ({
 }) => {
     const clientOptions = previewData as ClientConfig;
 
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-profile' });
+    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-settings' });
 
     return {
         props: {
             data,
-            view: 'profile'
+            view: 'settings'
         }
     };
 };
 
-export default Profile;
+export default Settings;

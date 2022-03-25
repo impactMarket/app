@@ -32,6 +32,7 @@
     "@prismicio/types": "0.1.26",
     "@reduxjs/toolkit": "1.7.1",
     "html-react-parser": "1.4.8",
+    "libphonenumber-js": "1.9.50",
     "next": "12.1.0",
     "next-pwa": "5.4.4",
     "next-slicezone": "0.2.1",

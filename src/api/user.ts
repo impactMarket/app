@@ -38,6 +38,14 @@ export const userApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
+        // Get preSigned URL for image upload
+        getPreSigned: builder.mutation<any, void>({
+            query: type => ({
+                method: 'GET',
+                url: `users/presigned/${type}`
+            }),
+            transformResponse: (response: { data: any }) => response.data
+        }),
         // Get profile
         getUser: builder.mutation<User, void>({
             query: () => ({
@@ -63,5 +71,6 @@ export const userApi = emptySplitApi.injectEndpoints({
 export const {
     useCreateUserMutation,
     useGetUserMutation,
-    useUpdateUserMutation
+    useUpdateUserMutation,
+    useGetPreSignedMutation
 } = userApi;

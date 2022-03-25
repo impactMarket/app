@@ -82,7 +82,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
-            <Display>
+            <Display g900>
                 {title}
             </Display>
             <Text g500 mt={0.25}>
