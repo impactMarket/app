@@ -14,11 +14,12 @@ const Image = (props: ImageFieldImage & GeneratedPropTypes) => {
 
     return (
         <Box {...forwardProps}>
-            <Img 
-                alt={alt} 
-                layout="responsive" 
-                src={url} 
-                {...dimensions} 
+            <Img
+                alt={alt}
+                layout="responsive"
+                objectFit="cover"
+                src={url}
+                {...dimensions}
             />
         </Box>
     );

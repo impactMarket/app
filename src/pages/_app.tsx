@@ -1,4 +1,4 @@
-import { AppContainer, DesignSystemProvider, ViewContainer } from '@impact-market/ui';
+import { AppContainer, DesignSystemProvider, ModalManager, ViewContainer } from '@impact-market/ui';
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
@@ -11,6 +11,7 @@ import React, { useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import WrapperProvider  from '../components/WrapperProvider';
 import config from '../../config';
+import modals from '../modals';
 import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
 
@@ -22,14 +23,14 @@ const InnerApp = (props: AppProps) => {
     const { authorized, isLoading } = useGuard();
 
     const [getRates] = useGetExchangeRatesMutation();
-    
+
     useEffect(() => {
         const init = async () => {
             try {
                 const rates = await getRates().unwrap();
 
                 store.dispatch(setRates(rates));
-            } 
+            }
             catch (error) {
                 console.log(error);
             }
@@ -56,7 +57,7 @@ const App = (props: AppProps) => {
     const url = `${baseUrl}/${locale}${asPath}`;
 
     const { data, view } = pageProps;
-    
+
     if(!view) {
         return <ErrorPage statusCode={404} />;
     }
@@ -74,6 +75,7 @@ const App = (props: AppProps) => {
                 <DesignSystemProvider>
                     <WrapperProvider>
                         <Provider store={store}>
+                            <ModalManager modals={modals} />
                             <InnerApp {...props} />
                         </Provider>
                     </WrapperProvider>
