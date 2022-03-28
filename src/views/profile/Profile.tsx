@@ -1,6 +1,7 @@
+/* eslint-disable max-depth */
 import { Box, Button, Card, Col, Display, Row, Text, ViewContainer } from '@impact-market/ui';
 import { SubmitHandler } from "react-hook-form";
-import { getUserTypes } from '../../utils/userTypes';
+import { formatAddress } from '../../utils/formatAddress';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
@@ -35,21 +36,41 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 gender: data?.gender || 'u'
             }).unwrap();
 
-            dispatch(setUser({ user: { type: getUserTypes(payload), ...payload }}));
+            dispatch(setUser({ user: { ...payload }}));
         }
-        catch(error) {
-            console.log(error);
+        catch(e) {
+            console.log(e);
         }
     };
 
     const onImageSubmit: SubmitHandler<any> = async (data) => {
-        console.log("image upload");
-        console.log(data);
-        console.log(data?.img[0]?.type?.split('/')[1]);
+        try {
+            if(data?.img?.length > 0) {
+                const type = data.img[0].type?.split('/')[1] || '';
 
-        const preSigned = await getPreSigned(data?.img[0]?.type?.split('/')[1]);
+                if(type) {
+                    const preSigned = await getPreSigned(type).unwrap();
 
-        console.log(preSigned);
+                    if(preSigned?.uploadURL) {
+                        const result = await fetch(preSigned.uploadURL, {
+                            body: data.img[0],
+                            method: 'PUT'
+                        });
+
+                        if(result?.status === 200) {
+                            const payload = await updateUser({
+                                avatarMediaPath: preSigned.filePath
+                            }).unwrap();
+
+                            dispatch(setUser({ user: { ...payload }}));
+                        }
+                    }
+                }
+            }
+        }
+        catch(e) {
+            console.log(e);
+        }
     }
 
     const onDelete = () => {
@@ -63,6 +84,9 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                     <Display g900>
                         {auth?.user?.username || 'John Doe'}
                     </Display>
+                    <Text mt={0.25} p600>
+                        {formatAddress(auth?.user?.address, [6, 4])}
+                    </Text>
                 </Col>
                 <Col colSize={6} right>
                     <Button default icon="logout" onClick={handleDisconnectClick}>

@@ -6,7 +6,8 @@ export interface User {
     id: number;
     type?: any
 }
-interface PutPostUser {
+
+export interface PutPostUser {
     address?: string;
     phone?: string;
     language?: string;
@@ -24,6 +25,21 @@ interface PutPostUser {
     age?: number;
     bio?: string;
     country?: string;
+    avatarMediaPath?: string;
+    beneficiary?: any;
+    manager?: any;
+}
+
+interface PreSigned {
+    filePath?: string;
+    filename?: string;
+    media?: {
+        height?: number;
+        id?: number;
+        url?: string;
+        width?: number;
+    }
+    uploadURL?: string;
 }
 
 // Define a service using a base URL and expected endpoints
@@ -39,12 +55,12 @@ export const userApi = emptySplitApi.injectEndpoints({
             transformResponse: (response: { data: User }) => response.data
         }),
         // Get preSigned URL for image upload
-        getPreSigned: builder.mutation<any, void>({
+        getPreSigned: builder.mutation<PreSigned, void>({
             query: type => ({
                 method: 'GET',
-                url: `users/presigned/${type}`
+                url: `users/presigned?mime=${type}`
             }),
-            transformResponse: (response: { data: any }) => response.data
+            transformResponse: (response: { data: PreSigned }) => response.data
         }),
         // Get profile
         getUser: builder.mutation<User, void>({

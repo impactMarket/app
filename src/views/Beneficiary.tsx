@@ -9,7 +9,7 @@ import { useGetCommunityMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { userBeneficiary } from '../utils/userTypes';
+import { userBeneficiary } from '../utils/users';
 import Image from '../libs/Prismic/components/Image';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';

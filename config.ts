@@ -24,7 +24,12 @@ const config = {
     /*
      * Network jSON RPC
      */
-    useTestNet: process.env.NEXT_PUBLIC_TESTNET === "true"
+    useTestNet: process.env.NEXT_PUBLIC_TESTNET === "true",
+
+    /*
+     * Images URL
+     */
+    imagesUrl: process.env.NEXT_PUBLIC_IMAGES_URL!
 };
 
 export default config;

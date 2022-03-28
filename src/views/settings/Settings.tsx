@@ -1,6 +1,5 @@
 import { Box, Col, Display, Row, Text, ViewContainer } from '@impact-market/ui';
 import { SubmitHandler } from "react-hook-form";
-import { getUserTypes } from '../../utils/userTypes';
 import { setUser } from '../../state/slices/auth';
 import { useDispatch } from 'react-redux';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -22,12 +21,12 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
                 ...data
             }).unwrap();
 
-            dispatch(setUser({ user: { type: getUserTypes(payload), ...payload }}));
+            dispatch(setUser({ user: { ...payload }}));
 
             console.log(payload);
         }
-        catch(error) {
-            console.log(error);
+        catch(e) {
+            console.log(e);
         }
     };
  

@@ -1,5 +1,7 @@
 import { Sidebar as BaseSidebar, SidebarProps } from '@impact-market/ui';
 import { formatAddress } from '../utils/formatAddress';
+import { getImage } from '../utils/images';
+import { getUserName } from '../utils/users';
 import { selectCurrentUser } from '../state/slices/auth';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
@@ -47,7 +49,7 @@ const Sidebar = () => {
     })) as any;
 
     useEffect(() => {
-        const { address, currency } = user || {};
+        const { address, currency, avatarMediaPath } = user || {};
         const { commonMenu: commonMenuFromPrismic, footerMenu: footerMenuFromPrismic } = (extractFromConfig('aside') || {}) as any;
         const { data: userConfigData } = userConfig?.find(({ uid }: any) => uid === user?.type || uid === 'beneficiary') || {};
         const { items: menuItems, withCommon, withFooter } = (extractFromData(userConfigData, 'asideMenu') || {}) as any;
@@ -61,9 +63,9 @@ const Sidebar = () => {
             action: () => push('/profile'),
             address: formatAddress(address, [6, 4]),
             currency,
-            name: 'John Doe',
+            name: getUserName(user),
             photo: {
-                url: 'https://picsum.photos/120'
+                url: getImage({ filePath: avatarMediaPath, fit: 'cover', height: 40, width: 40 })
             }
         }
 
@@ -73,7 +75,7 @@ const Sidebar = () => {
             menus,
             userButton
         })
-    }, [user?.address, asPath]);
+    }, [user, asPath]);
 
     return <BaseSidebar {...data} ConnectButton={() => (
         <Button fluid icon="coins" isLoading={isConnecting} onClick={handleConnectClick} secondary>
