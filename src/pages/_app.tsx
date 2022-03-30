@@ -28,8 +28,8 @@ const InnerApp = (props: AppProps) => {
     useEffect(() => {
         const init = async () => {
             try {
-                // Prompt user to allow/block access to his location coordinates
-                await getLocation();
+                // Prompt user to allow/block access to his location coordinates (no need to "await", we just want the User to allow/block)
+                getLocation();
 
                 // Get and save to reducer Exchange Rates
                 const rates = await getRates().unwrap();
