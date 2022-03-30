@@ -2,6 +2,7 @@ import { AppContainer, DesignSystemProvider, ModalManager, ViewContainer } from 
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
+import { getLocation } from '../utils/position';
 import { setRates } from '../state/slices/rates';
 import { setToken } from '../state/slices/auth';
 import { store } from '../state/store';
@@ -27,6 +28,10 @@ const InnerApp = (props: AppProps) => {
     useEffect(() => {
         const init = async () => {
             try {
+                // Prompt user to allow/block access to his location coordinates
+                await getLocation();
+
+                // Get and save to reducer Exchange Rates
                 const rates = await getRates().unwrap();
 
                 store.dispatch(setRates(rates));
@@ -36,7 +41,7 @@ const InnerApp = (props: AppProps) => {
             }
         };
 
-        init();
+        init();       
     }, []);
 
     return (
