@@ -3,11 +3,13 @@
 /* eslint-disable no-nested-ternary */
 import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currency';
+import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { useGetCommunityMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
+import { useSaveClaimLocationMutation } from '../api/claim';
 import { useSelector } from 'react-redux';
 import { userBeneficiary } from '../utils/userTypes';
 import Image from '../libs/Prismic/components/Image';
@@ -20,7 +22,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const [loadingButton, toggleLoadingButton] = useState(false);
     const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [claimAllowed, toggleClaim] = useState(false);
-    const [community, setCommunity] = useState('');
+    const [community, setCommunity] = useState({}) as any;
     
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
@@ -36,15 +38,16 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         return null;
     }
 
-    // Check if there's a Community with the address associated with the User. If not, return to Homepage
     const [getCommunity] = useGetCommunityMutation();
+    const [saveClaimLocation] = useSaveClaimLocationMutation();
 
+    // Check if there's a Community with the address associated with the User. If not, return to Homepage
     useEffect(() => {
         const init = async () => {
             try {
                 const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
 
-                setCommunity(community?.name);
+                setCommunity(community);
 
                 toggleLoadingCommunity(false);
             } 
@@ -64,10 +67,35 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         auth?.user?.beneficiary?.community
     );
         
-    const claimFunds = () => {
-        toggleLoadingButton(true);
+    const claimFunds = async () => {
+        try {
+            toggleLoadingButton(true);
 
-        claim().then(() => toggleLoadingButton(false)).catch(() => { toggleLoadingButton(false); toggleClaim(false); });
+            const { status } = await claim();
+            
+            toggleLoadingButton(false);
+
+            // If the Claim was successfull, get the user coordinates and save them in another request
+            if(status) {
+                const position = await getLocation() as any;
+
+                if(position?.coords?.latitude && position?.coords?.longitude) {
+                    await saveClaimLocation({
+                        communityId: community?.id,
+                        gps: {
+                            latitude: position.coords.latitude,
+                            longitude: position.coords.longitude
+                        }
+                    });
+                }
+            }
+        }
+        catch(error) {
+            console.log(error);
+
+            toggleLoadingButton(false); 
+            toggleClaim(false); 
+        }
     };
 
     const allowClaim = () => toggleClaim(true);
@@ -86,7 +114,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 {title}
             </Display>
             <Text g500 mt={0.25}>
-                <RichText content={content} variables={{ community }} />
+                <RichText content={content} variables={{ community: community?.name }} />
              </Text>
             <Card mt={2}>
                 <Row fLayout="center">
