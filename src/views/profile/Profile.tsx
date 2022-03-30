@@ -5,7 +5,7 @@ import { formatAddress } from '../../utils/formatAddress';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+// import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import AditionalForm from './components/AditionalForm';
 import ContactForm from './components/ContactForm';
 import DeleteForm from './components/DeleteForm';

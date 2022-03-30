@@ -3,7 +3,7 @@ import { selectCurrentUser } from '../../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import React from "react";
-import String from '../../../libs/Prismic/components/String';
+// import String from '../../../libs/Prismic/components/String';
 import currenciesJSON from '../../../assets/currencies.json';
 import languagesJSON from '../../../assets/languages.json';
 

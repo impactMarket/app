@@ -2,7 +2,7 @@ import { Box, Col, Display, Row, Text, ViewContainer } from '@impact-market/ui';
 import { SubmitHandler } from "react-hook-form";
 import { setUser } from '../../state/slices/auth';
 import { useDispatch } from 'react-redux';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+// import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useUpdateUserMutation } from '../../api/user';
 import BasicForm from './components/BasicForm';
 import React from 'react';

@@ -19,7 +19,7 @@ const Sidebar = () => {
     const [data, setData] = useState<SidebarProps | undefined>();
     const [isConnecting, setIsConnecting] = useState(false);
 
-    const { userConfig, extractFromConfig } =  usePrismicData();
+    const { userConfig, extractFromConfig } = usePrismicData();
     const { connect } = useWallet();
 
     const handleConnectClick = async () => {
