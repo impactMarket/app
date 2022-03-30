@@ -20,7 +20,7 @@ const languageRedirects = [
 const redirects = () => languageRedirects;
 
 const images = {
-    domains: ['images.prismic.io', 'prismic-io.s3.amazonaws.com']
+    domains: ['impact-market.cdn.prismic.io', 'images.prismic.io', 'prismic-io.s3.amazonaws.com']
 };
 
 const webpack = (config, { webpack }) => {
