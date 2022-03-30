@@ -41,7 +41,7 @@ const InnerApp = (props: AppProps) => {
             }
         };
 
-        init();       
+        init();
     }, []);
 
     return (
