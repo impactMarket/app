@@ -7,7 +7,7 @@ import { setRates } from '../state/slices/rates';
 import { setToken } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useGetExchangeRatesMutation } from '../api/generic';
-import ErrorPage from 'next/error';
+// import ErrorPage from 'next/error';
 import React, { useEffect } from 'react';
 import Sidebar from '../components/Sidebar';
 import WrapperProvider  from '../components/WrapperProvider';
