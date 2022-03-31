@@ -63,9 +63,9 @@ const App = (props: AppProps) => {
 
     const { data, view } = pageProps;
 
-    if(!view) {
-        return <ErrorPage statusCode={404} />;
-    }
+    // if(!view) {
+    //     return <ErrorPage statusCode={404} />;
+    // }
 
     // eslint-disable-next-line react-hooks/rules-of-hooks
     const [cookies] = useCookies();
