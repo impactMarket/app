@@ -1,4 +1,4 @@
-import { AppContainer, DesignSystemProvider, ModalManager, ViewContainer } from '@impact-market/ui';
+import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
@@ -81,6 +81,7 @@ const App = (props: AppProps) => {
                     <WrapperProvider>
                         <Provider store={store}>
                             <ModalManager modals={modals} />
+                            <Toaster />
                             <InnerApp {...props} />
                         </Provider>
                     </WrapperProvider>

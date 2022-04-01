@@ -1,5 +1,5 @@
 /* eslint-disable max-depth */
-import { Box, Button, Card, Col, Display, Row, Text, ViewContainer } from '@impact-market/ui';
+import { Box, Button, Card, Col, Display, Row, Text, ViewContainer, toast } from '@impact-market/ui';
 import { SubmitHandler } from "react-hook-form";
 import { formatAddress } from '../../utils/formatAddress';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
@@ -37,9 +37,13 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             }).unwrap();
 
             dispatch(setUser({ user: { ...payload }}));
+
+            toast.success("Successfully changed data!");
         }
         catch(e) {
             console.log(e);
+
+            toast.error("An error has occurred! Please try again later.");
         }
     };
 
@@ -63,6 +67,8 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                             }).unwrap();
 
                             dispatch(setUser({ user: { ...payload }}));
+
+                            toast.success("Successfully changed data!");
                         }
                     }
                 }
@@ -70,6 +76,8 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         }
         catch(e) {
             console.log(e);
+
+            toast.error("An error has occurred! Please try again later.");
         }
     }
 

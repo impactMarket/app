@@ -1,4 +1,4 @@
-import { Box, Col, Display, Row, Text, ViewContainer } from '@impact-market/ui';
+import { Box, Col, Display, Row, Text, ViewContainer, toast } from '@impact-market/ui';
 import { SubmitHandler } from "react-hook-form";
 import { setUser } from '../../state/slices/auth';
 import { useDispatch } from 'react-redux';
@@ -23,10 +23,12 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
 
             dispatch(setUser({ user: { ...payload }}));
 
-            console.log(payload);
+            toast.success("Successfully changed data!");
         }
         catch(e) {
             console.log(e);
+
+            toast.error("An error has occurred! Please try again later.");
         }
     };
  
