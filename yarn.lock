@@ -2199,10 +2199,10 @@
   resolved "https://registry.yarnpkg.com/@sindresorhus/is/-/is-4.6.0.tgz#3c7c9c46e678feefe7a2e5bb609d3dbd665ffb3f"
   integrity sha512-t09vSN3MdfsyCHoFcTRCH/iUtG7OJ0CsjzB8cjAmKc/va/kIgeDI/TxsigdncE/4be734m0cvIYwNaV4i2XqAw==
 
-"@slicemachine/core@1.1.8":
-  version "1.1.8"
-  resolved "https://registry.yarnpkg.com/@slicemachine/core/-/core-1.1.8.tgz#36f08f9242eadda733566f4b6c09381366aa010f"
-  integrity sha512-y5wRXgFWMlZ6xGAndURuDT0L7StqMjcmzfq/dstln6frwWjXuOorx/oJB6B2bPXowyl3qtPVMYL4+DdP2Xquyg==
+"@slicemachine/core@1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@slicemachine/core/-/core-1.1.7.tgz#fe2ada5682fbcadaeaf4f5f2b1e3a62a8590d189"
+  integrity sha512-NlxhPg3JX3EbbomRO/2FE8qfR4YdFuyy0Q/GdkZa3bceHMq1Dx5B8eyCh/UyO5A7u7B3D+71UvJf4fYpjMwJ5w==
   dependencies:
     "@prismicio/types-internal" "^0.2.8"
     axios "^0.26.0"
@@ -2571,6 +2571,13 @@
   version "17.0.11"
   resolved "https://registry.yarnpkg.com/@types/react-dom/-/react-dom-17.0.11.tgz#e1eadc3c5e86bdb5f7684e00274ae228e7bcc466"
   integrity sha512-f96K3k+24RaLGVu/Y2Ng3e1EbZ8/cVJvypZWd7cy0ofCBaf2lcM46xNhycMZ2xGwbBjRql7hOlZ+e2WlJ5MH3Q==
+  dependencies:
+    "@types/react" "*"
+
+"@types/react-infinite-scroller@1.2.3":
+  version "1.2.3"
+  resolved "https://registry.yarnpkg.com/@types/react-infinite-scroller/-/react-infinite-scroller-1.2.3.tgz#b8dcb0e5762c3f79cc92e574d2c77402524cab71"
+  integrity sha512-l60JckVoO+dxmKW2eEG7jbliEpITsTJvRPTe97GazjF5+ylagAuyYdXl8YY9DQsTP9QjhqGKZROknzgscGJy0A==
   dependencies:
     "@types/react" "*"
 
@@ -9166,10 +9173,22 @@ react-dom@17.0.2:
     object-assign "^4.1.1"
     scheduler "^0.20.2"
 
-react-hook-form@7.28.1:
-  version "7.28.1"
-  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.28.1.tgz#95fc37be6c6b9d57212eb7eca055fb36d079b3b7"
-  integrity sha512-mgwxvXuvt3FMY/mdnWbPc++Zf1U5xYzkhOaL05mtFMLvXc9MvUhMUlKtUVuO12sOrgT3nPXBgVFawtiJ4ONrgg==
+react-hook-form@7.29.0:
+  version "7.29.0"
+  resolved "https://registry.yarnpkg.com/react-hook-form/-/react-hook-form-7.29.0.tgz#5e7e41a483b70731720966ed8be52163ea1fecf1"
+  integrity sha512-NcJqWRF6el5HMW30fqZRt27s+lorvlCCDbTpAyHoodQeYWXgQCvZJJQLC1kRMKdrJknVH0NIg3At6TUzlZJFOQ==
+
+react-infinite-scroll-hook@4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/react-infinite-scroll-hook/-/react-infinite-scroll-hook-4.0.3.tgz#48eba01ef3e7f70528e92d15f031ff0ec7845493"
+  integrity sha512-5B3YuWODFq9j2m1J+Shk24QR2WDV0U9oQAaxR8ddFge8oC8Ls54EmkQxwelOjyv1jub4bP0jjSK7v+fM5QwWmg==
+  dependencies:
+    react-intersection-observer-hook "^2.0.4"
+
+react-intersection-observer-hook@^2.0.4:
+  version "2.0.4"
+  resolved "https://registry.yarnpkg.com/react-intersection-observer-hook/-/react-intersection-observer-hook-2.0.4.tgz#1ea00ab07f7bb859a5cc924f612862a63faf3b24"
+  integrity sha512-bBZSuv5+CNAH3eA5U52McmkR/Obn23igBL3/MuYzlRvALrweSxqvT35cwWnaFkqUh6SjvYRfJncDpaqejAr9oA==
 
 react-is@^16.13.1, react-is@^16.7.0:
   version "16.13.1"
@@ -9880,15 +9899,15 @@ slice-ansi@^4.0.0:
     astral-regex "^2.0.0"
     is-fullwidth-code-point "^3.0.0"
 
-slice-machine-ui@^0.3.6:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/slice-machine-ui/-/slice-machine-ui-0.3.7.tgz#5df5a6c87e775fc9cef2402976418d56d3b5bafc"
-  integrity sha512-3g9kUKRBqVfacuh6TJHELNP+XJqAl8oKtadUVSrbpkRo56AedqOyOy5yp7ckgoUZd6U2w+ydx7s+GArqI9K1ow==
+slice-machine-ui@0.3.6:
+  version "0.3.6"
+  resolved "https://registry.yarnpkg.com/slice-machine-ui/-/slice-machine-ui-0.3.6.tgz#d2119750e8b1da14b18fea4f48b738a48e56f16b"
+  integrity sha512-Nf3XyuCMJQEu5GeoaAdBWRFVYcqACl3XRv7FCTkcXl6QwNUBLlR5x1znjcxR+od2umG2J/s7+HFFffROX9p9+g==
   dependencies:
     "@babel/register" "^7.17.7"
     "@faker-js/faker" "^6.0.0"
     "@prismicio/types-internal" "^0.2.7"
-    "@slicemachine/core" "1.1.8"
+    "@slicemachine/core" "1.1.7"
     "@svgr/webpack" "^5.4.0"
     atob "^2.1.2"
     axios "^0.26.0"
