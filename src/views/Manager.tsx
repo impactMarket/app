@@ -51,39 +51,19 @@ const minorCards = [
 const Manager: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     
-    const { view } = usePrismicData();
+    // TODO: load information from prismic and use it in the content
+    // const { view } = usePrismicData();
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
+    // TODO: Uncomment this code
     // Check if current User has access to this page
     // if(!auth?.user?.type?.includes(userManager)) {
     //     router.push('/');
 
     //     return null;
     // }
-
-    // Check if there's a Community with the address associated with the User. If not, return to Homepage
-    // useEffect(() => {
-    //     const init = async () => {
-    //         try {
-    //             const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
-
-    //             setCommunity(community);
-
-    //             toggleLoadingCommunity(false);
-    //         } 
-    //         catch (error) {
-    //             console.log(error);
-
-    //             router.push('/');
-                    
-    //             return false;
-    //         }
-    //     };
-
-    //     init();
-    // }, []);
 
     const renderMainCard = (card: any, index: number) => {
         return (
@@ -147,7 +127,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={isLoading}>
-            <Display>
+            <Display medium>
                 Dashboard
             </Display>
             <Text g500 mt={0.25}>
@@ -192,26 +172,11 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
                     </Card>
                 </Col>
             </Row>
-
-
             <Row colSpan={1.5} mt={0.75}>
                 {
                     minorCards.map((card: any, index: number) => renderMinorCard(card, index))
                 }
             </Row>
-
-
-            {/* <Grid colSpan={1.5} cols={3} mt={2}>
-                {
-                    mainCards.map((card: any, index: number) => renderInfoCard(card, index, 1))
-                }
-                
-            </Grid>
-            <Grid colSpan={1.5} cols={4} mt={0.75}>
-                {
-                    minorCards.map((card: any, index: number) => renderInfoCard(card, index, 2))
-                }
-            </Grid> */}
             <Card mt={1.5}>
                 <Row fLayout="center between">
                     <Col>
@@ -238,6 +203,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
                         </Text>
                     </Col>
                 </Row>
+                { /* TODO: Progress bar needs new option to define color in UI */ }
                 <ProgressBar mt={0.5} progress={7}/>
             </Card>
         </ViewContainer>

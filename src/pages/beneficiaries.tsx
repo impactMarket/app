@@ -1,6 +1,6 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
-import Manager from '../views/Manager';
+import Beneficiaries from '../views/Beneficiaries';
 import Prismic from '../libs/Prismic/Prismic';
 
 // TODO: Load info from the right view
@@ -10,14 +10,14 @@ export const getStaticProps: GetStaticProps = async ({
     previewData
 }) => {
     const clientOptions = previewData as ClientConfig;
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-manager' });
+    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-beneficiaries' });
 
     return {
         props: {
             data,
-            view: 'manager'
+            view: 'beneficiaries'
         }
     };
 };
 
-export default Manager;
+export default Beneficiaries;
