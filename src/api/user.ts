@@ -22,6 +22,16 @@ interface PutPostUser {
 // Define a service using a base URL and expected endpoints
 export const userApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
+        // Accept beneficiary community rules
+        acceptRules: builder.mutation<void, void>({
+            query: () => ({
+                body: {
+                    'action': 'beneficiary-rules'
+                },
+                method: 'PATCH',
+                url: 'users'
+            })
+        }),
         // First connect. Either register or login.
         createUser: builder.mutation<User, PutPostUser>({
             query: body => ({
@@ -54,6 +64,7 @@ export const userApi = emptySplitApi.injectEndpoints({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+    useAcceptRulesMutation,
     useCreateUserMutation,
     useGetUserMutation,
     useUpdateUserMutation

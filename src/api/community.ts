@@ -3,6 +3,7 @@ import { emptySplitApi } from './index';
 interface Community {
     name: string;
     currency: string;
+    coverImage: string;
 };
 
 // Define a service using a base URL and expected endpoints
