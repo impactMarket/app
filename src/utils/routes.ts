@@ -8,4 +8,4 @@ export const demoRoutes: Routes = [];
 
 export const beneficiaryRoutes: Routes = ['/beneficiary'];
 
-export const managerRoutes: Routes = [];
+export const managerRoutes: Routes = ['/manager'];

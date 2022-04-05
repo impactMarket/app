@@ -7,7 +7,8 @@ export const getUserTypes = (user: any) => {
   const types = [userDonor];
 
   if(user?.beneficiary) types.push(userBeneficiary);
-  if(user?.manager) types.push(userManager);
+  // if(user?.manager) types.push(userManager);
+  types.push(userManager);
 
   return types;
 };
