@@ -15,10 +15,8 @@ export const getUserTypes = (user: PutPostUser) => {
 };
 
 export const getUserName = (user: PutPostUser) => {
-  // const firstName = user?.firstName?.split(' ')[0] || '';
-  // const lastName = user?.lastName?.split(' ').pop() || '';
+  const firstName = user?.firstName?.split(' ')[0] || '';
+  const lastName = user?.lastName?.split(' ').pop() || '';
 
-  // return `${firstName} ${lastName}`;
-
-  return `${user?.firstName || ''}${!!user?.lastName ? ` ${user.lastName}` : ''}`;
+  return `${firstName} ${lastName}`;
 };

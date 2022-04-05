@@ -73,7 +73,7 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
     const isModal = url?.startsWith('[modal]');
 
     if (isModal) {
-        return <SidebarMenuItem {...forwardProps} onClick={() => openModal(url.replace('[modal]', ''), forwardProps)} />
+        return <SidebarMenuItem {...forwardProps} onClick={() => openModal(url.replace('[modal]', ''), forwardProps)} />
     }
 
     const isInternalLink = url?.startsWith('https:///') || url?.startsWith('/');
@@ -95,7 +95,7 @@ const SidebarFooter = (props: { user?: User }) => {
     if (!address) {
         return <ConnectButton />
     }
-
+    
     return (
         <Link href="/profile" passHref>
             <SidebarUserButton
@@ -120,7 +120,7 @@ const SidebarMobileActions = (props: { user?: User }) => {
         return null
     }
 
-    return <Avatar url={user?.avatarMediaPath} />;
+    return <Avatar url={getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 })} />;
 }
 
 const Sidebar = () => {
