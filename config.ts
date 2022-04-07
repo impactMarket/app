@@ -29,7 +29,12 @@ const config = {
     /*
      * Images URL
      */
-    imagesUrl: process.env.NEXT_PUBLIC_IMAGES_URL!
+    imagesUrl: process.env.NEXT_PUBLIC_IMAGES_URL!,
+
+    /*
+     * Images Bucket
+     */
+    imagesBucket: process.env.NEXT_PUBLIC_IMAGES_BUCKET!
 };
 
 export default config;

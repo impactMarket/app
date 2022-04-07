@@ -31,7 +31,7 @@ export const toBase64 = (file: any) => new Promise((resolve, reject) => {
 export const getImage = (image: Image) => {
     if(image?.filePath) {
         let obj = {
-            "bucket": "impactmarket-app",
+            "bucket": config.imagesBucket,
             "key": image.filePath,
             "outputFormat": "jpg"
         } as ImageReq;
