@@ -12,7 +12,7 @@ import React from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 
-// TODO - remover after implementing request to get beneficiares
+// TODO: remove after implementing request to get beneficiares
 const hasUsers = false;
 
 const Manager: React.FC<{ isLoading?: boolean }> = props => {

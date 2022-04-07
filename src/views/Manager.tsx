@@ -198,6 +198,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
                         </Text>
                     </Col>
                     <Col>
+                        { /* TODO: Add Label component in UI */ }
                         <Text small w700>
                             Low on funds
                         </Text>

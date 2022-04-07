@@ -72,7 +72,7 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
     const isModal = url?.startsWith('[modal]');
 
     if (isModal) {
-        return <SidebarMenuItem {...forwardProps} onClick={() => openModal(url.replace('[modal]', ''), forwardProps)} />
+        return <SidebarMenuItem {...forwardProps} onClick={() => openModal(url.replace('[modal]', ''), forwardProps)} />
     }
 
     const isInternalLink = url?.startsWith('https:///') || url?.startsWith('/');
@@ -91,7 +91,7 @@ const SidebarFooter = (props: { user?: User }) => {
     const { user } = props;
     const { address } = useWallet();
 
-    if (!address) {
+    if (!user) {
         return <ConnectButton />
     }
 
@@ -128,7 +128,7 @@ const Sidebar = () => {
 
     const [data, setData] = useState<MenusState | undefined>();
 
-    const { userConfig, extractFromConfig } =  usePrismicData();
+    const { userConfig, extractFromConfig } = usePrismicData();
 
     const checkRoute = (route: string | undefined) =>
         typeof route === 'string' ? asPath.split('?')[0] === route : false;
