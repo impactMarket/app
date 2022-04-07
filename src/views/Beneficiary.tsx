@@ -138,7 +138,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
              </Text>
             <Card mt={2}>
                 <Row fLayout="center">
-                    <Col colSize={7}>
+                    <Col colSize={{ sm: 7, xs: 12 }}>
                         <Box center>
                             <Grid colSpan={1.25} cols={1}>
                                 <CircledIcon icon={cardIcon} large {...cardIconState} />
@@ -168,7 +168,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                             </Grid>
                         </Box>
                     </Col>
-                    <Col colSize={5}>
+                    <Col colSize={{ sm: 5, xs: 12 }}>
                         <Image {...cardImage} radius={0.5}/>
                     </Col>
                 </Row>
