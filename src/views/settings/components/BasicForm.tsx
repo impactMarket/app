@@ -38,6 +38,8 @@ const Form = ({ onSubmit }: any) => {
     });
     const { isSubmitting } = useFormState({ control });
 
+    // TODO: colocar textos no prismic
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="currency">Currency</label>

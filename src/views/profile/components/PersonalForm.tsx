@@ -34,6 +34,8 @@ const Form = ({ onSubmit }: any) => {
         reset();
     }   
     
+    // TODO: colocar textos no prismic
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="firstName">First Name</label>

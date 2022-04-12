@@ -10,6 +10,7 @@ import React from 'react';
 const Settings: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
 
+    // TODO: carregar info do prismic
     // const { view } = usePrismicData({ list: true });
 
     const [updateUser] = useUpdateUserMutation();
@@ -23,15 +24,18 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
 
             dispatch(setUser({ user: { ...payload }}));
 
+            // TODO: colocar textos no prismic
             toast.success("Successfully changed data!");
         }
         catch(e) {
             console.log(e);
-
+            
+            // TODO: colocar textos no prismic
             toast.error("An error has occurred! Please try again later.");
         }
     };
- 
+    
+    // TODO: colocar textos no prismic
     return (
         <ViewContainer isLoading={isLoading}>
             <Box>

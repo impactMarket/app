@@ -25,6 +25,8 @@ const Form = ({ onSubmit }: any) => {
         reset();
     }
     
+    // TODO: colocar textos no prismic
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <label htmlFor="children">How many childrens do you have? (we will check this in person)</label>

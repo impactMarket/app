@@ -13,6 +13,8 @@ const Form = ({ onSubmit }: any) => {
     
     const image = getImage({ filePath: auth?.user?.avatarMediaPath, fit: 'cover', height: 118, width: 118 });
 
+    // TODO: colocar textos no prismic
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Row>

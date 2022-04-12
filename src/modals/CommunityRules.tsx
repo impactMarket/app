@@ -5,8 +5,8 @@ import React from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 
 const Rules = () => {
-    const { handleClose } = useModal();
-    const { extractFromModals } = usePrismicData({ list: true });
+    const { handleClose, acceptCommunityRules, communityName } = useModal();
+    const { extractFromModals } = usePrismicData();
 
     const { buttonLabel, content, items, title } = extractFromModals('communityRules') as any;
 
@@ -15,7 +15,7 @@ const Rules = () => {
             <Display medium>
                 {title}
             </Display>
-            <RichText content={content} g500 mt={0.5} small />
+            <RichText content={content} g500 mt={0.5} small variables={{ community: communityName }}/>
             <Box mt={2}>
                 <Row colSpan={2}>
                     {items.map(({ icon, title, text }: any, index: number) => (
@@ -30,7 +30,7 @@ const Rules = () => {
                 </Row>
             </Box>
             <Box fLayout="end" mt={2} right w="100%">
-                <Button fluid="xs" onClick={handleClose}>
+                <Button fluid="md" onClick={() => { acceptCommunityRules(); handleClose(); }}>
                     {buttonLabel}
                 </Button>
             </Box>

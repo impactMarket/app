@@ -1,10 +1,11 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, toast } from '@impact-market/ui';
+import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal, toast } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currency';
 import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
+import { useAcceptRulesMutation } from '../api/user';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { useGetCommunityMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -41,6 +42,11 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
     const [getCommunity] = useGetCommunityMutation();
     const [saveClaimLocation] = useSaveClaimLocationMutation();
+    const [acceptRules] = useAcceptRulesMutation();
+
+    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim } } = useBeneficiary(
+        auth?.user?.beneficiary?.community
+    );
 
     // Check if there's a Community with the address associated with the User. If not, return to Homepage
     useEffect(() => {
@@ -51,6 +57,15 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 setCommunity(community);
 
                 toggleLoadingCommunity(false);
+
+                // If the User hasn't already accepted the Community Rules, show the modal
+                if(!auth?.user?.beneficiaryRules) {
+                    openModal('welcomeBeneficiary', {
+                        acceptCommunityRules,
+                        communityImage: community.coverImage, 
+                        communityName: community.name
+                    });
+                }
             } 
             catch (error) {
                 console.log(error);
@@ -63,10 +78,6 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
         init();
     }, []);
-
-    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim } } = useBeneficiary(
-        auth?.user?.beneficiary?.community
-    );
         
     const claimFunds = async () => {
         try {
@@ -103,6 +114,15 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         }
     };
 
+    const acceptCommunityRules = async () => {
+        try {
+            await acceptRules();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
+
     const allowClaim = () => toggleClaim(true);
 
     const cardType = !hasFunds ? 1 : !isClaimable && !claimAllowed ? 0 : 2;
@@ -126,8 +146,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
             </Display>
             <Text g500 mt={0.25}>
                 <RichText content={content} variables={{ community: community?.name }} />
-             </Text>
-             {
+            </Text>
+            {
                 auth?.user?.active &&
                 <Card mt={2}>
                     <Row fLayout="center">

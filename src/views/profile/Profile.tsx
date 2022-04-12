@@ -1,5 +1,5 @@
 /* eslint-disable max-depth */
-import { Box, Button, Card, Col, Display, Row, Text, ViewContainer, toast } from '@impact-market/ui';
+import { Box, Button, Card, Col, Display, DropdownMenu, Row, Text, ViewContainer, toast } from '@impact-market/ui';
 import { SubmitHandler } from "react-hook-form";
 import { formatAddress } from '../../utils/formatAddress';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
@@ -17,6 +17,7 @@ import useWallet from '../../hooks/useWallet';
 const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
 
+    // TODO: carregar info do prismic
     // const { view } = usePrismicData({ list: true });
 
     const auth = useSelector(selectCurrentUser);
@@ -38,11 +39,13 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
             dispatch(setUser({ user: { ...payload }}));
 
+            // TODO: colocar textos no prismic
             toast.success("Successfully changed data!");
         }
         catch(e) {
             console.log(e);
 
+            // TODO: colocar textos no prismic
             toast.error("An error has occurred! Please try again later.");
         }
     };
@@ -68,6 +71,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
                             dispatch(setUser({ user: { ...payload }}));
 
+                            // TODO: colocar textos no prismic
                             toast.success("Successfully changed data!");
                         }
                     }
@@ -77,26 +81,51 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         catch(e) {
             console.log(e);
 
+            // TODO: colocar textos no prismic
             toast.error("An error has occurred! Please try again later.");
         }
     }
 
+    // TODO: terminar delete da conta
     const onDelete = () => {
         console.log("delete account");
+    }
+
+    const copyToClipboard = () => {
+        navigator.clipboard.writeText(auth?.user?.address);
+
+        // TODO: colocar textos no prismic
+        toast.success("Copied! You can paste the address whenever you want.");
     }
  
     return (
         <ViewContainer isLoading={isLoading}>
             <Row>
-                <Col colSize={6}>
+                <Col colSize={{ sm: 6, xs: 12 }}>
                     <Display g900>
+                        { /* TODO: verificar se é para colocar um nome por default */ }
                         {auth?.user?.username || 'John Doe'}
                     </Display>
-                    <Text mt={0.25} p600>
-                        {formatAddress(auth?.user?.address, [6, 4])}
-                    </Text>
+                    { /* TODO: colocar textos no prismic */ }
+                    { /* TODO: colocar ícone certo no 1º item */ }
+                    <DropdownMenu
+                        items={[
+                            {
+                                icon: 'logout',
+                                onClick: () => window.open(`https://alfajores-blockscout.celo-testnet.org/address/${auth?.user?.address}/transactions`),
+                                title: 'Open in Explorer'
+                            },
+                            {
+                                icon: 'copy',
+                                onClick: () => copyToClipboard(),
+                                title: 'Copy Address'
+                            }
+                        ]}
+                        mt={0.25}
+                        title={formatAddress(auth?.user?.address, [6, 4])}
+                    />
                 </Col>
-                <Col colSize={6} right>
+                <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0 }} tAlign={{ sm: 'right', xs: 'left' }}>
                     <Button default icon="logout" onClick={handleDisconnectClick}>
                         Disconnect Wallet
                     </Button>
@@ -104,11 +133,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             </Row>
             <Box mt={4}>
                 <Row>
-                    <Col colSize={4}>
+                    <Col colSize={{ sm: 4, xs: 12 }}>
                         <Text g700 medium small>Your photo</Text>
                         <Text g500 regular small>This will be displayed on your profile.</Text>
                     </Col>
-                    <Col colSize={8}>
+                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
                         <Card>
                             <ImageForm onSubmit={onImageSubmit} />
                         </Card>
@@ -117,11 +146,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             </Box>
             <Box mt={1.25}>
                 <Row>
-                    <Col colSize={4}>
+                    <Col colSize={{ sm: 4, xs: 12 }}>
                         <Text g700 medium small>Personal Information</Text>
                         <Text g500 regular small>Update your photo and personal details.</Text>
                     </Col>
-                    <Col colSize={8}>
+                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
                         <Card>
                             <PersonalForm onSubmit={onSubmit} />
                         </Card>
@@ -130,11 +159,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             </Box>
             <Box mt={1.25}>
                 <Row>
-                    <Col colSize={4}>
+                    <Col colSize={{ sm: 4, xs: 12 }}>
                         <Text g700 medium small>Contact information</Text>
                         <Text g500 regular small>Update your email.</Text>
                     </Col>
-                    <Col colSize={8}>
+                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
                         <Card>
                             <ContactForm onSubmit={onSubmit} />
                         </Card>
@@ -143,11 +172,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             </Box>
             <Box mt={1.25}>
                 <Row>
-                    <Col colSize={4}>
+                    <Col colSize={{ sm: 4, xs: 12 }}>
                         <Text g700 medium small>Aditional information</Text>
                         <Text g500 regular small>Help us know your reality better.</Text>
                     </Col>
-                    <Col colSize={8}>
+                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
                         <Card>
                             <AditionalForm onSubmit={onSubmit} />
                         </Card>
@@ -156,11 +185,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             </Box>
             <Box mt={1.25}>
                 <Row>
-                    <Col colSize={4}>
+                    <Col colSize={{ sm: 4, xs: 12 }}>
                         <Text g700 medium small>Delete Account</Text>
                         <Text g500 regular small>Proceed to erase all your information.</Text>
                     </Col>
-                    <Col colSize={8}>
+                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
                         <Card>
                             <DeleteForm onSubmit={onDelete} />
                         </Card>
