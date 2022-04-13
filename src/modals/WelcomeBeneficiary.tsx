@@ -4,7 +4,7 @@ import React from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 
 const Welcome = () => {
-    const { acceptCommunityRules, communityName, communityImage } = useModal();
+    const { communityName, communityImage, handleClose } = useModal();
     const { extractFromModals } = usePrismicData();
 
     const { buttonLabel, content, title } = extractFromModals('welcomeBeneficiary') as any;
@@ -18,7 +18,7 @@ const Welcome = () => {
             <RichText center content={title} large medium variables={{ community: communityName }} />
             <RichText base center content={content} g500 mt={0.5} />
             <Box mt={1.5} w="100%">
-                <Button fluid="xs" onClick={() => openModal('communityRules', { acceptCommunityRules, communityName })}>
+                <Button fluid="xs" onClick={() => handleClose(() => openModal('communityRules', { communityName }))}>
                     {buttonLabel}
                 </Button>
             </Box>
