@@ -18,10 +18,17 @@ export const communityApi = emptySplitApi.injectEndpoints({
         }),
         getCommunityById: builder.query<Community, string>({
             query: id => `communities/${id}`
-        })
+        }),
+        getCommunities: builder.mutation<Community[], void>({
+            query: () => ({
+                method: 'GET',
+                url: `communities`
+            }),
+            transformResponse: (response: { data?: Community[] }) => response.data
+        }),
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetCommunityByIdQuery, useGetCommunityMutation } = communityApi;
+export const { useGetCommunityByIdQuery, useGetCommunityMutation, useGetCommunitiesMutation } = communityApi;
