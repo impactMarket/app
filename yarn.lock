@@ -2018,12 +2018,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.1.2":
-  version "1.1.2"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.1.2.tgz#624203c89e7d44f36a48875dceb769eebcd8319c"
-  integrity sha512-TkBV3UZQrOL5ls97qOmbYoVI0UtVoF4O01Z/wSqND7A9OdpSMVkxFP/yxtddHgGnmxawnI2RtoN8UbuUkfvR/Q==
+"@impact-market/ui@1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.1.7.tgz#6299b6fd9a122825fe27e147301c638f7d6c9382"
+  integrity sha512-XjLkB5BHK6Wq/bDhn2tGF74h8lfgypIu2LfuS2YACJY9ouPunRY3v0zBpzHSsJcBs1ghn4IFmljnNKHvmBW+0w==
   dependencies:
     polished "^4.1.4"
+    react-tabs "^4.2.0"
     react-toastify "^8.2.0"
     styled-gen "^1.4.8"
     styled-reset "^4.3.4"
@@ -4378,7 +4379,7 @@ cloudinary-react@^1.7.0:
     cloudinary-core "^2.11.3"
     prop-types "^15.6.2"
 
-clsx@^1.1.1:
+clsx@^1.1.0, clsx@^1.1.1:
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/clsx/-/clsx-1.1.1.tgz#98b3134f9abbdf23b2663491ace13c5c03a73188"
   integrity sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==
@@ -9416,7 +9417,7 @@ prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.0, prop-types@^15.6.0, prop-types@^15.6.2, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -9746,6 +9747,14 @@ react-redux@7.2.6:
     loose-envify "^1.4.0"
     prop-types "^15.7.2"
     react-is "^17.0.2"
+
+react-tabs@^4.2.0:
+  version "4.2.0"
+  resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-4.2.0.tgz#96090358ee086b4bd4386d27cf5ae03a391101d1"
+  integrity sha512-3DifAM5Xbi4EzdzPsmJTxdiW0/QRqvtOZ+ubWQrlruG/e3WVQo+hVcqGB/GdwL8WNz7yGFPk6jiN9Qrxw26WIw==
+  dependencies:
+    clsx "^1.1.0"
+    prop-types "^15.5.0"
 
 react-toastify@^8.2.0:
   version "8.2.0"
