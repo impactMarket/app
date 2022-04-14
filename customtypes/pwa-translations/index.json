@@ -159,6 +159,13 @@
         },
         "type": "Text"
       },
+      "string-copyAddress": {
+        "config": {
+          "label": "copyAddress",
+          "placeholder": "Copy Address"
+        },
+        "type": "Text"
+      },
       "string-countCharactersLeft": {
         "config": {
           "label": "countCharactersLeft",
@@ -366,6 +373,13 @@
         "config": {
           "label": "notifications",
           "placeholder": "Notifications"
+        },
+        "type": "Text"
+      },
+      "string-openInExplorer": {
+        "config": {
+          "label": "openInExplorer",
+          "placeholder": "Open in Explorer"
         },
         "type": "Text"
       },

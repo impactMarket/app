@@ -109,6 +109,13 @@
         },
         "type": "StructuredText"
       },
+      "form-sections-additional-info-label-children": {
+        "config": {
+            "label": "Additional Info Label - Children",
+            "placeholder": "How many children do you have? (This will be crosschecked)"
+        },
+        "type": "Text"
+      },
       "form-sections-delete-account-title": {
         "type": "Text",
         "config": {
