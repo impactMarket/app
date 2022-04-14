@@ -2032,10 +2032,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.1.4":
-  version "1.1.4"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.1.4.tgz#0c2240f311861f609e820ef5261e48400e22e829"
-  integrity sha512-gWwot+zvtRhD0VFzVnOPMYYNeIckQ6DGfTvgAts3u6kqhX0tg6jc2GpHXR7mIYlG2g1tRN71D64Eu9rA6y1qBg==
+"@impact-market/ui@1.1.7":
+  version "1.1.7"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.1.7.tgz#6299b6fd9a122825fe27e147301c638f7d6c9382"
+  integrity sha512-XjLkB5BHK6Wq/bDhn2tGF74h8lfgypIu2LfuS2YACJY9ouPunRY3v0zBpzHSsJcBs1ghn4IFmljnNKHvmBW+0w==
   dependencies:
     polished "^4.1.4"
     react-tabs "^4.2.0"

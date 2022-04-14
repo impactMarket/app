@@ -2,29 +2,48 @@
 import { Box, Button, Card, Col, Display, DropdownMenu, Row, Text, ViewContainer, toast } from '@impact-market/ui';
 import { SubmitHandler } from "react-hook-form";
 import { formatAddress } from '../../utils/formatAddress';
+import { getUserName } from '../../utils/users';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
+import { useDeleteUserMutation, useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useDispatch, useSelector } from 'react-redux';
-import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
-// import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { useRouter } from 'next/router';
 import AditionalForm from './components/AditionalForm';
 import ContactForm from './components/ContactForm';
 import DeleteForm from './components/DeleteForm';
 import ImageForm from './components/ImageForm';
 import PersonalForm from './components/PersonalForm';
 import React from 'react';
+import RichText from '../../libs/Prismic/components/RichText';
+import String from '../../libs/Prismic/components/String';
 import useWallet from '../../hooks/useWallet';
 
 const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
 
-    // TODO: carregar info do prismic
-    // const { view } = usePrismicData({ list: true });
+    const { extractFromView } = usePrismicData();
+    const { 
+        additionalInfoDescription, 
+        additionalInfoTitle, 
+        contactDescription, 
+        contactTitle, 
+        contactTooltip, 
+        deleteAccountDescription, 
+        deleteAccountTitle, 
+        deleteAccountTooltip, 
+        personalDescription, 
+        personalTitle, 
+        photoDescription, 
+        photoTitle 
+    } = extractFromView('formSections') as any;
 
     const auth = useSelector(selectCurrentUser);
     const [updateUser] = useUpdateUserMutation();
+    const [deleteUser] = useDeleteUserMutation();
+    const [getPreSigned] = useGetPreSignedMutation();
     const { disconnect } = useWallet();
     const dispatch = useDispatch();
-    const [getPreSigned] = useGetPreSignedMutation();
+    const router = useRouter();
 
     const handleDisconnectClick = async () => {
         await disconnect();
@@ -86,9 +105,22 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         }
     }
 
-    // TODO: terminar delete da conta
-    const onDelete = () => {
-        console.log("delete account");
+    // TODO: verificar se fica como está o delete
+    const onDelete = async () => {
+        try {
+            await deleteUser();
+            await disconnect();
+
+            toast.success("Your account was deleted successfully!");
+
+            return router.push('/');
+        }
+        catch(e) {
+            console.log(e);
+
+            // TODO: colocar textos no prismic
+            toast.error("An error has occurred! Please try again later.");
+        }
     }
 
     const copyToClipboard = () => {
@@ -104,14 +136,14 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 <Col colSize={{ sm: 6, xs: 12 }}>
                     <Display g900>
                         { /* TODO: verificar se é para colocar um nome por default */ }
-                        {auth?.user?.username || 'John Doe'}
+                        {getUserName(auth?.user) || 'John Doe'}
                     </Display>
                     { /* TODO: colocar textos no prismic */ }
-                    { /* TODO: colocar ícone certo no 1º item */ }
+                    { /* TODO: verificar como é para ficar o link */ }
                     <DropdownMenu
                         items={[
                             {
-                                icon: 'logout',
+                                icon: 'open',
                                 onClick: () => window.open(`https://alfajores-blockscout.celo-testnet.org/address/${auth?.user?.address}/transactions`),
                                 title: 'Open in Explorer'
                             },
@@ -127,18 +159,18 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 </Col>
                 <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0 }} tAlign={{ sm: 'right', xs: 'left' }}>
                     <Button default icon="logout" onClick={handleDisconnectClick}>
-                        Disconnect Wallet
+                        <String id="disconnectWallet" />
                     </Button>
                 </Col>
             </Row>
             <Box mt={4}>
                 <Row>
                     <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>Your photo</Text>
-                        <Text g500 regular small>This will be displayed on your profile.</Text>
+                        <Text g700 medium small>{photoTitle}</Text>
+                        <RichText content={photoDescription} g500 regular small />
                     </Col>
                     <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card>
+                        <Card pl={0} pr={0}>
                             <ImageForm onSubmit={onImageSubmit} />
                         </Card>
                     </Col>
@@ -147,11 +179,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             <Box mt={1.25}>
                 <Row>
                     <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>Personal Information</Text>
-                        <Text g500 regular small>Update your photo and personal details.</Text>
+                        <Text g700 medium small>{personalTitle}</Text>
+                        <RichText content={personalDescription} g500 regular small />
                     </Col>
                     <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card>
+                        <Card pl={0} pr={0}>
                             <PersonalForm onSubmit={onSubmit} />
                         </Card>
                     </Col>
@@ -160,11 +192,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             <Box mt={1.25}>
                 <Row>
                     <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>Contact information</Text>
-                        <Text g500 regular small>Update your email.</Text>
+                        <Text g700 medium small>{contactTitle}</Text>
+                        <RichText content={contactDescription} g500 regular small />
                     </Col>
                     <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card>
+                        <Card pl={0} pr={0}>
                             <ContactForm onSubmit={onSubmit} />
                         </Card>
                     </Col>
@@ -173,11 +205,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             <Box mt={1.25}>
                 <Row>
                     <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>Aditional information</Text>
-                        <Text g500 regular small>Help us know your reality better.</Text>
+                        <Text g700 medium small>{additionalInfoTitle}</Text>
+                        <RichText content={additionalInfoDescription} g500 regular small />
                     </Col>
                     <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card>
+                        <Card pl={0} pr={0}>
                             <AditionalForm onSubmit={onSubmit} />
                         </Card>
                     </Col>
@@ -186,11 +218,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             <Box mt={1.25}>
                 <Row>
                     <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>Delete Account</Text>
-                        <Text g500 regular small>Proceed to erase all your information.</Text>
+                        <Text g700 medium small>{deleteAccountTitle}</Text>
+                        <RichText content={deleteAccountDescription} g500 regular small />
                     </Col>
                     <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card>
+                        <Card pl={0} pr={0}>
                             <DeleteForm onSubmit={onDelete} />
                         </Card>
                     </Col>

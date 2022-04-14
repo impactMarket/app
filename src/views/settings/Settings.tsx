@@ -2,16 +2,17 @@ import { Box, Col, Display, Row, Text, ViewContainer, toast } from '@impact-mark
 import { SubmitHandler } from "react-hook-form";
 import { setUser } from '../../state/slices/auth';
 import { useDispatch } from 'react-redux';
-// import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useUpdateUserMutation } from '../../api/user';
 import BasicForm from './components/BasicForm';
 import React from 'react';
+import RichText from '../../libs/Prismic/components/RichText';
 
 const Settings: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
 
-    // TODO: carregar info do prismic
-    // const { view } = usePrismicData({ list: true });
+    const { extractFromView } = usePrismicData();
+    const { title, content } = extractFromView('heading') as any;
 
     const [updateUser] = useUpdateUserMutation();
     const dispatch = useDispatch();
@@ -36,11 +37,12 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
     };
     
     // TODO: colocar textos no prismic
+
     return (
         <ViewContainer isLoading={isLoading}>
             <Box>
-                <Display g900>Settings</Display>
-                <Text base g500 mt={0.25} regular>Personalize your experience.</Text>
+                <Display g900>{title}</Display>
+                <RichText content={content} g500 mt={0.25} regular/>
             </Box>
             <Box mt={3.563}>
                 <Row>

@@ -4,7 +4,7 @@ export interface User {
     address: string;
     token: string;
     id: number;
-    type?: any
+    type?: any;
 }
 
 export interface PutPostUser {
@@ -64,6 +64,13 @@ export const userApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
+        // Delete user
+        deleteUser: builder.mutation<void, void>({
+            query: () => ({
+                method: 'DELETE',
+                url: 'users'
+            })
+        }),
         // Get preSigned URL for image upload
         getPreSigned: builder.mutation<PreSigned, void>({
             query: type => ({
@@ -97,6 +104,7 @@ export const userApi = emptySplitApi.injectEndpoints({
 export const {
     useAcceptRulesMutation,
     useCreateUserMutation,
+    useDeleteUserMutation,
     useGetUserMutation,
     useUpdateUserMutation,
     useGetPreSignedMutation

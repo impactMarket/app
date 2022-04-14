@@ -3,7 +3,7 @@ import { selectCurrentUser } from '../../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import React from "react";
-// import String from '../../../libs/Prismic/components/String';
+import String from '../../../libs/Prismic/components/String';
 import currenciesJSON from '../../../assets/currencies.json';
 import languagesJSON from '../../../assets/languages.json';
 
@@ -42,7 +42,7 @@ const Form = ({ onSubmit }: any) => {
     
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="currency">Currency</label>
+            <label htmlFor="currency"><String id="currency" /></label>
             <br />
             <select id="currency" {...register("currency", { required: true })} style={{ border: '1px solid black' }}>
                 <option>Select</option>
@@ -56,7 +56,7 @@ const Form = ({ onSubmit }: any) => {
             {errors.currency && <span>This field is required</span>}
             <br /><br />
 
-            <label htmlFor="language">Language</label>
+            <label htmlFor="language"><String id="language" /></label>
             <br />
             <select id="language" {...register("language", { required: true })} style={{ border: '1px solid black' }}>
                 <option>Select</option>
@@ -74,7 +74,7 @@ const Form = ({ onSubmit }: any) => {
                 <Row>
                     <Col colSize={12} right>
                         <Button default isLoading={isSubmitting} type="submit">
-                            Save changes
+                            <String id="saveChanges" />
                         </Button>
                     </Col>
                 </Row>

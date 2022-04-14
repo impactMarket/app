@@ -110,9 +110,8 @@ const SidebarFooter = (props: { user?: User }) => {
 
 const SidebarMobileActions = (props: { user?: User }) => {
     const { user } = props;
-    const { address } = useWallet();
 
-    if (!address) {
+    if (!user) {
         return <ConnectButton />
     }
 

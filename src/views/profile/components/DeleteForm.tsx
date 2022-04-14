@@ -1,6 +1,8 @@
-import { Box, Button, Col, Row, Text, colors } from '@impact-market/ui';
+import { Box, Button, Col, Divider, Row, Text } from '@impact-market/ui';
 import { useForm, useFormState } from "react-hook-form";
+import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import React, { useState } from "react";
+import RichText from '../../../libs/Prismic/components/RichText';
 import String from '../../../libs/Prismic/components/String';
 
 const Form = ({ onSubmit }: any) => {
@@ -8,6 +10,9 @@ const Form = ({ onSubmit }: any) => {
 
     const { control, register, handleSubmit } = useForm<any>();
     const { isSubmitting } = useFormState({ control });
+
+    const { extractFromView } = usePrismicData();
+    const { deleteAccountDescription, deleteAccountTitle, deleteAccountTooltip } = extractFromView('formSections') as any;
 
     const handleCancel = () => {
         toggleActions(false);
@@ -26,29 +31,35 @@ const Form = ({ onSubmit }: any) => {
     
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Row>
-                <Col colSize={1}>
-                    <input {...register("action")} checked={showActions} onChange={onChange} type="checkbox"/>
-                </Col>
-                <Col colSize={11}>
-                    <Text g700 medium small>Delete Account</Text>
-                    <Text g500 medium small>I confirm that I want to delete my account and all my associated adat stored outside the Celo blockchain.</Text>
-                </Col>
-            </Row>
+            <Box pl={1} pr={1}>
+                <Row>
+                    <Col colSize={1}>
+                        <input {...register("action")} checked={showActions} onChange={onChange} type="checkbox"/>
+                    </Col>
+                    <Col colSize={11}>
+                        <Text g700 medium small>{deleteAccountTitle}</Text>
+                        <Text g500 regular small>I confirm that I want to delete my account and all my associated adat stored outside the Celo blockchain.</Text>
+                    </Col>
+                </Row>
+            </Box>
+
             {
                 showActions &&
-                <Box mt={1.5}>
-                    <Row style={{ borderTop: `1px solid ${colors.g200}` }}>
-                        <Col colSize={12} right>
-                            <Button default disabled={isSubmitting} gray mr={0.75} onClick={handleCancel}>
-                                <String id="cancel" />
-                            </Button>
-                            <Button default isLoading={isSubmitting} type="submit">
-                                Confirm
-                            </Button>
-                        </Col>
-                    </Row>
-                </Box>
+                <>
+                    <Divider/>
+                    <Box pl={1} pr={1}>
+                        <Row>
+                            <Col colSize={12} right>
+                                <Button default disabled={isSubmitting} gray mr={0.75} onClick={handleCancel}>
+                                    <String id="cancel" />
+                                </Button>
+                                <Button default isLoading={isSubmitting} type="submit">
+                                    <String id="confirm" />
+                                </Button>
+                            </Col>
+                        </Row>
+                    </Box>
+                </>
             }
         </form>
     );
