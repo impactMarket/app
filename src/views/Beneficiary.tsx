@@ -5,7 +5,6 @@ import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, C
 import { currencyFormat } from '../utils/currency';
 import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
-import { useAcceptRulesMutation } from '../api/user';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { useGetCommunityMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -25,7 +24,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [claimAllowed, toggleClaim] = useState(false);
     const [community, setCommunity] = useState({}) as any;
-    
+
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
@@ -42,11 +41,15 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
     const [getCommunity] = useGetCommunityMutation();
     const [saveClaimLocation] = useSaveClaimLocationMutation();
-    const [acceptRules] = useAcceptRulesMutation();
 
     const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim }, fundsRemainingDays } = useBeneficiary(
         auth?.user?.beneficiary?.community
     );
+
+    const openRulesModal = () => openModal('welcomeBeneficiary', {
+        communityImage: community.coverImage,
+        communityName: community.name
+    });
 
     // Check if there's a Community with the address associated with the User. If not, return to Homepage
     useEffect(() => {
@@ -60,34 +63,30 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
                 // If the User hasn't already accepted the Community Rules, show the modal
                 if(!auth?.user?.beneficiaryRules) {
-                    openModal('welcomeBeneficiary', {
-                        acceptCommunityRules,
-                        communityImage: community.coverImage, 
-                        communityName: community.name
-                    });
+                    openRulesModal();
                 }
-            } 
+            }
             catch (error) {
                 console.log(error);
 
                 router.push('/');
-                    
+
                 return false;
             }
         };
 
         init();
     }, []);
-        
+
     const claimFunds = async () => {
         try {
             toggleLoadingButton(true);
 
             const { status } = await claim();
-            
+
             toggleLoadingButton(false);
 
-            // If the Claim was successfull, get the user coordinates and save them in another request
+            // If the Claim was successfully, get the user coordinates and save them in another request
             if(status) {
                 const position = await getLocation() as any;
 
@@ -105,19 +104,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         catch(error) {
             console.log(error);
 
-            toggleLoadingButton(false); 
-            toggleClaim(false); 
+            toggleLoadingButton(false);
+            toggleClaim(false);
         }
     };
-
-    const acceptCommunityRules = async () => {
-        try {
-            await acceptRules();
-        }
-        catch (error) {
-            console.log(error);
-        }
-    }
 
     const allowClaim = () => toggleClaim(true);
 
@@ -144,7 +134,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 {title}
             </Display>
             <Text g500 mt={0.25}>
-                <RichText content={content} variables={{ community: community?.name }} />
+                <RichText components={{ OpenRulesModal: ({ children }: any) => <a onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</a> }} content={content} variables={{ community: community?.name }} />
              </Text>
              {
                 auth?.user?.active &&

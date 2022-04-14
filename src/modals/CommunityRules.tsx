@@ -1,12 +1,24 @@
 import { Box, Button, Col, Display, ModalWrapper, Row, Text, useModal } from '@impact-market/ui';
+import { useAcceptRulesMutation } from '../api/user';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import Image from '../libs/Prismic/components/Image';
 import React from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 
 const Rules = () => {
-    const { handleClose, acceptCommunityRules, communityName } = useModal();
+    const { handleClose, communityName } = useModal();
     const { extractFromModals } = usePrismicData();
+
+    const [acceptRules] = useAcceptRulesMutation();
+
+    const acceptCommunityRules = async () => {
+        try {
+            await acceptRules();
+        }
+        catch (error) {
+            console.log(error);
+        }
+    }
 
     const { buttonLabel, content, items, title } = extractFromModals('communityRules') as any;
 
