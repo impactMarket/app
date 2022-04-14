@@ -53,22 +53,22 @@
         "type": "StructuredText"
       }
     },
-    "settings-text": {
-      "settings-text-basic-title": {
+    "form-sections": {
+      "form-sections-basic-title": {
         "type": "Text",
         "config": {
           "label": "Basic Settings Title",
           "placeholder": ""
         }
       },
-      "settings-text-basic-description": {
+      "form-sections-basic-description": {
         "config": {
-					"label": "Basic Settings Description",
-					"placeholder": "",
-					"allowTargetBlank": true,
-					"single": "paragraph,strong,em,hyperlink"
-				},
-				"type": "StructuredText"
+          "label": "Basic Settings Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
       }
     }
   }
