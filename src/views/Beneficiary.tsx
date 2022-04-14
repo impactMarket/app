@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal } from '@impact-market/ui';
+import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currency';
 import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
@@ -14,6 +14,7 @@ import { useSaveClaimLocationMutation } from '../api/claim';
 import { useSelector } from 'react-redux';
 import { userBeneficiary } from '../utils/userTypes';
 import Image from '../libs/Prismic/components/Image';
+import Message from '../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
@@ -43,7 +44,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const [saveClaimLocation] = useSaveClaimLocationMutation();
     const [acceptRules] = useAcceptRulesMutation();
 
-    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim } } = useBeneficiary(
+    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim }, fundsRemainingDays } = useBeneficiary(
         auth?.user?.beneficiary?.community
     );
 
@@ -130,49 +131,61 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
+            { /* TODO: Add string "days" to Prismic */ }
+            {
+                fundsRemainingDays <= 3 && fundsRemainingDays > 0 &&
+                <Alert icon="alertTriangle" mb={1.5} message={<Message id="communityFundsWillRunOut" variables={{ count: fundsRemainingDays, timeUnit: 'days' }} />} warning />
+            }
+            {
+                !auth?.user?.active &&
+                <Alert error icon="key" mb={1.5} message={<Message id="yourAccountHasBeenLocked" />} />
+            }
             <Display>
                 {title}
             </Display>
             <Text g500 mt={0.25}>
                 <RichText content={content} variables={{ community: community?.name }} />
              </Text>
-            <Card mt={2}>
-                <Row fLayout="center">
-                    <Col colSize={{ sm: 7, xs: 12 }}>
-                        <Box center>
-                            <Grid colSpan={1.25} cols={1}>
-                                <CircledIcon icon={cardIcon} large {...cardIconState} />
-                                <Box>
-                                    <Text g900 large medium>
-                                        {cardTitle}
-                                    </Text>
-                                    <Text g500 mt={0.5} small>
-                                        <RichText content={cardMessage} variables={{ amount: claimAmountDisplay }}/>
-                                    </Text>
-                                </Box>
-                                {
-                                    hasFunds &&
-                                    <Box margin="0 auto" maxW={22}>
-                                        {
-                                            !isClaimable &&
-                                            <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
-                                        }
-                                        {
-                                            (isClaimable || claimAllowed) &&
-                                            <Button default isLoading={loadingButton} large onClick={claimFunds}>
-                                                <String id="claim" /> ~{claimAmountDisplay}
-                                            </Button>
-                                        }
+             {
+                auth?.user?.active &&
+                <Card mt={2}>
+                    <Row fLayout="center">
+                        <Col colSize={{ sm: 7, xs: 12 }}>
+                            <Box center>
+                                <Grid colSpan={1.25} cols={1}>
+                                    <CircledIcon icon={cardIcon} large {...cardIconState} />
+                                    <Box>
+                                        <Text g900 large medium>
+                                            {cardTitle}
+                                        </Text>
+                                        <Text g500 mt={0.5} small>
+                                            <RichText content={cardMessage} variables={{ amount: claimAmountDisplay }}/>
+                                        </Text>
                                     </Box>
-                                }
-                            </Grid>
-                        </Box>
-                    </Col>
-                    <Col colSize={{ sm: 5, xs: 12 }}>
-                        <Image {...cardImage} radius={0.5}/>
-                    </Col>
-                </Row>
-            </Card>
+                                    {
+                                        hasFunds &&
+                                        <Box margin="0 auto" maxW={22}>
+                                            {
+                                                !isClaimable &&
+                                                <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
+                                            }
+                                            {
+                                                (isClaimable || claimAllowed) &&
+                                                <Button default isLoading={loadingButton} large onClick={claimFunds}>
+                                                    <String id="claim" /> ~{claimAmountDisplay}
+                                                </Button>
+                                            }
+                                        </Box>
+                                    }
+                                </Grid>
+                            </Box>
+                        </Col>
+                        <Col colSize={{ sm: 5, xs: 12 }}>
+                            <Image {...cardImage} radius={0.5}/>
+                        </Col>
+                    </Row>
+                </Card>
+            }
             <Text g500 mt={2} small>
                 <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, currency), total: currencyFormat(maxClaim, currency) }} />
             </Text>
