@@ -60,7 +60,6 @@
       "community-rules-items": {
         "config": {
           "label": "Rules",
-          "placeholder": "",
           "fields": {
             "icon": {
               "config": {
@@ -120,6 +119,142 @@
       "community-rules-button-label": {
         "config": {
           "label": "Button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      }
+    },
+    "create-story": {
+      "create-story-title": {
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "create-story-content": {
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "create-story-confirm-button-label": {
+        "config": {
+          "label": "Confirm button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "create-story-cancel-button-label": {
+        "config": {
+          "label": "Cancel button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      }
+    },
+    "delete-story": {
+      "delete-story-title": {
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "delete-story-content": {
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "delete-story-confirm-button-label": {
+        "config": {
+          "label": "Confirm button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "delete-story-cancel-button-label": {
+        "config": {
+          "label": "Cancel button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      }
+    },
+    "report-story": {
+      "report-story-title": {
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "report-story-content": {
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "report-story-confirm-button-label": {
+        "config": {
+          "label": "Confirm button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "report-story-cancel-button-label": {
+        "config": {
+          "label": "Cancel button label",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "report-story-types": {
+        "type": "Group",
+        "config": {
+          "label": "Report story types",
+          "fields": {
+            "type": {
+              "type": "Text",
+              "config": {
+                "label": "Type",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "report-success": {
+      "report-success-title": {
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "report-success-content": {
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "report-success-close-button-label": {
+        "config": {
+          "label": "Close button label",
           "placeholder": ""
         },
         "type": "Text"
