@@ -187,6 +187,13 @@
         },
         "type": "Text"
       },
+      "string-days": {
+        "config": {
+          "label": "days",
+          "placeholder": "Days"
+        },
+        "type": "Text"
+      },
       "string-decline": {
         "config": {
           "label": "decline",
@@ -443,6 +450,13 @@
         "config": {
           "label": "seconds",
           "placeholder": "Seconds"
+        },
+        "type": "Text"
+      },
+      "string-selectImage": {
+        "config": {
+          "label": "selectImage",
+          "placeholder": "Select Image"
         },
         "type": "Text"
       },
