@@ -22,7 +22,7 @@
     "@celo-tools/use-contractkit": "npm:@poofcash/use-contractkit@1.0.10",
     "@celo/contractkit": "1.5.1",
     "@ethersproject/providers": "5.5.3",
-    "@impact-market/ui": "1.1.4",
+    "@impact-market/ui": "1.1.7",
     "@impact-market/utils": "2.0.0-beta.10",
     "@prismicio/client": "6.3.0",
     "@prismicio/helpers": "2.2.0",
@@ -55,7 +55,7 @@
     "eslint-config-impact-market": "impactMarket/eslint-config-impact-market",
     "eslint-config-next": "12.0.10",
     "prettier": "2.2.1",
-    "slice-machine-ui": "0.2.1",
+    "slice-machine-ui": "^0.3.6",
     "typescript": "4.3.2"
   },
   "resolutions": {

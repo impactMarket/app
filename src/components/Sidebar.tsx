@@ -140,7 +140,8 @@ const Sidebar = () => {
 
     useEffect(() => {
         const { commonMenu: commonMenuFromPrismic, footerMenu: footerMenuFromPrismic } = (extractFromConfig('aside') || {}) as any;
-        const { data: userConfigData } = userConfig?.find(({ uid }: any) => uid === getUserType(user)) || {};
+        const userType = getUserType(user);
+        const { data: userConfigData } = userConfig?.find(({ uid }: any) => uid === userType) || {};
         const { items: menuItems, withCommon, withFooter } = (extractFromData(userConfigData, 'asideMenu') || {}) as any;
 
         const menus = menuItems?.map(({ items }: any) => parseMenuItems(items)) as SidebarMenuItemProps[][];
