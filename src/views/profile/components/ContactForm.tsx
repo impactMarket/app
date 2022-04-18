@@ -1,8 +1,10 @@
 import { Box, Button, Col, Divider, Row } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
+import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import React, { useEffect } from "react";
+import RichText from '../../../libs/Prismic/components/RichText';
 import String from '../../../libs/Prismic/components/String';
 
 type Inputs = {
@@ -11,6 +13,9 @@ type Inputs = {
 
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
+
+    const { extractFromView } = usePrismicData();
+    const { contactTooltip } = extractFromView('formSections') as any;
 
     const { control, register, reset, handleSubmit, formState: { errors } } = useForm<Inputs>();
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
@@ -36,6 +41,7 @@ const Form = ({ onSubmit }: any) => {
                 <br />
                 {errors.email && <span>This field is required</span>}
                 <br /><br />
+                <RichText content={contactTooltip} g500 regular small />
             </Box>
             
             {

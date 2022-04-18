@@ -12,7 +12,7 @@ const Form = ({ onSubmit }: any) => {
     const { isSubmitting } = useFormState({ control });
 
     const { extractFromView } = usePrismicData();
-    const { deleteAccountDescription, deleteAccountTitle, deleteAccountTooltip } = extractFromView('formSections') as any;
+    const { deleteAccountTitle, deleteAccountTooltip } = extractFromView('formSections') as any;
 
     const handleCancel = () => {
         toggleActions(false);
@@ -27,8 +27,6 @@ const Form = ({ onSubmit }: any) => {
         }
     }
 
-    // TODO: colocar textos no prismic
-    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box pl={1} pr={1}>
@@ -38,7 +36,7 @@ const Form = ({ onSubmit }: any) => {
                     </Col>
                     <Col colSize={11}>
                         <Text g700 medium small>{deleteAccountTitle}</Text>
-                        <Text g500 regular small>I confirm that I want to delete my account and all my associated adat stored outside the Celo blockchain.</Text>
+                        <RichText content={deleteAccountTooltip} g500 regular small />
                     </Col>
                 </Row>
             </Box>

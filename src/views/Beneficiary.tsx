@@ -141,7 +141,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                     <Message id="yourAccountHasBeenLocked" />
                 </Alert>
             }
-            <Display g900>
+            <Display g900 medium>
                 {title}
             </Display>
             <Text g500 mt={0.25}>

@@ -21,16 +21,14 @@ import useWallet from '../../hooks/useWallet';
 const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
 
-    const { extractFromView } = usePrismicData();
+    const { extractFromView } = usePrismicData({ list: true });
     const { 
         additionalInfoDescription, 
         additionalInfoTitle, 
         contactDescription, 
-        contactTitle, 
-        contactTooltip, 
+        contactTitle,
         deleteAccountDescription, 
         deleteAccountTitle, 
-        deleteAccountTooltip, 
         personalDescription, 
         personalTitle, 
         photoDescription, 
@@ -134,7 +132,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         <ViewContainer isLoading={isLoading}>
             <Row>
                 <Col colSize={{ sm: 6, xs: 12 }}>
-                    <Display g900>
+                    <Display g900 medium>
                         { /* TODO: verificar se é para colocar um nome por default */ }
                         {getUserName(auth?.user) || 'John Doe'}
                     </Display>

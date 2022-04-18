@@ -13,6 +13,7 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
+    const { basicTitle, basicDescription } = extractFromView('formSections') as any;
 
     const [updateUser] = useUpdateUserMutation();
     const dispatch = useDispatch();
@@ -35,20 +36,18 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
             toast.error("An error has occurred! Please try again later.");
         }
     };
-    
-    // TODO: colocar textos no prismic
 
     return (
         <ViewContainer isLoading={isLoading}>
             <Box>
-                <Display g900>{title}</Display>
+                <Display g900 medium>{title}</Display>
                 <RichText content={content} g500 mt={0.25} regular/>
             </Box>
             <Box mt={3.563}>
                 <Row>
                     <Col colSize={4}>
-                        <Text g700 medium small>Basic settings</Text>
-                        <Text g500 regular small>Update Currency and Language.</Text>
+                        <Text g700 medium small>{basicTitle}</Text>
+                        <RichText content={basicDescription} g500 regular small />
                     </Col>
                     <Col colSize={8}>
                         <BasicForm onSubmit={onSubmit} />
