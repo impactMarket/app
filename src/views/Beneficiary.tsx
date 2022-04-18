@@ -17,6 +17,7 @@ import Message from '../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
+import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
@@ -31,6 +32,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const auth = useSelector(selectCurrentUser);
     const currency = auth?.user?.currency || 'USD';
     const router = useRouter();
+    const { t } = useTranslations();
 
     // Check if current User has access to this page
     if(!auth?.user?.type?.includes(userBeneficiary)) {
@@ -118,13 +120,12 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const cardMessage = view.data.claimCardStates[cardType].text;
     const cardImage = view.data.claimCardStates[cardType].image;
     const claimAmountDisplay = currencyFormat(claimAmount, currency);
-
+    
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
-            { /* TODO: Add string "days" to Prismic */ }
             {
                 fundsRemainingDays <= 3 && fundsRemainingDays > 0 &&
-                <Alert icon="alertTriangle" mb={1.5} message={<Message id="communityFundsWillRunOut" variables={{ count: fundsRemainingDays, timeUnit: 'days' }} />} warning />
+                <Alert icon="alertTriangle" mb={1.5} message={<Message id="communityFundsWillRunOut" variables={{ count: fundsRemainingDays, timeUnit: t("days").toLowerCase() }} />} warning />
             }
             {
                 !auth?.user?.active &&
