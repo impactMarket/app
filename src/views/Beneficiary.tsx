@@ -48,24 +48,23 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         auth?.user?.beneficiary?.community
     );
 
-    const openRulesModal = () => openModal('welcomeBeneficiary', {
-        communityImage: community.coverImage,
-        communityName: community.name
-    });
 
     // Check if there's a Community with the address associated with the User. If not, return to Homepage
     useEffect(() => {
         const init = async () => {
             try {
-                const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
+                const data = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
 
-                setCommunity(community);
+                setCommunity(data);
 
                 toggleLoadingCommunity(false);
 
                 // If the User hasn't already accepted the Community Rules, show the modal
                 if(!auth?.user?.beneficiaryRules) {
-                    openRulesModal();
+                    openModal('welcomeBeneficiary', {
+                        communityImage: data.coverImage,
+                        communityName: data.name
+                    });
                 }
             }
             catch (error) {
