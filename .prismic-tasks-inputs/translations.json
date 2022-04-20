@@ -1,25 +1,4 @@
 {
-    "address": "Address",
-    "age": "Age",
-    "bio": "Bio",
-    "cancel": "Cancel",
-    "confirm": "Confirm",
-    "country": "Country",
-    "currency": "Currency",
-    "deleteAccount": "Delete Account",
-    "disconnectWallet": "Disconnect Wallet",
-    "email": "Email",
-    "female": "Female",
-    "firstName": "First name",
-    "gender": "Gender",
-    "language": "Language",
-    "lastName": "Last name",
-    "male": "Male",
-    "myDetails": "My details",
-    "or": "or",
-    "other": "Other",
-    "phoneNumber": "Phone number",
-    "saveChanges": "Save Changes",
-    "wallet": "Wallet",
-    "yourBalance": "Your balance"
+    "openInExplorer": "Open in Explorer",
+    "copyAddress": "Copy Address"
 }

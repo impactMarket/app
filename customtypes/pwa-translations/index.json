@@ -159,6 +159,13 @@
         },
         "type": "Text"
       },
+      "string-copyAddress": {
+        "config": {
+          "label": "copyAddress",
+          "placeholder": "Copy Address"
+        },
+        "type": "Text"
+      },
       "string-countCharactersLeft": {
         "config": {
           "label": "countCharactersLeft",
@@ -184,6 +191,13 @@
         "config": {
           "label": "currency",
           "placeholder": "Currency"
+        },
+        "type": "Text"
+      },
+      "string-days": {
+        "config": {
+          "label": "days",
+          "placeholder": "Days"
         },
         "type": "Text"
       },
@@ -362,6 +376,13 @@
         },
         "type": "Text"
       },
+      "string-openInExplorer": {
+        "config": {
+          "label": "openInExplorer",
+          "placeholder": "Open in Explorer"
+        },
+        "type": "Text"
+      },
       "string-optional": {
         "config": {
           "label": "optional",
@@ -443,6 +464,13 @@
         "config": {
           "label": "seconds",
           "placeholder": "Seconds"
+        },
+        "type": "Text"
+      },
+      "string-selectImage": {
+        "config": {
+          "label": "selectImage",
+          "placeholder": "Select Image"
         },
         "type": "Text"
       },
