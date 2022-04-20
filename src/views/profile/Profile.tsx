@@ -16,12 +16,13 @@ import PersonalForm from './components/PersonalForm';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
 
 const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
 
-    const { extractFromView } = usePrismicData({ list: true });
+    const { extractFromView } = usePrismicData();
     const { 
         additionalInfoDescription, 
         additionalInfoTitle, 
@@ -42,6 +43,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const { disconnect } = useWallet();
     const dispatch = useDispatch();
     const router = useRouter();
+    const { t } = useTranslations();
 
     const handleDisconnectClick = async () => {
         await disconnect();
@@ -128,6 +130,23 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         toast.success("Copied! You can paste the address whenever you want.");
     }
  
+    const renderCard = (title: string, description: string, children: any) => {
+        return (
+            <Row>
+                <Col colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 2.5 }}>
+                    { /* TODO: Falta colocar um Dividir apenas em mobile */ }
+                    <Text g700 medium small>{title}</Text>
+                    <RichText content={description} g500 regular small />
+                </Col>
+                <Col colSize={{ sm: 8, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
+                    <Card pb={1.5} pl={0} pr={0} pt={1.5}>
+                        {children}
+                    </Card>
+                </Col>
+            </Row>
+        );
+    };
+
     return (
         <ViewContainer isLoading={isLoading}>
             <Row>
@@ -136,19 +155,19 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                         { /* TODO: verificar se é para colocar um nome por default */ }
                         {getUserName(auth?.user) || 'John Doe'}
                     </Display>
-                    { /* TODO: colocar textos no prismic */ }
                     { /* TODO: verificar como é para ficar o link */ }
                     <DropdownMenu
+                        icon="chevronDown"
                         items={[
                             {
                                 icon: 'open',
                                 onClick: () => window.open(`https://alfajores-blockscout.celo-testnet.org/address/${auth?.user?.address}/transactions`),
-                                title: 'Open in Explorer'
+                                title: t('openInExplorer')
                             },
                             {
                                 icon: 'copy',
                                 onClick: () => copyToClipboard(),
-                                title: 'Copy Address'
+                                title: t('copyAddress')
                             }
                         ]}
                         mt={0.25}
@@ -162,69 +181,19 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 </Col>
             </Row>
             <Box mt={4}>
-                <Row>
-                    <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>{photoTitle}</Text>
-                        <RichText content={photoDescription} g500 regular small />
-                    </Col>
-                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card pl={0} pr={0}>
-                            <ImageForm onSubmit={onImageSubmit} />
-                        </Card>
-                    </Col>
-                </Row>
+                {renderCard(photoTitle, photoDescription, <ImageForm onSubmit={onImageSubmit} />)}
             </Box>
-            <Box mt={1.25}>
-                <Row>
-                    <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>{personalTitle}</Text>
-                        <RichText content={personalDescription} g500 regular small />
-                    </Col>
-                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card pl={0} pr={0}>
-                            <PersonalForm onSubmit={onSubmit} />
-                        </Card>
-                    </Col>
-                </Row>
+            <Box>
+                {renderCard(personalTitle, personalDescription, <PersonalForm onSubmit={onSubmit} />)}
             </Box>
-            <Box mt={1.25}>
-                <Row>
-                    <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>{contactTitle}</Text>
-                        <RichText content={contactDescription} g500 regular small />
-                    </Col>
-                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card pl={0} pr={0}>
-                            <ContactForm onSubmit={onSubmit} />
-                        </Card>
-                    </Col>
-                </Row>
+            <Box>
+                {renderCard(contactTitle, contactDescription, <ContactForm onSubmit={onSubmit} />)}
             </Box>
-            <Box mt={1.25}>
-                <Row>
-                    <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>{additionalInfoTitle}</Text>
-                        <RichText content={additionalInfoDescription} g500 regular small />
-                    </Col>
-                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card pl={0} pr={0}>
-                            <AditionalForm onSubmit={onSubmit} />
-                        </Card>
-                    </Col>
-                </Row>
+            <Box>
+                {renderCard(additionalInfoTitle, additionalInfoDescription, <AditionalForm onSubmit={onSubmit} />)}
             </Box>
-            <Box mt={1.25}>
-                <Row>
-                    <Col colSize={{ sm: 4, xs: 12 }}>
-                        <Text g700 medium small>{deleteAccountTitle}</Text>
-                        <RichText content={deleteAccountDescription} g500 regular small />
-                    </Col>
-                    <Col colSize={{ sm: 8, xs: 12 }} pt={{ sm: 1, xs: 0.25 }}>
-                        <Card pl={0} pr={0}>
-                            <DeleteForm onSubmit={onDelete} />
-                        </Card>
-                    </Col>
-                </Row>
+            <Box>
+                {renderCard(deleteAccountTitle, deleteAccountDescription, <DeleteForm onSubmit={onDelete} />)}
             </Box>
         </ViewContainer>
     );

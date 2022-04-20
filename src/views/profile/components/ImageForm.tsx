@@ -18,7 +18,7 @@ const Form = ({ onSubmit }: any) => {
     
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Box pl={1} pr={1}>
+            <Box pl={1.5} pr={1.5}>
                 <Row>
                     <Col colSize={3}>
                         {
@@ -38,7 +38,7 @@ const Form = ({ onSubmit }: any) => {
                 </Row>
             </Box>
             <Divider/>
-            <Box pl={1} pr={1}>
+            <Box pl={1.5} pr={1.5}>
                 <Row>
                     <Col colSize={12} right>
                         <Button default isLoading={isSubmitting} type="submit">

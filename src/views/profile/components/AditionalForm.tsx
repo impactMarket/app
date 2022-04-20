@@ -1,7 +1,9 @@
 import { Box, Button, Col, Divider, Row } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
+import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
+import Input from '../../../components/Input';
 import React, { useEffect } from "react";
 import String from '../../../libs/Prismic/components/String';
 
@@ -12,7 +14,10 @@ type Inputs = {
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
 
-    const { control, register, reset, handleSubmit, formState: { errors } } = useForm<Inputs>();
+    const { extractFromView } = usePrismicData();
+    const { additionalInfoLabelChildren } = extractFromView('formSections') as any;
+
+    const { control, register, reset, handleSubmit } = useForm<Inputs>();
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
 
     useEffect(() => {
@@ -21,28 +26,28 @@ const Form = ({ onSubmit }: any) => {
         }
     }, [isSubmitSuccessful]);
 
+    // TODO: reset it's not working with the inputs from UI
     const handleCancel = () => {
         reset();
     }
     
-    // TODO: colocar textos no prismic
-    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Box pl={1} pr={1}>
-                <label htmlFor="children">How many childrens do you have? (we will check this in person)</label>
-                <br />
-                <input id="children" {...register("children", { required: true })} defaultValue={auth?.user?.children} style={{ border: '1px solid black' }} />
-                <br />
-                {errors.children && <span>This field is required</span>}
-                <br /><br />
-            
+            <Box pl={1.5} pr={1.5}>
+                <Input 
+                    defaultValue={auth?.user?.children}
+                    label={additionalInfoLabelChildren}
+                    wrapperProps={{
+                        maxW: { sm: "50%", xs: "100%" }
+                    }}
+                    {...register("children")}
+                />
             </Box>
             {
                 isDirty && !isSubmitSuccessful &&
                 <>
                     <Divider />
-                    <Box pl={1} pr={1}>
+                    <Box pl={1.5} pr={1.5}>
                         <Row>
                             <Col colSize={12} right>
                                 <Button default disabled={isSubmitting} gray mr={0.75} onClick={handleCancel}>
