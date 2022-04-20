@@ -1,7 +1,9 @@
-import { ClientConfig } from '@prismicio/client';
-import { GetStaticProps } from 'next';
-import Requests from '../../views/Requests';
-import Prismic from '../../libs/Prismic/Prismic';
+import { GetStaticProps } from "next"
+
+import { ClientConfig } from "@prismicio/client"
+
+import Prismic from "../../libs/Prismic/Prismic"
+import Requests from "../../views/Requests"
 
 export const getStaticProps: GetStaticProps = async ({
     locale: lang,

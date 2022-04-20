@@ -1,29 +1,62 @@
-import { ClientConfig } from '@prismicio/client';
-import { GetStaticProps, GetStaticPaths } from 'next';
-import Requests from '../../views/Requests/[id]';
-import Prismic from '../../libs/Prismic/Prismic';
+import { GetStaticPaths, GetStaticProps } from "next"
 
-export const getStaticProps: GetStaticProps = async ({
-    locale: lang,
-    previewData
-}) => {
-    const clientOptions = previewData as ClientConfig;
+import { ClientConfig } from "@prismicio/client"
 
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-requests' });
+import Prismic from "../../libs/Prismic/Prismic"
+import Requests from "../../views/Requests/[id]"
+
+export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
+    const res = await fetch(
+        'https://impactmarket-api-staging.herokuapp.com/api/v2/communities?limit=99'
+    );
+    const data = await res.json();
+
+    //  CREATE DYNAMIC PAGE FOR EACH LOCALE
+    const paths: any = [];
+
+    data.data.rows.forEach((community: any) => {
+        for (const locale of locales) {
+            paths.push({
+                locale,
+                params: {
+                    id: community.id.toString()
+                }
+            });
+        }
+    });
 
     return {
-        props: {
-            data,
-            view: 'requests'
-        }
+        fallback: true,
+        paths
     };
 };
 
-export const getStaticPaths: GetStaticPaths<{ slug: string }> = async () => {
+export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData, params }) => {
+
+    // PRISMIC
+    const clientOptions = previewData as ClientConfig;
+
+    const data = await Prismic.getByTypes({
+        clientOptions,
+        lang,
+        types: 'pwa-view-requests'
+    });
+    //  -----
+
+    //  DYNAMIC PAGES
+    const { id } = params
+    const res = await fetch(`https://impactmarket-api-staging.herokuapp.com/api/v2/communities/${id}`)
+    const community = await res.json()
+    //  -----
+
     return {
-        paths: [], //indicates that no page needs be created at build time
-        fallback: 'blocking' //indicates the type of fallback
-    }
-}
+        props: {
+            community,
+            data,
+            view: 'requests'
+        },
+        revalidate: 60
+    };
+};
 
 export default Requests;

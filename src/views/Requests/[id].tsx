@@ -1,40 +1,80 @@
-import React, { useEffect, useState } from 'react';
-import { useRouter } from 'next/router';
+import React from "react"
+
 import {
-    ViewContainer
-} from '@impact-market/ui';
+  Box,
+  Button,
+  Card,
+  Display,
+  Grid,
+  Text,
+  ViewContainer
+} from "@impact-market/ui"
 
-const Community: React.FC<{ isLoading?: boolean }> = (props) => {
+// import { useGetCommunityMutation } from "../../api/community"
+
+//  import { useSetCommunityReviewStateMutation } from '../../api/community';
+
+const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
-    
-    // GET ID FROM COMMUNITY FROM URL (DYNAMIC ROUTE)
-    const router = useRouter()
-    const { id } = router.query
-
-    const [community, setCommunity] = useState({}) as any;
-
-    // USING FETCH TEMPORARLY BECAUSE COMMUNITIES AREN'T ACCESSIBLE WITH TOKEN USING MUTATION
-    // TODO -> USE MUTATION
-    useEffect(() => {
-        const init = async () => {
-            const response = await fetch(
-                `https://impactmarket-api-staging.herokuapp.com/api/v2/communities?limit=999&id=${id}`, { method: 'GET' }
-            );
-
-            setCommunity((await response.json()).data.rows);
-        };
-
-        init();
-    }, []);
-    // ---
+    const community= props.community.data
 
     console.log(community)
 
     return (
         <ViewContainer isLoading={isLoading}>
-            <p>test</p>
+            <Grid cols={2}>
+                <Box>
+                    <Display>{community.name}</Display>
+                    <Text g500 mt={0.25} extrasmall medium>
+                        {community.country}
+                        {community.city}
+                    </Text>
+                </Box>
+                <Box right>
+                    <Button secondary mr={1}>
+                        Decline
+                    </Button>
+                    <Button>Accept/Claim</Button>
+                </Box>
+            </Grid>
+            <Grid cols={4}>
+                <Card>
+                    <Text regular small g500>
+                        # Beneficiaries
+                    </Text>
+                    <Text semibold medium g900>
+                        {Object.keys(community).length > 0 &&
+                            community.state.beneficiaries}
+                    </Text>
+                </Card>
+                <Card>
+                    <Text regular small g500>
+                        Claimed per beneficiary
+                    </Text>
+                    <Text semibold medium g900>
+                        {Object.keys(community).length > 0 &&
+                            community.state.claims}
+                    </Text>
+                </Card>
+                <Card>
+                    <Text regular small g500>
+                        Maximum per beneficiary
+                    </Text>
+                    <Text semibold medium g900>
+                        500
+                    </Text>
+                </Card>
+                <Card>
+                    <Text regular small g500>
+                        Time increment
+                    </Text>
+                    <Text semibold medium g900>
+                        5 minutes
+                    </Text>
+                </Card>
+            </Grid>
         </ViewContainer>
     );
 };
 
-export default Community;
+export default Requests;

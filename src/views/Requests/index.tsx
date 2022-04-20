@@ -1,47 +1,45 @@
-import React, { useEffect, useState } from 'react';
+import Link from "next/link"
+import React, { useEffect, useState } from "react"
+
 import {
-    Box,
-    Card,
-    Display,
-    Grid,
-    Text,
-    ViewContainer,
-    Icon,
-    Tabs,
-    TabList,
-    Tab,
-    TabPanel
-} from '@impact-market/ui';
-import RichText from '../../libs/Prismic/components/RichText';
-import Link from 'next/link';
-// import { useGetCommunitiesMutation } from '../api/community';
+  Box,
+  Card,
+  Display,
+  Grid,
+  Icon,
+  Tab,
+  TabList,
+  TabPanel,
+  Tabs,
+  Text,
+  ViewContainer
+} from "@impact-market/ui"
+
+import { useGetCommunitiesByCountryMutation } from "../../api/community"
 
 const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
 
     const [communities, setCommunities] = useState({}) as any;
     const [myCountry, setMyCountry] = useState(true);
-    //const [reviewStatus, setReviewStatus] = useState('')
-    //const [getCommunities] = useGetCommunitiesMutation();
-    
+    //  const [reviewStatus, setReviewStatus] = useState('')
+    const [getCommunities] = useGetCommunitiesByCountryMutation();
 
-    // USING FETCH TEMPORARLY BECAUSE COMMUNITIES AREN'T ACCESSIBLE WITH TOKEN USING MUTATION
-    // TODO -> USE MUTATION
-        useEffect(() => {
-            const init = async () => {
-                const response = await fetch(
-                    `https://impactmarket-api-staging.herokuapp.com/api/v2/communities?limit=999${
-                        myCountry && '&country=PT'
-                    }`,
-                    { method: 'GET' }
-                );
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const communities = await getCommunities(myCountry as any);
 
-                setCommunities((await response.json()).data.rows);
-            };
+                setCommunities(communities);
+            } catch (error) {
+                console.log(error);
 
-            init();
-        }, [myCountry]);
-    // -----
+                return false;
+            }
+        };
+
+        init();
+    }, [myCountry]);
 
     console.log(communities)
 
@@ -49,21 +47,18 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         <ViewContainer isLoading={isLoading}>
             <Display>Community Requests</Display>
             <Text g500 mt={0.25}>
-                <RichText
-                    content={
-                        'Here you will find all the communities that have requested to join impactMarket.'
-                    }
-                />
+                Here you will find all the communities that have requested to
+                join impactMarket.
             </Text>
             <Tabs>
                 <TabList>
                     <Tab
-                        title="My Country"
                         onClick={() => setMyCountry(true)}
+                        title="My Country"
                     />
                     <Tab
-                        title="Other Countries"
                         onClick={() => setMyCountry(false)}
+                        title="Other Countries"
                     />
                 </TabList>
             </Tabs>
@@ -78,10 +73,10 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 <TabPanel>Content for Tab 2</TabPanel>
                 <TabPanel>Content for Tab 3</TabPanel>
             </Tabs>
-            <Grid cols={4} colSpan={1.5}>
-                {communities.length > 0 &&
-                    communities.map((community: any, key: number) => (
-                        <Link href={'/requests/' + community.id} key={key}>
+            <Grid colSpan={1.5} cols={4}>
+                {Object.keys(communities).length > 0 &&
+                    communities.data.rows.map((community: any, key: number) => (
+                        <Link href={`/requests/${  community.id}`} key={key}>
                             <Card>
                                 <Box>
                                     <img
@@ -93,20 +88,20 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                         }}
                                     />
                                 </Box>
-                                <Text base semibold g900 margin={'0.7 0'}>
+                                <Text base g900 margin="0.7 0" semibold>
                                     {community.name}
                                     {community.review}
                                 </Text>
                                 <Box>
                                     <Box inlineFlex>
-                                        <Icon mr={0.5} icon="users" g500 />
-                                        <Text small regular g500>
+                                        <Icon g500 icon="users" mr={0.5} />
+                                        <Text g500 regular small>
                                             {community.state.beneficiaries}
                                         </Text>
                                     </Box>
                                     <Box inlineFlex>
                                         <Box mr={0.5}>{community.country}</Box>
-                                        <Text small regular g500>
+                                        <Text g500 regular small>
                                             {community.city}
                                         </Text>
                                     </Box>
