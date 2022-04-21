@@ -1,53 +1,80 @@
-import { Avatar, Box, Button, CircledIcon, Col, Divider, Row } from '@impact-market/ui';
+import { Avatar, Box, CircledIcon, Col, Row, Spinner, toast } from '@impact-market/ui';
+import { Controller, useForm } from "react-hook-form";
 import { getImage } from '../../../utils/images';
 import { selectCurrentUser } from '../../../state/slices/auth';
-import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
-import React from "react";
-import String from '../../../libs/Prismic/components/String';
+import ImageUpload from '../../../components/ImageUpload';
+import React, { useState } from "react";
 
 const Form = ({ onSubmit }: any) => {
+    const [isLoading, toggleLoading] = useState(false);
     const auth = useSelector(selectCurrentUser);
 
-    const { control, register, handleSubmit, formState: { errors } } = useForm<any>();
-    const { isSubmitting } = useFormState({ control });
+    const { control } = useForm();
     
-    const image = getImage({ filePath: auth?.user?.avatarMediaPath, fit: 'cover', height: 118, width: 118 });
+    const image = getImage({ filePath: auth?.user?.avatarMediaPath, fit: 'cover', height: 120, width: 120 });
+
+    // TODO: esta função está a ser chamada logo no inicio, não espera pelo onChange do input */
+    const handleFiles = (data: any) => {
+        try {
+            toggleLoading(true);
+            onSubmit(data);
+            toggleLoading(false);
+        }
+        catch(e) {
+            console.log(e);
+
+            toggleLoading(false);
+
+            // TODO: colocar textos no prismic
+            toast.error("An error has occurred! Please try again later.");
+        }
+    }
 
     // TODO: colocar textos no prismic
-    
+
     return (
-        <form onSubmit={handleSubmit(onSubmit)}>
-            <Box pl={1.5} pr={1.5}>
-                <Row>
-                    <Col colSize={3}>
-                        {
-                            image ?
-                            <Avatar large url={image} />
-                            :
-                            <CircledIcon icon="users" large />
-                        }
-                    </Col>
-                    <Col colSize={9}>
-                        <label htmlFor="img">Image</label>
-                        <br />
-                        <input id="img" type="file" {...register("img", { required: true })} accept="image/*" />
-                        <br />
-                        {errors.img && <span>This field is required</span>}
-                    </Col>
-                </Row>
-            </Box>
-            <Divider/>
-            <Box pl={1.5} pr={1.5}>
-                <Row>
-                    <Col colSize={12} right>
-                        <Button default isLoading={isSubmitting} type="submit">
-                            <String id="saveChanges" />
-                        </Button>
-                    </Col>
-                </Row>
-            </Box>
-        </form>
+        <>
+            {
+                isLoading ?
+                <Spinner isActive margin="auto" />
+                :
+                <form>
+                    <Box pl={1.5} pr={1.5}>
+                        <Row fLayout="center start">
+                            <Col colSize={3}>
+                                { /* TODO: missing icon "user" */ }
+                                { /* TODO: colocar o mesmo tamanho do Avatar large e no CircledIcon extralarge na UI */ }
+                                {
+                                    image ?
+                                    <Avatar large url={image} />
+                                    :
+                                    <CircledIcon extralarge icon="users" />
+                                }
+                            </Col>
+                            <Col colSize={9}>
+                                { /* TODO: ver como fica a parte azul do texto que está no design */ }
+                                <Controller
+                                    control={control}
+                                    name="img"
+                                    render={({ field }) => 
+                                        <ImageUpload 
+                                            handleFiles={handleFiles}
+                                            label="Click to upload or drag and drop SVG, PNG, JPG or GIF"
+                                            wrapperProps={{
+                                                mt: 0.75
+                                            }}
+                                            { ...field } 
+                                        />
+                                    }
+                                />
+                            </Col>
+                        </Row>
+                    </Box> 
+                </form>
+            }
+        </>
+        
     );
 }
 

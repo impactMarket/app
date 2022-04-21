@@ -1,84 +1,80 @@
 import { Box, Button, Col, Row } from '@impact-market/ui';
+import { Controller, useForm, useFormState } from "react-hook-form";
+import { currencies } from '../../../utils/currencies';
+import { languages } from '../../../utils/languages';
 import { selectCurrentUser } from '../../../state/slices/auth';
-import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
-import React from "react";
+import React, { useEffect } from "react";
+import Select from '../../../components/Select';
 import String from '../../../libs/Prismic/components/String';
-import currenciesJSON from '../../../assets/currencies.json';
-import languagesJSON from '../../../assets/languages.json';
-
-type Inputs = {
-    currency: string,
-    language: string
-};
-
-const currencies: {
-    [key: string]: {
-        symbol: string;
-        name: string;
-        symbol_native: string;
-    };
-} = currenciesJSON;
-
-const languages: {
-    [key: string]: {
-        name: string;
-        nativeName: string;
-    };
-} = languagesJSON;
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
+    const { t } = useTranslations();
 
-    const { control, register, handleSubmit, formState: { errors } } = useForm<Inputs>({
+    const { handleSubmit, reset, control, getValues } = useForm({
         defaultValues: {
             currency: auth?.user?.currency,
             language: auth?.user?.language
         }
     });
-    const { isSubmitting } = useFormState({ control });
+    const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
 
-    // TODO: colocar textos no prismic
+    useEffect(() => {
+        if(isSubmitSuccessful) {
+            reset(getValues());
+        }
+    }, [isSubmitSuccessful]);
+
+    const handleCancel = (e: any) => {
+        e.preventDefault();
+        reset();
+    }
     
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <label htmlFor="currency"><String id="currency" /></label>
-            <br />
-            <select id="currency" {...register("currency", { required: true })} style={{ border: '1px solid black' }}>
-                <option>Select</option>
-                { 
-                    Object.entries(currencies).map(([key, value]) => { 
-                        return <option key={key} value={key}>{value.name}</option>;
-                    }) 
-                }
-            </select>
-            <br />
-            {errors.currency && <span>This field is required</span>}
-            <br /><br />
-
-            <label htmlFor="language"><String id="language" /></label>
-            <br />
-            <select id="language" {...register("language", { required: true })} style={{ border: '1px solid black' }}>
-                <option>Select</option>
-                { 
-                    Object.entries(languages).map(([key, value]) => { 
-                        return <option key={key} value={key}>{value.name}</option>;
-                    }) 
-                }
-            </select>
-            <br />
-            {errors.language && <span>This field is required</span>}
-            <br /><br />
-            
-            <Box mt={1.5}>
-                <Row>
-                    <Col colSize={12} right>
-                        <Button default isLoading={isSubmitting} type="submit">
-                            <String id="saveChanges" />
-                        </Button>
-                    </Col>
-                </Row>
+            <Box mb={1.5}>
+                <Controller
+                    control={control}
+                    name="currency"
+                    render={({ field }) => 
+                        <Select 
+                            label={t('currency')}
+                            options={Object.entries(currencies)}
+                            { ...field } 
+                        />
+                    }
+                />
             </Box>
+            <Box>
+                <Controller
+                    control={control}
+                    name="language"
+                    render={({ field }) => 
+                        <Select 
+                            label={t('language')}
+                            options={Object.entries(languages)}
+                            { ...field } 
+                        />
+                    }
+                />
+            </Box>
+            {
+                isDirty && !isSubmitSuccessful &&
+                <Box mt={0.875}>
+                    <Row >
+                        <Col colSize={12} right>
+                            <Button default disabled={isSubmitting} gray mr={0.75} onClick={(e: any) => handleCancel(e)}>
+                                <String id="cancel" />
+                            </Button>
+                            <Button default isLoading={isSubmitting} type="submit">
+                                <String id="saveChanges" />
+                            </Button>
+                        </Col>
+                    </Row>
+                </Box>
+            }
         </form>
     );
 }

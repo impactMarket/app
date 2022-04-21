@@ -4,6 +4,14 @@ import { Rate, selectRates } from '../state/slices/rates';
 import { useSelector } from 'react-redux';
 import currenciesJSON from '../assets/currencies.json';
 
+export const currencies: {
+    [key: string]: {
+        symbol: string;
+        name: string;
+        symbol_native: string;
+    };
+} = currenciesJSON;
+
 export const currencyFormat = (number: number, currency: string) => {
     const rates = useSelector(selectRates);
     const currencySymbol = getCurrencySymbol(currency);

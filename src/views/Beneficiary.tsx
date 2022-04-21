@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal, toast } from '@impact-market/ui';
-import { currencyFormat } from '../utils/currency';
+import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useAcceptRulesMutation } from '../api/user';

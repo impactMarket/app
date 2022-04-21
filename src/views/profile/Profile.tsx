@@ -48,15 +48,13 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const handleDisconnectClick = async () => {
         await disconnect();
     }
-
+    
     const onSubmit: SubmitHandler<any> = async (data) => {
-        try {
-            const payload = await updateUser({
-                ...data,
-                gender: data?.gender || 'u'
-            }).unwrap();
+        try {  
+            // TODO: este pedido não devolve o "beneficiary", logo perdemos o tipo de user ao guardar no reducer */
+            const result = await updateUser(data).unwrap();
 
-            dispatch(setUser({ user: { ...payload }}));
+            dispatch(setUser({ user: { ...result }}));
 
             // TODO: colocar textos no prismic
             toast.success("Successfully changed data!");
@@ -71,15 +69,15 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
     const onImageSubmit: SubmitHandler<any> = async (data) => {
         try {
-            if(data?.img?.length > 0) {
-                const type = data.img[0].type?.split('/')[1] || '';
+            if(data?.length > 0) {
+                const type = data[0].type?.split('/')[1] || '';
 
                 if(type) {
                     const preSigned = await getPreSigned(type).unwrap();
 
                     if(preSigned?.uploadURL) {
                         const result = await fetch(preSigned.uploadURL, {
-                            body: data.img[0],
+                            body: data[0],
                             method: 'PUT'
                         });
 
@@ -134,7 +132,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         return (
             <Row>
                 <Col colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 2.5 }}>
-                    { /* TODO: Falta colocar um Dividir apenas em mobile */ }
+                    { /* TODO: Falta colocar um Divider apenas em mobile */ }
                     <Text g700 medium small>{title}</Text>
                     <RichText content={description} g500 regular small />
                 </Col>

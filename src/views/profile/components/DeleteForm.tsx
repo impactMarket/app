@@ -1,9 +1,9 @@
-import { Box, Button, Col, Divider, Row, Text, Toggle } from '@impact-market/ui';
+import { Box, Col, Row, Text, Toggle } from '@impact-market/ui';
 import { useForm, useFormState } from "react-hook-form";
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
+import FormActions from './FormActions';
 import React, { useState } from "react";
 import RichText from '../../../libs/Prismic/components/RichText';
-import String from '../../../libs/Prismic/components/String';
 
 const Form = ({ onSubmit }: any) => {
     const [showActions, toggleActions] = useState(false);
@@ -44,22 +44,7 @@ const Form = ({ onSubmit }: any) => {
                 </Row>
             </Box>
             {
-                showActions &&
-                <>
-                    <Divider/>
-                    <Box pl={1.5} pr={1.5}>
-                        <Row>
-                            <Col colSize={12} right>
-                                <Button default disabled={isSubmitting} gray mr={0.75} onClick={handleCancel}>
-                                    <String id="cancel" />
-                                </Button>
-                                <Button default isLoading={isSubmitting} type="submit">
-                                    <String id="confirm" />
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Box>
-                </>
+                showActions && <FormActions handleCancel={handleCancel} isSubmitting={isSubmitting} />
             }
         </form>
     );

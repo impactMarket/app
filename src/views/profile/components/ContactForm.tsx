@@ -1,18 +1,13 @@
-import { Box, Button, Col, Divider, Row } from '@impact-market/ui';
+import { Box } from '@impact-market/ui';
+import { Controller, useForm, useFormState } from "react-hook-form";
 import { selectCurrentUser } from '../../../state/slices/auth';
-import { useForm, useFormState } from "react-hook-form";
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
+import FormActions from './FormActions';
 import Input from '../../../components/Input';
 import React, { useEffect } from "react";
 import RichText from '../../../libs/Prismic/components/RichText';
-import String from '../../../libs/Prismic/components/String';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
-
-type Inputs = {
-    email: string,
-    phone: string
-};
 
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
@@ -21,17 +16,22 @@ const Form = ({ onSubmit }: any) => {
     const { extractFromView } = usePrismicData();
     const { contactTooltip } = extractFromView('formSections') as any;
 
-    const { control, register, reset, handleSubmit } = useForm<Inputs>();
+    const { handleSubmit, reset, control, getValues } = useForm({
+        defaultValues: {
+            email: auth?.user?.email,
+            phone: auth?.user?.phone
+        }
+    });
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
 
     useEffect(() => {
         if(isSubmitSuccessful) {
-            reset();
+            reset(getValues());
         }
     }, [isSubmitSuccessful]);
 
-    // TODO: reset it's not working with the inputs from UI
-    const handleCancel = () => {
+    const handleCancel = (e: any) => {
+        e.preventDefault();
         reset();
     }
     
@@ -41,42 +41,52 @@ const Form = ({ onSubmit }: any) => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box pl={1.5} pr={1.5}>
                 <Box mb={1.5}>
+                    {/* <Controller
+                        control={control}
+                        name="email"
+                        render={({ field }) => 
+                            <Input 
+                                label={t('email')}
+                                { ...field } 
+                            />
+                        }
+                    /> */}
                     <Input 
-                        defaultValue={auth?.user?.email}
+                        control={control}
+                        name="email"
                         label={t('email')}
-                        {...register("email")}
                     />
                 </Box>
                 <Box mb={1.5}>
+                    { /* TODO: o disabled deveria ter outro estilo no UI */ }
+                    {/* <Controller
+                        control={control}
+                        name="phone"
+                        render={({ field }) => 
+                            <Input 
+                                disabled
+                                label={t('phoneNumber')}
+                                wrapperProps={{
+                                    maxW: { sm: "50%", xs: "100%" }
+                                }}
+                                { ...field } 
+                            />
+                        }
+                    /> */}
                     <Input 
-                        defaultValue={auth?.user?.phone}
+                        control={control}
+                        name="phone"
                         disabled
                         label={t('phoneNumber')}
                         wrapperProps={{
                             maxW: { sm: "50%", xs: "100%" }
-                        }}
-                        {...register("phone")}
+                        }} 
                     />
                 </Box>
                 <RichText content={contactTooltip} g500 regular small />
             </Box>
             {
-                isDirty && !isSubmitSuccessful &&
-                <>
-                    <Divider/>
-                    <Box pl={1.5} pr={1.5}>
-                        <Row>
-                            <Col colSize={12} right>
-                                <Button default disabled={isSubmitting} gray mr={0.75} onClick={handleCancel}>
-                                    <String id="cancel" />
-                                </Button>
-                                <Button default isLoading={isSubmitting} type="submit">
-                                    <String id="saveChanges" />
-                                </Button>
-                            </Col>
-                        </Row>
-                    </Box>
-                </>
+                isDirty && !isSubmitSuccessful && <FormActions handleCancel={handleCancel} isSubmitting={isSubmitting} />
             }
         </form>
     );
