@@ -109,6 +109,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             await deleteUser();
             await disconnect();
 
+            // TODO: colocar textos no prismic
             toast.success("Your account was deleted successfully!");
 
             return router.push('/');

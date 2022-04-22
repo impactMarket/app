@@ -83,9 +83,11 @@ const Form = ({ onSubmit }: any) => {
                 </Row>
                 <Row mt={0.5}>
                     <Col colSize={12}>
+                        { /* TODO: colocar textos no prismic */ }
                         <Input 
                             control={control}
                             label={t('bio')}
+                            limit={275}
                             name="bio"
                             placeholder="Write a short introduction."
                             rows={6}

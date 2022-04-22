@@ -20,6 +20,10 @@ const Form = ({ onSubmit }: any) => {
             toggleLoading(true);
             onSubmit(data);
             toggleLoading(false);
+
+            // TODO: colocar textos no prismic
+            // TODO: descomentar se for para ficar aqui o alerta
+            // toast.success("Successfully changed data!");
         }
         catch(e) {
             console.log(e);
@@ -31,8 +35,6 @@ const Form = ({ onSubmit }: any) => {
         }
     }
 
-    // TODO: colocar textos no prismic
-
     return (
         <>
             {
@@ -42,7 +44,7 @@ const Form = ({ onSubmit }: any) => {
                 <form>
                     <Box pl={1.5} pr={1.5}>
                         <Row fLayout="center start">
-                            <Col colSize={3}>
+                            <Col colSize={{ sm: 3, xs: 12 }} pb={{ sm: 1, xs: 1.25 }}>
                                 { /* TODO: missing icon "user" */ }
                                 {
                                     image ?
@@ -51,16 +53,14 @@ const Form = ({ onSubmit }: any) => {
                                     <CircledIcon extralarge icon="users" />
                                 }
                             </Col>
-                            <Col colSize={9}>
+                            <Col colSize={{ sm: 9, xs: 12 }} pt={{ sm: 1, xs: 0 }}>
                                 { /* TODO: ver como fica a parte azul do texto que está no design */ }
+                                { /* TODO: colocar textos no prismic */ }
                                 <ImageUpload 
                                     control={control}
                                     handleFiles={handleFiles}
                                     label="Click to upload or drag and drop SVG, PNG, JPG or GIF"
                                     name="img"
-                                    wrapperProps={{
-                                        mt: 0.75
-                                    }}
                                 />
                             </Col>
                         </Row>
