@@ -130,7 +130,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 !auth?.user?.active &&
                 <Alert error icon="key" mb={1.5} message={<Message id="yourAccountHasBeenLocked" />} />
             }
-            <Display>
+            <Display g900 medium>
                 {title}
             </Display>
             <RichText components={{ OpenRulesModal: ({ children }: any) => <a onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</a> }} content={content} g500 mt={0.25} variables={{ community: community?.name }} />
