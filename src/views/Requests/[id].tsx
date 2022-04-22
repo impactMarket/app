@@ -1,24 +1,42 @@
-import React from "react"
+import React, { useEffect, useState } from 'react';
 
 import {
-  Box,
-  Button,
-  Card,
-  Display,
-  Grid,
-  Text,
-  ViewContainer
-} from "@impact-market/ui"
+    Box,
+    Button,
+    Card,
+    Display,
+    Grid,
+    Text,
+    ViewContainer
+} from '@impact-market/ui';
 
-// import { useGetCommunityMutation } from "../../api/community"
+import { useUpdateReviewMutation } from '../../api/community';
 
-//  import { useSetCommunityReviewStateMutation } from '../../api/community';
-
-const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
+const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
-    const community= props.community.data
+    const community = props.community.data;
 
-    console.log(community)
+    //  REVIEW HAS 4 STATES: 'pending', 'accepted', 'claimed', 'declined'
+
+    const [updateReview] = useUpdateReviewMutation();
+
+    const UpdateReview = async (review: string) => {
+        try {
+            await updateReview({
+                body: {
+                    review: review
+                },
+                id: community.id
+            });
+            
+        } catch (error) {
+            console.log(error);
+
+            return false;
+        }
+    };
+
+    console.log(community);
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -31,10 +49,16 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                     </Text>
                 </Box>
                 <Box right>
-                    <Button secondary mr={1}>
+                    <Button
+                        secondary
+                        mr={1}
+                        onClick={() => UpdateReview('declined')}
+                    >
                         Decline
                     </Button>
-                    <Button>Accept/Claim</Button>
+                    <Button onClick={() => UpdateReview('accepted')}>
+                        Accept/Claim
+                    </Button>
                 </Box>
             </Grid>
             <Grid cols={4}>
@@ -43,8 +67,10 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                         # Beneficiaries
                     </Text>
                     <Text semibold medium g900>
-                        {Object.keys(community).length > 0 &&
-                            community.state.beneficiaries}
+                    {community.state &&
+                        Object.keys(community).length > 0 &&
+                            community.state.beneficiaries
+                    }
                     </Text>
                 </Card>
                 <Card>
@@ -52,8 +78,10 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                         Claimed per beneficiary
                     </Text>
                     <Text semibold medium g900>
-                        {Object.keys(community).length > 0 &&
-                            community.state.claims}
+                    {community.state &&
+                        Object.keys(community).length > 0 &&
+                            community.state.claims
+                    } 
                     </Text>
                 </Card>
                 <Card>
@@ -77,4 +105,4 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     );
 };
 
-export default Requests;
+export default SingleRequest;
