@@ -3,7 +3,7 @@ import { GetStaticPaths, GetStaticProps } from "next"
 import { ClientConfig } from "@prismicio/client"
 
 import Prismic from "../../libs/Prismic/Prismic"
-import Requests from "../../views/Requests/[id]"
+import SingleRequest from "../../views/Requests/[id]"
 
 export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
     const res = await fetch(
@@ -55,8 +55,8 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
             data,
             view: 'requests'
         },
-        revalidate: 60
+        revalidate: 10
     };
 };
 
-export default Requests;
+export default SingleRequest;
