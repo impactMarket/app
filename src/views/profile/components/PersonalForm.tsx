@@ -1,8 +1,8 @@
 /* eslint-disable sort-keys */
 import { Box, Col, Row } from '@impact-market/ui';
-import { Controller, useForm, useFormState } from "react-hook-form";
 import { getCountryFromPhoneNumber } from '../../../utils/country';
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import FormActions from './FormActions';
 import Input from '../../../components/Input';
@@ -48,93 +48,45 @@ const Form = ({ onSubmit }: any) => {
             <Box pl={1.5} pr={1.5}>
                 <Row>
                     <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 1, xs: 0.75 }}>
-                        {/* <Controller
-                            control={control}
-                            name="firstName"
-                            render={({ field }) => 
-                                <Input 
-                                    label={t('firstName')}
-                                    { ...field } 
-                                />
-                            }
-                        /> */}
                         <Input 
                             control={control}
-                            name="firstName"
                             label={t('firstName')}
+                            name="firstName"
                         />
                     </Col>
                     <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0.75 }}>
-                        {/* <Controller
-                            control={control}
-                            name="lastName"
-                            render={({ field }) => 
-                                <Input 
-                                    label={t('lastName')}
-                                    { ...field } 
-                                />
-                            }
-                        /> */}
                         <Input 
                             control={control}
-                            name="lastName"
                             label={t('lastName')}
+                            name="lastName"
                         />
                     </Col>
                 </Row>
                 <Row mt={0.5}>
                     <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 1, xs: 0.75 }}>
-                        {/* <Controller
-                            control={control}
-                            name="age"
-                            render={({ field }) => 
-                                <Input 
-                                    label={t('age')}
-                                    type="number"
-                                    { ...field } 
-                                />
-                            }
-                        /> */}
                         <Input 
                             control={control}
-                            name="age"
                             label={t('age')}
+                            name="age"
                             type="number"
                         />
                     </Col>
                     <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0.75 }}>
                         { /* TODO: finish Gender field */ }
-                        <Controller
+                        <Select
                             control={control}
+                            label={t('gender')}
                             name="gender"
-                            render={({ field }) => 
-                                <Select
-                                    label={t('gender')}
-                                    options={Object.entries(genders)}
-                                    { ...field }
-                                />
-                            }
+                            options={Object.entries(genders)}
                         />
                     </Col>
                 </Row>
                 <Row mt={0.5}>
                     <Col colSize={12}>
-                        {/* <Controller
-                            control={control}
-                            name="bio"
-                            render={({ field }) => 
-                                <Input 
-                                    label={t('bio')}
-                                    placeholder="Write a short introduction."
-                                    rows={6}
-                                    { ...field } 
-                                />
-                            }
-                        /> */}
                         <Input 
                             control={control}
-                            name="bio"
                             label={t('bio')}
+                            name="bio"
                             placeholder="Write a short introduction."
                             rows={6}
                         />

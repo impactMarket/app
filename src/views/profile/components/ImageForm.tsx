@@ -1,7 +1,7 @@
 import { Avatar, Box, CircledIcon, Col, Row, Spinner, toast } from '@impact-market/ui';
-import { Controller, useForm } from "react-hook-form";
 import { getImage } from '../../../utils/images';
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { useForm } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import ImageUpload from '../../../components/ImageUpload';
 import React, { useState } from "react";
@@ -44,7 +44,6 @@ const Form = ({ onSubmit }: any) => {
                         <Row fLayout="center start">
                             <Col colSize={3}>
                                 { /* TODO: missing icon "user" */ }
-                                { /* TODO: colocar o mesmo tamanho do Avatar large e no CircledIcon extralarge na UI */ }
                                 {
                                     image ?
                                     <Avatar large url={image} />
@@ -54,19 +53,14 @@ const Form = ({ onSubmit }: any) => {
                             </Col>
                             <Col colSize={9}>
                                 { /* TODO: ver como fica a parte azul do texto que está no design */ }
-                                <Controller
+                                <ImageUpload 
                                     control={control}
+                                    handleFiles={handleFiles}
+                                    label="Click to upload or drag and drop SVG, PNG, JPG or GIF"
                                     name="img"
-                                    render={({ field }) => 
-                                        <ImageUpload 
-                                            handleFiles={handleFiles}
-                                            label="Click to upload or drag and drop SVG, PNG, JPG or GIF"
-                                            wrapperProps={{
-                                                mt: 0.75
-                                            }}
-                                            { ...field } 
-                                        />
-                                    }
+                                    wrapperProps={{
+                                        mt: 0.75
+                                    }}
                                 />
                             </Col>
                         </Row>

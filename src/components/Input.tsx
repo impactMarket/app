@@ -11,15 +11,11 @@ const Input: React.FC<InputProps> = props => {
             name={name}
             render={({ field }) =>
                 <>
-                    <Text g700 mb={0.375} medium small>{label}</Text>
+                    { label && <Text g700 mb={0.375} medium small>{label}</Text> }
                     <BaseInput {...field} {...forwardProps} />
                 </>
             }
         />
-        // <>
-        //     <Text g700 mb={0.375} medium small>{label}</Text>
-        //     <BaseInput {...field} {...forwardProps} />
-        // </>
     )
 }
 

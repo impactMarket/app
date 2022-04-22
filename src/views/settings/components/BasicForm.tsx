@@ -1,8 +1,8 @@
 import { Box, Button, Col, Row } from '@impact-market/ui';
-import { Controller, useForm, useFormState } from "react-hook-form";
 import { currencies } from '../../../utils/currencies';
 import { languages } from '../../../utils/languages';
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import React, { useEffect } from "react";
 import Select from '../../../components/Select';
@@ -35,29 +35,19 @@ const Form = ({ onSubmit }: any) => {
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={1.5}>
-                <Controller
+                <Select 
                     control={control}
+                    label={t('currency')}
                     name="currency"
-                    render={({ field }) => 
-                        <Select 
-                            label={t('currency')}
-                            options={Object.entries(currencies)}
-                            { ...field } 
-                        />
-                    }
+                    options={Object.entries(currencies)} 
                 />
             </Box>
             <Box>
-                <Controller
+                <Select 
                     control={control}
+                    label={t('language')}
                     name="language"
-                    render={({ field }) => 
-                        <Select 
-                            label={t('language')}
-                            options={Object.entries(languages)}
-                            { ...field } 
-                        />
-                    }
+                    options={Object.entries(languages)}
                 />
             </Box>
             {

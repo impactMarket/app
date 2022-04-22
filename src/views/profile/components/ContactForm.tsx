@@ -1,6 +1,6 @@
 import { Box } from '@impact-market/ui';
-import { Controller, useForm, useFormState } from "react-hook-form";
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { useForm, useFormState } from "react-hook-form";
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import FormActions from './FormActions';
@@ -41,43 +41,18 @@ const Form = ({ onSubmit }: any) => {
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box pl={1.5} pr={1.5}>
                 <Box mb={1.5}>
-                    {/* <Controller
-                        control={control}
-                        name="email"
-                        render={({ field }) => 
-                            <Input 
-                                label={t('email')}
-                                { ...field } 
-                            />
-                        }
-                    /> */}
                     <Input 
                         control={control}
-                        name="email"
                         label={t('email')}
+                        name="email"
                     />
                 </Box>
                 <Box mb={1.5}>
-                    { /* TODO: o disabled deveria ter outro estilo no UI */ }
-                    {/* <Controller
-                        control={control}
-                        name="phone"
-                        render={({ field }) => 
-                            <Input 
-                                disabled
-                                label={t('phoneNumber')}
-                                wrapperProps={{
-                                    maxW: { sm: "50%", xs: "100%" }
-                                }}
-                                { ...field } 
-                            />
-                        }
-                    /> */}
                     <Input 
                         control={control}
-                        name="phone"
                         disabled
                         label={t('phoneNumber')}
+                        name="phone"
                         wrapperProps={{
                             maxW: { sm: "50%", xs: "100%" }
                         }} 
