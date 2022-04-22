@@ -130,7 +130,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 !auth?.user?.active &&
                 <Alert error icon="key" mb={1.5} message={<Message id="yourAccountHasBeenLocked" />} />
             }
-            <Display>
+            <Display g900 medium>
                 {title}
             </Display>
             <Text g500 mt={0.25}>
