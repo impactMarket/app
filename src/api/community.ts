@@ -9,8 +9,8 @@ interface Community {
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
-        getCommunity: builder.mutation<Community, void>({
-            query: (id: any) => ({
+        getCommunity: builder.mutation<Community, number>({
+            query: (id: number) => ({
                 method: 'GET',
                 url: `communities/${id}`
             }),
@@ -20,7 +20,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
             query: ({myCountry, review}: any) => ({
                 method: 'GET',
                 // url: `communities?limit=99${myCountry as any && '&country=PT'}`
-                url: `communities?limit=99&review=${review}`
+                url: `communities?limit=999${myCountry && '&country=PT'}&review=${review}`
             }),
             transformResponse: (response: { data?: Community }) => response.data
         }),

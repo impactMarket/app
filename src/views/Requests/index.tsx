@@ -67,6 +67,25 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
 
             <Tabs>
                 <TabList>
+                        <Tab
+                            title='My Country'
+                            onClick={() => setMyCountry(true)}
+                            style={{
+                                textTransform:'capitalize'
+                            }}
+                        />
+                        <Tab
+                            title='Other Countries'
+                            onClick={() => setMyCountry(false)}
+                            style={{
+                                textTransform:'capitalize'
+                            }}
+                        />
+                </TabList>
+            </Tabs>
+
+            <Tabs>
+                <TabList>
                     {reviews.map(review =>
                         <Tab
                             number={Object.keys(communities).length > 0 && Object.keys(communities.data.rows).length}
@@ -109,7 +128,6 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                                     semibold
                                                 >
                                                     {community.name}
-                                                    {community.review}
                                                 </Text>
                                                 <Box>
                                                     {community.state &&
