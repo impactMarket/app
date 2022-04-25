@@ -5,7 +5,9 @@ import {
     Button,
     Card,
     Display,
+    DropdownMenu,
     Grid,
+    Icon,
     Text,
     ViewContainer,
     Spinner
@@ -17,8 +19,8 @@ import { useGetCommunityMutation } from '../../api/community';
 const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
 
-    const [communityId] = useState(props.communityId)
-    const [community, setCommunity] = useState({})
+    const [communityId] = useState(props.communityId);
+    const [community, setCommunity] = useState({});
 
     const [loading, setLoading] = useState(false);
 
@@ -27,17 +29,19 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
 
+    //  GET COMMUNITY DATA ON FIRST RENDER
     useEffect(() => {
         const init = async () => {
             try {
-                setLoading(true)
-                
+                setLoading(true);
+
                 const community = await getCommunity(communityId);
-                setCommunity(community.data)
-                
-                setLoading(false)
+                setCommunity(community.data);
+
+                setLoading(false);
             } catch (error) {
                 console.log(error);
+
                 return false;
             }
         };
@@ -45,6 +49,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
         init();
     }, []);
 
+    //  UPDATE COMMUNITY REVIEW STATE AND GET NEW DATA
     const UpdateReview = async (review: string) => {
         try {
             setLoading(true);
@@ -57,8 +62,8 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
             });
 
             const community = await getCommunity(communityId);
-            setCommunity(community.data)
-            
+            setCommunity(community.data);
+
             setLoading(false);
         } catch (error) {
             console.log(error);
@@ -67,8 +72,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     };
 
-  
-    // console.log(community);
+    console.log(community);
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -84,18 +88,48 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
                                 {community.city}
                             </Text>
                         </Box>
-                        <Box right>
-                            <Button
-                                secondary
-                                mr={1}
-                                onClick={() => UpdateReview('declined')}
-                            >
-                                Decline
-                            </Button>
-                            <Button onClick={() => UpdateReview('accepted')}>
-                                Accept/Claim
-                            </Button>
-                        </Box>
+
+                        {community.review === 'pending' && (
+                            <Box right>
+                                <Button
+                                    secondary
+                                    mr={1}
+                                    onClick={() => UpdateReview('declined')}
+                                >
+                                    Decline
+                                </Button>
+                                <Button
+                                    onClick={() => UpdateReview('accepted')}
+                                >
+                                    Accept/Claim
+                                </Button>
+                            </Box>
+                        )}
+
+                        {community.review === 'accepted' && (
+                            <Box right>
+                                <Button mr={1}>
+                                    <Icon icon="edit" n01 margin={'0 0.5 0 0'} />
+                                    Edit Details
+                                </Button>
+                                <DropdownMenu 
+                                    title="Actions"
+                                    asButton
+                                    items={[
+                                        {
+                                            icon: 'eye',
+                                            onClick: () => alert('Release community'),
+                                            title: 'Release community'
+                                        },
+                                        {
+                                            icon: 'key',
+                                            onClick: () => alert('Submit to Proposal'),
+                                            title: 'Submit to Proposal'
+                                        },
+                                    ]}
+                                />
+                            </Box>
+                        )}
                     </Grid>
                     <Grid cols={4}>
                         <Card>
@@ -132,9 +166,6 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
                             </Text>
                             <Text semibold medium g900>
                                 5 minutes
-                            </Text>
-                            <Text semibold medium g900>
-                                {community.review}
                             </Text>
                         </Card>
                     </Grid>

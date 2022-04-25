@@ -14,16 +14,17 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
     //  CREATE DYNAMIC PAGE FOR EACH LOCALE
     const paths: any = [];
 
-    data.data.rows.forEach((community: any) => {
-        for (const locale of locales) {
-            paths.push({
-                locale,
-                params: {
-                    id: community.id.toString()
-                }
-            });
-        }
-    });
+    data.length > 0 &&
+        data.data.rows.forEach((community: any) => {
+            for (const locale of locales) {
+                paths.push({
+                    locale,
+                    params: {
+                        id: community.id.toString()
+                    }
+                });
+            }
+        });
 
     return {
         fallback: true,
