@@ -51,7 +51,7 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
 
     return {
         props: {
-            community,
+            communityId: community.data.id,
             data,
             view: 'requests'
         },
