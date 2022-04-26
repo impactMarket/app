@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import { Accordion, AccordionItem, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal } from '@impact-market/ui';
+import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currency';
 import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
@@ -13,9 +13,11 @@ import { useSaveClaimLocationMutation } from '../api/claim';
 import { useSelector } from 'react-redux';
 import { userBeneficiary } from '../utils/userTypes';
 import Image from '../libs/Prismic/components/Image';
+import Message from '../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
+import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
@@ -30,6 +32,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const auth = useSelector(selectCurrentUser);
     const currency = auth?.user?.currency || 'USD';
     const router = useRouter();
+    const { t } = useTranslations();
 
     // Check if current User has access to this page
     if(!auth?.user?.type?.includes(userBeneficiary)) {
@@ -41,28 +44,26 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const [getCommunity] = useGetCommunityMutation();
     const [saveClaimLocation] = useSaveClaimLocationMutation();
 
-    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim } } = useBeneficiary(
+    const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim }, fundsRemainingDays } = useBeneficiary(
         auth?.user?.beneficiary?.community
     );
-
-    const openRulesModal = () => openModal('welcomeBeneficiary', {
-        communityImage: community.coverImage,
-        communityName: community.name
-    });
 
     // Check if there's a Community with the address associated with the User. If not, return to Homepage
     useEffect(() => {
         const init = async () => {
             try {
-                const community = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
+                const data = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
 
-                setCommunity(community);
+                setCommunity(data);
 
                 toggleLoadingCommunity(false);
 
                 // If the User hasn't already accepted the Community Rules, show the modal
                 if(!auth?.user?.beneficiaryRules) {
-                    openRulesModal();
+                    openModal('welcomeBeneficiary', {
+                        communityImage: data.coverImage,
+                        communityName: data.name
+                    });
                 }
             }
             catch (error) {
@@ -117,52 +118,59 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const cardMessage = view.data.claimCardStates[cardType].text;
     const cardImage = view.data.claimCardStates[cardType].image;
     const claimAmountDisplay = currencyFormat(claimAmount, currency);
-
+    
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
-            <Display>
+            {
+                fundsRemainingDays <= 3 && fundsRemainingDays > 0 &&
+                <Alert icon="alertTriangle" mb={1.5} message={<Message id="communityFundsWillRunOut" variables={{ count: fundsRemainingDays, timeUnit: t("days").toLowerCase() }} />} warning />
+            }
+            {
+                !auth?.user?.active &&
+                <Alert error icon="key" mb={1.5} message={<Message id="yourAccountHasBeenLocked" />} />
+            }
+            <Display g900 medium>
                 {title}
             </Display>
-            <Text g500 mt={0.25}>
-                <RichText components={{ OpenRulesModal: ({ children }: any) => <a onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</a> }} content={content} variables={{ community: community?.name }} />
-             </Text>
-            <Card mt={2}>
-                <Row fLayout="center">
-                    <Col colSize={{ sm: 7, xs: 12 }}>
-                        <Box center>
-                            <Grid colSpan={1.25} cols={1}>
-                                <CircledIcon icon={cardIcon} large {...cardIconState} />
-                                <Box>
-                                    <Text g900 large medium>
-                                        {cardTitle}
-                                    </Text>
-                                    <Text g500 mt={0.5} small>
-                                        <RichText content={cardMessage} variables={{ amount: claimAmountDisplay }}/>
-                                    </Text>
-                                </Box>
-                                {
-                                    hasFunds &&
-                                    <Box margin="0 auto" maxW={22}>
-                                        {
-                                            !isClaimable &&
-                                            <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
-                                        }
-                                        {
-                                            (isClaimable || claimAllowed) &&
-                                            <Button default isLoading={loadingButton} large onClick={claimFunds}>
-                                                <String id="claim" /> ~{claimAmountDisplay}
-                                            </Button>
-                                        }
+            <RichText components={{ OpenRulesModal: ({ children }: any) => <a onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</a> }} content={content} g500 mt={0.25} variables={{ community: community?.name }} />
+             {
+                auth?.user?.active &&
+                <Card mt={2}>
+                    <Row fLayout="center">
+                        <Col colSize={{ sm: 7, xs: 12 }}>
+                            <Box center>
+                                <Grid colSpan={1.25} cols={1}>
+                                    <CircledIcon icon={cardIcon} large {...cardIconState} />
+                                    <Box>
+                                        <Text g900 large medium>
+                                            {cardTitle}
+                                        </Text>
+                                        <RichText content={cardMessage} g500 mt={0.5} small variables={{ amount: claimAmountDisplay }}/>
                                     </Box>
-                                }
-                            </Grid>
-                        </Box>
-                    </Col>
-                    <Col colSize={{ sm: 5, xs: 12 }}>
-                        <Image {...cardImage} radius={0.5}/>
-                    </Col>
-                </Row>
-            </Card>
+                                    {
+                                        hasFunds &&
+                                        <Box margin="0 auto" maxW={22}>
+                                            {
+                                                !isClaimable &&
+                                                <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
+                                            }
+                                            {
+                                                (isClaimable || claimAllowed) &&
+                                                <Button default isLoading={loadingButton} large onClick={claimFunds}>
+                                                    <String id="claim" /> ~{claimAmountDisplay}
+                                                </Button>
+                                            }
+                                        </Box>
+                                    }
+                                </Grid>
+                            </Box>
+                        </Col>
+                        <Col colSize={{ sm: 5, xs: 12 }}>
+                            <Image {...cardImage} radius={0.5}/>
+                        </Col>
+                    </Row>
+                </Card>
+            }
             <Text g500 mt={2} small>
                 <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, currency), total: currencyFormat(maxClaim, currency) }} />
             </Text>
