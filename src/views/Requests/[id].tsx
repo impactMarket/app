@@ -16,11 +16,12 @@ import {
 import { useUpdateReviewMutation } from '../../api/community';
 import { useGetCommunityMutation } from '../../api/community';
 
-const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
+
+const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (props) => {
     const { isLoading } = props;
 
     const [communityId] = useState(props.communityId);
-    const [community, setCommunity] = useState({});
+    const [community, setCommunity]= useState({}) as any;
 
     const [loading, setLoading] = useState(false);
 
@@ -35,7 +36,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
             try {
                 setLoading(true);
 
-                const community = await getCommunity(communityId);
+                const community: any = await getCommunity(communityId);
                 setCommunity(community.data);
 
                 setLoading(false);
@@ -61,7 +62,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
                 id: communityId
             });
 
-            const community = await getCommunity(communityId);
+            const community: any = await getCommunity(communityId);
             setCommunity(community.data);
 
             setLoading(false);
@@ -107,14 +108,19 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
                         )}
 
                         {community.review === 'accepted' && (
-                            <Box right>
+                            <Box right> 
                                 <Button mr={1}>
-                                    <Icon icon="edit" n01 margin={'0 0.5 0 0'} />
+                                    <Icon
+                                        icon="edit"
+                                        n01
+                                        margin={'0 0.5 0 0'}
+                                    />
                                     Edit Details
                                 </Button>
-                                <DropdownMenu 
-                                    title="Actions"
+                                <DropdownMenu
+                                    rtl
                                     asButton
+                                    title="Actions"
                                     items={[
                                         {
                                             icon: 'eye',
@@ -125,48 +131,73 @@ const SingleRequest: React.FC<{ isLoading?: boolean }> = (props) => {
                                             icon: 'key',
                                             onClick: () => alert('Submit to Proposal'),
                                             title: 'Submit to Proposal'
-                                        },
+                                        }
                                     ]}
-                                />
+                                />                               
                             </Box>
                         )}
                     </Grid>
+
                     <Grid cols={4}>
                         <Card>
-                            <Text regular small g500>
+                            <Text regular small g500 mb={0.3}>
                                 # Beneficiaries
                             </Text>
-                            <Text semibold medium g900>
-                                {community.state &&
-                                    Object.keys(community).length > 0 &&
-                                    community.state.beneficiaries}
-                            </Text>
+                            <Grid cols={2}>
+                                <Text semibold medium g900>
+                                    {community.state &&
+                                        !!Object.keys(community).length &&
+                                        community.state.beneficiaries}
+                                    99
+                                </Text>
+                                <Box right>
+                                    <Icon icon="users" s600 />
+                                </Box>
+                            </Grid>
                         </Card>
                         <Card>
-                            <Text regular small g500>
+                            <Text regular small g500 mb={0.3}>
                                 Claimed per beneficiary
                             </Text>
-                            <Text semibold medium g900>
-                                {community.state &&
-                                    Object.keys(community).length > 0 &&
-                                    community.state.claims}
-                            </Text>
+                            <Grid cols={2}>
+                                <Text semibold medium g900>
+                                    {community.state &&
+                                        !!Object.keys(community).length &&
+                                        community.state.claims}
+                                    99
+                                </Text>
+                                <Box right>
+                                    <Icon icon="heart" s600 />
+                                </Box>
+                            </Grid>
+                            
                         </Card>
                         <Card>
-                            <Text regular small g500>
+                            <Text regular small g500 mb={0.3}>
                                 Maximum per beneficiary
                             </Text>
-                            <Text semibold medium g900>
-                                500
-                            </Text>
+                            <Grid cols={2}>
+                                <Text semibold medium g900>
+                                    99
+                                </Text>
+                                <Box right>
+                                    <Icon icon="check" s600 />
+                                </Box>
+                            </Grid>
                         </Card>
                         <Card>
-                            <Text regular small g500>
+                            <Text regular small g500 mb={0.3}>
                                 Time increment
                             </Text>
-                            <Text semibold medium g900>
-                                5 minutes
-                            </Text>
+                            <Grid cols={2}>
+                                <Text semibold medium g900>
+                                    5 minutes
+                                </Text>
+                                <Box right>
+                                    <Icon icon="clock" s600 />
+                                </Box>
+                            </Grid>
+                            
                         </Card>
                     </Grid>
                 </>

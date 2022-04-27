@@ -11,14 +11,14 @@ const useGuard = () => {
     const [authorized, setAuthorized] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [getUser] = useGetUserMutation();
+    const { pathname } = useRouter();
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
-    const authCheck = (url: string, userPaths: Routes) => {
-        const path = url.split('?');
+    const authCheck = (userPaths: Routes) => {
 
-        if(!userPaths.includes(path[0])) {
+        if(!userPaths.includes(pathname)) {
             setAuthorized(false);
             router.push('/');
         } 
@@ -51,7 +51,7 @@ const useGuard = () => {
                 }
 
                 // on initial load - run auth check
-                authCheck(router.asPath, userPaths);
+                authCheck(userPaths);
 
                 setIsLoading(false);
             } catch (error) {
