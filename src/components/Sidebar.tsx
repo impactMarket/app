@@ -7,8 +7,9 @@ import {
     SidebarUserButton,
     openModal
 } from '@impact-market/ui';
-
 import { formatAddress } from '../utils/formatAddress';
+import { getImage } from '../utils/images';
+import { getUserName } from '../utils/users';
 import { selectCurrentUser } from '../state/slices/auth';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
@@ -72,7 +73,7 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
     const isModal = url?.startsWith('[modal]');
 
     if (isModal) {
-        return <SidebarMenuItem {...forwardProps} onClick={() => openModal(url.replace('[modal]', ''), forwardProps)} />
+        return <SidebarMenuItem {...forwardProps} onClick={() => openModal(url.replace('[modal]', ''), forwardProps)} />
     }
 
     const isInternalLink = url?.startsWith('https:///') || url?.startsWith('/');
@@ -91,17 +92,17 @@ const SidebarFooter = (props: { user?: User }) => {
     const { user } = props;
     const { address } = useWallet();
 
-    if (!address) {
+    if (!user) {
         return <ConnectButton />
     }
-
+    
     return (
         <Link href="/profile" passHref>
             <SidebarUserButton
                 {...user}
                 address={formatAddress(address, [6, 4])}
-                name={`${user?.firstName || ''}${!!user?.lastName ? ` ${user.lastName}` : ''}`}
-                photo={{ url: user?.avatarMediaPath }}
+                name={getUserName(user)}
+                photo={{ url: getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) }}
             />
         </Link>
     );
@@ -109,9 +110,8 @@ const SidebarFooter = (props: { user?: User }) => {
 
 const SidebarMobileActions = (props: { user?: User }) => {
     const { user } = props;
-    const { address } = useWallet();
 
-    if (!address) {
+    if (!user) {
         return <ConnectButton />
     }
 
@@ -119,7 +119,7 @@ const SidebarMobileActions = (props: { user?: User }) => {
         return null
     }
 
-    return <Avatar url={user?.avatarMediaPath} />;
+    return <Avatar url={getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 })} />;
 }
 
 const Sidebar = () => {
@@ -128,7 +128,7 @@ const Sidebar = () => {
 
     const [data, setData] = useState<MenusState | undefined>();
 
-    const { userConfig, extractFromConfig } =  usePrismicData();
+    const { userConfig, extractFromConfig } = usePrismicData();
 
     const checkRoute = (route: string | undefined) =>
         typeof route === 'string' ? asPath.split('?')[0] === route : false;
@@ -153,7 +153,7 @@ const Sidebar = () => {
             footerMenu,
             menus
         })
-    }, [user?.address, asPath]);
+    }, [user, asPath]);
 
     return (
         <SidebarBase

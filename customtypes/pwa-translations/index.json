@@ -5,10 +5,94 @@
   "status": true,
   "json": {
     "strings": {
+      "string-accept": {
+        "config": {
+          "label": "accept",
+          "placeholder": "Accept"
+        },
+        "type": "Text"
+      },
+      "string-acceptClaim": {
+        "config": {
+          "label": "acceptClaim",
+          "placeholder": "Accept/Claim"
+        },
+        "type": "Text"
+      },
+      "string-actions": {
+        "config": {
+          "label": "actions",
+          "placeholder": "Actions"
+        },
+        "type": "Text"
+      },
+      "string-address": {
+        "config": {
+          "label": "address",
+          "placeholder": "Address"
+        },
+        "type": "Text"
+      },
+      "string-age": {
+        "config": {
+          "label": "age",
+          "placeholder": "Age"
+        },
+        "type": "Text"
+      },
+      "string-allCommunities": {
+        "config": {
+          "label": "allCommunities",
+          "placeholder": "All Communities"
+        },
+        "type": "Text"
+      },
+      "string-allCountries": {
+        "config": {
+          "label": "allCountries",
+          "placeholder": "All Countries"
+        },
+        "type": "Text"
+      },
+      "string-allStories": {
+        "config": {
+          "label": "allStories",
+          "placeholder": "All Stories"
+        },
+        "type": "Text"
+      },
       "string-alreadyClaimed": {
         "config": {
           "label": "alreadyClaimed",
           "placeholder": "You have already claimed {{ claimed }} of {{ total }}"
+        },
+        "type": "Text"
+      },
+      "string-back": {
+        "config": {
+          "label": "back",
+          "placeholder": "Back"
+        },
+        "type": "Text"
+      },
+      "string-beneficiaries": {
+        "config": {
+          "label": "beneficiaries",
+          "placeholder": "Beneficiaries"
+        },
+        "type": "Text"
+      },
+      "string-beneficiary": {
+        "config": {
+          "label": "beneficiary",
+          "placeholder": "Beneficiary"
+        },
+        "type": "Text"
+      },
+      "string-bio": {
+        "config": {
+          "label": "bio",
+          "placeholder": "Bio"
         },
         "type": "Text"
       },
@@ -26,6 +110,13 @@
         },
         "type": "Text"
       },
+      "string-claimed": {
+        "config": {
+          "label": "claimed",
+          "placeholder": "Claimed"
+        },
+        "type": "Text"
+      },
       "string-close": {
         "config": {
           "label": "close",
@@ -33,10 +124,157 @@
         },
         "type": "Text"
       },
+      "string-comment": {
+        "config": {
+          "label": "comment",
+          "placeholder": "Comment"
+        },
+        "type": "Text"
+      },
+      "string-comments": {
+        "config": {
+          "label": "comments",
+          "placeholder": "Comments"
+        },
+        "type": "Text"
+      },
+      "string-confirm": {
+        "config": {
+          "label": "confirm",
+          "placeholder": "Confirm"
+        },
+        "type": "Text"
+      },
       "string-connectWallet": {
         "config": {
           "label": "connectWallet",
           "placeholder": "Connect Wallet"
+        },
+        "type": "Text"
+      },
+      "string-contribute": {
+        "config": {
+          "label": "contribute",
+          "placeholder": "Contribute"
+        },
+        "type": "Text"
+      },
+      "string-copyAddress": {
+        "config": {
+          "label": "copyAddress",
+          "placeholder": "Copy Address"
+        },
+        "type": "Text"
+      },
+      "string-countCharactersLeft": {
+        "config": {
+          "label": "countCharactersLeft",
+          "placeholder": "{{ count }} characters left"
+        },
+        "type": "Text"
+      },
+      "string-country": {
+        "config": {
+          "label": "country",
+          "placeholder": "Country"
+        },
+        "type": "Text"
+      },
+      "string-createStory": {
+        "config": {
+          "label": "createStory",
+          "placeholder": "Create Story"
+        },
+        "type": "Text"
+      },
+      "string-currency": {
+        "config": {
+          "label": "currency",
+          "placeholder": "Currency"
+        },
+        "type": "Text"
+      },
+      "string-days": {
+        "config": {
+          "label": "days",
+          "placeholder": "Days"
+        },
+        "type": "Text"
+      },
+      "string-decline": {
+        "config": {
+          "label": "decline",
+          "placeholder": "Decline"
+        },
+        "type": "Text"
+      },
+      "string-declined": {
+        "config": {
+          "label": "declined",
+          "placeholder": "Declined"
+        },
+        "type": "Text"
+      },
+      "string-deleteAccount": {
+        "config": {
+          "label": "deleteAccount",
+          "placeholder": "Delete Account"
+        },
+        "type": "Text"
+      },
+      "string-deletePost": {
+        "config": {
+          "label": "deletePost",
+          "placeholder": "Delete post"
+        },
+        "type": "Text"
+      },
+      "string-disconnectWallet": {
+        "config": {
+          "label": "disconnectWallet",
+          "placeholder": "Disconnect Wallet"
+        },
+        "type": "Text"
+      },
+      "string-editDetails": {
+        "config": {
+          "label": "editDetails",
+          "placeholder": "Edit Details"
+        },
+        "type": "Text"
+      },
+      "string-email": {
+        "config": {
+          "label": "email",
+          "placeholder": "Email"
+        },
+        "type": "Text"
+      },
+      "string-female": {
+        "config": {
+          "label": "female",
+          "placeholder": "Female"
+        },
+        "type": "Text"
+      },
+      "string-filters": {
+        "config": {
+          "label": "filters",
+          "placeholder": "Filters"
+        },
+        "type": "Text"
+      },
+      "string-firstName": {
+        "config": {
+          "label": "firstName",
+          "placeholder": "First name"
+        },
+        "type": "Text"
+      },
+      "string-gender": {
+        "config": {
+          "label": "gender",
+          "placeholder": "Gender"
         },
         "type": "Text"
       },
@@ -54,10 +292,52 @@
         },
         "type": "Text"
       },
+      "string-language": {
+        "config": {
+          "label": "language",
+          "placeholder": "Language"
+        },
+        "type": "Text"
+      },
+      "string-lastName": {
+        "config": {
+          "label": "lastName",
+          "placeholder": "Last name"
+        },
+        "type": "Text"
+      },
       "string-learnAndEarn": {
         "config": {
           "label": "learnAndEarn",
           "placeholder": "Learn & Earn"
+        },
+        "type": "Text"
+      },
+      "string-love": {
+        "config": {
+          "label": "love",
+          "placeholder": "Love"
+        },
+        "type": "Text"
+      },
+      "string-loved": {
+        "config": {
+          "label": "loved",
+          "placeholder": "Loved"
+        },
+        "type": "Text"
+      },
+      "string-loves": {
+        "config": {
+          "label": "loves",
+          "placeholder": "Loves"
+        },
+        "type": "Text"
+      },
+      "string-male": {
+        "config": {
+          "label": "male",
+          "placeholder": "Male"
         },
         "type": "Text"
       },
@@ -68,10 +348,101 @@
         },
         "type": "Text"
       },
+      "string-myCountry": {
+        "config": {
+          "label": "myCountry",
+          "placeholder": "My Country"
+        },
+        "type": "Text"
+      },
+      "string-myDetails": {
+        "config": {
+          "label": "myDetails",
+          "placeholder": "My details"
+        },
+        "type": "Text"
+      },
+      "string-myStories": {
+        "config": {
+          "label": "myStories",
+          "placeholder": "My Stories"
+        },
+        "type": "Text"
+      },
       "string-notifications": {
         "config": {
           "label": "notifications",
           "placeholder": "Notifications"
+        },
+        "type": "Text"
+      },
+      "string-openInExplorer": {
+        "config": {
+          "label": "openInExplorer",
+          "placeholder": "Open in Explorer"
+        },
+        "type": "Text"
+      },
+      "string-optional": {
+        "config": {
+          "label": "optional",
+          "placeholder": "Optional"
+        },
+        "type": "Text"
+      },
+      "string-or": {
+        "config": {
+          "label": "or",
+          "placeholder": "or"
+        },
+        "type": "Text"
+      },
+      "string-other": {
+        "config": {
+          "label": "other",
+          "placeholder": "Other"
+        },
+        "type": "Text"
+      },
+      "string-otherCountries": {
+        "config": {
+          "label": "otherCountries",
+          "placeholder": "Other countries"
+        },
+        "type": "Text"
+      },
+      "string-pending": {
+        "config": {
+          "label": "pending",
+          "placeholder": "Pending"
+        },
+        "type": "Text"
+      },
+      "string-phoneNumber": {
+        "config": {
+          "label": "phoneNumber",
+          "placeholder": "Phone number"
+        },
+        "type": "Text"
+      },
+      "string-readMore": {
+        "config": {
+          "label": "readMore",
+          "placeholder": "Read more"
+        },
+        "type": "Text"
+      },
+      "string-releaseCommunity": {
+        "config": {
+          "label": "releaseCommunity",
+          "placeholder": "Release community"
+        },
+        "type": "Text"
+      },
+      "string-reportAsInappropriate": {
+        "config": {
+          "label": "reportAsInappropriate",
+          "placeholder": "Report as inappropriate"
         },
         "type": "Text"
       },
@@ -82,10 +453,38 @@
         },
         "type": "Text"
       },
+      "string-saveChanges": {
+        "config": {
+          "label": "saveChanges",
+          "placeholder": "Save Changes"
+        },
+        "type": "Text"
+      },
       "string-seconds": {
         "config": {
           "label": "seconds",
           "placeholder": "Seconds"
+        },
+        "type": "Text"
+      },
+      "string-selectImage": {
+        "config": {
+          "label": "selectImage",
+          "placeholder": "Select Image"
+        },
+        "type": "Text"
+      },
+      "string-selectImages": {
+        "config": {
+          "label": "selectImages",
+          "placeholder": "Select Image(s)"
+        },
+        "type": "Text"
+      },
+      "string-selectType": {
+        "config": {
+          "label": "selectType",
+          "placeholder": "Select type"
         },
         "type": "Text"
       },
@@ -103,6 +502,13 @@
         },
         "type": "Text"
       },
+      "string-sort": {
+        "config": {
+          "label": "sort",
+          "placeholder": "Sort"
+        },
+        "type": "Text"
+      },
       "string-stories": {
         "config": {
           "label": "stories",
@@ -110,10 +516,38 @@
         },
         "type": "Text"
       },
+      "string-storyPostText": {
+        "config": {
+          "label": "storyPostText",
+          "placeholder": "Story post text"
+        },
+        "type": "Text"
+      },
+      "string-submitToProposal": {
+        "config": {
+          "label": "submitToProposal",
+          "placeholder": "Submit to proposal"
+        },
+        "type": "Text"
+      },
       "string-ubi": {
         "config": {
           "label": "ubi",
           "placeholder": "UBI"
+        },
+        "type": "Text"
+      },
+      "string-wallet": {
+        "config": {
+          "label": "wallet",
+          "placeholder": "Wallet"
+        },
+        "type": "Text"
+      },
+      "string-yourBalance": {
+        "config": {
+          "label": "yourBalance",
+          "placeholder": "Your balance"
         },
         "type": "Text"
       }
@@ -132,6 +566,15 @@
         "config": {
           "label": "yourAccountHasBeenLocked",
           "placeholder": "User account has been locked",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+      },
+      "message-uploadTooltip": {
+        "config": {
+          "label": "uploadTooltip",
+          "placeholder": "<a component='UploadText'>Click to upload<a> or drag and drop",
           "allowTargetBlank": true,
           "single": "paragraph,strong,em,hyperlink"
         },

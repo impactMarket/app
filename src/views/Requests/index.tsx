@@ -45,7 +45,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 setCommunities(communities);
             } catch (error) {
                 console.log(error);
-
+                
                 return false;
             }
         };

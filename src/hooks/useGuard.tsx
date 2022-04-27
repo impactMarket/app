@@ -1,6 +1,6 @@
 import { Routes, beneficiaryRoutes, privateRoutes, publicRoutes } from '../utils/routes';
-import { getUserTypes, userBeneficiary } from '../utils/userTypes';
-import { selectCurrentUser, setUser } from '../state/slices/auth';
+import { getUserTypes, userBeneficiary } from '../utils/users';
+import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useEffect, useState } from 'react';
 import { useGetUserMutation } from '../api/user';
@@ -39,7 +39,8 @@ const useGuard = () => {
                     const user = await getUser().unwrap();
                     const type = getUserTypes(user);
                     
-                    store.dispatch(setUser({ user: { ...user, type }}));
+                    store.dispatch(setUser({ user }));
+                    store.dispatch(setType({ type }));
 
                     // If there's a login, include the Private Paths
                     userPaths = userPaths.concat(privateRoutes);

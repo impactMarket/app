@@ -4,10 +4,20 @@ import { Rate, selectRates } from '../state/slices/rates';
 import { useSelector } from 'react-redux';
 import currenciesJSON from '../assets/currencies.json';
 
+export const currencies: {
+    [key: string]: {
+        symbol: string;
+        name: string;
+        symbol_native: string;
+    };
+} = currenciesJSON;
+
 export const currencyFormat = (number: number, currency: string) => {
     const rates = useSelector(selectRates);
     const currencySymbol = getCurrencySymbol(currency);
 
+    // TODO: Verificar se é preciso limitar/arredondar as casas decimais do valor
+    
     if(currency !== 'USD') {
         const rate = rates.find((elem: Rate) => elem.currency === currency)?.rate || 1;
 
