@@ -19,6 +19,13 @@
         },
         "type": "Text"
       },
+      "string-accepted": {
+        "config": {
+          "label": "accepted",
+          "placeholder": "Accepted"
+        },
+        "type": "Text"
+      },
       "string-actions": {
         "config": {
           "label": "actions",
@@ -107,6 +114,13 @@
         "config": {
           "label": "claim",
           "placeholder": "Claim"
+        },
+        "type": "Text"
+      },
+      "string-claimPerBeneficiary": {
+        "config": {
+          "label": "claimPerBeneficiary",
+          "placeholder": "Claim per beneficiary"
         },
         "type": "Text"
       },
@@ -341,6 +355,13 @@
         },
         "type": "Text"
       },
+      "string-maximumPerBeneficiary": {
+        "config": {
+          "label": "maximumPerBeneficiary",
+          "placeholder": "Maximum per beneficiary"
+        },
+        "type": "Text"
+      },
       "string-minutes": {
         "config": {
           "label": "minutes",
@@ -407,7 +428,7 @@
       "string-otherCountries": {
         "config": {
           "label": "otherCountries",
-          "placeholder": "Other countries"
+          "placeholder": "Other Countries"
         },
         "type": "Text"
       },
@@ -457,6 +478,13 @@
         "config": {
           "label": "saveChanges",
           "placeholder": "Save Changes"
+        },
+        "type": "Text"
+      },
+      "string-search": {
+        "config": {
+          "label": "search",
+          "placeholder": "Search"
         },
         "type": "Text"
       },
@@ -527,6 +555,13 @@
         "config": {
           "label": "submitToProposal",
           "placeholder": "Submit to proposal"
+        },
+        "type": "Text"
+      },
+      "string-timeIncrement": {
+        "config": {
+          "label": "timeIncrement",
+          "placeholder": "Time increment"
         },
         "type": "Text"
       },
