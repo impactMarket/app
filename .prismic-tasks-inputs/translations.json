@@ -1,4 +1,5 @@
 {
+<<<<<<< HEAD
     "address": "Address",
     "age": "Age",
     "bio": "Bio",
@@ -22,4 +23,8 @@
     "saveChanges": "Save Changes",
     "wallet": "Wallet",
     "yourBalance": "Your balance"
+=======
+    "openInExplorer": "Open in Explorer",
+    "copyAddress": "Copy Address"
+>>>>>>> 09717f71edb856ce8f21e8526eddfc601b39d07e
 }

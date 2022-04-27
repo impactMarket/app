@@ -133,9 +133,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
             <Display g900 medium>
                 {title}
             </Display>
-            <Text g500 mt={0.25}>
-                <RichText components={{ OpenRulesModal: ({ children }: any) => <a onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</a> }} content={content} variables={{ community: community?.name }} />
-             </Text>
+            <RichText components={{ OpenRulesModal: ({ children }: any) => <a onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</a> }} content={content} g500 mt={0.25} variables={{ community: community?.name }} />
              {
                 auth?.user?.active &&
                 <Card mt={2}>
@@ -148,9 +146,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         <Text g900 large medium>
                                             {cardTitle}
                                         </Text>
-                                        <Text g500 mt={0.5} small>
-                                            <RichText content={cardMessage} variables={{ amount: claimAmountDisplay }}/>
-                                        </Text>
+                                        <RichText content={cardMessage} g500 mt={0.5} small variables={{ amount: claimAmountDisplay }}/>
                                     </Box>
                                     {
                                         hasFunds &&

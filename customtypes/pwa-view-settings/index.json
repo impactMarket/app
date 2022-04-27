@@ -53,14 +53,20 @@
         "type": "StructuredText"
       }
     },
+<<<<<<< HEAD
     "settings-text": {
       "settings-text-basic-title": {
+=======
+    "form-sections": {
+      "form-sections-basic-title": {
+>>>>>>> 09717f71edb856ce8f21e8526eddfc601b39d07e
         "type": "Text",
         "config": {
           "label": "Basic Settings Title",
           "placeholder": ""
         }
       },
+<<<<<<< HEAD
       "settings-text-basic-description": {
         "config": {
 					"label": "Basic Settings Description",
@@ -69,6 +75,16 @@
 					"single": "paragraph,strong,em,hyperlink"
 				},
 				"type": "StructuredText"
+=======
+      "form-sections-basic-description": {
+        "config": {
+          "label": "Basic Settings Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        },
+        "type": "StructuredText"
+>>>>>>> 09717f71edb856ce8f21e8526eddfc601b39d07e
       }
     }
   }

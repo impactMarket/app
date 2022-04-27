@@ -159,6 +159,16 @@
         },
         "type": "Text"
       },
+<<<<<<< HEAD
+=======
+      "string-copyAddress": {
+        "config": {
+          "label": "copyAddress",
+          "placeholder": "Copy Address"
+        },
+        "type": "Text"
+      },
+>>>>>>> 09717f71edb856ce8f21e8526eddfc601b39d07e
       "string-countCharactersLeft": {
         "config": {
           "label": "countCharactersLeft",
@@ -187,6 +197,16 @@
         },
         "type": "Text"
       },
+<<<<<<< HEAD
+=======
+      "string-days": {
+        "config": {
+          "label": "days",
+          "placeholder": "Days"
+        },
+        "type": "Text"
+      },
+>>>>>>> 09717f71edb856ce8f21e8526eddfc601b39d07e
       "string-decline": {
         "config": {
           "label": "decline",
@@ -362,6 +382,16 @@
         },
         "type": "Text"
       },
+<<<<<<< HEAD
+=======
+      "string-openInExplorer": {
+        "config": {
+          "label": "openInExplorer",
+          "placeholder": "Open in Explorer"
+        },
+        "type": "Text"
+      },
+>>>>>>> 09717f71edb856ce8f21e8526eddfc601b39d07e
       "string-optional": {
         "config": {
           "label": "optional",
@@ -446,6 +476,16 @@
         },
         "type": "Text"
       },
+<<<<<<< HEAD
+=======
+      "string-selectImage": {
+        "config": {
+          "label": "selectImage",
+          "placeholder": "Select Image"
+        },
+        "type": "Text"
+      },
+>>>>>>> 09717f71edb856ce8f21e8526eddfc601b39d07e
       "string-selectImages": {
         "config": {
           "label": "selectImages",
