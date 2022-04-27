@@ -1,4 +1,4 @@
-import { AppContainer, DesignSystemProvider, ModalManager, ViewContainer } from '@impact-market/ui';
+import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
@@ -44,13 +44,15 @@ const InnerApp = (props: AppProps) => {
         init();
     }, []);
 
+    const Content = Component as any;
+
     return (
         <AppContainer>
             <Sidebar />
             {isLoading ? (
                 <ViewContainer isLoading />
             ) : (
-                <>{authorized && <Component {...pageProps} />}</>
+                <>{authorized && <Content {...pageProps} />}</>
             )}
         </AppContainer>
     );
@@ -81,6 +83,7 @@ const App = (props: AppProps) => {
                     <WrapperProvider>
                         <Provider store={store}>
                             <ModalManager modals={modals} />
+                            <Toaster />
                             <InnerApp {...props} />
                         </Provider>
                     </WrapperProvider>

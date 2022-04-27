@@ -1,6 +1,6 @@
 import { Alfajores, CeloMainnet } from '@celo-tools/use-contractkit';
 import { AppContext } from '../components/WrapperProvider';
-import { getUserTypes } from '../utils/userTypes';
+import { getUserTypes } from '../utils/users';
 import { removeCredentials, setCredentials } from '../state/slices/auth';
 import { useCookies } from 'react-cookie';
 import { useCreateUserMutation } from '../api/user';
@@ -29,7 +29,11 @@ const useWallet = () => {
                 address: connector.kit.connection.config.from
             }).unwrap();
 
-            dispatch(setCredentials({ token: payload.token, user: { type: getUserTypes(payload), ...payload }}));
+            dispatch(setCredentials({ 
+                token: payload.token, 
+                type: getUserTypes(payload),
+                user: { ...payload }
+            }));
 
             // Create cookie to save Auth Token
             const expiryDate = new Date();
