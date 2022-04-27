@@ -1,24 +1,29 @@
+import { useRouter } from 'next/router';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 
 import {
     Box,
     Button,
     Card,
+    CountryFlag,
     Display,
     DropdownMenu,
     Grid,
     Icon,
+    Label,
+    PulseIcon,
+    Spinner,
     Text,
-    ViewContainer,
-    Spinner
+    ViewContainer
 } from '@impact-market/ui';
 
-import { useUpdateReviewMutation } from '../../api/community';
-import { useGetCommunityMutation } from '../../api/community';
+import { useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 
 
 const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (props) => {
     const { isLoading } = props;
+    const router = useRouter()
 
     const [communityId] = useState(props.communityId);
     const [community, setCommunity]= useState({}) as any;
@@ -37,6 +42,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                 setLoading(true);
 
                 const community: any = await getCommunity(communityId);
+
                 setCommunity(community.data);
 
                 setLoading(false);
@@ -51,21 +57,26 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
     }, []);
 
     //  UPDATE COMMUNITY REVIEW STATE AND GET NEW DATA
-    const UpdateReview = async (review: string) => {
+    const functionUpdateReview = async (review: string) => {
         try {
             setLoading(true);
 
             await updateReview({
                 body: {
-                    review: review
+                    review
                 },
                 id: communityId
             });
 
             const community: any = await getCommunity(communityId);
+
             setCommunity(community.data);
 
             setLoading(false);
+
+            //  SEND TO /REQUESTS IF COMMUNITY WAS DECLINED
+            review === 'declined' && router.push('/requests')
+
         } catch (error) {
             console.log(error);
 
@@ -73,7 +84,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
         }
     };
 
-    console.log(community);
+    // console.log(community);
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -81,120 +92,158 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                 <Spinner isActive />
             ) : (
                 <>
+                    <Box mb={1.5}>
+                        <Link href="/requests" passHref>
+                            <Label
+                                content="Back"
+                                icon="arrowLeft"
+                                
+                            />
+                        </Link>
+                    </Box>
+                    
                     <Grid cols={2}>
                         <Box>
                             <Display>{community.name}</Display>
-                            <Text g500 mt={0.25} extrasmall medium>
-                                {community.country}
-                                {community.city}
-                            </Text>
+                            <Box inlineFlex mt={0.25}>
+                                <CountryFlag
+                                    countryCode={community.country}
+                                    mr={0.5}
+                                    size={[1.5, 1.5]}
+                                />
+                                <Text extrasmall g500 medium>
+                                    {community.city}
+                                </Text>
+                            </Box>
                         </Box>
 
-                        {community.review === 'pending' && (
+                        {(community.review === 'pending' || community.review === 'declined') && (
                             <Box right>
+                                {community.review !== 'declined' &&
+                                    <Button
+                                        mr={1}
+                                        onClick={() => functionUpdateReview('declined')}
+                                        secondary
+                                    >
+                                        Decline
+                                    </Button>
+                                }
                                 <Button
-                                    secondary
-                                    mr={1}
-                                    onClick={() => UpdateReview('declined')}
+                                    onClick={() => functionUpdateReview('claimed')}
                                 >
-                                    Decline
-                                </Button>
-                                <Button
-                                    onClick={() => UpdateReview('accepted')}
-                                >
-                                    Accept/Claim
+                                    Claim
                                 </Button>
                             </Box>
                         )}
 
-                        {community.review === 'accepted' && (
+                        {(community.review === 'claimed' || community.review === 'accepted') && (
                             <Box right> 
-                                <Button mr={1}>
+                                {/* TODO: EDIT DETAILS */}
+                                <Button>
                                     <Icon
                                         icon="edit"
+                                        margin="0 0.5 0 0"
                                         n01
-                                        margin={'0 0.5 0 0'}
                                     />
                                     Edit Details
                                 </Button>
-                                <DropdownMenu
-                                    rtl
-                                    asButton
-                                    title="Actions"
-                                    items={[
-                                        {
-                                            icon: 'eye',
-                                            onClick: () => alert('Release community'),
-                                            title: 'Release community'
-                                        },
-                                        {
-                                            icon: 'key',
-                                            onClick: () => alert('Submit to Proposal'),
-                                            title: 'Submit to Proposal'
-                                        }
-                                    ]}
-                                />                               
+                                {/* ------ */}
+                                {community.review !== 'accepted' && (
+                                    <DropdownMenu
+                                        asButton
+                                        items={[
+                                            {
+                                                icon: 'eye',
+                                                onClick: () => functionUpdateReview('accepted'),
+                                                title: 'Accept community'
+                                            }
+                                        ]}
+                                        ml={1}
+                                        rtl
+                                        title="Actions"
+                                    />    
+                                )}                                     
                             </Box>
                         )}
                     </Grid>
 
                     <Grid cols={4}>
                         <Card>
-                            <Text regular small g500 mb={0.3}>
+                            <Text g500 mb={0.3} regular small>
                                 # Beneficiaries
                             </Text>
                             <Grid cols={2}>
-                                <Text semibold medium g900>
+                                <Text g900 medium semibold>
                                     {community.state &&
-                                        !!Object.keys(community).length &&
-                                        community.state.beneficiaries}
-                                    99
+                                        !!Object.keys(community).length ? community.state.beneficiaries : '-'
+                                    }
                                 </Text>
                                 <Box right>
-                                    <Icon icon="users" s600 />
+                                    <PulseIcon
+                                        bgS100
+                                        borderColor="s50"
+                                        icon="users"
+                                        s600
+                                        size={2}
+                                    />
                                 </Box>
                             </Grid>
                         </Card>
                         <Card>
-                            <Text regular small g500 mb={0.3}>
+                            <Text g500 mb={0.3} regular small>
                                 Claimed per beneficiary
                             </Text>
                             <Grid cols={2}>
-                                <Text semibold medium g900>
-                                    {community.state &&
-                                        !!Object.keys(community).length &&
-                                        community.state.claims}
-                                    99
+                                <Text g900 medium semibold>
+                                    {community.state && !!Object.keys(community).length ? community.state.claims : '-'}
                                 </Text>
                                 <Box right>
-                                    <Icon icon="heart" s600 />
+                                    <PulseIcon
+                                        bgS100
+                                        borderColor="s50"
+                                        icon="heart"
+                                        s600
+                                        size={2}
+                                    />
                                 </Box>
                             </Grid>
                             
                         </Card>
                         <Card>
-                            <Text regular small g500 mb={0.3}>
+                            <Text g500 mb={0.3} regular small>
                                 Maximum per beneficiary
                             </Text>
                             <Grid cols={2}>
-                                <Text semibold medium g900>
-                                    99
+                                <Text g900 medium semibold>
+                                    -
                                 </Text>
                                 <Box right>
-                                    <Icon icon="check" s600 />
+                                    <PulseIcon
+                                        bgS100
+                                        borderColor="s50"
+                                        icon="check"
+                                        s600
+                                        size={2}
+                                    />
                                 </Box>
                             </Grid>
                         </Card>
                         <Card>
-                            <Text regular small g500 mb={0.3}>
+                            <Text g500 mb={0.3} regular small>
                                 Time increment
                             </Text>
                             <Grid cols={2}>
-                                <Text semibold medium g900>
-                                    5 minutes
+                                <Text g900 medium semibold>
+                                    - minutes
                                 </Text>
                                 <Box right>
-                                    <Icon icon="clock" s600 />
+                                    <PulseIcon
+                                        bgS100
+                                        borderColor="s50"
+                                        icon="clock"
+                                        s600
+                                        size={2}
+                                    />
                                 </Box>
                             </Grid>
                             

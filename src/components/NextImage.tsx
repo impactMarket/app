@@ -14,11 +14,11 @@ const NextImage = (props: any) => {
         <Box>
             <Image
                 alt={props.alt ? props.alt : ''}
+                height={props.height ? props.height : '100%'}
                 layout="responsive"
                 objectFit="cover"
                 src={props.src}
                 width={props.width ? props.width : '100%'}
-                height={props.height ? props.height : '100%'}
             />
         </Box>
     );

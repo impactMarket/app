@@ -4,16 +4,17 @@ import React, { useEffect, useState } from 'react';
 import {
     Box,
     Card,
+    CountryFlag,
     Display,
     Grid,
     Icon,
+    Spinner,
     Tab,
     TabList,
     TabPanel,
     Tabs,
     Text,
-    ViewContainer,
-    Spinner
+    ViewContainer
 } from '@impact-market/ui';
 
 import { useGetCommunitiesMutation } from '../../api/community';
@@ -36,13 +37,15 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
             try {
                 setLoading(true);
                 const communities = await getCommunities({
-                    myCountry: myCountry,
-                    review: review
+                    myCountry,
+                    review
                 });
+
                 setLoading(false);
                 setCommunities(communities);
             } catch (error) {
                 console.log(error);
+
                 return false;
             }
         };
@@ -50,7 +53,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         init();
     }, [myCountry, review]);
 
-    console.log(communities);
+    // console.log(communities);
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -63,30 +66,31 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
             <Tabs>
                 <TabList>
                     <Tab
-                        title="My Country"
                         onClick={() => setMyCountry(true)}
+                        title="My Country"
                     />
                     <Tab
-                        title="Other Countries"
                         onClick={() => setMyCountry(false)}
+                        title="Other Countries"
                     />
                 </TabList>
             </Tabs>
 
             <Tabs>
                 <TabList>
-                    {reviews.map((review) => (
+                    {reviews.map((review, key) => (
                         <Tab
+                            key={key}
                             number={!!Object.keys(communities).length && communities.data.count}
-                            title={review}
                             onClick={() => setReview(review)}
+                            title={review}
                         />
                     ))}
                 </TabList>
 
                 {!!Object.keys(communities).length &&
-                    reviews.map(() => (
-                        <TabPanel>
+                    reviews.map((key) => (
+                        <TabPanel key={key}>
                             {loading ? (
                                 <Spinner isActive />
                             ) : (
@@ -96,34 +100,38 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                             <Link
                                                 href={`/requests/${community.id}`}
                                                 key={key}
+                                                passHref
                                             >
                                                 <Card>
                                                     <Box>
+                                                        {// eslint-disable-next-line @next/next/no-img-element
                                                         <img
+                                                            alt=""
                                                             src={ community.coverImage }
                                                             style={{
+                                                                height: '200px',
+                                                                objectFit: 'cover',
                                                                 width: '100%',
-                                                                height: '100%',
-                                                                objectFit:
-                                                                    'cover'
                                                             }}
                                                         />
+                                                        }
                                                     </Box>
                                                     <Text base g900 margin="0.7 0" semibold>
                                                         {community.name}
                                                     </Text>
                                                     <Box>
-                                                        {community.state && (
-                                                            <Box inlineFlex>
-                                                                <Icon g500 icon="users" mr={0.5}/>
-                                                                <Text g500 regular small>
-                                                                    { community.state.beneficiaries }
-                                                                </Text>
-                                                            </Box>
-                                                        )}
+                                                        <Box inlineFlex mr={1}>
+                                                            <Icon g500 icon="users" mr={0.5}/>
+                                                            <Text g500 regular small>
+                                                                { community.state ? community.state.beneficiaries : '-' } 
+                                                            </Text>
+                                                        </Box>
                                                         <Box inlineFlex>
-                                                            <Box mr={0.5}>
-                                                                { community.countryb}
+                                                            <Box mr={0.1}>
+                                                                <CountryFlag
+                                                                    countryCode={community.country}
+                                                                    size={[1.5, 1.5]}
+                                                                />
                                                             </Box>
                                                             <Text g500 regular small>
                                                                 {community.city}

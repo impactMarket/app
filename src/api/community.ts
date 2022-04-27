@@ -20,21 +20,21 @@ interface Update {
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: (builder) => ({
+        getCommunities: builder.mutation<Communities, { myCountry: any; review: string }>({
+            query: ({ myCountry, review }: any) => ({
+                method: 'GET',
+                url: `communities?limit=999${myCountry && '&country=PT'}${
+                    review && `&review=${review}`
+                }`
+            }),
+            transformResponse: (response: { data?: Communities }) => response.data
+        }),
         getCommunity: builder.mutation<Community, { id: any }>({
             query: (id: any) => ({
                 method: 'GET',
                 url: `communities/${id}`
             }),
             transformResponse: (response: { data?: Community }) => response.data
-        }),
-        getCommunities: builder.mutation<Communities, { myCountry: any; review: string }>({
-            query: ({ myCountry, review }: any) => ({
-                method: 'GET',
-                url: `communities?limit=999${myCountry && '&country=PT'}${
-                    review && '&review=' + review
-                }`
-            }),
-            transformResponse: (response: { data?: Communities }) => response.data
         }),
         updateReview: builder.mutation<Update, { body: any; id: number }>({
             query: ({ body, id }: any) => ({
