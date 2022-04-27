@@ -15,12 +15,16 @@ const languageRedirects = [
     { source: '/fr/:path*', destination: '/fr-FR/:path*' },
     { source: '/es/:path*', destination: '/es-ES/:path*' },
     { source: '/pt-br/:path*', destination: '/pt-BR/:path*' }
-].map(redirect => ({ ...redirect, permanent: true }));
+].map((redirect) => ({ ...redirect, permanent: true }));
 
 const redirects = () => languageRedirects;
 
 const images = {
-    domains: ['impact-market.cdn.prismic.io', 'images.prismic.io', 'prismic-io.s3.amazonaws.com']
+    domains: [
+        'impact-market.cdn.prismic.io',
+        'images.prismic.io',
+        'prismic-io.s3.amazonaws.com'
+    ]
 };
 
 const webpack = (config, { webpack }) => {
@@ -40,22 +44,27 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 });
 
 // https://github.com/GoogleChrome/workbox/issues/1790
-module.exports = withBundleAnalyzer(
-    withPWA({
-        compiler: {
-            reactRemoveProperties: true,
-            styledComponents: true
-        },
-        i18n,
-        images,
-        pwa: {
-            dest: 'public',
-            // disabled for better dev experience
-            // eslint-disable-next-line no-process-env
-            disable: process.env.NODE_ENV === 'development',
-            runtimeCaching
-        },
-        redirects,
-        webpack
-    })
-);
+module.exports = {
+    ...withBundleAnalyzer(
+        withPWA({
+            compiler: {
+                reactRemoveProperties: true,
+                styledComponents: true
+            },
+            i18n,
+            images,
+            pwa: {
+                dest: 'public',
+                // disabled for better dev experience
+                // eslint-disable-next-line no-process-env
+                disable: process.env.NODE_ENV === 'development',
+                runtimeCaching
+            },
+            redirects,
+            webpack
+        })
+    ),
+    // images: {
+    //     domains: ['d15x1wz2el9q57.cloudfront.net', 'dzrx8kf1cwjv9.cloudfront.net']
+    // }
+};
