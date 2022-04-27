@@ -4,10 +4,11 @@ export interface User {
     address: string;
     token: string;
     id: number;
-    type?: any
+    type?: any;
 }
-interface PutPostUser {
-    address: string;
+
+export interface PutPostUser {
+    address?: string;
     phone?: string;
     language?: string;
     currency?: string;
@@ -18,7 +19,29 @@ interface PutPostUser {
     children?: number;
     overwrite?: boolean;
     recover?: boolean;
+    email?: string;
+    firstName?: string;
+    lastName?: string;
+    age?: number;
+    bio?: string;
+    country?: string;
+    avatarMediaPath?: string;
+    beneficiary?: any;
+    manager?: any;
 }
+
+interface PreSigned {
+    filePath?: string;
+    filename?: string;
+    media?: {
+        height?: number;
+        id?: number;
+        url?: string;
+        width?: number;
+    }
+    uploadURL?: string;
+}
+
 // Define a service using a base URL and expected endpoints
 export const userApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -40,6 +63,21 @@ export const userApi = emptySplitApi.injectEndpoints({
                 url: 'users'
             }),
             transformResponse: (response: { data: User }) => response.data
+        }),
+        // Delete user
+        deleteUser: builder.mutation<void, void>({
+            query: () => ({
+                method: 'DELETE',
+                url: 'users'
+            })
+        }),
+        // Get preSigned URL for image upload
+        getPreSigned: builder.mutation<PreSigned, void>({
+            query: type => ({
+                method: 'GET',
+                url: `users/presigned?mime=${type}`
+            }),
+            transformResponse: (response: { data: PreSigned }) => response.data
         }),
         // Get profile
         getUser: builder.mutation<User, void>({
@@ -66,6 +104,8 @@ export const userApi = emptySplitApi.injectEndpoints({
 export const {
     useAcceptRulesMutation,
     useCreateUserMutation,
+    useDeleteUserMutation,
     useGetUserMutation,
-    useUpdateUserMutation
+    useUpdateUserMutation,
+    useGetPreSignedMutation
 } = userApi;

@@ -2,7 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal } from '@impact-market/ui';
-import { currencyFormat } from '../utils/currency';
+import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
@@ -11,7 +11,7 @@ import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSaveClaimLocationMutation } from '../api/claim';
 import { useSelector } from 'react-redux';
-import { userBeneficiary } from '../utils/userTypes';
+import { userBeneficiary } from '../utils/users';
 import Image from '../libs/Prismic/components/Image';
 import Message from '../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
@@ -35,7 +35,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { t } = useTranslations();
 
     // Check if current User has access to this page
-    if(!auth?.user?.type?.includes(userBeneficiary)) {
+    if(!auth?.type?.includes(userBeneficiary)) {
         router.push('/');
 
         return null;
