@@ -118,7 +118,7 @@ const CreateStory = () => {
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
             <CircledIcon icon="flash" large />
-            <RichText
+            <RichText 
                 content={modals.data.createStoryTitle}
                 large
                 mt={1.25}

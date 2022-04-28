@@ -1,37 +1,27 @@
 import { Col, Row } from '@impact-market/ui';
-// import {
-//     SelectCommunity,
-//     useGetCommunitiesMutation
-// } from '../../api/community';
+import { countriesOptions } from '../../utils/countries';
+import FilterSelect from '../../components/FilterSelect';
 import React from 'react';
-import countriesJSON from '../../assets/countries.json';
 import useFilters from '../../hooks/useFilters';
 
 const Filters = () => {
-    const { clear, update } = useFilters();
+    // const { clear, update } = useFilters();
+    const { update } = useFilters();
+
+    const updateFilter  = (value: any) => {
+            update('country', [value]);  
+    }
 
     return (
         <Row mt={0.625}>
-            <Col colSize={2}>
-                {/* // TODO add select input from UI */}
-                <select multiple style={{ width: '100%' }}>
-                    <option onClick={() => clear('country')}>All</option>
-                    {Object.keys(countriesJSON).map((contryName, index) => {
-                        return (
-                            <option
-                                key={index}
-                                onClick={() => update('country', [contryName])}
-                                value={contryName}
-                            >
-                                {
-                                    countriesJSON[
-                                        contryName as keyof typeof countriesJSON
-                                    ].name
-                                }
-                            </option>
-                        );
-                    })}
-                </select>
+            <Col colSize={{ sm: 6, xs: 12}}>
+                <FilterSelect
+                    callback={updateFilter}
+                    isMultiple
+                    options={countriesOptions}
+                    renderLabelWithIcon={countriesOptions}
+                    withOptionsSearch
+                />
             </Col>
         </Row>
     );

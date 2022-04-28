@@ -12,6 +12,7 @@ import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvide
 import { useReportStoryMutation } from '../../api/story';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
+import Select from '../../components/Select';
 
 type Inputs = {
     reportAs: number;
@@ -24,7 +25,6 @@ const ReportStory = () => {
     const { modals } = usePrismicData();
     const {
         control,
-        register,
         reset,
         handleSubmit,
         formState: {}
@@ -32,7 +32,10 @@ const ReportStory = () => {
     const { isSubmitting, isSubmitSuccessful } = useFormState({
         control
     });
-    const StoryTypes = modals?.data?.reportStoryTypes;
+    const storyTypes = modals?.data?.reportStoryTypes;
+    const reportOptions = Object.entries(
+        storyTypes
+    ).map(([key, value]: any) => ({ label: value.type, value: key }));
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
@@ -107,21 +110,13 @@ const ReportStory = () => {
                             small
                         />
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            {/* // TODO add select component from UI */}
-                            <select
-                                {...register('reportAs', { required: true })}
-                            >
-                                {StoryTypes.map(
-                                    (
-                                        { type }: { type: string },
-                                        index: number
-                                    ) => (
-                                        <option key={index} value={index}>
-                                            {type}
-                                        </option>
-                                    )
-                                )}
-                            </select>
+                            <Select
+                                control={control}
+                                isMultiple={false}
+                                mt={1.25}
+                                name="reportAs"
+                                options={reportOptions}
+                            />
 
                             <Row mt={1}>
                                 <Col colSize={{ sm: 6, xs: 12 }}>

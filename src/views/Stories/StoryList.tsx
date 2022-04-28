@@ -5,6 +5,7 @@ import {
     Button,
     Card,
     Col,
+    CountryFlag,
     Divider,
     DropdownMenu,
     Row,
@@ -259,20 +260,25 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                                 {story.community.name}
                                             </Text>
                                             <Text g500 regular small>
-                                                {/* // TODO country flag   */}
-                                                {/* <CountryFlag
-                                                        countryCode={
-                                                            story.community
-                                                                .country
-                                                        }
-                                                        size={[2, 2]}
-                                                    /> */}
-                                                <Text>
+                                                <Box fLayout="center" flex>
+                                                    <Box mr={0.5}>
+                                                <CountryFlag
+                                                    countryCode={
+                                                        story.community.country
+                                                    }
+                                                   
+                                                    size={[2, 2]}
+                                                />
+                                              </Box>
+                                              <Box>
+                                                <Text >
                                                     {story.community.city},{' '}
                                                     {getCountryName(
                                                         story.community.country
                                                     )}
                                                 </Text>
+                                                </Box>
+                                                </Box>
                                             </Text>
                                         </Box>
                                     </Box>
