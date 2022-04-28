@@ -11,6 +11,8 @@ const countries: {
     };
 } = countriesJSON;
 
+export const countriesOptions = Object.entries(countries).map(([key, value]: any) => ({ label: value.name, value: key }));
+
 export function getCountryFromPhoneNumber(pnumber: string) {
     const phoneNumber = parsePhoneNumber(pnumber);
 

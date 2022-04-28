@@ -12,6 +12,8 @@ export const currencies: {
     };
 } = currenciesJSON;
 
+export const currenciesOptions = Object.entries(currencies).map(([key, value]: any) => ({ label: value.name, value: key }));
+
 export const currencyFormat = (number: number, currency: string) => {
     const rates = useSelector(selectRates);
     const currencySymbol = getCurrencySymbol(currency);

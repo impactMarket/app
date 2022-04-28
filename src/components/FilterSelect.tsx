@@ -1,15 +1,19 @@
 import { Select as BaseSelect, Col, CountryFlag, Icon, Row, Text } from '@impact-market/ui';
-import { Controller } from "react-hook-form";
 import React, { useState } from 'react';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-const Select: React.FC<any> = props => {
-    const { showFlag, control, label, name, placeholder, ...forwardProps } = props;
+const FilterSelect: React.FC<any> = props => {
+    const { showFlag, control, label, name, placeholder, callback, ...forwardProps } = props;
 
     const [value, setValue] = useState('');
     const { t } = useTranslations();
 
     const handleSelect = (value: any) => {
+
+        if(typeof callback === 'function') {
+            callback(value);
+        }
+
         return setValue(value);
     };
 
@@ -46,25 +50,18 @@ const Select: React.FC<any> = props => {
     };
     
     return (
-        <Controller
-            control={control}
-            name={name}
-            render={({ field }) =>
-                <>
-                    { label && <Text g700 mb={0.375} medium small>{label}</Text> }
-                    <BaseSelect
-                        onChange={handleSelect}
-                        optionsSearchPlaceholder={t('search')?.toLowerCase()}
-                        renderLabel={renderLabel}
-                        renderOption={renderOption}
-                        value={value}
-                        {...field} 
-                        {...forwardProps}
-                    />
-                </>
-            }
+        <>
+        { label && <Text g700 mb={0.375} medium small>{label}</Text> }
+        <BaseSelect
+            onChange={handleSelect}
+            optionsSearchPlaceholder={t('search')?.toLowerCase()}
+            renderLabel={renderLabel}
+            renderOption={renderOption}
+            value={value}
+            {...forwardProps}
         />
+    </>
     )
 }
 
-export default Select;
+export default FilterSelect;

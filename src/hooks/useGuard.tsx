@@ -27,8 +27,8 @@ const useGuard = () => {
         }
     };
 
-    useEffect(() => {
-        const handleRouteComplete = async () => {
+    const handleRouteComplete = async (_: any, { shallow }: any) => {
+        if(!shallow) {
             setIsLoading(true)
 
             try {
@@ -60,13 +60,19 @@ const useGuard = () => {
 
                 console.log('Error on init\n', error);
             }
-        };
+        }
+    };
 
-        handleRouteComplete();
+    useEffect(() => {
+        handleRouteComplete(undefined, {});
+    }, []);
 
-        const handleRouteStart = () => {
-            setAuthorized(false);
-            setIsLoading(true);
+    useEffect(() => {
+        const handleRouteStart = (_: any, { shallow }: any) => {
+            if (!shallow) {
+                setAuthorized(false);
+                setIsLoading(true);
+            }
         }
 
         router.events.on('routeChangeStart', handleRouteStart);

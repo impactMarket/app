@@ -44,7 +44,7 @@ const Form = ({ onSubmit }: any) => {
                 <form>
                     <Box pl={1.5} pr={1.5}>
                         <Row fLayout="center start">
-                            <Col colSize={{ sm: 3, xs: 12 }} minW={9.5} pb={{ sm: 1, xs: 1.25 }}>
+                            <Col colSize={{ sm: 3, xs: 12 }} pb={{ sm: 1, xs: 1.25 }}>
                                 { /* TODO: missing icon "user" */ }
                                 {
                                     image ?

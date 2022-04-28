@@ -20,14 +20,16 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            const payload = await updateUser({
+            const result = await updateUser({
                 ...data
             }).unwrap();
 
-            dispatch(setUser({ user: { ...payload }}));
+            if(result) {
+                dispatch(setUser({ user: { ...result }}));
 
-            // TODO: colocar textos no prismic
-            toast.success("Successfully changed data!");
+                // TODO: colocar textos no prismic
+                toast.success("Successfully changed data!");
+            }
         }
         catch(e) {
             console.log(e);
