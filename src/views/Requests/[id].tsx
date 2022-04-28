@@ -96,9 +96,9 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                     <Box mb={1.5}>
                         <Link href="/requests" passHref>
                             <Label
+                                as="a"
                                 content={<String id="back"/>}
                                 icon="arrowLeft"
-                                as="a"
                             />
                         </Link>
                     </Box>
