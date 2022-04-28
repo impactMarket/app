@@ -1,12 +1,50 @@
+import { Select as BaseSelect, Col, CountryFlag, Icon, Row, Text } from '@impact-market/ui';
 import { Controller } from "react-hook-form";
-import { Text } from '@impact-market/ui';
-import React from 'react';
+import React, { useState } from 'react';
+import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Select: React.FC<any> = props => {
-    const { control, label, name, options, ...forwardProps } = props;
+    const { showFlag, control, label, name, placeholder, ...forwardProps } = props;
 
-    // TODO: colocar Select da UI e textos no Prismic se necessário
+    const [value, setValue] = useState('');
+    const { t } = useTranslations();
 
+    const handleSelect = (value: any) => {
+        return setValue(value);
+    };
+
+    const renderLabelWithIcon = (label: string, value: string) => {
+        return (
+            <Row fLayout="center start" margin={0}>
+                {showFlag && <Col padding={0}><CountryFlag countryCode={value} mr={0.5} /></Col>}
+                <Col padding={0}><Text g900>{label || value}</Text></Col>
+            </Row>
+        );
+    };
+
+    // TODO: colocar textos no Prismic
+
+    const renderLabel = ({ selected }: any) => {
+        if (selected?.label) {
+            return renderLabelWithIcon(selected?.label, selected?.value);
+        }
+    
+        if (Array.isArray(selected) && selected.length) {
+            return <Text g900>Selected ({selected.length})</Text>;
+        }
+    
+        return <Text g500>{placeholder || 'Select an option'}</Text>;
+    };
+
+    const renderOption = ({ isActive, label, value }: any) => {
+        return (
+            <>
+                {renderLabelWithIcon(label, value)}
+                {isActive && <Icon icon="check" p600 size={1.25} />}
+            </>
+        );
+    };
+    
     return (
         <Controller
             control={control}
@@ -14,14 +52,15 @@ const Select: React.FC<any> = props => {
             render={({ field }) =>
                 <>
                     { label && <Text g700 mb={0.375} medium small>{label}</Text> }
-                    <select {...field} {...forwardProps} style={{ border: '1px solid black', width: '100%' }}>
-                        <option>Select</option>
-                        { 
-                            options?.length > 0 && options.map(([key, value]: any) => { 
-                                return <option key={key} value={key}>{value.name}</option>;
-                            }) 
-                        }
-                    </select>
+                    <BaseSelect
+                        onChange={handleSelect}
+                        optionsSearchPlaceholder={t('search')?.toLowerCase()}
+                        renderLabel={renderLabel}
+                        renderOption={renderOption}
+                        value={value}
+                        {...field} 
+                        {...forwardProps}
+                    />
                 </>
             }
         />

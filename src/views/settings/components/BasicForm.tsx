@@ -1,6 +1,6 @@
 import { Box, Button, Col, Row } from '@impact-market/ui';
-import { currencies } from '../../../utils/currencies';
-import { languages } from '../../../utils/languages';
+import { currenciesOptions } from '../../../utils/currencies';
+import { languagesOptions } from '../../../utils/languages';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
@@ -37,17 +37,20 @@ const Form = ({ onSubmit }: any) => {
             <Box mb={1.5}>
                 <Select 
                     control={control}
+                    isMultiple={false}
                     label={t('currency')}
-                    name="currency"
-                    options={Object.entries(currencies)} 
+                    name="currency" 
+                    options={currenciesOptions}
                 />
             </Box>
+            { /* TODO: carregar apenas os 4 idiomas disponíveis do Prismic (português, inglês, espanhol e francês) */ }
             <Box>
                 <Select 
                     control={control}
+                    isMultiple={false}
                     label={t('language')}
                     name="language"
-                    options={Object.entries(languages)}
+                    options={languagesOptions}
                 />
             </Box>
             {

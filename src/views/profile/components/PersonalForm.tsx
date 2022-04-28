@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 import { Box, Col, Row } from '@impact-market/ui';
-import { getCountryFromPhoneNumber } from '../../../utils/countries';
+// import { countriesOptions, getCountryFromPhoneNumber } from '../../../utils/countries';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
@@ -8,18 +8,18 @@ import FormActions from './FormActions';
 import Input from '../../../components/Input';
 import React, { useEffect } from "react";
 import Select from '../../../components/Select';
-import String from '../../../libs/Prismic/components/String';
+// import String from '../../../libs/Prismic/components/String';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
-
-const genders = {
-    'm': { name: 'Male' },
-    'f': { name: 'Female' },
-    'o': { name: 'Other' }
-};
 
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
     const { t } = useTranslations();
+
+    const genders = [
+        { label: t('male'), value: 'm' },
+        { label: t('female'), value: 'f' },
+        { label: t('other'), value: 'o' }
+    ];
 
     const { handleSubmit, reset, control, getValues } = useForm({
         defaultValues: {
@@ -72,12 +72,12 @@ const Form = ({ onSubmit }: any) => {
                         />
                     </Col>
                     <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0.75 }}>
-                        { /* TODO: finish Gender field */ }
                         <Select
                             control={control}
+                            isMultiple={false}
                             label={t('gender')}
                             name="gender"
-                            options={Object.entries(genders)}
+                            options={genders}
                         />
                     </Col>
                 </Row>
@@ -95,13 +95,20 @@ const Form = ({ onSubmit }: any) => {
                     </Col>
                 </Row>
                 { /* TODO: finish Country field */ }
-                <Row mt={0.5}>
+                {/* <Row mt={0.5}>
                     <Col colSize={12}>
+                        <Select
+                            control={control}
+                            isMultiple={false}
+                            label={t('country')}
+                            name="country"
+                            options={countriesOptions}
+                        />
                         <label><String id="country" /></label>
                         <br />
                         <div>{getCountryFromPhoneNumber('+37060112345')}</div>
                     </Col>
-                </Row>
+                </Row> */}
             </Box>
             {
                 isDirty && !isSubmitSuccessful && <FormActions handleCancel={handleCancel} isSubmitting={isSubmitting} />
