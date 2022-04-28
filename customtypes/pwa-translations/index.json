@@ -585,6 +585,13 @@
           "placeholder": "Your balance"
         },
         "type": "Text"
+      },
+      "string-noCommunities": {
+        "type": "Text",
+        "config": {
+          "label": "noCommunities",
+          "placeholder": "No Communities"
+        }
       }
     },
     "messages": {

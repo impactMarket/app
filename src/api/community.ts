@@ -1,11 +1,21 @@
 import { emptySplitApi } from './index';
 
 interface Community {
-    name: string;
-    currency: string;
     coverImage: string;
-};
+    currency: string;
+    name: string;
+    id: any;
+}
 
+interface Communities {
+    myCountry: string;
+    review: string;
+}
+
+interface Update {
+    body: any;
+    id: number;
+}
 export interface SelectCommunity {
     id: number;
     name: string;
@@ -14,27 +24,40 @@ export interface SelectCommunity {
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
-        getCommunities: builder.mutation<{count: number, rows: SelectCommunity[]}, void>({
-            query: () => ({
+        //  Get all communities by country or/and review status
+        getCommunities: builder.mutation<Communities, { myCountry: any; review: string }>({
+            query: ({ myCountry, review }: any) => ({
                 method: 'GET',
-                url: `/communities`
+                url: `communities?limit=999${myCountry ? '&country=PT' : ''}${
+                    review && `&review=${review}`
+                }`
             }),
-            transformResponse: (response: { data?: {count: number, rows: SelectCommunity[]} }) => response.data
-        }),     
-        getCommunity: builder.mutation<Community, void>({
-            query: (id) => ({
+            transformResponse: (response: { data?: Communities }) => response.data
+        }),
+        //  Get single community by id
+        getCommunity: builder.mutation<Community, { id: any }>({
+            query: (id: any) => ({
                 method: 'GET',
                 url: `communities/${id}`
             }),
             transformResponse: (response: { data?: Community }) => response.data
         }),
-        
-        getCommunityById: builder.query<Community, string>({
-            query: id => `communities/${id}`
+        //  Update community review status (accepted, claimed, declined, pending)
+        updateReview: builder.mutation<Update, { body: any; id: number }>({
+            query: ({ body, id }: any) => ({
+                body,
+                method: 'PUT',
+                url: `communities/${id}/review`
+            }),
+            transformResponse: (response: { data: Update }) => response.data
         })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetCommunityByIdQuery, useGetCommunityMutation, useGetCommunitiesMutation } = communityApi;
+export const {
+    useGetCommunityMutation,
+    useGetCommunitiesMutation,
+    useUpdateReviewMutation
+} = communityApi;
