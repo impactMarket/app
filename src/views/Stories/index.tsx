@@ -37,7 +37,6 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
         return checkUserPermission(user, types);
     };
 
-
     return (
         <ViewContainer isLoading={isLoading}>
             <Row>

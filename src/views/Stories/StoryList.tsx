@@ -52,8 +52,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     const user = auth?.user;
     const userTypes = auth?.type;
 
-    console.log(auth);
-
     const userPermissions = (user: any, types: string[]) => {
         return checkUserPermission(user, types);
     };

@@ -3,10 +3,8 @@ import {
     Button,
     CircledIcon,
     Col,
-    Input,
     ModalWrapper,
     Row,
-    Text,
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
@@ -15,10 +13,11 @@ import {
     useGetPreSignedMutation
 } from '../../api/story';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import Input from '../../components/Input';
 import React, { useEffect, useRef, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
-// import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 type Inputs = {
     img?: string;
@@ -31,7 +30,7 @@ const CreateStory = () => {
     const [createStory] = useCreateStoryMutation();
     const [file, setFile] = useState<string>('');
     const inputRef = useRef<any>();
-    // const { t } = useTranslations();
+    const { t } = useTranslations();
     const [getPreSigned] = useGetPreSignedMutation();
     const { handleClose, setRefreshStories } = useModal();
     const { modals } = usePrismicData();
@@ -40,14 +39,12 @@ const CreateStory = () => {
         register,
         reset,
         handleSubmit,
-        watch,
         formState: {}
     } = useForm<Inputs>();
     const { isSubmitting, isSubmitSuccessful } = useFormState({
         control
     });
     const { onChange, onBlur, name, ref } = register('img');
-    const messageLimit = TEXT_LIMIT - watch('message')?.length;
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
@@ -133,31 +130,17 @@ const CreateStory = () => {
                 mt={0.5}
                 small
             />
-            <Text g700 medium mt={1.25} small>
-                <String id="storyPostText" />
-                {/* · <String id="optional" /> */}
-            </Text>
             <form onSubmit={handleSubmit(onSubmit)}>
-                <Input
-                    maxlength="256"
-                    minlength="1"
-                    // placeholder={t('Write something here...')}
-                    placeholder="Write something here..."
-                    rows={6}
-                    wrapperProps={{
-                        mb: 0.375,
-                        mt: 0.375
-                    }}
-                    {...register('message', { required: true })}
-                />
-
-                <Text g500 small>
-                    <String
-                        id="countCharactersLeft"
-                        variables={{ count: messageLimit }}
+                <Box mt={1.25}>
+                    <Input
+                        control={control}
+                        label={t('storyPostText')}
+                        limit={TEXT_LIMIT}
+                        name="message"
+                        placeholder="Write something here..."
+                        rows={6}
                     />
-                </Text>
-
+                </Box>
                 <>
                     <Button
                         fluid="xs"
