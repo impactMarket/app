@@ -55,10 +55,12 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         try {
             const result = await updateUser(data).unwrap();
 
-            dispatch(setUser({ user: { ...result }}));
+            if(result) {
+                dispatch(setUser({ user: { ...result }}));
 
-            // TODO: colocar textos no prismic
-            toast.success("Successfully changed data!");
+                // TODO: colocar textos no prismic
+                toast.success("Successfully changed data!");
+            }
         }
         catch(e) {
             console.log(e);
@@ -87,10 +89,12 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                                 avatarMediaPath: preSigned.filePath
                             }).unwrap();
 
-                            dispatch(setUser({ user: { ...payload }}));
+                            if(payload) {
+                                dispatch(setUser({ user: { ...payload }}));
 
-                            // TODO: colocar textos no prismic
-                            toast.success("Successfully changed data!");
+                                // TODO: colocar textos no prismic
+                                toast.success("Successfully changed data!");
+                            }
                         }
                     }
                 }
@@ -170,8 +174,10 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                                 title: t('copyAddress')
                             }
                         ]}
-                        mt={0.25}
                         title={formatAddress(auth?.user?.address, [6, 4])}
+                        wrapperProps={{
+                            mt: 0.25
+                        }}
                     />
                 </Col>
                 <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0 }} tAlign={{ sm: 'right', xs: 'left' }}>
