@@ -95,11 +95,12 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                 <>
                     <Box mb={1.5}>
                         <Link href="/requests" passHref>
-                            <Label
-                                as="a"
-                                content={<String id="back"/>}
-                                icon="arrowLeft"
-                            />
+                            <Box as="a">
+                                <Label
+                                    content="Back"
+                                    icon="arrowLeft"
+                                />
+                            </Box>
                         </Link>
                     </Box>
                     
@@ -150,19 +151,20 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                 </Button>
                                 {/* ------ */}
                                 {community.review !== 'accepted' && (
-                                    <DropdownMenu
-                                        asButton
-                                        items={[
-                                            {
-                                                icon: 'eye',
-                                                onClick: () => functionUpdateReview('accepted'),
-                                                title: 'Accept community'
-                                            }
-                                        ]}
-                                        ml={1}
-                                        rtl
-                                        title={<String id="actions"/>}
-                                    />    
+                                    <Box ml={1}>
+                                        <DropdownMenu
+                                            asButton
+                                            items={[
+                                                {
+                                                    icon: 'eye',
+                                                    onClick: () => functionUpdateReview('accepted'),
+                                                    title: 'Accept community'
+                                                }
+                                            ]}
+                                            rtl
+                                            title={<String id="actions"/>}
+                                        />  
+                                    </Box>  
                                 )}                                     
                             </Box>
                         )}

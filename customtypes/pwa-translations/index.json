@@ -565,6 +565,20 @@
           "placeholder": "Accepted"
         }
       },
+      "string-maximumPerBeneficiary": {
+        "type": "Text",
+        "config": {
+          "label": "maximumPerBeneficiary",
+          "placeholder": "Maximum per beneficiary"
+        }
+      },
+      "string-timeIncrement": {
+        "type": "Text",
+        "config": {
+          "label": "timeIncrement",
+          "placeholder": "Time increment"
+        }
+      },
       "slices": {
         "type": "Slices",
         "fieldset": "Slice Zone",
