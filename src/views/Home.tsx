@@ -5,7 +5,7 @@ import { useSelector } from 'react-redux';
 import { userBeneficiary } from '../utils/users';
 import React from 'react';
 
-const Home: React.FC<{ isLoading?: boolean }> = props => {
+const Home: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
 
     const auth = useSelector(selectCurrentUser);
@@ -21,9 +21,7 @@ const Home: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={isLoading}>
-            <Display>
-                Welcome home
-            </Display>
+            <Display>Welcome home</Display>
         </ViewContainer>
     );
 };
