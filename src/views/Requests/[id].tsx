@@ -19,6 +19,7 @@ import {
 } from '@impact-market/ui';
 
 import { useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
+import String from '../../libs/Prismic/components/String';
 
 
 const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (props) => {
@@ -95,9 +96,9 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                     <Box mb={1.5}>
                         <Link href="/requests" passHref>
                             <Label
-                                content="Back"
+                                content={<String id="back"/>}
                                 icon="arrowLeft"
-                                
+                                as="a"
                             />
                         </Link>
                     </Box>
@@ -125,13 +126,13 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                         onClick={() => functionUpdateReview('declined')}
                                         secondary
                                     >
-                                        Decline
+                                        <String id="decline"/>
                                     </Button>
                                 }
                                 <Button
                                     onClick={() => functionUpdateReview('claimed')}
                                 >
-                                    Claim
+                                    <String id="claim"/>
                                 </Button>
                             </Box>
                         )}
@@ -145,7 +146,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                         margin="0 0.5 0 0"
                                         n01
                                     />
-                                    Edit Details
+                                    <String id="editDetails"/>
                                 </Button>
                                 {/* ------ */}
                                 {community.review !== 'accepted' && (
@@ -160,17 +161,17 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                         ]}
                                         ml={1}
                                         rtl
-                                        title="Actions"
+                                        title={<String id="actions"/>}
                                     />    
                                 )}                                     
                             </Box>
                         )}
                     </Grid>
 
-                    <Grid cols={4}>
+                    <Grid cols={{ sm: 4, xs: 2 }}>
                         <Card>
                             <Text g500 mb={0.3} regular small>
-                                # Beneficiaries
+                                # <String id="beneficiaries"/>
                             </Text>
                             <Grid cols={2}>
                                 <Text g900 medium semibold>
@@ -191,7 +192,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                         </Card>
                         <Card>
                             <Text g500 mb={0.3} regular small>
-                                Claimed per beneficiary
+                                <String id="claimedPerBeneficiary"/>
                             </Text>
                             <Grid cols={2}>
                                 <Text g900 medium semibold>
@@ -211,7 +212,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                         </Card>
                         <Card>
                             <Text g500 mb={0.3} regular small>
-                                Maximum per beneficiary
+                                <String id="maximumPerBeneficiary"/>
                             </Text>
                             <Grid cols={2}>
                                 <Text g900 medium semibold>
@@ -230,11 +231,11 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                         </Card>
                         <Card>
                             <Text g500 mb={0.3} regular small>
-                                Time increment
+                                <String id="timeIncrement"/>
                             </Text>
                             <Grid cols={2}>
                                 <Text g900 medium semibold>
-                                    - minutes
+                                    - <String id="minutes"/>
                                 </Text>
                                 <Box right>
                                     <PulseIcon

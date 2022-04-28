@@ -16,7 +16,7 @@ export const getStaticProps: GetStaticProps = async ({
     return {
         props: {
             data,
-            view: 'community-requests'
+            view: 'communityRequests'  
         }
     };
 };

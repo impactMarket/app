@@ -550,6 +550,27 @@
           "placeholder": "Your balance"
         },
         "type": "Text"
+      },
+      "string-claimedPerBeneficiary": {
+        "type": "Text",
+        "config": {
+          "label": "claimedPerBeneficiary",
+          "placeholder": "Claimed Per Beneficiary"
+        }
+      },
+      "string-accepted": {
+        "type": "Text",
+        "config": {
+          "label": "accepted",
+          "placeholder": "Accepted"
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {}
+        }
       }
     },
     "messages": {
