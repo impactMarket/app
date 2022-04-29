@@ -17,7 +17,11 @@ import {
     useGetStoriesMutation,
     useLoveStoryMutation
 } from '../../api/story';
-import { checkUserPermission, userBeneficiary, userManager } from '../../utils/users';
+import {
+    checkUserPermission,
+    userBeneficiary,
+    userManager
+} from '../../utils/users';
 import { getCountryNameFromInitials } from '../../utils/countries';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
@@ -184,16 +188,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     };
 
     const renderStory = (story: any, index: number) => {
-        const items = [
-            {
-                icon: 'sad',
-                onClick: () =>
-                    openModal('reportStory', {
-                        storyId: story.id
-                    }),
-                title: <String id="reportAsInappropriate" />
-            }
-        ];
+        const items = [];
 
         if (story.isDeletable) {
             items.unshift({
@@ -217,6 +212,29 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                         storyId: story.id
                     }),
                 title: <String id="deletePost" />
+            });
+        } else {
+            items.unshift({
+                icon: 'sad',
+                onClick: () =>
+                    openModal('reportStory', {
+                        arrayId: index,
+                        removeIndex: (index: number) =>
+                            setStories(
+                                (oldStories: {
+                                    count: number;
+                                    list: Story[];
+                                }) => ({
+                                    count: oldStories.count--,
+                                    list: oldStories.list.filter(
+                                        (_x, storiesIndex) =>
+                                            index !== storiesIndex
+                                    )
+                                })
+                            ),
+                        storyId: story.id
+                    }),
+                title: <String id="reportAsInappropriate" />
             });
         }
 
@@ -255,22 +273,27 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                             <Text g500 regular small>
                                                 <Box fLayout="center" flex>
                                                     <Box mr={0.5}>
-                                                <CountryFlag
-                                                    countryCode={
-                                                        story.community.country
-                                                    }
-                                                   
-                                                    size={[2, 2]}
-                                                />
-                                              </Box>
-                                              <Box>
-                                                <Text >
-                                                    {story.community.city},{' '}
-                                                    {getCountryNameFromInitials(
-                                                        story.community.country
-                                                    )}
-                                                </Text>
-                                                </Box>
+                                                        <CountryFlag
+                                                            countryCode={
+                                                                story.community
+                                                                    .country
+                                                            }
+                                                            size={[2, 2]}
+                                                        />
+                                                    </Box>
+                                                    <Box>
+                                                        <Text>
+                                                            {
+                                                                story.community
+                                                                    .city
+                                                            }
+                                                            ,{' '}
+                                                            {getCountryNameFromInitials(
+                                                                story.community
+                                                                    .country
+                                                            )}
+                                                        </Text>
+                                                    </Box>
                                                 </Box>
                                             </Text>
                                         </Box>
@@ -355,7 +378,10 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Text>
                             </Col>
                             <Col colSize={{ sm: 4, xs: 6 }} pt={0} right>
-                                {checkUserPermission(auth, [userManager, userBeneficiary]) && (
+                                {checkUserPermission(auth, [
+                                    userManager,
+                                    userBeneficiary
+                                ]) && (
                                     <DropdownMenu
                                         asButton
                                         icon="ellipsis"

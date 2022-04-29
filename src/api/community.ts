@@ -21,6 +21,11 @@ export interface SelectCommunity {
     name: string;
 }
 
+export interface Countries {
+    count: number;
+    country: string;
+}
+
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -42,6 +47,16 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: Community }) => response.data
         }),
+        getCommunityById: builder.query<Community, string>({
+            query: id => `communities/${id}`
+        }),
+        getCountryByCommunities: builder.mutation<Countries[], void>({
+            query: () => ({
+                method: 'GET',
+                url: `communities/count?groupBy=country`
+            }),
+            transformResponse: (response: { data?: Countries[] }) => response.data
+        }),
         //  Update community review status (accepted, claimed, declined, pending)
         updateReview: builder.mutation<Update, { body: any; id: number }>({
             query: ({ body, id }: any) => ({
@@ -50,7 +65,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/review`
             }),
             transformResponse: (response: { data: Update }) => response.data
-        })
+        }), 
     })
 });
 
@@ -59,5 +74,6 @@ export const communityApi = emptySplitApi.injectEndpoints({
 export const {
     useGetCommunityMutation,
     useGetCommunitiesMutation,
-    useUpdateReviewMutation
+    useUpdateReviewMutation,
+    useGetCountryByCommunitiesMutation
 } = communityApi;

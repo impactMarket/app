@@ -21,7 +21,7 @@ type Inputs = {
 const ReportStory = () => {
     const [showSuccess, setShowSuccess] = useState<number>(0);
     const [reportStory] = useReportStoryMutation();
-    const { handleClose, storyId } = useModal();
+    const { handleClose, storyId, arrayId, removeIndex } = useModal();
     const { modals } = usePrismicData();
     const {
         control,
@@ -46,6 +46,7 @@ const ReportStory = () => {
                 id: storyId
             });
 
+            removeIndex(arrayId);
             setShowSuccess(1);
         } catch (e) {
             console.log(e);
