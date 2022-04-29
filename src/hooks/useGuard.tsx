@@ -15,10 +15,9 @@ const useGuard = () => {
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
-    const authCheck = (url: string, userPaths: Routes) => {
-        const path = url.split('?');
+    const authCheck = (userPaths: Routes) => {
 
-        if(!userPaths.includes(path[0])) {
+        if(!userPaths.includes(router.pathname)) {
             setAuthorized(false);
             router.push('/');
         } 
@@ -52,7 +51,7 @@ const useGuard = () => {
                 }
 
                 // on initial load - run auth check
-                authCheck(router.asPath, userPaths);
+                authCheck(userPaths);
 
                 setIsLoading(false);
             } catch (error) {
