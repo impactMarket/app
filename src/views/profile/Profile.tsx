@@ -156,8 +156,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             <Row>
                 <Col colSize={{ sm: 6, xs: 12 }}>
                     <Display g900 medium>
-                        { /* TODO: verificar se é para colocar um nome por default */ }
-                        {getUserName(auth?.user) || 'John Doe'}
+                        {getUserName(auth?.user)}
                     </Display>
                     { /* TODO: verificar como é para ficar o link */ }
                     <DropdownMenu

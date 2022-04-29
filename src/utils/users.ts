@@ -18,5 +18,6 @@ export const getUserName = (user: PutPostUser) => {
     const firstName = user?.firstName?.split(' ')[0] || '';
     const lastName = user?.lastName?.split(' ').pop() || '';
 
-    return `${firstName} ${lastName}`;
+    // TODO: verificar se é para colocar um nome por default
+    return `${firstName} ${lastName}` || 'John Doe';
 };

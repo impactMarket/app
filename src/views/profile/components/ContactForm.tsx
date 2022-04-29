@@ -35,8 +35,6 @@ const Form = ({ onSubmit }: any) => {
         reset();
     }
     
-    // TODO: ver como fica a parte do telefone
-    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box pl={1.5} pr={1.5}>
@@ -47,10 +45,10 @@ const Form = ({ onSubmit }: any) => {
                         name="email"
                     />
                 </Box>
+                { /* TODO: acabar campo de telefone (com number masking talvez e país como está no design) */ }
                 <Box mb={1.5}>
                     <Input 
                         control={control}
-                        disabled
                         label={t('phoneNumber')}
                         name="phone"
                         wrapperProps={{
