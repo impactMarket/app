@@ -47,15 +47,6 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: Community }) => response.data
         }),
-        //  Update community review status (accepted, claimed, declined, pending)
-        updateReview: builder.mutation<Update, { body: any; id: number }>({
-            query: ({ body, id }: any) => ({
-                body,
-                method: 'PUT',
-                url: `communities/${id}/review`
-            }),
-            transformResponse: (response: { data: Update }) => response.data
-        }),
         getCommunityById: builder.query<Community, string>({
             query: id => `communities/${id}`
         }),
@@ -65,6 +56,15 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/count?groupBy=country`
             }),
             transformResponse: (response: { data?: Countries[] }) => response.data
+        }),
+        //  Update community review status (accepted, claimed, declined, pending)
+        updateReview: builder.mutation<Update, { body: any; id: number }>({
+            query: ({ body, id }: any) => ({
+                body,
+                method: 'PUT',
+                url: `communities/${id}/review`
+            }),
+            transformResponse: (response: { data: Update }) => response.data
         }), 
     })
 });
