@@ -1,4 +1,5 @@
 import { emptySplitApi } from './index';
+import qs from 'query-string';
 
 interface Community {
     coverImage: string;
@@ -8,7 +9,7 @@ interface Community {
 }
 
 interface Communities {
-    myCountry: string;
+    country: string;
     review: string;
 }
 
@@ -30,12 +31,10 @@ export interface Countries {
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
         //  Get all communities by country or/and review status
-        getCommunities: builder.mutation<Communities, { myCountry: any; review: string }>({
-            query: ({ myCountry, review }: any) => ({
+        getCommunities: builder.mutation<Communities, Record<string, any>>({
+            query: (filters: Record<string, any>) => ({
                 method: 'GET',
-                url: `communities?limit=999${myCountry ? '&country=PT' : ''}${
-                    review && `&review=${review}`
-                }`
+                url: qs.stringifyUrl({query:{limit:999, ...filters}, url:'communities'})
             }),
             transformResponse: (response: { data?: Communities }) => response.data
         }),
@@ -47,16 +46,6 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: Community }) => response.data
         }),
-        getCommunityById: builder.query<Community, string>({
-            query: id => `communities/${id}`
-        }),
-        getCountryByCommunities: builder.mutation<Countries[], void>({
-            query: () => ({
-                method: 'GET',
-                url: `communities/count?groupBy=country`
-            }),
-            transformResponse: (response: { data?: Countries[] }) => response.data
-        }),
         //  Update community review status (accepted, claimed, declined, pending)
         updateReview: builder.mutation<Update, { body: any; id: number }>({
             query: ({ body, id }: any) => ({
@@ -65,7 +54,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/review`
             }),
             transformResponse: (response: { data: Update }) => response.data
-        }), 
+        })
     })
 });
 
@@ -74,6 +63,5 @@ export const communityApi = emptySplitApi.injectEndpoints({
 export const {
     useGetCommunityMutation,
     useGetCommunitiesMutation,
-    useUpdateReviewMutation,
-    useGetCountryByCommunitiesMutation
+    useUpdateReviewMutation
 } = communityApi;

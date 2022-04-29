@@ -592,6 +592,41 @@
           "label": "noCommunities",
           "placeholder": "No Communities"
         }
+      },
+      "string-clear": {
+        "type": "Text",
+        "config": {
+          "label": "clear",
+          "placeholder": "Clear"
+        }
+      },
+      "string-writeSomethingHere": {
+        "type": "Text",
+        "config": {
+          "label": "writeSomethingHere",
+          "placeholder": "Write something here"
+        }
+      },
+      "string-charactersLeft": {
+        "type": "Text",
+        "config": {
+          "label": "charactersLeft",
+          "placeholder": "Characters left"
+        }
+      },
+      "string-selected": {
+        "type": "Text",
+        "config": {
+          "label": "selected",
+          "placeholder": "Selected"
+        }
+      },
+      "slices": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {}
+        }
       }
     },
     "messages": {
@@ -621,6 +656,24 @@
           "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
+      },
+      "message-errorOccurred": {
+        "type": "StructuredText",
+        "config": {
+          "label": "errorOcurred",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-copiedAddress": {
+        "type": "StructuredText",
+        "config": {
+          "label": "copiedAddress",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
       }
     }
   }
