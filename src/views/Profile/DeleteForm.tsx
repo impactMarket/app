@@ -1,9 +1,9 @@
 import { Box, Col, Row, Text, Toggle } from '@impact-market/ui';
 import { useForm, useFormState } from "react-hook-form";
-import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import FormActions from './FormActions';
 import React, { useState } from "react";
-import RichText from '../../../libs/Prismic/components/RichText';
+import RichText from '../../libs/Prismic/components/RichText';
 
 const Form = ({ onSubmit }: any) => {
     const [showActions, toggleActions] = useState(false);

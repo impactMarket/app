@@ -1,9 +1,9 @@
 import { Avatar, Box, CircledIcon, Col, Row, Spinner, toast } from '@impact-market/ui';
-import { getImage } from '../../../utils/images';
-import { selectCurrentUser } from '../../../state/slices/auth';
+import { getImage } from '../../utils/images';
+import { selectCurrentUser } from '../../state/slices/auth';
 import { useForm } from "react-hook-form";
 import { useSelector } from 'react-redux';
-import InputUpload from '../../../components/InputUpload';
+import InputUpload from '../../components/InputUpload';
 import React, { useState } from "react";
 
 const Form = ({ onSubmit }: any) => {

@@ -1,13 +1,13 @@
 import { Box, Button, Col, Row } from '@impact-market/ui';
-import { currenciesOptions } from '../../../utils/currencies';
-import { languagesOptions } from '../../../utils/languages';
-import { selectCurrentUser } from '../../../state/slices/auth';
+import { currenciesOptions } from '../../utils/currencies';
+import { languagesOptions } from '../../utils/languages';
+import { selectCurrentUser } from '../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import React, { useEffect } from "react";
-import Select from '../../../components/Select';
-import String from '../../../libs/Prismic/components/String';
-import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
+import Select from '../../components/Select';
+import String from '../../libs/Prismic/components/String';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);

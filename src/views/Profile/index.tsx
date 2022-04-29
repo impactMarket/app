@@ -8,11 +8,11 @@ import { useDeleteUserMutation, useGetPreSignedMutation, useUpdateUserMutation }
 import { useDispatch, useSelector } from 'react-redux';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
-import AditionalForm from './components/AditionalForm';
-import ContactForm from './components/ContactForm';
-import DeleteForm from './components/DeleteForm';
-import ImageForm from './components/ImageForm';
-import PersonalForm from './components/PersonalForm';
+import AditionalForm from './AditionalForm';
+import ContactForm from './ContactForm';
+import DeleteForm from './DeleteForm';
+import ImageForm from './ImageForm';
+import PersonalForm from './PersonalForm';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
