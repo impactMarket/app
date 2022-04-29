@@ -37,8 +37,6 @@ const ReportStory = () => {
         storyTypes
     ).map(([key, value]: any) => ({ label: value.type, value: key }));
 
-    console.log(storyTypes);
-
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
             await reportStory({
