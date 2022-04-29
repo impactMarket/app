@@ -21,3 +21,11 @@ export const getUserName = (user: PutPostUser) => {
     // TODO: verificar se é para colocar um nome por default
     return `${firstName} ${lastName}` || 'John Doe';
 };
+
+export const checkUserPermission = (auth: any, types: string[]) => {
+    if (auth?.user && auth?.type?.some((value: string) => types.includes(value))) {
+        return true;
+    }
+
+    return false;
+};

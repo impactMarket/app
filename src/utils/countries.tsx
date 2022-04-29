@@ -24,3 +24,11 @@ export function getCountryFromPhoneNumber(pnumber: string) {
 
     return 'Unknown';
 }
+
+export function getCountryNameFromInitials(countryInitials: string) {
+    if (countries[countryInitials]) {
+        return countries[countryInitials].name;
+    }
+
+    return 'Unknown';
+}

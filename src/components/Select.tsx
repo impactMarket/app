@@ -4,12 +4,16 @@ import React, { useState } from 'react';
 // import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Select: React.FC<any> = props => {
-    const { showFlag, control, label, name, placeholder, ...forwardProps } = props;
+    const { showFlag, control, label, name, placeholder, callback, ...forwardProps } = props;
 
     const [value, setValue] = useState('');
     // const { t } = useTranslations();
 
     const handleSelect = (value: any) => {
+        if (typeof callback === 'function') {
+            callback(value);
+        }
+
         return setValue(value);
     };
 
@@ -44,26 +48,37 @@ const Select: React.FC<any> = props => {
             </>
         );
     };
+
+    const renderInput = (field?: any) => {
+        return (
+            <>
+                { label && <Text g700 mb={0.375} medium small>{label}</Text> }
+                <BaseSelect
+                    onChange={handleSelect}
+                    optionsSearchPlaceholder="search"
+                    renderLabel={renderLabel}
+                    renderOption={renderOption}
+                    value={value}
+                    {...field} 
+                    {...forwardProps}
+                />
+            </>
+        );
+    }
     
     return (
-        <Controller
-            control={control}
-            name={name}
-            render={({ field }) =>
-                <>
-                    { label && <Text g700 mb={0.375} medium small>{label}</Text> }
-                    <BaseSelect
-                        onChange={handleSelect}
-                        optionsSearchPlaceholder="search"
-                        renderLabel={renderLabel}
-                        renderOption={renderOption}
-                        value={value}
-                        {...field} 
-                        {...forwardProps}
-                    />
-                </>
+        <>
+            { 
+                control ?
+                <Controller
+                    control={control}
+                    name={name}
+                    render={({ field }) => renderInput(field)}
+                />
+                :
+                renderInput()
             }
-        />
+        </>
     )
 }
 
