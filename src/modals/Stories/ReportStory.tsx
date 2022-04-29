@@ -21,7 +21,7 @@ type Inputs = {
 const ReportStory = () => {
     const [showSuccess, setShowSuccess] = useState<number>(0);
     const [reportStory] = useReportStoryMutation();
-    const { handleClose, storyId } = useModal();
+    const { handleClose, storyId, arrayId, removeIndex } = useModal();
     const { modals } = usePrismicData();
     const {
         control,
@@ -37,6 +37,8 @@ const ReportStory = () => {
         storyTypes
     ).map(([key, value]: any) => ({ label: value.type, value: key }));
 
+    console.log(storyTypes);
+
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
             await reportStory({
@@ -46,6 +48,7 @@ const ReportStory = () => {
                 id: storyId
             });
 
+            removeIndex(arrayId);
             setShowSuccess(1);
         } catch (e) {
             console.log(e);
