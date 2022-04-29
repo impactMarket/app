@@ -1,14 +1,14 @@
 /* eslint-disable sort-keys */
 import { Box, Col, Row } from '@impact-market/ui';
-import { countriesOptions } from '../../../utils/countries';
-import { selectCurrentUser } from '../../../state/slices/auth';
+import { countriesOptions } from '../../utils/countries';
+import { selectCurrentUser } from '../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import FormActions from './FormActions';
-import Input from '../../../components/Input';
+import Input from '../../components/Input';
 import React, { useEffect } from "react";
-import Select from '../../../components/Select';
-import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
+import Select from '../../components/Select';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
