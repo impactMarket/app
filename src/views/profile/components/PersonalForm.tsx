@@ -1,6 +1,6 @@
 /* eslint-disable sort-keys */
 import { Box, Col, Row } from '@impact-market/ui';
-// import { countriesOptions, getCountryFromPhoneNumber } from '../../../utils/countries';
+import { countriesOptions } from '../../../utils/countries';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { useSelector } from 'react-redux';
@@ -8,7 +8,6 @@ import FormActions from './FormActions';
 import Input from '../../../components/Input';
 import React, { useEffect } from "react";
 import Select from '../../../components/Select';
-// import String from '../../../libs/Prismic/components/String';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const Form = ({ onSubmit }: any) => {
@@ -25,6 +24,7 @@ const Form = ({ onSubmit }: any) => {
         defaultValues: {
             age: auth?.user?.age,
             bio: auth?.user?.bio,
+            country: auth?.user?.country,
             firstName: auth?.user?.firstName,
             gender: auth?.user?.gender,
             lastName: auth?.user?.lastName
@@ -94,8 +94,7 @@ const Form = ({ onSubmit }: any) => {
                         />
                     </Col>
                 </Row>
-                { /* TODO: finish Country field */ }
-                {/* <Row mt={0.5}>
+                <Row mt={0.5}>
                     <Col colSize={12}>
                         <Select
                             control={control}
@@ -103,12 +102,11 @@ const Form = ({ onSubmit }: any) => {
                             label={t('country')}
                             name="country"
                             options={countriesOptions}
+                            showFlag
+                            withOptionsSearch
                         />
-                        <label><String id="country" /></label>
-                        <br />
-                        <div>{getCountryFromPhoneNumber('+37060112345')}</div>
                     </Col>
-                </Row> */}
+                </Row>
             </Box>
             {
                 isDirty && !isSubmitSuccessful && <FormActions handleCancel={handleCancel} isSubmitting={isSubmitting} />

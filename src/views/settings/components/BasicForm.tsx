@@ -41,6 +41,7 @@ const Form = ({ onSubmit }: any) => {
                     label={t('currency')}
                     name="currency" 
                     options={currenciesOptions}
+                    withOptionsSearch
                 />
             </Box>
             { /* TODO: carregar apenas os 4 idiomas disponíveis do Prismic (português, inglês, espanhol e francês) */ }
@@ -51,6 +52,7 @@ const Form = ({ onSubmit }: any) => {
                     label={t('language')}
                     name="language"
                     options={languagesOptions}
+                    withOptionsSearch
                 />
             </Box>
             {
