@@ -10,7 +10,7 @@ import {
     ViewContainer,
     openModal
 } from '@impact-market/ui';
-import { checkUserPermission } from '../../utils/userTypes';
+import { checkUserPermission, userBeneficiary, userManager } from '../../utils/users';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
@@ -29,13 +29,6 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
     const { view } = usePrismicData();
     const { t } = useTranslations();
     const auth = useSelector(selectCurrentUser);
-    const user = auth?.user;
-    const userTypes = auth?.type;
-    const userAddress = auth?.user?.address;
-
-    const userPermissions = (user: any, types: string[]) => {
-        return checkUserPermission(user, types);
-    };
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -52,7 +45,7 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                     />
                 </Col>
 
-                {userPermissions(user, userTypes) && (
+                {checkUserPermission(auth, [userManager, userBeneficiary]) && (
                     <Col colSize={{ sm: 3, xs: 12 }} right>
                         <Button
                             fluid="xs"
@@ -73,9 +66,9 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                         title={t('allStories')}
                     />
 
-                    {userPermissions(user, userTypes) && (
+                    {checkUserPermission(auth, [userManager, userBeneficiary]) && (
                         <Tab
-                            onClick={() => update('user', userAddress)}
+                            onClick={() => update('user', auth?.user?.address)}
                             title={t('myStories')}
                         />
                     )}

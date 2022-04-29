@@ -17,8 +17,8 @@ import {
     useGetStoriesMutation,
     useLoveStoryMutation
 } from '../../api/story';
-import { checkUserPermission } from '../../utils/userTypes';
-import { getCountryNameFromInitials } from '../../utils/country';
+import { checkUserPermission, userBeneficiary, userManager } from '../../utils/users';
+import { getCountryNameFromInitials } from '../../utils/countries';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useRouter } from 'next/router';
@@ -50,12 +50,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     const { asPath, query } = router;
     const { country, communityId } = query;
     const auth = useSelector(selectCurrentUser);
-    const user = auth?.user;
-    const userTypes = auth?.type;
-
-    const userPermissions = (user: any, types: string[]) => {
-        return checkUserPermission(user, types);
-    };
 
     const loadItems = () => {
         if (offset < stories.count) {
@@ -90,6 +84,9 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                 setLoadingStories(false);
             } catch (error) {
                 console.log(error);
+
+                setLoadingStories(false);
+
                 // TODO Error toaster
 
                 return false;
@@ -159,10 +156,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             height: 0,
             width: 0
         });
-
-    const getCountryName = (initials: string) => {
-        return getCountryNameFromInitials(initials);
-    };
 
     const onloveStory = async (id: number, index: number) => {
         try {
@@ -273,7 +266,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                               <Box>
                                                 <Text >
                                                     {story.community.city},{' '}
-                                                    {getCountryName(
+                                                    {getCountryNameFromInitials(
                                                         story.community.country
                                                     )}
                                                 </Text>
@@ -362,7 +355,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Text>
                             </Col>
                             <Col colSize={{ sm: 4, xs: 6 }} pt={0} right>
-                                {userPermissions(user, userTypes) && (
+                                {checkUserPermission(auth, [userManager, userBeneficiary]) && (
                                     <DropdownMenu
                                         asButton
                                         icon="ellipsis"
@@ -380,7 +373,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
 
     return (
         <div>
-            {stories.list.length === 0 && <NoStoriesFound />}
+            {!loadingStories && stories.list.length === 0 && <NoStoriesFound />}
             {stories.list.map((story: any, index: number) =>
                 renderStory(story, index)
             )}
