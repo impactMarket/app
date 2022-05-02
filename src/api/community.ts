@@ -26,6 +26,21 @@ export interface Countries {
     country: string;
 }
 
+export interface PendingCommunities {
+    name: string;
+    description: string;
+    country: string;
+    city: string;
+    coverMediaPath: string;
+    ambassadorAddress: string;
+    contract: {
+        maxClaim: number;
+        baseInterval: number;
+        claimAmount: number;
+        incrementInterval: number;
+    };
+};
+
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -57,6 +72,13 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: Countries[] }) => response.data
         }),
+        getPendingCommunities: builder.mutation<PendingCommunities[], void>({
+            query: () => ({
+                method: 'GET',
+                url: `communities?status=pending&review=accepted&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
+            }),
+            transformResponse: (response: { data?: PendingCommunities[] }) => response.data
+        }),
         //  Update community review status (accepted, claimed, declined, pending)
         updateReview: builder.mutation<Update, { body: any; id: number }>({
             query: ({ body, id }: any) => ({
@@ -75,5 +97,6 @@ export const {
     useGetCommunityMutation,
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
-    useGetCountryByCommunitiesMutation
+    useGetCountryByCommunitiesMutation,
+    useGetPendingCommunitiesMutation
 } = communityApi;
