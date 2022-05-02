@@ -43,9 +43,12 @@ const Filters = () => {
 
     return (
         <Row mt={0.625}>
-            <Col colSize={{ sm: 6, xs: 12 }}>
+            <Col colSize={{ sm: 3, xs: 12 }}>
                 <Select
                     callback={updateFilter}
+                    // TODO clear string
+                    clearLabel="Clear"
+                    isClearable
                     isMultiple
                     options={countries}
                     showFlag
