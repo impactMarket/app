@@ -5,9 +5,11 @@ import { useForm } from "react-hook-form";
 import { useSelector } from 'react-redux';
 import InputUpload from '../../../components/InputUpload';
 import React, { useState } from "react";
+import UploadTest from '../../../components/UploadTest';
 
 const Form = ({ onSubmit }: any) => {
     const [isLoading, toggleLoading] = useState(false);
+    const [cenas, setCenas] = useState();
     const auth = useSelector(selectCurrentUser);
 
     const { control } = useForm();
@@ -35,6 +37,11 @@ const Form = ({ onSubmit }: any) => {
         }
     }
 
+    const handleFiles2 = (data: any) => {
+        console.log(data);
+        setCenas(data);
+    }
+
     return (
         <>
             {
@@ -43,6 +50,9 @@ const Form = ({ onSubmit }: any) => {
                 :
                 <form>
                     <Box pl={1.5} pr={1.5}>
+                        <Row>
+                            <UploadTest handleFiles={handleFiles2} children={JSON.stringify(cenas)}/>
+                        </Row>
                         <Row fLayout="center start">
                             <Col colSize={{ sm: 3, xs: 12 }} pb={{ sm: 1, xs: 1.25 }}>
                                 { /* TODO: missing icon "user" */ }
