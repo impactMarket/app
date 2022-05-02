@@ -8,8 +8,6 @@ const InputUpload = React.forwardRef((props: any) => {
 
     const { acceptedFiles, getRootProps, getInputProps, open } = useDropzone({
         // Disable click and keydown behavior
-        noClick: true,
-        noKeyboard: true,
         ...dropzoneOptions
     });
 
