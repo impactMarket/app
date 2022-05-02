@@ -42,6 +42,11 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // https://github.com/GoogleChrome/workbox/issues/1790
 module.exports = withBundleAnalyzer(
     withPWA({
+        eslint: {
+            // Warning: This allows production builds to successfully complete even if
+            // your project has ESLint errors.
+            ignoreDuringBuilds: true,
+        },
         compiler: {
             reactRemoveProperties: true,
             styledComponents: true
