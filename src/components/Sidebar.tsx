@@ -91,8 +91,8 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
 const SidebarFooter = (props: { user?: User }) => {
     const { user } = props;
     const { address } = useWallet();
-
-    if (!user) {
+    
+    if (!address) {
         return <ConnectButton />
     }
     
@@ -110,8 +110,9 @@ const SidebarFooter = (props: { user?: User }) => {
 
 const SidebarMobileActions = (props: { user?: User }) => {
     const { user } = props;
+    const { address } = useWallet();
 
-    if (!user) {
+    if (!address) {
         return <ConnectButton />
     }
 
