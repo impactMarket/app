@@ -3,7 +3,7 @@ import { useDropzone } from 'react-dropzone';
 import React, { useEffect } from 'react';
 
 // eslint-disable-next-line react/display-name
-const InputUpload = React.forwardRef((props: any, ref) => {
+const InputUpload = React.forwardRef((props: any) => {
     const { children, handleFiles, wrapperProps, ...dropzoneOptions } = props;
 
     const { acceptedFiles, getRootProps, getInputProps, open } = useDropzone({
@@ -20,7 +20,7 @@ const InputUpload = React.forwardRef((props: any, ref) => {
     return (
         <a {...wrapperProps} {...getRootProps()} onClick={open} style={{ border: '1px solid #000000' }}>
             {!!children && <Box mt={0.75}>{children}</Box>}
-            <input {...getInputProps()} ref={ref} />
+            <input {...getInputProps()} />
         </a>
     );
 });

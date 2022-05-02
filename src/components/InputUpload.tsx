@@ -1,8 +1,8 @@
-import { InputUpload as BaseInputUpload, InputUploadProps, Text } from '@impact-market/ui';
+import { InputUpload as BaseInputUpload, Text } from '@impact-market/ui';
 import { Controller } from "react-hook-form";
 import React from 'react';
 
-const InputUpload: React.FC<InputUploadProps> = props => {
+const InputUpload: React.FC<any> = props => {
     const { control, label, name, ...forwardProps } = props;
 
     return (
