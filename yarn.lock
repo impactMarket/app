@@ -1803,12 +1803,13 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.2.5":
-  version "1.2.5"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.2.5.tgz#149c4b18ff4af2a197b50da1a3c104aeee3d8508"
-  integrity sha512-M7ESshk+nrCryV7I6GM2QughfJKHnsukI7sO3xgCLbtkih5sAulIlq0ls9Rbvl3Tc2mhpDs0WDZb9aAZKN6OsA==
+"@impact-market/ui@1.2.7":
+  version "1.2.7"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.2.7.tgz#1329186280aa0a37be57c275dc9498dc218295e9"
+  integrity sha512-miYlUEMggQcxOwJrpTQz7ler/rck79Za4Arr7O2k78s/oZU6lSU4rMuqXPKcyDlblAwOoXUaOs6ad0HEzYJFSw==
   dependencies:
     polished "^4.1.4"
+    react-paginate "^8.1.3"
     react-tabs "^4.2.0"
     react-toastify "^8.2.0"
     styled-gen "^1.4.8"
@@ -9100,7 +9101,7 @@ prompts@^2.4.0:
     kleur "^3.0.3"
     sisteransi "^1.0.5"
 
-prop-types@^15.5.0, prop-types@^15.6.0, prop-types@^15.7.2, prop-types@^15.8.1:
+prop-types@^15.5.0, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.7.2, prop-types@^15.8.1:
   version "15.8.1"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.8.1.tgz#67d87bf1a694f48435cf332c24af10214a3140b5"
   integrity sha512-oj87CgZICdulUohogVAR7AjlC0327U4el4L6eAvOqCeudMDVU0NThNaV+b9Df4dXgSP1gXMTnPdhfe/2qDH5cg==
@@ -9422,6 +9423,13 @@ react-modal@^3.14.3:
     prop-types "^15.7.2"
     react-lifecycles-compat "^3.0.0"
     warning "^4.0.3"
+
+react-paginate@^8.1.3:
+  version "8.1.3"
+  resolved "https://registry.yarnpkg.com/react-paginate/-/react-paginate-8.1.3.tgz#cd6f3cb8a56b47617a61a6a52e3d7c662ad9b91b"
+  integrity sha512-zBp80DBRcaeBnAeHUfbGKD0XHfbGNUolQ+S60Ymfs8o7rusYaJYZMAt1j93ADDNLlzRmJ0tMF/NeTlcdKf7dlQ==
+  dependencies:
+    prop-types "^15.6.1"
 
 react-property@2.0.0:
   version "2.0.0"
