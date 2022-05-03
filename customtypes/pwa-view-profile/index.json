@@ -45,10 +45,10 @@
       },
       "form-sections-photo-description": {
         "config": {
-          "label": "Photo Section Description",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+            "label": "Photo Section Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
       },
@@ -61,10 +61,10 @@
       },
       "form-sections-personal-description": {
         "config": {
-          "label": "Personal Section Description",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+            "label": "Personal Section Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
       },
@@ -77,19 +77,19 @@
       },
       "form-sections-contact-description": {
         "config": {
-          "label": "Contact Section Description",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+            "label": "Contact Section Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
       },
       "form-sections-contact-tooltip": {
         "config": {
-          "label": "Contact Section Tooltip",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+            "label": "Contact Section Tooltip",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
       },
@@ -102,17 +102,17 @@
       },
       "form-sections-additional-info-description": {
         "config": {
-          "label": "Additional Info Section Description",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+            "label": "Additional Info Section Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
       },
       "form-sections-additional-info-label-children": {
         "config": {
-          "label": "Additional Info Label - Children",
-          "placeholder": "How many children do you have? (This will be crosschecked)"
+            "label": "Additional Info Label - Children",
+            "placeholder": "How many children do you have? (This will be crosschecked)"
         },
         "type": "Text"
       },
@@ -125,56 +125,21 @@
       },
       "form-sections-delete-account-description": {
         "config": {
-          "label": "Delete Account Section Description",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+            "label": "Delete Account Section Description",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
       },
       "form-sections-delete-account-tooltip": {
         "config": {
-          "label": "Delete Account Section Tooltip",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+            "label": "Delete Account Section Tooltip",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
-      },
-      "form-sections-upload-image": {
-        "type": "Text",
-        "config": {
-          "label": "Form Sections Upload Image",
-          "placeholder": ""
-        }
-      },
-      "form-sections-success": {
-        "type": "Text",
-        "config": {
-          "label": "Form Success",
-          "placeholder": ""
-        }
-      },
-      "form-sections-delete-account-alert": {
-        "type": "Text",
-        "config": {
-          "label": "Delete Account Alert",
-          "placeholder": ""
-        }
-      },
-      "form-sections-introduction": {
-        "type": "Text",
-        "config": {
-          "label": "Form Sections Introduction",
-          "placeholder": ""
-        }
-      },
-      "slices1": {
-        "type": "Slices",
-        "fieldset": "Slice Zone",
-        "config": {
-          "choices": {}
-        }
       }
     }
   }
