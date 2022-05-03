@@ -9,14 +9,10 @@ import {
     ViewContainer,
     openModal
 } from '@impact-market/ui';
-import {
-    checkUserPermission,
-    userBeneficiary,
-    userManager
-} from '../../utils/users';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
+import CanBeRendered from '../../components/CanBeRendered';
 import Filters from './Filters';
 import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
@@ -47,8 +43,7 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                         mt={0.25}
                     />
                 </Col>
-
-                {checkUserPermission([userManager, userBeneficiary]) && (
+                <CanBeRendered types={['beneficiary', 'manager']}>
                     <Col colSize={{ sm: 3, xs: 12 }} right>
                         <Button
                             fluid="xs"
@@ -60,7 +55,7 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                             <String id="createStory" />
                         </Button>
                     </Col>
-                )}
+                </CanBeRendered>
             </Row>
             <Tabs>
                 <TabList>
@@ -68,13 +63,12 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                         onClick={() => clear('user')}
                         title={t('allStories')}
                     />
-
-                    {checkUserPermission([userManager, userBeneficiary]) && (
+                    <CanBeRendered types={['beneficiary', 'manager']}>
                         <Tab
                             onClick={() => update('user', auth?.user?.address)}
                             title={t('myStories')}
                         />
-                    )}
+                    </CanBeRendered>
                 </TabList>
                 <Filters />
             </Tabs>

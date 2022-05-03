@@ -17,16 +17,12 @@ import {
     useGetStoriesMutation,
     useLoveStoryMutation
 } from '../../api/story';
-import {
-    checkUserPermission,
-    userBeneficiary,
-    userManager
-} from '../../utils/users';
 import { getCountryNameFromInitials } from '../../utils/countries';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import CanBeRendered from '../../components/CanBeRendered';
 import NoStoriesFound from './NoStoriesFound';
 import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
@@ -68,35 +64,34 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     });
 
     useEffect(() => {
-            const getStoriesMethod = async () => {
-                try {
-                    setLoadingStories(true);
-                    const filters = asPath.split('?')?.[1];
-                    const { data, success, count } = await getStories({
-                        filters,
-                        limit,
-                        offset
-                    }).unwrap();
+        const getStoriesMethod = async () => {
+            try {
+                setLoadingStories(true);
+                const filters = asPath.split('?')?.[1];
+                const { data, success, count } = await getStories({
+                    filters,
+                    limit,
+                    offset
+                }).unwrap();
 
-                    if (success) {
-                        setStories({
-                            count,
-                            list: stories.list.concat(data)
-                        });
-                    }
-
-                    setLoadingStories(false);
-                } catch (error) {
-                    console.log(error);
-                    
-                    setLoadingStories(false);
-
-                    return false;
+                if (success) {
+                    setStories({
+                        count,
+                        list: stories.list.concat(data)
+                    });
                 }
-            };
 
-            getStoriesMethod();
-        
+                setLoadingStories(false);
+            } catch (error) {
+                console.log(error);
+
+                setLoadingStories(false);
+
+                return false;
+            }
+        };
+
+        getStoriesMethod();
     }, [offset, changed]);
 
     useEffect(() => {
@@ -266,7 +261,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                             <Text g700 semibold>
                                                 {story.community.name}
                                             </Text>
-                                            <Text g500 regular small>
+                                            <Text as="div" g500 regular small>
                                                 <Box fLayout="center" flex>
                                                     <Box mr={0.5}>
                                                         <CountryFlag
@@ -374,17 +369,16 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Text>
                             </Col>
                             <Col colSize={{ sm: 4, xs: 6 }} pt={0} right>
-                                {checkUserPermission([
-                                    userManager,
-                                    userBeneficiary
-                                ]) && (
+                                <CanBeRendered
+                                    types={['beneficiary', 'manager']}
+                                >
                                     <DropdownMenu
                                         asButton
                                         icon="ellipsis"
                                         items={items}
                                         rtl
                                     />
-                                )}
+                                </CanBeRendered>
                             </Col>
                         </Row>
                     </Card>

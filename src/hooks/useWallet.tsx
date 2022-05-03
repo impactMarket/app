@@ -29,8 +29,8 @@ const useWallet = () => {
                 address: connector.kit.connection.config.from
             }).unwrap();
 
-            dispatch(setCredentials({ 
-                token: payload.token, 
+            dispatch(setCredentials({
+                token: payload.token,
                 type: getUserTypes(payload),
                 user: { ...payload }
             }));
