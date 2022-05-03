@@ -5,6 +5,7 @@ import { useDispatch } from 'react-redux';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useUpdateUserMutation } from '../../api/user';
 import BasicForm from './BasicForm';
+import Message from '../../libs/Prismic/components/Message';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 
@@ -27,15 +28,13 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
             if(result) {
                 dispatch(setUser({ user: { ...result }}));
 
-                // TODO: colocar textos no prismic
-                toast.success("Successfully changed data!");
+                toast.success(<Message id="successfullyChangedData" />);
             }
         }
         catch(e) {
             console.log(e);
 
-            // TODO: colocar textos no prismic
-            toast.error("An error has occurred! Please try again later.");
+            toast.error(<Message id="errorOccurred" />);
         }
     };
 

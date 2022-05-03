@@ -1,12 +1,14 @@
 import { Input as BaseInput, InputProps, Text } from '@impact-market/ui';
 import { Controller, useWatch } from "react-hook-form";
 import React, { useEffect, useState } from 'react';
+import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Input: React.FC<InputProps> = props => {
     const [count, setCount] = useState(0);
     const { control, label, limit, name, ...forwardProps } = props;
 
     const inputWatch = useWatch({ control, name });
+    const { t } = useTranslations();
 
     useEffect(() => {
         if(inputWatch && limit > 0) {
@@ -19,8 +21,6 @@ const Input: React.FC<InputProps> = props => {
         onChange(e);
     }
 
-    // TODO: colocar textos no prismic
-
     return (
         <Controller
             control={control}
@@ -29,7 +29,7 @@ const Input: React.FC<InputProps> = props => {
                 <>
                     { label && <Text g700 mb={0.375} medium small>{label}</Text> }
                     <BaseInput maxLength={limit} {...field} onChange={(e: any) => setValue(e, field.onChange)} {...forwardProps} />
-                    { limit && <Text g500 mt={0.375} small>{limit - count} characters left</Text> }
+                    { limit && <Text g500 mt={0.375} small>{limit - count} {t('charactersLeft')}</Text> }
                 </>
             }
         />
