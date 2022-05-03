@@ -1,6 +1,6 @@
 import { Box } from '@impact-market/ui';
 import { useDropzone } from 'react-dropzone';
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect } from 'react';
 
 // eslint-disable-next-line react/display-name
 const InputUpload = React.forwardRef((props: any) => {
