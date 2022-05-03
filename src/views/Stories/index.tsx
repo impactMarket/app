@@ -5,12 +5,15 @@ import {
     Row,
     Tab,
     TabList,
-    TabPanel,
     Tabs,
     ViewContainer,
     openModal
 } from '@impact-market/ui';
-import { checkUserPermission, userBeneficiary, userManager } from '../../utils/users';
+import {
+    checkUserPermission,
+    userBeneficiary,
+    userManager
+} from '../../utils/users';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
@@ -74,13 +77,8 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                     )}
                 </TabList>
                 <Filters />
-                <TabPanel>
-                    <StoryList refreshStory={refreshStories} />
-                </TabPanel>
-                <TabPanel>
-                    <StoryList refreshStory={refreshStories} />
-                </TabPanel>
             </Tabs>
+            <StoryList refreshStory={refreshStories} />
         </ViewContainer>
     );
 };

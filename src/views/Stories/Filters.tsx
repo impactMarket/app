@@ -1,11 +1,10 @@
 import { Col, Row } from '@impact-market/ui';
 import { getCountryNameFromInitials } from '../../utils/countries';
-import {
-    useGetCountryByCommunitiesMutation
-} from '../../api/community';
+import { useGetCountryByCommunitiesMutation } from '../../api/community';
 import React, { useEffect, useState } from 'react';
 import Select from '../../components/Select';
 import useFilters from '../../hooks/useFilters';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 interface CountriesList {
     label: string;
@@ -16,6 +15,7 @@ const Filters = () => {
     const { update } = useFilters();
     const [getCountries] = useGetCountryByCommunitiesMutation();
     const [countries, setCountries] = useState<CountriesList[]>([]);
+    const { t } = useTranslations();
 
     const updateFilter = (value: any) => {
         update('country', [value]);
@@ -26,13 +26,12 @@ const Filters = () => {
             try {
                 const countriesRequest = await getCountries().unwrap();
 
-                const countriesRequestArray = countriesRequest.map(data => ({
+                const countriesRequestArray = countriesRequest.map((data) => ({
                     label: getCountryNameFromInitials(data.country),
                     value: data.country
-                }))
+                }));
 
                 setCountries([...countriesRequestArray]);
-
             } catch (error) {
                 console.log(error);
             }
@@ -46,10 +45,10 @@ const Filters = () => {
             <Col colSize={{ sm: 3, xs: 12 }}>
                 <Select
                     callback={updateFilter}
-                    // TODO clear string
-                    clearLabel="Clear"
+                    clearLabel={t('clear')}
                     isClearable
                     isMultiple
+                    // onChange={updateFilter}
                     options={countries}
                     showFlag
                     withOptionsSearch
