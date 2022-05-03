@@ -45,7 +45,7 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                     />
                 </Col>
 
-                {checkUserPermission(auth, [userManager, userBeneficiary]) && (
+                {checkUserPermission([userManager, userBeneficiary]) && (
                     <Col colSize={{ sm: 3, xs: 12 }} right>
                         <Button
                             fluid="xs"
@@ -66,7 +66,7 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                         title={t('allStories')}
                     />
 
-                    {checkUserPermission(auth, [userManager, userBeneficiary]) && (
+                    {checkUserPermission([userManager, userBeneficiary]) && (
                         <Tab
                             onClick={() => update('user', auth?.user?.address)}
                             title={t('myStories')}

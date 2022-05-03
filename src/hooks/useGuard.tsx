@@ -16,7 +16,6 @@ const useGuard = () => {
     const router = useRouter();
 
     const authCheck = (userPaths: Routes) => {
-
         if(!userPaths.includes(router.pathname)) {
             setAuthorized(false);
             router.push('/');
@@ -28,7 +27,7 @@ const useGuard = () => {
 
     const handleRouteComplete = async (_: any, { shallow }: any) => {
         if(!shallow) {
-            setIsLoading(true)
+            setIsLoading(true);
 
             try {
                 // Build available User Paths based on his type

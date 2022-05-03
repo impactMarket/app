@@ -1,19 +1,16 @@
 import { Display, ViewContainer } from '@impact-market/ui';
-import { selectCurrentUser } from '../state/slices/auth';
+import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
-import { userBeneficiary } from '../utils/users';
 import React from 'react';
 
 const Home: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
 
-    const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
     // If the User is a Beneficiary, send to the Beneficiary page
     // TODO: Check if this verification is supposed to stay here 
-    if(auth?.type?.includes(userBeneficiary)) {
+    if(checkUserPermission([userBeneficiary])) {
         router.push('/beneficiary');
 
         return null;

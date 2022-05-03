@@ -1,4 +1,8 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { PutPostUser } from '../api/user';
+import { selectCurrentUser } from '../state/slices/auth';
+import { useSelector } from 'react-redux';
+import useWallet from '../hooks/useWallet';
 
 export const userDemo = 'demo';
 export const userDonor = 'donor';
@@ -19,11 +23,14 @@ export const getUserName = (user: PutPostUser) => {
     const lastName = user?.lastName?.split(' ').pop() || '';
 
     // TODO: verificar se é para colocar um nome por default
-    return `${firstName} ${lastName}` || 'John Doe';
+    return `${firstName} ${lastName}`;
 };
 
-export const checkUserPermission = (auth: any, types: string[]) => {
-    if (auth?.user && auth?.type?.some((value: string) => types.includes(value))) {
+export const checkUserPermission = (types: string[]) => {
+    const auth = useSelector(selectCurrentUser);
+    const { address } = useWallet();
+
+    if (address && auth?.user && auth?.type?.some((value: string) => types.includes(value))) {
         return true;
     }
 

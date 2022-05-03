@@ -2,6 +2,7 @@
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
 import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal } from '@impact-market/ui';
+import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
 import { selectCurrentUser } from '../state/slices/auth';
@@ -11,7 +12,6 @@ import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSaveClaimLocationMutation } from '../api/claim';
 import { useSelector } from 'react-redux';
-import { userBeneficiary } from '../utils/users';
 import Image from '../libs/Prismic/components/Image';
 import Message from '../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
@@ -35,7 +35,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { t } = useTranslations();
 
     // Check if current User has access to this page
-    if(!auth?.type?.includes(userBeneficiary)) {
+    if(!checkUserPermission([userBeneficiary])) {
         router.push('/');
 
         return null;
@@ -181,9 +181,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                     {
                         view.data.faq.map((faq: any, index: number) =>
                             <AccordionItem key={index} title={faq.title}>
-                                <Text>
-                                <RichText content={faq.content} />
-                                </Text>
+                                <RichText content={faq.content} g500 small />
                             </AccordionItem>
                         )
                     }
