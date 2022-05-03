@@ -15,7 +15,7 @@ const Form = ({ onSubmit }: any) => {
 
     const { handleSubmit, reset, control, getValues } = useForm({
         defaultValues: {
-            children: auth?.user?.children
+            children: auth?.user?.children || ''
         }
     });
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });

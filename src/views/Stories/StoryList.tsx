@@ -378,7 +378,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Text>
                             </Col>
                             <Col colSize={{ sm: 4, xs: 6 }} pt={0} right>
-                                {checkUserPermission(auth, [
+                                {checkUserPermission([
                                     userManager,
                                     userBeneficiary
                                 ]) && (

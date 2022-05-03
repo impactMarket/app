@@ -22,12 +22,12 @@ const Form = ({ onSubmit }: any) => {
 
     const { handleSubmit, reset, control, getValues } = useForm({
         defaultValues: {
-            age: auth?.user?.age,
-            bio: auth?.user?.bio,
-            country: auth?.user?.country,
-            firstName: auth?.user?.firstName,
-            gender: auth?.user?.gender,
-            lastName: auth?.user?.lastName
+            age: auth?.user?.age || '',
+            bio: auth?.user?.bio || '',
+            country: auth?.user?.country || '',
+            firstName: auth?.user?.firstName || '',
+            gender: auth?.user?.gender || '',
+            lastName: auth?.user?.lastName || ''
         }
     });
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });

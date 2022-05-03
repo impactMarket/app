@@ -18,8 +18,8 @@ const Form = ({ onSubmit }: any) => {
 
     const { handleSubmit, reset, control, getValues } = useForm({
         defaultValues: {
-            email: auth?.user?.email,
-            phone: auth?.user?.phone
+            email: auth?.user?.email || '',
+            phone: auth?.user?.phone || ''
         }
     });
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
