@@ -42,10 +42,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // https://github.com/GoogleChrome/workbox/issues/1790
 module.exports = withBundleAnalyzer(
     withPWA({
-        compiler: {
-            reactRemoveProperties: true,
-            styledComponents: true
-        },
         i18n,
         images,
         pwa: {
@@ -56,6 +52,8 @@ module.exports = withBundleAnalyzer(
             runtimeCaching
         },
         redirects,
+        styledComponents: true,
+        swcMinify: true,
         webpack
     })
 );
