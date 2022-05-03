@@ -12,6 +12,7 @@ import AditionalForm from './AditionalForm';
 import ContactForm from './ContactForm';
 import DeleteForm from './DeleteForm';
 import ImageForm from './ImageForm';
+import Message from '../../libs/Prismic/components/Message';
 import PersonalForm from './PersonalForm';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
@@ -28,6 +29,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         additionalInfoTitle, 
         contactDescription, 
         contactTitle,
+        deleteAccountAlert,
         deleteAccountDescription, 
         deleteAccountTitle, 
         personalDescription, 
@@ -58,15 +60,13 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             if(result) {
                 dispatch(setUser({ user: { ...result }}));
 
-                // TODO: colocar textos no prismic
-                toast.success("Successfully changed data!");
+                toast.success(<Message id="successfullyChangedData" />);
             }
         }
         catch(e) {
             console.log(e);
 
-            // TODO: colocar textos no prismic
-            toast.error("An error has occurred! Please try again later.");
+            toast.error(<Message id="errorOccurred" />);
         }
     };
 
@@ -92,8 +92,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                             if(payload) {
                                 dispatch(setUser({ user: { ...payload }}));
 
-                                // TODO: colocar textos no prismic
-                                toast.success("Successfully changed data!");
+                                toast.success(<Message id="successfullyChangedData" />);
                             }
                         }
                     }
@@ -103,8 +102,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         catch(e) {
             console.log(e);
 
-            // TODO: colocar textos no prismic
-            toast.error("An error has occurred! Please try again later.");
+            toast.error(<Message id="errorOccurred" />);
         }
     }
 
@@ -114,24 +112,21 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             await deleteUser();
             await disconnect();
 
-            // TODO: colocar textos no prismic
-            toast.success("Your account was deleted successfully!");
+            toast.success(deleteAccountAlert);
 
             return router.push('/');
         }
         catch(e) {
             console.log(e);
 
-            // TODO: colocar textos no prismic
-            toast.error("An error has occurred! Please try again later.");
+            toast.error(<Message id="errorOccurred" />);
         }
     }
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(auth?.user?.address);
 
-        // TODO: colocar textos no prismic
-        toast.success("Copied! You can paste the address whenever you want.");
+        toast.success(<Message id="copiedAddress" />);
     }
 
     const renderCard = (title: string, description: string, children: any, firstCard: boolean = false) => {
