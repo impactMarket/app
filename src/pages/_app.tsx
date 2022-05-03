@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
 import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
@@ -69,12 +70,17 @@ const App = (props: AppProps) => {
         return <ErrorPage statusCode={404} />;
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
     const [cookies] = useCookies();
 
-    if(cookies?.AUTH_TOKEN) {
-        store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
-    };
+    // if(cookies?.AUTH_TOKEN) {
+    //     store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
+    // };
+
+    useEffect(() => {
+        if(cookies?.AUTH_TOKEN) {
+            store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
+        };
+    }, [cookies?.AUTH_TOKEN]);
 
     return (
         <CookiesProvider>

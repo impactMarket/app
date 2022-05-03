@@ -18,7 +18,10 @@ const useGuard = () => {
     const authCheck = (url: string, userPaths: Routes) => {
         const path = url.split('?');
 
+        console.log(userPaths);
+        console.log(path[0]);
         if(!userPaths.includes(path[0])) {
+            console.log("if");
             setAuthorized(false);
             router.push('/');
         } 
