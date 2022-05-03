@@ -138,9 +138,9 @@ const CreateStory = () => {
                         label={t('storyPostText')}
                         limit={TEXT_LIMIT}
                         name="message"
-                        // TODO string "Write something here..."
-                        placeholder="Write something here..."
+                        placeholder={t('writeSomethingHere')}
                         rows={6}
+                        rules={{ required: true }}
                     />
                 </Box>
                 <>

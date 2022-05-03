@@ -33,7 +33,7 @@ import String from '../../libs/Prismic/components/String';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import useWallet from '../../hooks/useWallet';
 
-const limit = 10;
+const limit = 3;
 
 interface storyListProps {
     refreshStory: boolean;
@@ -52,7 +52,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     const { connect } = useWallet();
     const router = useRouter();
     const { asPath, query } = router;
-    const { country, communityId } = query;
+    const { country, communityId, user } = query;
     const auth = useSelector(selectCurrentUser);
 
     const loadItems = () => {
@@ -68,36 +68,35 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     });
 
     useEffect(() => {
-        const getStoriesMethod = async () => {
-            try {
-                setLoadingStories(true);
-                const filters = asPath.split('?')?.[1];
-                const { data, success, count } = await getStories({
-                    filters,
-                    limit,
-                    offset
-                }).unwrap();
+            const getStoriesMethod = async () => {
+                try {
+                    setLoadingStories(true);
+                    const filters = asPath.split('?')?.[1];
+                    const { data, success, count } = await getStories({
+                        filters,
+                        limit,
+                        offset
+                    }).unwrap();
 
-                if (success) {
-                    setStories({
-                        count,
-                        list: stories.list.concat(data)
-                    });
+                    if (success) {
+                        setStories({
+                            count,
+                            list: stories.list.concat(data)
+                        });
+                    }
+
+                    setLoadingStories(false);
+                } catch (error) {
+                    console.log(error);
+                    
+                    setLoadingStories(false);
+
+                    return false;
                 }
+            };
 
-                setLoadingStories(false);
-            } catch (error) {
-                console.log(error);
-
-                setLoadingStories(false);
-
-                // TODO Error toaster
-
-                return false;
-            }
-        };
-
-        getStoriesMethod();
+            getStoriesMethod();
+        
     }, [offset, changed]);
 
     useEffect(() => {
@@ -115,9 +114,8 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             changeFilter();
         } catch (error) {
             console.log(error);
-            // TODO Error toaster
         }
-    }, [country, communityId, refreshStory]);
+    }, [country, communityId, refreshStory, user]);
 
     const onLoveStoryFunction = (id: number, index: number) => {
         try {
@@ -149,7 +147,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             }
         } catch (error) {
             console.log(error);
-            // TODO Error toaster
         }
     };
 
@@ -170,7 +167,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             }
         } catch (error) {
             console.log(error);
-            // TODO Error toaster
         }
     };
 
@@ -183,7 +179,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             }
         } catch (error) {
             console.log(error);
-            // TODO Error toaster
         }
     };
 
@@ -245,6 +240,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                         {story?.storyMediaPath && (
                             <Box
                                 bgImg={() => getMedia(story?.storyMediaPath)}
+                                h={22.188}
                                 pt="56.25%"
                                 radius={0.5}
                                 w="100%"
