@@ -76,6 +76,26 @@ const Form = ({ onSubmit }: any) => {
                                 />
                             </Col>
                         </Row>
+                        <Box flex mt={5} fDirection={{ sm: 'row', xs: 'column' }}>
+                            <Box pr={1.25}>
+                                {
+                                    image ?
+                                    <Avatar large url={image}/>
+                                    :
+                                    <CircledIcon extralarge icon="users"/>
+                                }
+                            </Box>
+                            <Box>
+                                <InputUpload 
+                                    accept={['image/png', 'image/jpeg', 'image/gif']}
+                                    control={control}
+                                    handleFiles={handleFiles}
+                                    label="Click to upload or drag and drop PNG, JPG or GIF"
+                                    multiple={false}
+                                    name="img"
+                                />
+                            </Box>
+                        </Box>
                     </Box> 
                 </form>
             }
