@@ -7,12 +7,31 @@ import {
     Text,
     ViewContainer
 } from '@impact-market/ui';
+import { useGetPendingCommunitiesMutation } from '../../api/community';
 import AddCommunityPage from './AddCommunityPage';
 import ProposalsPage from './ProposalsPage';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
+    const [getPendingCommunities] = useGetPendingCommunitiesMutation();
+    const [requestsCount, setRequestsCount] = useState<number>();
+
+    useEffect(() => {
+        const getCommunities = async () => {
+            try {
+                const response = await getPendingCommunities().unwrap();
+
+                setRequestsCount(response?.count);
+            } catch (error) {
+                console.log(error);
+
+                return false;
+            };      
+        };
+
+        getCommunities();
+    }, []);
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -25,7 +44,7 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
             <Tabs>
                 <TabList>
                     <Tab title="Proposals" />
-                    <Tab title="Requests" />
+                    <Tab number={requestsCount} title="Requests"  />
                 </TabList>
                 <TabPanel>
                     <ProposalsPage />

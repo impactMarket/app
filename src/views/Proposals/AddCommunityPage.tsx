@@ -1,5 +1,5 @@
 import { useGetPendingCommunitiesMutation } from '../../api/community';
-// import Community from './Community';
+import Community from './Community';
 import React, { useEffect, useState } from 'react';
 
 const AddCommunityPage = () => {
@@ -9,15 +9,19 @@ const AddCommunityPage = () => {
 
     useEffect(() => {
         const getCommunities = async () => {
-            setIsLoading(true);
-            const response = await getPendingCommunities().unwrap();
-            // const response = await impactMarket.getPendingCommunities();
+            try {
+                setIsLoading(true);
+                const response = await getPendingCommunities().unwrap();
+    
+                console.log(response);
+    
+                setCommunities(response?.rows || []);
+                setIsLoading(false);
+            } catch (error) {
+                console.log(error);
 
-            console.log(response);
-
-            setCommunities(response);
-            // setCommunities(response?.data.rows || []);
-            setIsLoading(false);
+                return false;
+            };      
         };
 
         getCommunities();
@@ -41,8 +45,8 @@ const AddCommunityPage = () => {
             <h4>Communities</h4>
             <ul style={{ marginTop: 32 }}>
                 {communities.map((community, index) => (
-                    // <Community key={index} {...community} />
-                    <div key={index} />
+                    <Community key={index} {...community} />
+                   
                 ))}
             </ul>
         </div>
