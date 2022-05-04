@@ -1,8 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
-import { CookiesProvider, useCookies } from 'react-cookie';
+// import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
+import { checkCookies, getCookie, getCookies } from 'cookies-next';
 import { getLocation } from '../utils/position';
 import { setRates } from '../state/slices/rates';
 import { setToken } from '../state/slices/auth';
@@ -70,20 +71,29 @@ const App = (props: AppProps) => {
         return <ErrorPage statusCode={404} />;
     }
 
-    const [cookies] = useCookies();
+    // const [cookies] = useCookies();
+
+    console.log(getCookies());
+    console.log(getCookie('AUTH_TOKEN'));
+
+    if(checkCookies('AUTH_TOKEN')) {
+        store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
+    }
 
     // if(cookies?.AUTH_TOKEN) {
     //     store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
     // };
 
-    useEffect(() => {
-        if(cookies?.AUTH_TOKEN) {
-            store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
-        };
-    }, [cookies?.AUTH_TOKEN]);
+    // console.log(cookies);
+
+    // useEffect(() => {
+    //     if(cookies?.AUTH_TOKEN) {
+    //         store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
+    //     };
+    // }, [cookies?.AUTH_TOKEN]);
 
     return (
-        <CookiesProvider>
+        // <CookiesProvider>
             <PrismicDataProvider data={data} url={url} view={view}>
                 <DesignSystemProvider>
                     <WrapperProvider>
@@ -95,7 +105,7 @@ const App = (props: AppProps) => {
                     </WrapperProvider>
                 </DesignSystemProvider>
             </PrismicDataProvider>
-        </CookiesProvider>
+        // </CookiesProvider>
     );
 };
 

@@ -2,25 +2,28 @@ import { Routes, beneficiaryRoutes, privateRoutes, publicRoutes } from '../utils
 import { getUserTypes, userBeneficiary } from '../utils/users';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
+// import { useCookies } from 'react-cookie';
 import { useEffect, useState } from 'react';
 import { useGetUserMutation } from '../api/user';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
+
 const useGuard = () => {
     const [authorized, setAuthorized] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
-    const [getUser] = useGetUserMutation();
 
+    const [getUser] = useGetUserMutation();
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
+    // const [cookies] = useCookies();
 
-    const authCheck = (url: string, userPaths: Routes) => {
-        const path = url.split('?');
+    const authCheck = (userPaths: Routes) => {
+        // const path = url.split('?');
 
         console.log(userPaths);
-        console.log(path[0]);
-        if(!userPaths.includes(path[0])) {
+        console.log(router.pathname);
+        if(!userPaths.includes(router.pathname)) {
             console.log("if");
             setAuthorized(false);
             router.push('/');
@@ -38,6 +41,10 @@ const useGuard = () => {
                 // Build available User Paths based on his type
                 let userPaths = [...publicRoutes];
 
+                // if(cookies?.AUTH_TOKEN) {
+                //     store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
+                // };
+
                 if(auth?.token) {
                     const user = await getUser().unwrap();
                     const type = getUserTypes(user);
@@ -53,9 +60,14 @@ const useGuard = () => {
                         userPaths = userPaths.concat(beneficiaryRoutes);
                     }
                 }
+                // else {
+                //     store.dispatch(removeCredentials());
+                // }
+
+                console.log(auth);
 
                 // on initial load - run auth check
-                authCheck(router.asPath, userPaths);
+                authCheck(userPaths);
 
                 setIsLoading(false);
             } catch (error) {

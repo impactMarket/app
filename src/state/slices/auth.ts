@@ -25,7 +25,7 @@ const slice = createSlice({
         removeCredentials: (
             state
         ) => {
-            // console.log('removeCredentials', action);
+            console.log('removeCredentials');
             state.user = null;
             state.token = null;
             state.type = null;

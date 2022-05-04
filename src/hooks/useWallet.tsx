@@ -2,7 +2,8 @@ import { Alfajores, CeloMainnet } from '@celo-tools/use-contractkit';
 import { AppContext } from '../components/WrapperProvider';
 import { getUserTypes } from '../utils/users';
 import { removeCredentials, setCredentials } from '../state/slices/auth';
-import { useCookies } from 'react-cookie';
+// import { useCookies } from 'react-cookie';
+import { removeCookies, setCookies } from 'cookies-next';
 import { useCreateUserMutation } from '../api/user';
 import { useDispatch } from 'react-redux';
 import React from 'react';
@@ -19,7 +20,7 @@ const useWallet = () => {
 
     const [createUser, userConnection] = useCreateUserMutation();
 
-    const [, setCookie, removeCookie] = useCookies();
+    // const [, setCookie, removeCookie] = useCookies();
 
     const connect = async (callback?: Function) => {
         try {
@@ -39,7 +40,8 @@ const useWallet = () => {
             const expiryDate = new Date();
 
             expiryDate.setTime(expiryDate.getTime()+(30*24*60*60*1000));
-            setCookie('AUTH_TOKEN', payload.token, { expires: expiryDate, path: '/' });
+            // setCookie('AUTH_TOKEN', payload.token, { expires: expiryDate, path: '/' });
+            setCookies('AUTH_TOKEN', payload.token, { expires: expiryDate, path: '/' });
 
             if (!!callback) {
                 await callback();
@@ -58,7 +60,8 @@ const useWallet = () => {
             await disconnectFromHook();
 
             dispatch(removeCredentials());
-            removeCookie('AUTH_TOKEN');
+            // removeCookie('AUTH_TOKEN');
+            removeCookies('AUTH_TOKEN', { path: '/' });
 
             if (!!callback) {
                 await callback();
