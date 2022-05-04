@@ -1,6 +1,5 @@
 import { useRouter } from 'next/router';
 import isObject from 'lodash/isObject';
-import toggleInArray from '../helpers/toggleInArray';
 
 const useFilters = () => {
     const { pathname, push, query } = useRouter();
@@ -39,8 +38,6 @@ const useFilters = () => {
         return query?.[key] === value;
     }
 
-    const getArrayValue = (value: string[], initial: any) => value.reduce((result, current: string) => toggleInArray(current.toString(), result), initial)
-
     /**
      * Updates the url parameters
      * @param {string | Object} nameOrObject A string as key or an object to append to the query
@@ -50,13 +47,15 @@ const useFilters = () => {
     const update = (nameOrObject: string | Object, value?: string | string[]) => {
         const shallowQuery = { ...query };
 
+        console.log(nameOrObject, value)
+
         if (isObject(nameOrObject)) {
             return callback({ ...shallowQuery, ...nameOrObject });
         }
 
         const queryExtra = {
             ...shallowQuery,
-            [nameOrObject]: Array.isArray(value) || Array.isArray(shallowQuery?.[nameOrObject]) ? getArrayValue(value as string[], shallowQuery[nameOrObject]) : value
+            [nameOrObject]: value
         };
 
         if (!queryExtra?.[nameOrObject]?.toString() || !value?.toString()?.length) {

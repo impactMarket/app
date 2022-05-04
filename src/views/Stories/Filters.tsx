@@ -17,10 +17,6 @@ const Filters = () => {
     const [countries, setCountries] = useState<CountriesList[]>([]);
     const { t } = useTranslations();
 
-    const updateFilter = (value: any) => {
-        update('country', [value]);
-    };
-
     useEffect(() => {
         const getCountriesMethod = async () => {
             try {
@@ -44,7 +40,7 @@ const Filters = () => {
         <Row mt={0.625}>
             <Col colSize={{ sm: 3, xs: 12 }}>
                 <Select
-                    callback={updateFilter}
+                    callback={(value: any) => update('country', value)}
                     clearLabel={t('clear')}
                     isClearable
                     isMultiple

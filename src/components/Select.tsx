@@ -4,9 +4,9 @@ import React, { useState } from 'react';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Select: React.FC<any> = props => {
-    const { showFlag, control, label, name, placeholder, callback, ...forwardProps } = props;
+    const { showFlag, control, label, name, placeholder, callback, initialValue, ...forwardProps } = props;
 
-    const [value, setValue] = useState('');
+    const [value, setValue] = useState(initialValue || '');
     const { t } = useTranslations();
 
     const handleSelect = (value: any) => {
@@ -30,11 +30,11 @@ const Select: React.FC<any> = props => {
         if (selected?.label) {
             return renderLabelWithIcon(selected?.label, selected?.value);
         }
-    
+
         if (Array.isArray(selected) && selected.length) {
             return <Text g900>{t('selected')} ({selected.length})</Text>;
         }
-    
+
         return <Text g500>{placeholder || t('selectAnOption')}</Text>;
     };
 
@@ -57,16 +57,16 @@ const Select: React.FC<any> = props => {
                     renderLabel={renderLabel}
                     renderOption={renderOption}
                     value={value}
-                    {...field} 
+                    {...field}
                     {...forwardProps}
                 />
             </>
         );
     }
-    
+
     return (
         <>
-            { 
+            {
                 control ?
                 <Controller
                     control={control}
