@@ -1,7 +1,7 @@
 import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
-import { CookiesProvider, useCookies } from 'react-cookie';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
+import { checkCookies, getCookie } from 'cookies-next';
 import { getLocation } from '../utils/position';
 import { setRates } from '../state/slices/rates';
 import { setToken } from '../state/slices/auth';
@@ -69,27 +69,22 @@ const App = (props: AppProps) => {
         return <ErrorPage statusCode={404} />;
     }
 
-    // eslint-disable-next-line react-hooks/rules-of-hooks
-    const [cookies] = useCookies();
-
-    if(cookies?.AUTH_TOKEN) {
-        store.dispatch(setToken({ token: cookies?.AUTH_TOKEN }));
-    };
+    if(checkCookies('AUTH_TOKEN')) {
+        store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
+    }
 
     return (
-        <CookiesProvider>
-            <PrismicDataProvider data={data} url={url} view={view}>
-                <DesignSystemProvider>
-                    <WrapperProvider>
-                        <Provider store={store}>
-                            <ModalManager modals={modals} />
-                            <Toaster />
-                            <InnerApp {...props} />
-                        </Provider>
-                    </WrapperProvider>
-                </DesignSystemProvider>
-            </PrismicDataProvider>
-        </CookiesProvider>
+        <PrismicDataProvider data={data} url={url} view={view}>
+            <DesignSystemProvider>
+                <WrapperProvider>
+                    <Provider store={store}>
+                        <ModalManager modals={modals} />
+                        <Toaster />
+                        <InnerApp {...props} />
+                    </Provider>
+                </WrapperProvider>
+            </DesignSystemProvider>
+        </PrismicDataProvider>
     );
 };
 

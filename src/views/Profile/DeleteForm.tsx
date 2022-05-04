@@ -1,4 +1,4 @@
-import { Box, Col, Row, Text, Toggle } from '@impact-market/ui';
+import { Box, Text, Toggle } from '@impact-market/ui';
 import { useForm, useFormState } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import FormActions from './FormActions';
@@ -29,19 +29,17 @@ const Form = ({ onSubmit }: any) => {
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <Box pl={1.5} pr={1.5}>
-                <Row>
-                    <Col colSize={{ sm: 1, xs: 12 }} pb={{ sm: 1, xs: 1.25 }}>
-                        <Toggle 
-                            isActive={showActions}
-                            onChange={onChange}
-                        />
-                    </Col>
-                    <Col colSize={{ sm: 11, xs: 12 }} pt={{ sm: 1, xs: 0 }}>
-                        <Text g700 medium small>{deleteAccountTitle}</Text>
-                        <RichText content={deleteAccountTooltip} g500 regular small />
-                    </Col>
-                </Row>
+            <Box fLayout="start" flex pl={1.5} pr={1.5}>
+                <Box pr={0.5}>
+                    <Toggle 
+                        isActive={showActions}
+                        onChange={onChange}
+                    />
+                </Box>
+                <Box w="100%">
+                    <Text g700 medium small>{deleteAccountTitle}</Text>
+                    <RichText content={deleteAccountTooltip} g500 regular small />
+                </Box>
             </Box>
             {
                 showActions && <FormActions handleCancel={handleCancel} isSubmitting={isSubmitting} />
