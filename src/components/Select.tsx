@@ -1,20 +1,32 @@
-import { Select as BaseSelect, Col, CountryFlag, Icon, Row, Text } from '@impact-market/ui';
+import { Select as BaseSelect, SelectProps as BaseSelectProps, Col, CountryFlag, Icon, Row, Text } from '@impact-market/ui';
 import { Controller } from "react-hook-form";
 import React, { useState } from 'react';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-const Select: React.FC<any> = props => {
-    const { showFlag, control, label, name, placeholder, callback, initialValue, ...forwardProps } = props;
+type SelectProps = {
+    callback?: Function;
+    control?: any; 
+    initialValue?: any;
+    isMultiple?: boolean;
+    label?: string, 
+    placeholder?: string;
+    name?: string;
+    showFlag?: boolean;
+} & BaseSelectProps;
 
-    const [value, setValue] = useState(initialValue || '');
+const Select: React.FC<SelectProps> = props => {
+    const { callback, control, initialValue, isMultiple, label, placeholder, name, showFlag, ...forwardProps } = props;
+
+    const newValue = isMultiple && initialValue && !Array.isArray(initialValue) ? [initialValue]: initialValue;
+    const [value, setValue] = useState(newValue || '');
     const { t } = useTranslations();
 
-    const handleSelect = (value: any) => {
+    const handleSelect = (e: any) => {
         if (typeof callback === 'function') {
-            callback(value);
+            callback(e);
         }
 
-        return setValue(value);
+        return setValue(e);
     };
 
     const renderLabelWithIcon = (label: string, value: string) => {
@@ -52,6 +64,7 @@ const Select: React.FC<any> = props => {
             <>
                 { label && <Text g700 mb={0.375} medium small>{label}</Text> }
                 <BaseSelect
+                    isMultiple={isMultiple}
                     onChange={handleSelect}
                     optionsSearchPlaceholder={t('search')}
                     renderLabel={renderLabel}

@@ -12,7 +12,7 @@ interface CountriesList {
 }
 
 const Filters = () => {
-    const { update } = useFilters();
+    const { update, getByKey } = useFilters();
     const [getCountries] = useGetCountryByCommunitiesMutation();
     const [countries, setCountries] = useState<CountriesList[]>([]);
     const { t } = useTranslations();
@@ -42,9 +42,9 @@ const Filters = () => {
                 <Select
                     callback={(value: any) => update('country', value)}
                     clearLabel={t('clear')}
+                    initialValue={getByKey('country')}
                     isClearable
                     isMultiple
-                    // onChange={updateFilter}
                     options={countries}
                     showFlag
                     withOptionsSearch

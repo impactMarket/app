@@ -39,6 +39,13 @@ const useFilters = () => {
     }
 
     /**
+     * Return all values from a given key
+     * @param {string} key Name of the field
+     * @returns {string | string[]} Returns single or multiple selected values
+     */
+    const getByKey = (key: string) => query?.[key];
+
+    /**
      * Updates the url parameters
      * @param {string | Object} nameOrObject A string as key or an object to append to the query
      * @param {string | string[]} value A value to add to url parameters
@@ -46,8 +53,6 @@ const useFilters = () => {
      */
     const update = (nameOrObject: string | Object, value?: string | string[]) => {
         const shallowQuery = { ...query };
-
-        console.log(nameOrObject, value)
 
         if (isObject(nameOrObject)) {
             return callback({ ...shallowQuery, ...nameOrObject });
@@ -65,7 +70,7 @@ const useFilters = () => {
         return callback(queryExtra);
     };
 
-    return { clear, isSelected, update };
+    return { clear, getByKey, isSelected, update };
 };
 
 export default useFilters;
