@@ -36,6 +36,8 @@ const ProposalsPage= () => {
 
     
 
+    
+
     return (
         <div>
             <h3>Proposals ({quorumVotes} quorumVotes)</h3>

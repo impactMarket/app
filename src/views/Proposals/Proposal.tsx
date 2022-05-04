@@ -36,7 +36,7 @@ const Proposal: React.FC<proposalProps> = ({ p }, props) => {
     return (
 <Box mt={1}>
         <div>
-            <Text style={{whiteSpace: 'preWrap'}}>{endBlock}</Text>
+            <Text style={{whiteSpace: 'preWrap'}}>{id}</Text>
 
             {/* <p>{id} | {proposer}: {description}</p>
             {
