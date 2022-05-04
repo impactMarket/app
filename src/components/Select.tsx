@@ -1,20 +1,20 @@
-import { Select as BaseSelect, SelectProps as BaseSelectProps, Col, CountryFlag, Icon, Row, Text } from '@impact-market/ui';
+import { Select as BaseSelect, Col, CountryFlag, Icon, Row, Text } from '@impact-market/ui';
 import { Controller } from "react-hook-form";
 import React, { useState } from 'react';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-type SelectProps = {
-    callback?: Function;
-    control?: any; 
-    initialValue?: any;
-    isMultiple?: boolean;
-    label?: string, 
-    placeholder?: string;
-    name?: string;
-    showFlag?: boolean;
-} & BaseSelectProps;
+// type SelectProps = {
+//     callback?: Function;
+//     control?: any; 
+//     initialValue?: any;
+//     isMultiple?: boolean;
+//     label?: string, 
+//     placeholder?: string;
+//     name?: string;
+//     showFlag?: boolean;
+// } & BaseSelectProps;
 
-const Select: React.FC<SelectProps> = props => {
+const Select: React.FC<any> = props => {
     const { callback, control, initialValue, isMultiple, label, placeholder, name, showFlag, ...forwardProps } = props;
 
     const newValue = isMultiple && initialValue && !Array.isArray(initialValue) ? [initialValue]: initialValue;
