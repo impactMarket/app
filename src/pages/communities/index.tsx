@@ -2,8 +2,8 @@ import { GetStaticProps } from "next"
 
 import { ClientConfig } from "@prismicio/client"
 
+import Communities from "../../views/Communities"
 import Prismic from "../../libs/Prismic/Prismic"
-import Requests from "../../views/Requests"
 
 export const getStaticProps: GetStaticProps = async ({
     locale: lang,
@@ -11,14 +11,14 @@ export const getStaticProps: GetStaticProps = async ({
 }) => {
     const clientOptions = previewData as ClientConfig;
 
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-community-requests' });
+    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-community' });
 
     return {
         props: {
             data,
-            view: 'communityRequests'  
+            view: 'community'  
         }
     };
 };
 
-export default Requests;
+export default Communities;
