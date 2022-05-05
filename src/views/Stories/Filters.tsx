@@ -12,14 +12,10 @@ interface CountriesList {
 }
 
 const Filters = () => {
-    const { update } = useFilters();
+    const { update, getByKey } = useFilters();
     const [getCountries] = useGetCountryByCommunitiesMutation();
     const [countries, setCountries] = useState<CountriesList[]>([]);
     const { t } = useTranslations();
-
-    const updateFilter = (value: any) => {
-        update('country', [value]);
-    };
 
     useEffect(() => {
         const getCountriesMethod = async () => {
@@ -44,11 +40,11 @@ const Filters = () => {
         <Row mt={0.625}>
             <Col colSize={{ sm: 3, xs: 12 }}>
                 <Select
-                    callback={updateFilter}
+                    callback={(value: any) => update('country', value)}
                     clearLabel={t('clear')}
+                    initialValue={getByKey('country')}
                     isClearable
                     isMultiple
-                    // onChange={updateFilter}
                     options={countries}
                     showFlag
                     withOptionsSearch
