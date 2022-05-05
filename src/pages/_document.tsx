@@ -1,11 +1,101 @@
-import Document, { Head, Html, Main, NextScript } from 'next/document';
+import { ServerStyleSheet } from 'styled-components';
+import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
 import React from 'react';
 
 class MyDocument extends Document {
+    static getInitialProps: any = async (ctx: DocumentContext) => {
+        const sheet = new ServerStyleSheet();
+        const originalRenderPage = ctx.renderPage;
+    
+        try {
+            ctx.renderPage = () =>
+                originalRenderPage({
+                    enhanceApp: App => props => { 
+                        const AppContent = App as any;
+                        
+                        return sheet.collectStyles(<AppContent {...props} />); 
+                    }
+                });
+    
+            const initialProps = await Document.getInitialProps(ctx);
+
+            return {
+                ...initialProps,
+                styles: (
+                    <>
+                        {initialProps.styles}
+                        {sheet.getStyleElement()}
+                    </>
+                ),
+            };
+        } finally {
+            sheet.seal();
+        }
+    }
+
+    // static async getInitialProps(
+    //     ctx: DocumentContext
+    //   ): Promise<DocumentInitialProps> {
+    //     const sheet = new ServerStyleSheet();
+    //     const originalRenderPage = ctx.renderPage;
+    
+    //     try {
+    //       ctx.renderPage = () =>
+    //         originalRenderPage({
+    //             enhanceApp: (App) => (props) =>
+    //                 sheet.collectStyles(<App {...props} />),
+    //         });
+    
+    //         const initialProps = await Document.getInitialProps(ctx);
+
+    //         return {
+    //             ...initialProps,
+    //             styles: [
+    //                 <>
+    //                     {initialProps.styles}
+    //                     {sheet.getStyleElement()}
+    //                 </>
+    //             ],
+    //         };
+    //     } finally {
+    //         sheet.seal();
+    //     }
+    // }
+
+    // static async getInitialProps(ctx: DocumentContext) {
+    //     const sheet = new ServerStyleSheet();
+    //     const originalRenderPage = ctx.renderPage;
+    
+    //     try {
+    //         ctx.renderPage = () =>
+    //             originalRenderPage({
+    //             enhanceApp: (App: any) => (props: any) =>
+    //                 sheet.collectStyles(<App {...props} />),
+    //             });
+    
+    //         const initialProps = await Document.getInitialProps(ctx);
+    
+    //         return {
+    //             ...initialProps,
+    //             styles: (
+    //                 <>
+    //                     {initialProps.styles}
+    //                     {sheet.getStyleElement()}
+    //                 </>
+    //             ),
+    //         };
+    //     } finally {
+    //         sheet.seal();
+    //     }
+    // }
+
     render() {
+        const HeadContent = Head as any;
+        const NextScriptContent = NextScript as any;
+
         return (
             <Html>
-                <Head>
+                <HeadContent>
                     <link
                         href="https://fonts.googleapis.com"
                         rel="preconnect"
@@ -22,10 +112,10 @@ class MyDocument extends Document {
                     <link href="/manifest.json" rel="manifest" />
                     <link href="/icon.png" rel="apple-touch-icon" />
                     <meta content="#fff" name="theme-color" />
-                </Head>
+                </HeadContent>
                 <body>
                     <Main />
-                    <NextScript />
+                    <NextScriptContent />
                 </body>
             </Html>
         );

@@ -123,7 +123,8 @@ const SidebarMobileActions = (props: { user?: User }) => {
     return <Avatar url={getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 })} />;
 }
 
-const Sidebar = () => {
+const Sidebar = (props: { isLoading?: boolean }) => {
+    const { isLoading } = props;
     const { asPath } = useRouter();
     const { user } = useSelector(selectCurrentUser);
 
@@ -159,7 +160,7 @@ const Sidebar = () => {
     return (
         <SidebarBase
             footer={<SidebarFooter user={user} />}
-            isLoading={!data}
+            isLoading={!data && isLoading}
             mobileActions={<SidebarMobileActions user={user} />}
         >
             {data?.menus?.map((group, groupIndex) => (

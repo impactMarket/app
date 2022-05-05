@@ -36,7 +36,7 @@ const webpack = (config, { webpack }) => {
 };
 
 const withBundleAnalyzer = require('@next/bundle-analyzer')({
-    enabled: false
+    enabled: true
 });
 
 // https://github.com/GoogleChrome/workbox/issues/1790

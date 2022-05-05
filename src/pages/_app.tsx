@@ -16,6 +16,7 @@ import WrapperProvider  from '../components/WrapperProvider';
 import config from '../../config';
 import modals from '../modals';
 import useGuard from '../hooks/useGuard';
+// import Loader from '../components/Loader';
 import type { AppProps } from 'next/app';
 
 const { baseUrl } = config;
@@ -50,12 +51,16 @@ const InnerApp = (props: AppProps) => {
 
     return (
         <AppContainer>
-            <Sidebar />
+            <Sidebar isLoading={isLoading} />
             {isLoading ? (
                 <ViewContainer isLoading />
             ) : (
                 <>{authorized && <Content {...pageProps} />}</>
             )}
+
+            {/* <Loader /> */}
+            {/* <Icon icon="users" /> */}
+            {/* <ViewContainer isLoading /> */}
         </AppContainer>
     );
 };
@@ -68,7 +73,9 @@ const App = (props: AppProps) => {
     const { data, view } = pageProps;
 
     if(!view) {
-        return <ErrorPage statusCode={404} />;
+        const ErrorContent = ErrorPage as any;
+
+        return <ErrorContent statusCode={404} />;
     }
 
     // const [cookies] = useCookies();
@@ -100,7 +107,7 @@ const App = (props: AppProps) => {
                         <Provider store={store}>
                             <ModalManager modals={modals} />
                             <Toaster />
-                            <InnerApp {...props} />
+                            <InnerApp {...props}/>
                         </Provider>
                     </WrapperProvider>
                 </DesignSystemProvider>
