@@ -5,6 +5,7 @@ import {
     Row,
     Tab,
     TabList,
+    TabPanel,
     Tabs,
     ViewContainer,
     openModal
@@ -28,6 +29,8 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
     const { view } = usePrismicData();
     const { t } = useTranslations();
     const auth = useSelector(selectCurrentUser);
+
+    const FakeTabPanel = TabPanel as any;
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -70,7 +73,10 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                         />
                     </CanBeRendered>
                 </TabList>
+                
                 <Filters />
+                <FakeTabPanel />
+                <FakeTabPanel/>
             </Tabs>
             <StoryList refreshStory={refreshStories} />
         </ViewContainer>

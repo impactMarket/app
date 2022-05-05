@@ -53,7 +53,6 @@ module.exports = withBundleAnalyzer(
         },
         redirects,
         styledComponents: true,
-        swcMinify: true,
         webpack
     })
 );
