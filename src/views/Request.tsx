@@ -15,7 +15,8 @@ import {
     PulseIcon,
     Spinner,
     Text,
-    ViewContainer
+    ViewContainer,
+    toast
 } from '@impact-market/ui';
 
 import { useGetCommunityMutation, useUpdateReviewMutation } from '../api/community';
@@ -75,11 +76,17 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
 
             setLoading(false);
 
+            //  Todo: text for toasters
+            toast.success('Successfully changed community review state!');
+
             //  Send to /requests if community was declined
             review === 'declined' && router.push('/requests')
 
         } catch (error) {
             console.log(error);
+
+            //  Todo: text for toasters
+            toast.error('Please try again later.');
 
             return false;
         }
@@ -103,7 +110,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                     </Box>
                     
                     <Grid cols={2}>
-                        <Box>
+                        <Box left>
                             <Display>{community.name}</Display>
                             <Box inlineFlex mt={0.25}>
                                 <CountryFlag
@@ -117,55 +124,59 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                             </Box>
                         </Box>
 
-                        {(community.review === 'pending' || community.review === 'declined') && (
-                            <Box right>
-                                {community.review !== 'declined' &&
+                        <Box right>
+                            {(community.review === 'pending' || community.review === 'declined') && (
+                                <Box>
+                                    {community.review !== 'declined' &&
+                                        <Button
+                                            mr={1}
+                                            onClick={() => functionUpdateReview('declined')}
+                                            secondary
+                                        >
+                                            <String id="decline"/>
+                                        </Button>
+                                    }
                                     <Button
-                                        mr={1}
-                                        onClick={() => functionUpdateReview('declined')}
-                                        secondary
+                                        onClick={() => functionUpdateReview('claimed')}
                                     >
-                                        <String id="decline"/>
+                                        <String id="claim"/>
                                     </Button>
-                                }
-                                <Button
-                                    onClick={() => functionUpdateReview('claimed')}
-                                >
-                                    <String id="claim"/>
-                                </Button>
-                            </Box>
-                        )}
+                                </Box>
+                            )}
 
-                        {(community.review === 'claimed' || community.review === 'accepted') && (
-                            <Box right> 
-                                {/* Todo: edit details */}
-                                <Button>
-                                    <Icon
-                                        icon="edit"
-                                        margin="0 0.5 0 0"
-                                        n01
-                                    />
-                                    <String id="editDetails"/>
-                                </Button>
-                                
-                                {community.review !== 'accepted' && (
-                                    <Box ml={1}>
-                                        <DropdownMenu
-                                            asButton
-                                            items={[
-                                                {
-                                                    icon: 'eye',
-                                                    onClick: () => functionUpdateReview('accepted'),
-                                                    title: 'Accept community'
-                                                }
-                                            ]}
-                                            rtl
-                                            title={<String id="actions"/>}
-                                        />  
-                                    </Box>  
-                                )}                                     
-                            </Box>
-                        )}
+                            {(community.review === 'claimed' || community.review === 'accepted') && (
+                                <Box inlineFlex> 
+                                    {/* Todo: edit details */}
+                                    <Button>
+                                        <Icon
+                                            icon="edit"
+                                            margin="0 0.5 0 0"
+                                            n01
+                                        />
+                                        <String id="editDetails"/>
+                                    </Button>
+                                    
+                                    {community.review !== 'accepted' && (
+                                        <Box ml={1}>
+                                            <DropdownMenu
+                                                asButton
+                                                items={[
+                                                    {
+                                                        icon: 'eye',
+                                                        onClick: () => functionUpdateReview('accepted'),
+                                                        title: 'Accept community'
+                                                    }
+                                                ]}
+                                                rtl
+                                                title={<String id="actions"/>}
+                                            />  
+                                        </Box>  
+                                    )}                                     
+                                </Box>
+                            )}
+                        </Box>
+
+                        
                     </Grid>
 
                     <Grid cols={{ sm: 4, xs: 2 }}>

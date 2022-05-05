@@ -11,13 +11,13 @@ import {
     Spinner,
     Tab,
     TabList,
-    TabPanel,
+    TabPanel, 
     Tabs,
     Text,
     ViewContainer
 } from '@impact-market/ui';
 
-import { useGetCommunitiesMutation } from '../api/community';
+import { useGetCommunitiesMutation, useGetCountryByCommunitiesMutation, useGetReviewsCountMutation } from '../api/community';
 import { useGetUserMutation } from '../api/user';
 
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -37,8 +37,14 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const [myCountrySelected, setMyCountrySelected] = useState(true);
     const [review, setReview] = useState('pending');
     const [reviews] = useState(['pending', 'accepted', 'claimed', 'declined']);
+    
+    const [userCountry, setUserCountry] = useState() as any
+    const [numberOfCommunitiesByReview, setNumberOfCommunitiesByReview] = useState({}) as any
+    const [numberOfCommunitiesByCountry, setNumberOfCommunitiesByCountry] = useState({}) as any
 
     const [getCommunities] = useGetCommunitiesMutation();
+    const [getCountryByCommunities] = useGetCountryByCommunitiesMutation();
+    const [getReviewsCount] = useGetReviewsCountMutation()
     const [getUser] = useGetUserMutation();
 
     useEffect(() => {
@@ -47,13 +53,18 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 setLoading(true);
 
                 const user: any = await getUser();
-
                 const communities = await getCommunities({
-                    country: myCountrySelected ? user?.data?.country : undefined,
+                    // eslint-disable-next-line no-nested-ternary
+                    country: myCountrySelected ? (user?.data?.country === null ? 0 : user?.data?.country) : undefined,
                     review
                 });
+                const countries = await getCountryByCommunities().unwrap()
+                const reviews = await getReviewsCount().unwrap()
 
                 setCommunities(communities);
+                setUserCountry(user?.data?.country)
+                setNumberOfCommunitiesByReview(reviews)
+                setNumberOfCommunitiesByCountry(countries)
 
                 setLoading(false);
             } catch (error) {
@@ -66,6 +77,48 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         init();
     }, [myCountrySelected, review]);
 
+    //  #region - Get how many communities there are in "other countries" / "mycountry" tabs
+    const otherCountriesNumberOfCommunities = () => {
+        const numberOfCommunitiesArray = [] as any
+
+        !!Object.keys(numberOfCommunitiesByCountry).length && (
+            numberOfCommunitiesByCountry.map((country: any) => (
+                numberOfCommunitiesArray.push(parseInt(country.count, 10))
+            ))
+        )
+
+        return numberOfCommunitiesArray.reduce((a: number, b: number) => a + b, 0)
+    }
+
+    const myCountryNumberOfCommunities = () => {
+        let numberOfCommunities = 0
+
+        !!Object.keys(numberOfCommunitiesByCountry).length && (
+            numberOfCommunitiesByCountry.filter((countryName: any) => countryName.country === userCountry).map((country: any) => {
+                numberOfCommunities = country.count
+            }
+        ))
+
+        return numberOfCommunities
+    }
+    // #endregion
+
+    // Get how many communties there are in each review (pending, accepted, claimed, declined)
+    const numberOfEachReview = (review: any) => {
+        let numberOfReview = 0
+
+        !!Object.keys(numberOfCommunitiesByReview).length && (
+            numberOfCommunitiesByReview.filter((reviewName: any) => reviewName.review === review).map((count: any) => (
+                numberOfReview = count.count
+            ))
+        )
+
+        // console.log(communities)
+
+        return numberOfReview
+    }
+
+
     return (
         <ViewContainer isLoading={isLoading}>
             <Display g900 medium>
@@ -76,10 +129,12 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
             <Tabs>
                 <TabList>
                     <Tab
+                        number={myCountryNumberOfCommunities()}
                         onClick={() => setMyCountrySelected(true)}
                         title={<String id="myCountry" />}
                     />
                     <Tab
+                        number={otherCountriesNumberOfCommunities()}
                         onClick={() => setMyCountrySelected(false)}
                         title={<String id="otherCountries" />}
                     />
@@ -91,11 +146,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                     {reviews.map((review, key) => (
                         <Tab
                             key={key}
-                            // Verify with Bernardo if numbers should be used in tabs:
-                            // number={
-                            //     !!Object.keys(communities).length &&
-                            //     communities.data.count
-                            // }
+                            number={numberOfEachReview(review)}
                             onClick={() => setReview(review)}
                             title={<String id={review} />}
                         />
@@ -125,16 +176,11 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                                                 // eslint-disable-next-line @next/next/no-img-element
                                                                 <img
                                                                     alt=""
-                                                                    src={
-                                                                        community.coverImage
-                                                                    }
+                                                                    src={community.coverImage}
                                                                     style={{
-                                                                        height:
-                                                                            '200px',
-                                                                        objectFit:
-                                                                            'cover',
-                                                                        width:
-                                                                            '100%'
+                                                                        height: '200px',
+                                                                        objectFit: 'cover',
+                                                                        width: '100%'
                                                                     }}
                                                                 />
                                                             }
@@ -159,19 +205,13 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                                                     regular
                                                                     small
                                                                 >
-                                                                    {community.state
-                                                                        ? community
-                                                                            .state
-                                                                            .beneficiaries
-                                                                        : '-'}
+                                                                    {community.state ? community.state.beneficiaries : '-'}
                                                                 </Text>
                                                             </Box>
                                                             <Box inlineFlex>
                                                                 <Box mr={0.1}>
                                                                     <CountryFlag
-                                                                        countryCode={
-                                                                            community.country
-                                                                        }
+                                                                        countryCode={community.country}
                                                                         size={[
                                                                             1.5,
                                                                             1.5
@@ -191,8 +231,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                                 </Link>
                                             )
                                         )
-                                    }
-                                    
+                                    } 
                                 </Grid>
                             )}
                         </TabPanel>

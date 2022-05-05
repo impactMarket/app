@@ -1,0 +1,9 @@
+{
+  "id": "pwa-view-proposals",
+  "label": "[PWA] [View] Proposals",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "Main": {}
+  }
+}

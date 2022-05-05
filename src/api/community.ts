@@ -27,6 +27,11 @@ export interface Countries {
     country: string;
 }
 
+export interface Reviews {
+    count: number;
+    review: string;
+}
+
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -56,6 +61,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: Countries[] }) => response.data
         }),
+        //  Get reviews count
+        getReviewsCount: builder.mutation<Reviews[], void>({
+            query: () => ({
+                method: 'GET',
+                url: `communities/count?groupBy=review`
+            }),
+            transformResponse: (response: { data?: Reviews[] }) => response.data
+        }),
         //  Update community review status (accepted, claimed, declined, pending)
         updateReview: builder.mutation<Update, { body: any; id: number }>({
             query: ({ body, id }: any) => ({
@@ -74,5 +87,6 @@ export const {
     useGetCommunityMutation,
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
-    useGetCountryByCommunitiesMutation
+    useGetCountryByCommunitiesMutation,
+    useGetReviewsCountMutation
 } = communityApi;
