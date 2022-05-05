@@ -13,8 +13,6 @@ const AddCommunityPage = () => {
                 setIsLoading(true);
                 const response = await getPendingCommunities().unwrap();
     
-                console.log(response);
-    
                 setCommunities(response?.rows || []);
                 setIsLoading(false);
             } catch (error) {
@@ -38,6 +36,8 @@ const AddCommunityPage = () => {
             </div>
         );
     }
+
+    console.log(communities);
 
     return (
         <div>

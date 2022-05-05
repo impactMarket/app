@@ -10,7 +10,7 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 import { useUBICommittee } from '@impact-market/utils/useUBICommittee';
-import React from 'react'
+import React, { useState } from 'react'
 
 interface proposalProps {
     data: any

@@ -1,10 +1,11 @@
-import { Box, Button, Card, Col, Display, Row, Text, ViewContainer } from '@impact-market/ui';
+import { Box, Button, Card, Col, Display, Row, Text } from '@impact-market/ui';
 import { frequencyToText } from '@impact-market/utils/frequencyToText';
 import { getCountryNameFromInitials } from '../../utils/countries';
 import { getImage } from '../../utils/images';
 import { toNumber } from '@impact-market/utils/toNumber';
 import { toToken } from '@impact-market/utils/toToken';
 import { useUBICommittee } from '@impact-market/utils/useUBICommittee';
+import Link from 'next/link';
 import React, { useState } from 'react';
 import config from '../../../config';
 
@@ -67,25 +68,26 @@ const Community = (props: any) => {
             width: 0
         });
 
-        //     <li>
-        //         <h5 style={{ display: 'flex', width: 600 }}>
-        //             <span>
-        //                 {name} - {requestByAddress}
-        //             </span>
-        //             {isLoading && <span>...is loading!</span>}
-        //             {!isAdded && (
-        //                 <button
-        //                     disabled={isLoading}
-        //                     onClick={handleAddCommunity}
-        //                     style={{ marginLeft: 'auto' }}
-        //                 >
-        //                     Add
-        //                 </button>
-        //             )}
-        //         </h5>
-        //     </li> 
+    //     <li>
+    //         <h5 style={{ display: 'flex', width: 600 }}>
+    //             <span>
+    //                 {name} - {requestByAddress}
+    //             </span>
+    //             {isLoading && <span>...is loading!</span>}
+    //             {!isAdded && (
+    //                 <button
+    //                     disabled={isLoading}
+    //                     onClick={handleAddCommunity}
+    //                     style={{ marginLeft: 'auto' }}
+    //                 >
+    //                     Add
+    //                 </button>
+    //             )}
+    //         </h5>
+    //     </li>
 
     return (
+        <Link href={`/proposals/${id}`} passHref>
             <Card mt={1}>
                 <Row>
                     <Col colSize={12}>
@@ -108,13 +110,17 @@ const Community = (props: any) => {
                                         <Box flex>
                                             <Text>
                                                 {city},{' '}
-                                                {getCountryNameFromInitials(country)}
+                                                {getCountryNameFromInitials(
+                                                    country
+                                                )}
                                             </Text>
-                                            <Text ml={0.5} mr={0.5} >
-                                             · 
+                                            <Text ml={0.5} mr={0.5}>
+                                                ·
                                             </Text>
                                             <Box>
-                                                <Text p600 semibold>See more...</Text>
+                                                <Text p600 semibold>
+                                                    See more...
+                                                </Text>
                                             </Box>
                                         </Box>
                                     </Col>
@@ -123,16 +129,19 @@ const Community = (props: any) => {
                                 <Row>
                                     <Col colSize={9}>
                                         <Text>
-                                            Total claim amount per beneficiary is{' '}
-                                            {maxClaim} ------NOT WORKING
+                                            Total claim amount per beneficiary
+                                            is {maxClaim} ------NOT WORKING
                                         </Text>
                                         <Text>
-                                            Each claim has a minutes {incrementInterval}{' '}
-                                            increment ----------NOT WORKING
+                                            Each claim has a minutes{' '}
+                                            {incrementInterval} increment
+                                            ----------NOT WORKING
                                         </Text>
                                     </Col>
                                     <Col colSize={3} right>
-                                        {isLoading && <span>...is loading!</span>}
+                                        {isLoading && (
+                                            <span>...is loading!</span>
+                                        )}
                                         {!isAdded && (
                                             <Button
                                                 disabled={isLoading}
@@ -144,10 +153,11 @@ const Community = (props: any) => {
                                     </Col>
                                 </Row>
                             </Box>
-                        </Box> 
-                    </Col>   
-                </Row>    
+                        </Box>
+                    </Col>
+                </Row>
             </Card>
+        </Link>
     );
 };
 

@@ -22,16 +22,24 @@ const ProposalsPage= () => {
     }[]>([]);
     const [blockNumber, setBlockNumber] = useState(0);
 
+    // Pagination limit and offset
+    const limit = 5;
+    const offset = 0;
+
     useEffect(() => {
         if (address) {
-            getProposals(5, 0).then((p) => setProposals(p));
+            getProposals(limit, offset).then((p) => setProposals(p));
             // provider.getBlockNumber().then((b) => setBlockNumber(b));
+
+            
         }
     }, [address]);
 
     // if (blockNumber === 0) {
     //     return null;
     // }
+
+    console.log(proposals);
 
     return (
         <Box>

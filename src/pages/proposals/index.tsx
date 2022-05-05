@@ -1,7 +1,7 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
-import Prismic from '../libs/Prismic/Prismic';
-import Proposals from '../views/Proposals';
+import Prismic from '../../libs/Prismic/Prismic';
+import Proposals from '../../views/Proposals';
 
 export const getStaticProps: GetStaticProps = async ({
     locale: lang,
