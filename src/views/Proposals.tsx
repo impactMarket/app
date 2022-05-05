@@ -35,8 +35,8 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
                 decline communities.
             </Text>
 
-            {cases.map((id) => (
-                <Card key={id} mt={1.5}>
+            {cases.map((elem) => (
+                <Card key={elem.id} mt={1.5}>
                     <Text large semibold>
                         Proposal #1
                     </Text>

@@ -239,7 +239,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                     <Card mt={1}>
                         {story?.storyMediaPath && (
                             <Box
-                                bgImg={() => getMedia(story?.storyMediaPath)}
+                                bgImg={getMedia(story?.storyMediaPath)}
                                 h={22.188}
                                 pt="56.25%"
                                 radius={0.5}
@@ -253,12 +253,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                         <Box>
                                             <Avatar
                                                 h={3}
-                                                url={() =>
-                                                    getMedia(
-                                                        story?.community
-                                                            ?.coverMediaPath
-                                                    )
-                                                }
+                                                url={getMedia(story?.community?.coverMediaPath)}
                                                 w={3}
                                             />
                                         </Box>

@@ -66,7 +66,9 @@ const App = (props: AppProps) => {
     const { data, view } = pageProps;
 
     if(!view) {
-        return <ErrorPage statusCode={404} />;
+        const ErrorContent = ErrorPage as any;
+
+        return <ErrorContent statusCode={404} />;
     }
 
     if(checkCookies('AUTH_TOKEN')) {
