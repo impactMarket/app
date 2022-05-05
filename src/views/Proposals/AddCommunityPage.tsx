@@ -41,8 +41,6 @@ const AddCommunityPage = () => {
 
     return (
         <div>
-            <h3>Add Community</h3>
-            <h4>Communities</h4>
             <ul style={{ marginTop: 32 }}>
                 {communities.map((community, index) => (
                     <Community key={index} {...community} />

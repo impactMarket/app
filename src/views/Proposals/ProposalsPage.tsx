@@ -1,4 +1,5 @@
 
+import { Box } from '@impact-market/ui';
 import { useContractKit, useProvider } from '@celo-tools/use-contractkit';
 import { useUBICommittee } from '@impact-market/utils';
 import Proposal from './Proposal';
@@ -28,21 +29,14 @@ const ProposalsPage= () => {
         }
     }, [address]);
 
-    console.log(proposals);
-    
     // if (blockNumber === 0) {
     //     return null;
     // }
 
-    
-
-    
-
     return (
-        <div>
-            <h3>Proposals ({quorumVotes} quorumVotes)</h3>
-            {proposals.map((p, index) => <Proposal key={index} p={p} />)} 
-        </div>
+        <Box>
+            {proposals.map((p, index) => <Proposal data={p} key={index}/>)} 
+        </Box>
     );
 };
 
