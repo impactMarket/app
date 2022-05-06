@@ -18,6 +18,7 @@ import {
 } from '@impact-market/ui';
 
 import { useGetCommunitiesMutation } from '../api/community';
+import { useGetUserMutation } from '../api/user';
 
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import RichText from '../libs/Prismic/components/RichText';
@@ -33,23 +34,28 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
 
     const [loading, setLoading] = useState(false);
     const [communities, setCommunities] = useState({}) as any;
-    const [myCountry, setMyCountry] = useState(true);
+    const [myCountrySelected, setMyCountrySelected] = useState(true);
     const [review, setReview] = useState('pending');
     const [reviews] = useState(['pending', 'accepted', 'claimed', 'declined']);
 
     const [getCommunities] = useGetCommunitiesMutation();
+    const [getUser] = useGetUserMutation();
 
     useEffect(() => {
         const init = async () => {
             try {
                 setLoading(true);
+
+                const user: any = await getUser();
+
                 const communities = await getCommunities({
-                    myCountry,
+                    country: myCountrySelected ? user?.data?.country : undefined,
                     review
                 });
 
-                setLoading(false);
                 setCommunities(communities);
+
+                setLoading(false);
             } catch (error) {
                 console.log(error);
 
@@ -58,7 +64,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         };
 
         init();
-    }, [myCountry, review]);
+    }, [myCountrySelected, review]);
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -70,11 +76,11 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
             <Tabs>
                 <TabList>
                     <Tab
-                        onClick={() => setMyCountry(true)}
+                        onClick={() => setMyCountrySelected(true)}
                         title={<String id="myCountry" />}
                     />
                     <Tab
-                        onClick={() => setMyCountry(false)}
+                        onClick={() => setMyCountrySelected(false)}
                         title={<String id="otherCountries" />}
                     />
                 </TabList>
@@ -102,7 +108,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                             {loading ? (
                                 <Spinner isActive />
                             ) : (
-                                <Grid colSpan={1.5} cols={{ sm: 4, xs: 2 }}>
+                                <Grid colSpan={1.5} cols={{ sm: 4, xs: 1 }}>
                                     {communities.data.count === 0 ?
                                         <String id="noCommunities" />
                                     :
