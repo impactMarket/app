@@ -17,7 +17,7 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 
-import { useGetCommunitiesMutation, useGetCountryByCommunitiesMutation, useGetReviewsCountMutation } from '../api/community';
+import { useGetCommunitiesMutation, useGetReviewsByCountryMutation, useGetReviewsCountMutation } from '../api/community';
 import { useGetUserMutation } from '../api/user';
 
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -40,10 +40,10 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     
     const [userCountry, setUserCountry] = useState() as any
     const [numberOfCommunitiesByReview, setNumberOfCommunitiesByReview] = useState({}) as any
-    const [numberOfCommunitiesByCountry, setNumberOfCommunitiesByCountry] = useState({}) as any
+    const [reviewsByCountry, setReviewsByCountry] = useState({}) as any
 
     const [getCommunities] = useGetCommunitiesMutation();
-    const [getCountryByCommunities] = useGetCountryByCommunitiesMutation();
+    const [getReviewsByCountry] = useGetReviewsByCountryMutation()
     const [getReviewsCount] = useGetReviewsCountMutation()
     const [getUser] = useGetUserMutation();
 
@@ -58,13 +58,13 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                     country: myCountrySelected ? (user?.data?.country === null ? 0 : user?.data?.country) : undefined,
                     review
                 });
-                const countries = await getCountryByCommunities().unwrap()
                 const reviews = await getReviewsCount().unwrap()
+                const reviewsByCountry = await getReviewsByCountry().unwrap()
 
                 setCommunities(communities);
                 setUserCountry(user?.data?.country)
                 setNumberOfCommunitiesByReview(reviews)
-                setNumberOfCommunitiesByCountry(countries)
+                setReviewsByCountry(reviewsByCountry)
 
                 setLoading(false);
             } catch (error) {
@@ -78,46 +78,53 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     }, [myCountrySelected, review]);
 
     //  #region - Get how many communities there are in "other countries" / "mycountry" tabs
-    const otherCountriesNumberOfCommunities = () => {
-        const numberOfCommunitiesArray = [] as any
-
-        !!Object.keys(numberOfCommunitiesByCountry).length && (
-            numberOfCommunitiesByCountry.map((country: any) => (
-                numberOfCommunitiesArray.push(parseInt(country.count, 10))
-            ))
-        )
-
-        return numberOfCommunitiesArray.reduce((a: number, b: number) => a + b, 0)
-    }
-
     const myCountryNumberOfCommunities = () => {
         let numberOfCommunities = 0
 
-        !!Object.keys(numberOfCommunitiesByCountry).length && (
-            numberOfCommunitiesByCountry.filter((countryName: any) => countryName.country === userCountry).map((country: any) => {
+        !!Object.keys(reviewsByCountry).length && (
+            reviewsByCountry.filter((countryName: any) => countryName.country === userCountry).map((country: any) => {
                 numberOfCommunities = country.count
             }
         ))
 
         return numberOfCommunities
     }
-    // #endregion
 
-    // Get how many communties there are in each review (pending, accepted, claimed, declined)
-    const numberOfEachReview = (review: any) => {
-        let numberOfReview = 0
+    const otherCountriesNumberOfCommunities = () => {
+        const numberOfCommunitiesArray = [] as any
 
-        !!Object.keys(numberOfCommunitiesByReview).length && (
-            numberOfCommunitiesByReview.filter((reviewName: any) => reviewName.review === review).map((count: any) => (
-                numberOfReview = count.count
+        !!Object.keys(reviewsByCountry).length && (
+            reviewsByCountry.map((country: any) => (
+                numberOfCommunitiesArray.push(parseInt(country.count, 10))
             ))
         )
 
-        // console.log(communities)
-
-        return numberOfReview
+        return numberOfCommunitiesArray.reduce((a: number, b: number) => a + b, 0)
     }
+    // #endregion
 
+
+    // Get how many communties there are in each review (pending, accepted, claimed, declined)
+    const numberOfEachReview = (review: any) => {
+        let otherCountriesNumberOfReviews = 0
+        let myCountryNumberOfReviews = {} as any
+
+        !!myCountrySelected ?
+            !!Object.keys(reviewsByCountry).length && (
+                reviewsByCountry.filter((communitiesNumber: any) => 
+                    userCountry === communitiesNumber?.country).map((quantity: any) => (
+                        myCountryNumberOfReviews = quantity
+                    )) 
+            )
+        :
+            !!Object.keys(numberOfCommunitiesByReview).length && (
+                numberOfCommunitiesByReview.filter((reviewName: any) => reviewName.review === review).map((count: any) => (
+                    otherCountriesNumberOfReviews = count.count
+                ))
+            )
+
+        return !!myCountrySelected ? myCountryNumberOfReviews[review] : otherCountriesNumberOfReviews
+    }
 
     return (
         <ViewContainer isLoading={isLoading}>
