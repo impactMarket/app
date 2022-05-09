@@ -621,6 +621,24 @@
           "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
+      },
+      "message-successfullyClaimedUbi": {
+        "type": "StructuredText",
+        "config": {
+          "label": "successfullyClaimedUbi",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-errorUbi": {
+        "type": "StructuredText",
+        "config": {
+          "label": "errorClaimingUbi",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "em,hyperlink,paragraph,strong"
+        }
       }
     }
   }

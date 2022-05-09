@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal } from '@impact-market/ui';
+import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal, toast } from '@impact-market/ui';
 import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
@@ -100,12 +100,16 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                     });
                 }
             }
+
+            toast.success(<Message id="successfullyClaimedUbi" />);
         }
         catch(error) {
             console.log(error);
 
             toggleLoadingButton(false);
             toggleClaim(false);
+
+            toast.error(<Message id="errorClaimingUbi" />);
         }
     };
 
