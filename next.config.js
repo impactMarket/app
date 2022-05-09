@@ -42,6 +42,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // https://github.com/GoogleChrome/workbox/issues/1790
 module.exports = withBundleAnalyzer(
     withPWA({
+        typescript: {
+            // !! WARN !!
+            // Dangerously allow production builds to successfully complete even if
+            // your project has type errors.
+            // !! WARN !!
+            ignoreBuildErrors: true,
+          },
         i18n,
         images,
         pwa: {

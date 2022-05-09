@@ -75,6 +75,8 @@ const App = (props: AppProps) => {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
 
+    console.log(view);
+
     return (
         <PrismicDataProvider data={data} url={url} view={view}>
             <DesignSystemProvider>
