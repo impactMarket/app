@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import {
     Box,
     Button,
@@ -7,9 +8,9 @@ import {
     Label,
     Row,
     Text,
-    ViewContainer
 } from '@impact-market/ui';
-import { useUBICommittee } from '@impact-market/utils/useUBICommittee';
+import { useContractKit } from '@celo-tools/use-contractkit';
+import { useUBICommittee } from '@impact-market/utils';
 import React, { useState } from 'react'
 
 interface proposalProps {
@@ -27,26 +28,42 @@ const Proposal: React.FC<proposalProps> = ({ data }, props) => {
         status,
         votesAgainst,
         votesFor,
-        votesAbstain
+        votedBy,
+        votesAbstain,
+        userHasVoted,
     } = data;
-    const { cancel, execute, vote, quorumVotes } = useUBICommittee();
+    const { cancel, execute, proposalCount, vote, quorumVotes } = useUBICommittee();
+    const objDescription = description ? JSON.parse(description) : {};
+    const { address } = useContractKit();
 
-        // <Box mt={1}>
-        //     <div>
-        //         <Text style={{whiteSpace: 'preWrap'}}>{id}</Text>
-        //          <p>{id} | {proposer}: {description}</p>
-        //         {
-        //             p.status === 2 ? <p>canceled</p> :
-        //                 p.status === 1 ? <p>executed</p> :
-        //                     p.votesFor >= quorumVotes ? <><button onClick={() => execute(p.id)}>execute</button><button onClick={() => cancel(p.id)}>cancel</button></> :
-        //                         p.votesAgainst >= quorumVotes ? <p>defeated</p> :
-        //                             p.endBlock < blockNumber ? <p>expired</p> :
-        //                                 <><button onClick={() => vote(p.id, 1)}>vote for</button><button onClick={() => vote(p.id, 0)}>vote against</button><button onClick={() => cancel(p.id)}>cancel</button></>
-        //         } 
-        //     </div>
-        // </Box>
+    const [blockNumber, setBlockNumber] = useState(0);
 
-    return (       
+    const usersVote = () => {
+
+        if(votedBy.includes(address)){
+            return true;
+        } 
+
+            return false;
+        ;
+    }
+
+    // <Box mt={1}>
+    //     <div>
+    //         <Text style={{whiteSpace: 'preWrap'}}>{id}</Text>
+    //          <p>{id} | {proposer}: {description}</p>
+    //         {
+    //             status === 2 ? <p>canceled</p> :
+    //                 status === 1 ? <p>executed</p> :
+    //                     votesFor >= quorumVotes ? <><button onClick={() => execute(id)}>execute</button><button onClick={() => cancel(id)}>cancel</button></> :
+    //                         votesAgainst >= quorumVotes ? <p>defeated</p> :
+    //                             endBlock < blockNumber ? <p>expired</p> :
+    //                                 <><button onClick={() => vote(id, 1)}>vote for</button><button onClick={() => vote(id, 0)}>vote against</button><button onClick={() => cancel(id)}>cancel</button></>
+    //         } 
+    //     </div>
+    // </Box>
+
+    return (      
             <Card mt={1}>
                 <Text large semibold>
                     Proposal #{id}
@@ -88,8 +105,7 @@ const Proposal: React.FC<proposalProps> = ({ data }, props) => {
 
                 <Divider />
                 <Row fLayout="center start">
-                    <Col>
-                    
+                    <Col pl={0}>
                     <>
                         {/* <Label
                             content="You are not allowed to vote"
@@ -97,51 +113,59 @@ const Proposal: React.FC<proposalProps> = ({ data }, props) => {
                             icon="sad"
                         /> */}
 
-                        {votesFor < quorumVotes && votesAgainst < quorumVotes &&
+                        {votesFor < quorumVotes && votesAgainst < quorumVotes && !usersVote  &&
                             <>
-                                <Button error mr={0.5} onClick={() => vote(data.id, 0)}>
+                                <Button  error ml={1} mr={0.5} onClick={() => vote(data.id, 0)}>
                                     Decline
                                 </Button>
-                                <Button onClick={() => vote(data.id, 1)} success>Accept</Button>
+                                <Button  ml={1} onClick={() => vote(data.id, 1)} success>Accept</Button>
                             </>
                         }
                     </>
                     
-                        {votesFor >= quorumVotes && 
-                            <Button mr={1.938} onClick={() => execute(data.id)}>Execute Proposal</Button>
+                        {votesFor >= quorumVotes && status !== 1 &&
+                            <Button  ml={1} mr={1.938} onClick={() => execute(data.id)}>Execute Proposal</Button>
                         }
 
                         {status !== 0 && 
-                            <Label content="Vote has ended" />
+                            <Label content="Vote has ended" ml={1} />
                         }
                     </Col>
-                    <Col>
+                    <Col pl={0}>
                         <Row>
-                            {/* <Text g800 pr={0.25} semibold>
-                                You +
-                            </Text> */}
-                            <Text g800 pl={0} pr={0} semibold>
-                                {votesFor}
-                            </Text>
-                            <Text g500 pl={0.25} pr={0.5}>
-                                Voted Yes
-                            </Text>
-                            <Text pl={0} pr={0}>
-                                ·
-                            </Text>
-                            <Text g800 pl={0.5} pr={0} semibold>
-                            {votesAgainst}
-                            </Text>
-                            <Text g500 pl={0.25}>
-                                Voted No
-                            </Text>
+                            <Box flex pr={0.25}>
+                                {/* <Text g800  semibold>
+                                    You +
+                                </Text> */}
+                            
+                                <Text g800 pl={0} pr={0} semibold>
+                                    {votesFor}
+                                </Text>
+                                <Text g500 pl={0.25} pr={0.5}>
+                                    Voted Yes
+                                </Text>
+                                <Text pl={0} pr={0}>
+                                    ·
+                                </Text>
+                                <Text g800 pl={0.5} pr={0} semibold>
+                                {votesAgainst}
+                                </Text>
+                                <Text g500 pl={0.25}>
+                                    Voted No
+                                </Text>
+                            </Box>
                         </Row>
                     </Col>
                 </Row>
                 <Row>
-                    <Text>
-                        {description}
-                    </Text>
+                    <Box>
+                        <Text mb={1}>
+                        {objDescription.title}
+                        </Text>
+                        <Text>
+                            {objDescription.description}
+                        </Text>
+                    </Box>
                 </Row>
             </Card>
     );

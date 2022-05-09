@@ -87,77 +87,78 @@ const Community = (props: any) => {
     //     </li>
 
     return (
-        <Link href={`/proposals/${id}`} passHref>
-            <Card mt={1}>
-                <Row>
-                    <Col colSize={12}>
-                        <Box flex>
-                            <Box>
-                                <Box flex>
-                                    <Box
-                                        bgImg={() => getMedia(coverMediaPath)}
-                                        mr={1}
-                                        pt={8.313}
-                                        radius={0.5}
-                                        w={8.313}
-                                    />
-                                </Box>
+        <Card mt={1}>
+            <Row>
+                <Col colSize={12}>
+                    <Box flex>
+                        <Box>
+                            <Box flex>
+                                <Box
+                                    bgImg={() => getMedia(coverMediaPath)}
+                                    mr={1}
+                                    pt={8.313}
+                                    radius={0.5}
+                                    w={8.313}
+                                />
                             </Box>
-                            <Box w="100%">
-                                <Row>
-                                    <Col colSize={12}>
-                                        <Display>{name}</Display>
-                                        <Box flex>
-                                            <Text>
-                                                {city},{' '}
-                                                {getCountryNameFromInitials(
-                                                    country
-                                                )}
-                                            </Text>
-                                            <Text ml={0.5} mr={0.5}>
-                                                ·
-                                            </Text>
-                                            <Box>
+                        </Box>
+                        <Box w="100%">
+                            <Row>
+                                <Col colSize={12}>
+                                    <Display>{name}</Display>
+                                    <Box flex>
+                                        <Text>
+                                            {city},{' '}
+                                            {getCountryNameFromInitials(
+                                                country
+                                            )}
+                                        </Text>
+                                        <Text ml={0.5} mr={0.5}>
+                                            ·
+                                        </Text>
+                                        <Box>
+                                            <Link
+                                                href={`/proposals/${id}`}
+                                                passHref
+                                            >
                                                 <Text p600 semibold>
                                                     See more...
                                                 </Text>
-                                            </Box>
+                                            </Link>
                                         </Box>
-                                    </Col>
-                                </Row>
+                                    </Box>
+                                </Col>
+                            </Row>
 
-                                <Row>
-                                    <Col colSize={9}>
-                                        <Text>
-                                            Total claim amount per beneficiary
-                                            is {maxClaim} ------NOT WORKING
-                                        </Text>
-                                        <Text>
-                                            Each claim has a minutes{' '}
-                                            {incrementInterval} increment
-                                            ----------NOT WORKING
-                                        </Text>
-                                    </Col>
-                                    <Col colSize={3} right>
-                                        {isLoading && (
-                                            <span>...is loading!</span>
-                                        )}
-                                        {!isAdded && (
-                                            <Button
-                                                disabled={isLoading}
-                                                onClick={handleAddCommunity}
-                                            >
-                                                Generate Proposal
-                                            </Button>
-                                        )}
-                                    </Col>
-                                </Row>
-                            </Box>
+                            <Row>
+                                <Col colSize={9}>
+                                    <Text>
+                                        Total claim amount per beneficiary is{' '}
+                                        {maxClaim} ------NOT WORKING
+                                    </Text>
+                                    <Text>
+                                        Each claim has a minutes{' '}
+                                        {incrementInterval} increment
+                                        ----------NOT WORKING
+                                    </Text>
+                                </Col>
+                                <Col colSize={3} right>
+                                    {isLoading && <span>...is loading!</span>}
+                                    {!isAdded && (
+                                        <Button
+                                            disabled={isLoading}
+                                            onClick={handleAddCommunity}
+                                        >
+                                            Generate Proposal
+                                        </Button>
+                                    )}
+                                </Col>
+                            </Row>
                         </Box>
-                    </Col>
-                </Row>
-            </Card>
-        </Link>
+                    </Box>
+                </Col>
+            </Row>
+        </Card>
     );
 };
 

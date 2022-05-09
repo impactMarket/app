@@ -102,10 +102,7 @@ const CommunityPage: React.FC<{ isLoading?: boolean; communityId: any }> = (
         });
 
     return (
-        <ViewContainer isLoading={isLoading}>
-            {loading ? (
-                <Spinner isActive />
-            ) : (
+        <ViewContainer isLoading={isLoading || loading}>
                 <Box>
                     <Box mb={1.5}>
                         <Link href="/proposals" passHref>
@@ -179,7 +176,6 @@ const CommunityPage: React.FC<{ isLoading?: boolean; communityId: any }> = (
                         </Col>
                     </Row>
                 </Box>
-            )}
         </ViewContainer>
     );
 };

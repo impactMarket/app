@@ -17,15 +17,17 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const [getPendingCommunities] = useGetPendingCommunitiesMutation();
     const [requestsCount, setRequestsCount] = useState<number>();
-    const { getProposals } = useUBICommittee();
+    const { getProposals, proposalCount } = useUBICommittee();
     const [proposalsCount, setProposalsCount] = useState([]);
+
+    const number = proposalCount  ? proposalCount : 1000 ;
 
     useEffect(() => {
         const getCommunities = async () => {
             try {
                 const response = await getPendingCommunities().unwrap();
 
-                getProposals(5, 0).then((p) => setProposalsCount(p));
+                getProposals(number, 0).then((p) => setProposalsCount(p));
 
                 setRequestsCount(response?.count);
             } catch (error) {

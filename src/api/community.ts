@@ -35,6 +35,7 @@ export interface PendingCommunities {
             city: string;
             coverMediaPath: string;
             ambassadorAddress: string;
+            proposals?: boolean;
             contract: {
                 maxClaim: number;
                 baseInterval: number;
@@ -42,6 +43,7 @@ export interface PendingCommunities {
                 incrementInterval: number;
             };
             success: boolean;
+            userHasVoted?: boolean;
         }];
 };
 
