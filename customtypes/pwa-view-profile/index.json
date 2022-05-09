@@ -140,6 +140,27 @@
             "single": "paragraph,strong,em,hyperlink"
         },
         "type": "StructuredText"
+      },
+      "form-sections-upload-image" : {
+        "type" : "Text",
+        "config" : {
+          "label" : "Form Sections Upload Image",
+          "placeholder" : ""
+        }
+      },
+      "form-sections-delete-account-alert" : {
+        "type" : "Text",
+        "config" : {
+          "label" : "Delete Account Alert",
+          "placeholder" : ""
+        }
+      },
+      "form-sections-introduction" : {
+        "type" : "Text",
+        "config" : {
+          "label" : "Form Sections Introduction",
+          "placeholder" : ""
+        }
       }
     }
   }

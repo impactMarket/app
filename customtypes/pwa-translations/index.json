@@ -110,6 +110,13 @@
         },
         "type": "Text"
       },
+      "string-charactersLeft": {
+        "config": {
+          "label": "charactersLeft",
+          "placeholder": "characters left"
+        },
+        "type": "Text"
+      },
       "string-claim": {
         "config": {
           "label": "claim",
@@ -128,6 +135,13 @@
         "config": {
           "label": "claimed",
           "placeholder": "Claimed"
+        },
+        "type": "Text"
+      },
+      "string-clear": {
+        "config": {
+          "label": "clear",
+          "placeholder": "Clear"
         },
         "type": "Text"
       },
@@ -390,6 +404,13 @@
         },
         "type": "Text"
       },
+      "string-noCommunities": {
+        "config": {
+          "label": "noCommunities",
+          "placeholder": "No Communities"
+        },
+        "type": "Text"
+      },
       "string-notifications": {
         "config": {
           "label": "notifications",
@@ -495,6 +516,13 @@
         },
         "type": "Text"
       },
+      "string-selectAnOption": {
+        "config": {
+          "label": "selectAnOption",
+          "placeholder": "Select an option"
+        },
+        "type": "Text"
+      },
       "string-selectImage": {
         "config": {
           "label": "selectImage",
@@ -513,6 +541,13 @@
         "config": {
           "label": "selectType",
           "placeholder": "Select type"
+        },
+        "type": "Text"
+      },
+      "string-selected": {
+        "config": {
+          "label": "selected",
+          "placeholder": "Selected"
         },
         "type": "Text"
       },
@@ -579,19 +614,19 @@
         },
         "type": "Text"
       },
+      "string-writeSomethingHere": {
+        "config": {
+          "label": "writeSomethingHere",
+          "placeholder": "Write something here"
+        },
+        "type": "Text"
+      },
       "string-yourBalance": {
         "config": {
           "label": "yourBalance",
           "placeholder": "Your balance"
         },
         "type": "Text"
-      },
-      "string-noCommunities": {
-        "type": "Text",
-        "config": {
-          "label": "noCommunities",
-          "placeholder": "No Communities"
-        }
       }
     },
     "messages": {
@@ -638,6 +673,33 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "em,hyperlink,paragraph,strong"
+        }
+      },
+      "message-successfullyChangedData": {
+        "type": "StructuredText",
+        "config": {
+          "label": "successfullyChangedData",
+          "placeholder": "Successfully changed data!",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-errorOccurred": {
+        "type": "StructuredText",
+        "config": {
+          "label": "errorOcurred",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-copiedAddress": {
+        "type": "StructuredText",
+        "config": {
+          "label": "copiedAddress",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
         }
       }
     }
