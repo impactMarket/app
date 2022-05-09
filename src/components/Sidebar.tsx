@@ -47,7 +47,7 @@ const getUserType = (user: User) => {
     return 'donor';
 }
 
-const ConnectButton = () => {
+const ConnectButton = (props: any) => {
     const [isConnecting, setIsConnecting] = useState(false);
 
     const { connect } = useWallet();
@@ -61,7 +61,7 @@ const ConnectButton = () => {
     }
 
     return (
-        <Button fluid icon="coins" isLoading={isConnecting} onClick={handleConnectClick} secondary>
+        <Button {...props} icon="coins" isLoading={isConnecting} onClick={handleConnectClick} secondary>
             <String id="connectWallet" />
         </Button>
     )
@@ -93,7 +93,7 @@ const SidebarFooter = (props: { user?: User }) => {
     const { address } = useWallet();
 
     if (!address) {
-        return <ConnectButton />
+        return <ConnectButton fluid />
     }
     
     return (
