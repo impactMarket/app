@@ -1,3 +1,4 @@
+import { PutPostUser } from './user';
 import { emptySplitApi } from './index';
 import qs from 'query-string';
 
@@ -6,6 +7,7 @@ interface Community {
     currency: string;
     name: string;
     id: any;
+    state: any;
 }
 
 interface Communities {
@@ -74,6 +76,13 @@ export interface CommunityContract {
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
+        getBeneficiaries: builder.mutation<any, void>({
+            query: () => ({
+                method: 'GET',
+                url: `communities/beneficiaries`
+            }),
+            transformResponse: (response: { data?: any }) => response.data
+        }),
         //  Get all communities by country or/and review status
         getCommunities: builder.mutation<Communities, Record<string, any>>({
             query: (filters: Record<string, any>) => ({
@@ -89,6 +98,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}`
             }),
             transformResponse: (response: { data?: Community }) => response.data
+        }),
+        //  Get Community Ambassador
+        getCommunityAmbassador: builder.mutation<PutPostUser, { id: any }>({
+            query: (id: any) => ({
+                method: 'GET',
+                url: `communities/${id}/ambassador`
+            }),
+            transformResponse: (response: { data?: PutPostUser }) => response.data
         }),
         getCommunityById: builder.query<CommunityContract, string>({
             query: id => `communities/${id}`
@@ -138,13 +155,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/review`
             }),
             transformResponse: (response: { data: Update }) => response.data
-        }), 
+        })
     })
 });
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+    useGetBeneficiariesMutation,
     useGetCommunityMutation,
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
@@ -153,4 +171,5 @@ export const {
     useGetReviewsByCountryMutation,
     useGetCommunityContractMutation,
     useGetPendingCommunitiesMutation,
+    useGetCommunityAmbassadorMutation
 } = communityApi;

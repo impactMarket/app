@@ -1,7 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
-import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, ProgressBar, Row, Text, ViewContainer, openModal, toast } from '@impact-market/ui';
+import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, Row, Text, ViewContainer, openModal, toast } from '@impact-market/ui';
 import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
@@ -14,6 +14,7 @@ import { useSaveClaimLocationMutation } from '../api/claim';
 import { useSelector } from 'react-redux';
 import Image from '../libs/Prismic/components/Image';
 import Message from '../libs/Prismic/components/Message';
+import ProgressBar from '../components/ProgressBar';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
@@ -147,11 +148,11 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
             {
                 fundsRemainingDays <= 3 && fundsRemainingDays > 0 &&
-                <Alert icon="alertTriangle" mb={1.5} message={<Message id="communityFundsWillRunOut" variables={{ count: fundsRemainingDays, timeUnit: t("days").toLowerCase() }} />} warning />
+                <Alert icon="alertTriangle" mb={1.5} message={<Message id="communityFundsWillRunOut" medium small variables={{ count: fundsRemainingDays, timeUnit: t("days").toLowerCase() }} />} warning />
             }
             {
                 !auth?.user?.active &&
-                <Alert error icon="key" mb={1.5} message={<Message id="yourAccountHasBeenLocked" />} />
+                <Alert error icon="key" mb={1.5} message={<Message id="yourAccountHasBeenLocked" medium small />} />
             }
             <Display g900 medium>
                 {title}
@@ -196,10 +197,13 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                     </Row>
                 </Card>
             }
-            <Text g500 mt={2} small>
-                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, localeCurrency), total: currencyFormat(maxClaim, localeCurrency) }} />
-            </Text>
-            <ProgressBar mt={0.5} progress={(claimedAmount / maxClaim) * 100}/>
+            <Box mt={2}>
+                <ProgressBar
+                    progress={(claimedAmount / maxClaim) * 100}
+                    state={{ info: true }}
+                    title={<Text g500><String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, localeCurrency), total: currencyFormat(maxClaim, localeCurrency) }} /></Text>}
+                />
+            </Box>
             {
                 view?.data?.faq?.length > 0 &&
                 <Accordion mt={2}>
