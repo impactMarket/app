@@ -6,7 +6,7 @@ import {
     toast
 } from '@impact-market/ui';
 
-import { useGetCommunityMutation, useGetContractDataMutation, useUpdateReviewMutation } from '../../api/community';
+import { useGetCommunityContractMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 import Beneficiaries from './Beneficiaries'
 import Header from './Header'
 import Managers from './Managers'
@@ -45,7 +45,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
-    const [getContractData] = useGetContractDataMutation();
+    const [getContractData] = useGetCommunityContractMutation();
 
     useEffect(() => {
         const getData = async () => {
@@ -109,7 +109,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 data={
                     //  If community has address (it means it was accepted in proposals) get the data from thegraph. 
                     //  If not, get from API
-                    !!communityData?.contractAddress ? (!queryLoading && data?.communityEntity) : contractData
+                    !!communityData?.contractAddress ? (!queryLoading && data?.communityEntity) : contractData.data
                 }
             />
             {community?.review === 'accepted' &&

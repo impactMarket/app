@@ -4,16 +4,21 @@ import { selectCurrentUser } from '../state/slices/auth';
 import { useSelector } from 'react-redux';
 import useWallet from '../hooks/useWallet';
 
+export const userAmbassador = 'ambassador';
 export const userDemo = 'demo';
 export const userDonor = 'donor';
 export const userManager = 'manager';
 export const userBeneficiary = 'beneficiary';
+export const userSubDAOMember = 'subDAOMember';
+
 
 export const getUserTypes = (user: PutPostUser) => {
     const types = [userDonor];
 
     if(user?.beneficiary) types.push(userBeneficiary);
     if(user?.manager) types.push(userManager);
+    if(user?.subDAOMember) types.push(userSubDAOMember);
+    if(user?.ambassador) types.push(userAmbassador);
 
     return types;
 };
