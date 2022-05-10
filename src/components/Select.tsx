@@ -15,11 +15,12 @@ type SelectProps = {
     label?: string, 
     placeholder?: string;
     name?: string;
+    rules?: Object;
     showFlag?: boolean;
 };
 
 const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
-    const { callback, control, initialValue, isMultiple, label, placeholder, name, showFlag, ...forwardProps } = props;
+    const { callback, control, initialValue, isMultiple, label, placeholder, name, rules, showFlag, ...forwardProps } = props;
 
     const newValue = isMultiple && initialValue && !Array.isArray(initialValue) ? [initialValue]: initialValue;
     const [value, setValue] = useState(newValue || '');
@@ -89,6 +90,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
                     control={control}
                     name={name}
                     render={({ field }) => renderInput(field)}
+                    rules={rules}
                 />
                 :
                 renderInput()

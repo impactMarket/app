@@ -5,13 +5,13 @@ import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Input: React.FC<InputProps> = props => {
     const [count, setCount] = useState(0);
-    const { control, label, limit, name, ...forwardProps } = props;
+    const { control, label, limit, name, rules, ...forwardProps } = props;
 
     const inputWatch = useWatch({ control, name });
     const { t } = useTranslations();
 
     useEffect(() => {
-        if(inputWatch && limit > 0) {
+        if(limit > 0) {
             setCount(inputWatch.length);
         }
     }, [inputWatch]);
@@ -32,6 +32,7 @@ const Input: React.FC<InputProps> = props => {
                     { limit && <Text g500 mt={0.375} small>{limit - count} {t('charactersLeft')}</Text> }
                 </>
             }
+            rules={rules}
         />
     )
 }
