@@ -12,7 +12,12 @@ const Input: React.FC<InputProps> = props => {
 
     useEffect(() => {
         if(limit > 0) {
-            setCount(inputWatch.length);
+            if(inputWatch) {
+                setCount(inputWatch.length);
+            }
+            else {
+                setCount(0);
+            }
         }
     }, [inputWatch]);
 

@@ -39,12 +39,11 @@ const Form = ({ onSubmit }: any) => {
                 <form>
                     <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout={{ sm: "center start", xs: "start" }} flex pl={1.5} pr={1.5}>
                         <Box pb={{ sm: 0, xs: 1.25 }} pr={{ sm: 1.25, xs: 0 }}>
-                            { /* TODO: missing icon "user" */ }
                             {
                                 image ?
                                 <Avatar large url={image}/>
                                 :
-                                <CircledIcon extralarge icon="users"/>
+                                <CircledIcon extralarge icon="user"/>
                             }
                         </Box>
                         <Box w="100%">

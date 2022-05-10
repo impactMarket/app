@@ -58,9 +58,10 @@ const Form = ({ onSubmit }: any) => {
             <Box pl={1.5} pr={1.5}>
                 <Row>
                     <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 1, xs: 0.75 }}>
-                        { /* TODO: add possibility for error message for Input in UI */ }
+                        { /* TODO: add text to Prismic */ }
                         <Input 
                             control={control}
+                            hint={errors?.firstName ? 'This field is required' : ''}
                             label={t('firstName')}
                             name="firstName"
                             rules={{ required: true }}
@@ -68,9 +69,10 @@ const Form = ({ onSubmit }: any) => {
                         />
                     </Col>
                     <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0.75 }}>
-                        { /* TODO: add possibility for error message for Input in UI */ }
+                        { /* TODO: add text to Prismic */ }
                         <Input 
                             control={control}
+                            hint={errors?.lastName ? 'This field is required' : ''}
                             label={t('lastName')}
                             name="lastName"
                             rules={{ required: true }}
@@ -111,16 +113,17 @@ const Form = ({ onSubmit }: any) => {
                 </Row>
                 <Row mt={0.5}>
                     <Col colSize={12}>
-                        { /* TODO: add possibility for error message for Select in UI */ }
-                        { /* TODO: add withError option to Select in UI, in case it's required */ }
+                        { /* TODO: add text to Prismic */ } 
                         <Select
                             control={control}
+                            hint={errors?.country ? 'This field is required' : ''}
                             isMultiple={false}
                             label={t('country')}
                             name="country"
                             options={countriesOptions}
                             rules={{ required: true }}
                             showFlag
+                            withError={errors?.country}
                             withOptionsSearch
                         />
                     </Col>
