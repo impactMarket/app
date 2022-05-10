@@ -116,8 +116,6 @@ const CreateStory = () => {
         setFile('');
     };
 
-    console.log(file);
-
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
             <CircledIcon icon="flash" large />
