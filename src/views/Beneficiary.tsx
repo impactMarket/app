@@ -17,6 +17,7 @@ import Message from '../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
+import TextLink from '../components/TextLink';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
@@ -122,7 +123,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const cardMessage = view.data.claimCardStates[cardType].text;
     const cardImage = view.data.claimCardStates[cardType].image;
     const claimAmountDisplay = currencyFormat(claimAmount, currency);
-    
+
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
             {
@@ -136,7 +137,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
             <Display g900 medium>
                 {title}
             </Display>
-            <RichText components={{ OpenRulesModal: ({ children }: any) => <a onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</a> }} content={content} g500 mt={0.25} variables={{ community: community?.name }} />
+            <RichText components={{ OpenRulesModal: ({ children }: any) => <TextLink onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</TextLink> }} content={content} g500 mt={0.25} variables={{ community: community?.name }} />
              {
                 auth?.user?.active &&
                 <Card mt={2}>
