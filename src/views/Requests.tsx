@@ -172,10 +172,6 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                                                         countryCode={
                                                                             community.country
                                                                         }
-                                                                        size={[
-                                                                            1.5,
-                                                                            1.5
-                                                                        ]}
                                                                     />
                                                                 </Box>
                                                                 <Text
@@ -192,7 +188,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                             )
                                         )
                                     }
-                                    
+
                                 </Grid>
                             )}
                         </TabPanel>

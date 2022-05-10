@@ -264,7 +264,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                                                 story.community
                                                                     .country
                                                             }
-                                                            size={[2, 2]}
+                                                            height={2}
                                                         />
                                                     </Box>
                                                     <Box>

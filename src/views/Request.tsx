@@ -101,7 +101,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                             </Box>
                         </Link>
                     </Box>
-                    
+
                     <Grid cols={2}>
                         <Box>
                             <Display>{community.name}</Display>
@@ -109,7 +109,6 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                 <CountryFlag
                                     countryCode={community.country}
                                     mr={0.5}
-                                    size={[1.5, 1.5]}
                                 />
                                 <Text extrasmall g500 medium>
                                     {community.city}
@@ -137,7 +136,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                         )}
 
                         {(community.review === 'claimed' || community.review === 'accepted') && (
-                            <Box right> 
+                            <Box right>
                                 {/* Todo: edit details */}
                                 <Button>
                                     <Icon
@@ -147,7 +146,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                     />
                                     <String id="editDetails"/>
                                 </Button>
-                                
+
                                 {community.review !== 'accepted' && (
                                     <Box ml={1}>
                                         <DropdownMenu
@@ -161,9 +160,9 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                             ]}
                                             rtl
                                             title={<String id="actions"/>}
-                                        />  
-                                    </Box>  
-                                )}                                     
+                                        />
+                                    </Box>
+                                )}
                             </Box>
                         )}
                     </Grid>
@@ -208,7 +207,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                     />
                                 </Box>
                             </Grid>
-                            
+
                         </Card>
                         <Card>
                             <Text g500 mb={0.3} regular small>
@@ -247,7 +246,7 @@ const SingleRequest: React.FC<{ isLoading?: boolean; communityId: any; }> = (pro
                                     />
                                 </Box>
                             </Grid>
-                            
+
                         </Card>
                     </Grid>
                 </>
