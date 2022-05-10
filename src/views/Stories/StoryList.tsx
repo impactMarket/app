@@ -165,17 +165,18 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         }
     };
 
-    const onContribuite = async () => {
-        try {
-            if (!auth?.user) {
-                await connect();
-            } else {
-                // TODO contribuite functionality
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
+    // Contribute button
+    // const onContribuite = async () => {
+    //     try {
+    //         if (!auth?.user) {
+    //             await connect();
+    //         } else {
+    //             // TODO contribuite functionality
+    //         }
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // };
 
     const renderStory = (story: any, index: number) => {
         const items = [];
@@ -299,14 +300,15 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Text>
                             )}
                             <Col colSize={{ sm: 3, xs: 12 }} right>
-                                <Button
+                                {/* Countribute Button */}
+                                {/* <Button
                                     fluid="xs"
                                     icon="coinStack"
                                     onClick={() => onContribuite()}
                                     reverse
                                 >
                                     <String id="contribute" />
-                                </Button>
+                                </Button> */}
                             </Col>
                         </Row>
                         <Divider mt={1.625} show={{ sm: 'flex', xs: 'none' }} />
