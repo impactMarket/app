@@ -62,6 +62,9 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
                 toast.success(<Message id="successfullyChangedData" />);
             }
+            else {
+                toast.error(<Message id="errorOccurred" />);
+            }
         }
         catch(e) {
             console.log(e);
@@ -73,6 +76,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const onImageSubmit: SubmitHandler<any> = async (data) => {
         try {
             if(data?.length > 0) {
+                let success = false;
                 const type = data[0].type?.split('/')[1] || '';
 
                 if(type) {
@@ -93,9 +97,14 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                                 dispatch(setUser({ user: { ...payload }}));
 
                                 toast.success(<Message id="successfullyChangedData" />);
+                                success = true;
                             }
                         }
                     }
+                }
+
+                if(!success) {
+                    toast.error(<Message id="errorOccurred" />);
                 }
             }
         }

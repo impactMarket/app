@@ -1,5 +1,5 @@
 /* eslint-disable sort-keys */
-import { Box, Col, Row } from '@impact-market/ui';
+import { Box, Col, Row, toast } from '@impact-market/ui';
 import { countriesOptions } from '../../utils/countries';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
@@ -23,9 +23,9 @@ const Form = ({ onSubmit }: any) => {
         { label: t('other'), value: 'o' }
     ];
 
-    const { handleSubmit, reset, control, getValues } = useForm({
+    const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm({
         defaultValues: {
-            age: auth?.user?.age || '',
+            age: auth?.user?.age || undefined,
             bio: auth?.user?.bio || '',
             country: auth?.user?.country || '',
             firstName: auth?.user?.firstName || '',
@@ -41,27 +41,40 @@ const Form = ({ onSubmit }: any) => {
         }
     }, [isSubmitSuccessful]);
 
+    useEffect(() => {
+        if(errors?.firstName || errors?.lastName || errors?.country) {
+            // TODO: add text to Prismic
+            toast.error('Please fill in all required fields!');
+        }
+    }, [errors]);
+
     const handleCancel = (e: any) => {
         e.preventDefault();
         reset();
     } 
-    
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box pl={1.5} pr={1.5}>
                 <Row>
                     <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 1, xs: 0.75 }}>
+                        { /* TODO: add possibility for error message for Input in UI */ }
                         <Input 
                             control={control}
                             label={t('firstName')}
                             name="firstName"
+                            rules={{ required: true }}
+                            withError={errors?.firstName}
                         />
                     </Col>
                     <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0.75 }}>
+                        { /* TODO: add possibility for error message for Input in UI */ }
                         <Input 
                             control={control}
                             label={t('lastName')}
                             name="lastName"
+                            rules={{ required: true }}
+                            withError={errors?.lastName}
                         />
                     </Col>
                 </Row>
@@ -98,12 +111,15 @@ const Form = ({ onSubmit }: any) => {
                 </Row>
                 <Row mt={0.5}>
                     <Col colSize={12}>
+                        { /* TODO: add possibility for error message for Select in UI */ }
+                        { /* TODO: add withError option to Select in UI, in case it's required */ }
                         <Select
                             control={control}
                             isMultiple={false}
                             label={t('country')}
                             name="country"
                             options={countriesOptions}
+                            rules={{ required: true }}
                             showFlag
                             withOptionsSearch
                         />
