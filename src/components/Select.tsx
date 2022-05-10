@@ -37,7 +37,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
     const renderLabelWithIcon = (label: string, value: string) => {
         return (
             <Row fLayout="center start" margin={0}>
-                {showFlag && <Col padding={0}><CountryFlag countryCode={value} mr={0.5} /></Col>}
+                {showFlag && <Col padding={0}><CountryFlag countryCode={value} height={1.2} mr={0.5} /></Col>}
                 <Col padding={0}><Text g900>{label || value}</Text></Col>
             </Row>
         );
