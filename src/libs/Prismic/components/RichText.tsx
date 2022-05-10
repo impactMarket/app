@@ -4,6 +4,7 @@ import { GeneratedPropTypes, Text, TextProps } from '@impact-market/ui';
 import { PrismicRichText } from '@prismicio/react';
 import { RichTextField } from '@prismicio/types';
 import React from 'react';
+import TextLink from '../../../components/TextLink';
 import bracked from '../helpers/bracked';
 import parse from '../helpers/parse';
 
@@ -33,9 +34,7 @@ const serializer: SerializerFunction = ({
         const linkProps = { ...otherProps, ...forwardProps, href };
 
         return (
-            <a key={key} {...linkProps}>
-               {children}
-            </a>
+            <TextLink key={key} {...linkProps}>{children}</TextLink>
         );
     }
 
