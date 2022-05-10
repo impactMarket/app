@@ -1,4 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
 import {
     Box,
     Button,
@@ -6,6 +5,7 @@ import {
     Col,
     ModalWrapper,
     Row,
+    Thumbnail,
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
@@ -116,6 +116,8 @@ const CreateStory = () => {
         setFile('');
     };
 
+    console.log(file);
+
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
             <CircledIcon icon="flash" large />
@@ -176,28 +178,16 @@ const CreateStory = () => {
 
                     {file !== '' && (
                         <Row fLayout="center">
-                            <Col>
-                                <Box h={5.25} mt={1} w={5.25}>
-                                    <img
-                                        alt=""
-                                        src={file}
-                                        style={{
-                                            borderRadius: '8px',
-                                            height: '100%',
-                                            width: '100%'
-                                        }}
-                                    />
-                                </Box>
-                                <Button
-                                    gray
-                                    icon="trash"
-                                    mt={1}
-                                    onClick={(event: any) => {
+                                <Box mt={1}>
+                                    <Thumbnail
+                                    handleClick={(event: any) => {
                                         preventDefault(event);
                                         clearFile();
                                     }}
-                                />
-                            </Col>
+                                    icon="trash"
+                                    url={file}
+                                    />
+                                </Box>
                         </Row>
                     )}
                 </>

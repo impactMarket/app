@@ -27,9 +27,10 @@ import NoStoriesFound from './NoStoriesFound';
 import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
 
-const limit = 3;
+const limit = 10;
 
 interface storyListProps {
     refreshStory: boolean;
@@ -50,6 +51,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     const { asPath, query } = router;
     const { country, communityId, user } = query;
     const auth = useSelector(selectCurrentUser);
+    const { t } = useTranslations();
 
     const loadItems = () => {
         if (offset < stories.count) {
@@ -202,7 +204,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             ),
                         storyId: story.id
                     }),
-                title: <String id="deletePost" />
+                title: t('deletePost')
             });
         } else {
             items.unshift({
@@ -225,7 +227,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             ),
                         storyId: story.id
                     }),
-                title: <String id="reportAsInappropriate" />
+                title: t('reportAsInappropriate') 
             });
         }
 
@@ -258,14 +260,13 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                                 {story.community.name}
                                             </Text>
                                             <Text as="div" g500 regular small>
-                                                <Box fLayout="center" flex>
+                                                <Box flex>
                                                     <Box mr={0.5}>
                                                         <CountryFlag
                                                             countryCode={
                                                                 story.community
                                                                     .country
                                                             }
-                                                            height={2}
                                                         />
                                                     </Box>
                                                     <Box>
