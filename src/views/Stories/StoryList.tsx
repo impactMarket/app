@@ -227,7 +227,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             ),
                         storyId: story.id
                     }),
-                title: t('reportAsInappropriate') 
+                title: t('reportAsInappropriate')
             });
         }
 
@@ -251,7 +251,10 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                         <Box>
                                             <Avatar
                                                 h={3}
-                                                url={getMedia(story?.community?.coverMediaPath)}
+                                                url={getMedia(
+                                                    story?.community
+                                                        ?.coverMediaPath
+                                                )}
                                                 w={3}
                                             />
                                         </Box>
@@ -260,15 +263,18 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                                 {story.community.name}
                                             </Text>
                                             <Text as="div" g500 regular small>
-                                                <Box flex>
-                                                    <Box mr={0.5}>
-                                                        <CountryFlag
-                                                            countryCode={
-                                                                story.community
-                                                                    .country
-                                                            }
-                                                        />
-                                                    </Box>
+                                                <Box
+                                                    fLayout="center start"
+                                                    flex
+                                                >
+                                                    <CountryFlag
+                                                        countryCode={
+                                                            story.community
+                                                                .country
+                                                        }
+                                                        height={1.2}
+                                                        mr={0.5}
+                                                    />
                                                     <Box>
                                                         <Text>
                                                             {
@@ -346,27 +352,37 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                     </Text>
                                 </Button>
                             </Col>
+
                             <Col
                                 center
                                 colSize={{ sm: 5, xs: 6 }}
                                 show={{ sm: 'flex', xs: 'none' }}
                             >
-                                <Text g600 regular small>
-                                    {story.engagement.loves}{' '}
-                                    <String id="loves" />
-                                </Text>
+                                {story.engagement.loves !== 0 && (
+                                    <Text g600 regular small>
+                                        {story.engagement.loves}{' '}
+                                        <String id="loves" />
+                                    </Text>
+                                )}
                             </Col>
                             <Col
                                 colSize={{ sm: 5, xs: 6 }}
                                 pt={0}
                                 show={{ sm: 'none', xs: 'center' }}
                             >
-                                <Text g600 regular small>
-                                    {story.engagement.loves}{' '}
-                                    <String id="loves" />
-                                </Text>
+                                {story.engagement.loves !== 0 && (
+                                    <Text g600 regular small>
+                                        {story.engagement.loves}{' '}
+                                        <String id="loves" />
+                                    </Text>
+                                )}
                             </Col>
-                            <Col colSize={{ sm: 4, xs: 6 }} pt={0} right>
+                            <Col
+                                colSize={{ sm: 4, xs: 6 }}
+                                pb={{ sm: 0, xs: 1 }}
+                                pt={0}
+                                right
+                            >
                                 <CanBeRendered
                                     types={['beneficiary', 'manager']}
                                 >
@@ -375,6 +391,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                         icon="ellipsis"
                                         items={items}
                                         rtl
+                                        wrapperProps={{ padding: 0.3 }}
                                     />
                                 </CanBeRendered>
                             </Col>

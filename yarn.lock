@@ -1815,10 +1815,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.3.6":
-  version "1.3.6"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.3.6.tgz#8aa1cad193b03c93dbdcc57a85e3634830b3af25"
-  integrity sha512-Rq/eoH4H2gXrKvcKmiSDxL1ixVqCysUcOC1vJx9Xk3tCDRwSjnDwnpaGuabOESuUdH5CBqDSehz3sWhTUghxSw==
+"@impact-market/ui@1.3.7":
+  version "1.3.7"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.3.7.tgz#d3667bf150ff687240987bc3ba7e16d41d002b48"
+  integrity sha512-QV+59ZFII5v8ZwAiO0EMfMjP4ufP4+arxXf42C4t2RPsrvfJVVeTLPAZ91MXGNZFPdzwbTKeSEoAjA5OMNNaxA==
   dependencies:
     polished "^4.1.4"
     react-circle-flags "^0.0.17"
@@ -3435,9 +3435,9 @@ bip32@2.0.5:
     typeforce "^1.11.5"
     wif "^2.0.6"
 
-"bip39@git+https://github.com/bitcoinjs/bip39.git#d8ea080a18b40f301d4e2219a2991cd2417e83c2":
+"bip39@https://github.com/bitcoinjs/bip39#d8ea080a18b40f301d4e2219a2991cd2417e83c2":
   version "3.0.3"
-  resolved "git+https://github.com/bitcoinjs/bip39.git#d8ea080a18b40f301d4e2219a2991cd2417e83c2"
+  resolved "https://github.com/bitcoinjs/bip39#d8ea080a18b40f301d4e2219a2991cd2417e83c2"
   dependencies:
     "@types/node" "11.11.6"
     create-hash "^1.1.0"
@@ -3467,9 +3467,9 @@ blakejs@^1.1.0:
   resolved "https://registry.yarnpkg.com/blakejs/-/blakejs-1.2.1.tgz#5057e4206eadb4a97f7c0b6e197a505042fc3814"
   integrity sha512-QXUSXI3QVc/gJME0dBpXrag1kbzOqCjCX8/b54ntNyW6sjtoqxqRk3LTmXzaJoh71zMsDCjM+47jS7XiwN/+fQ==
 
-"bls12377js@git+https://github.com/celo-org/bls12377js.git#cb38a4cfb643c778619d79b20ca3e5283a2122a6":
+"bls12377js@https://github.com/celo-org/bls12377js#cb38a4cfb643c778619d79b20ca3e5283a2122a6":
   version "0.1.0"
-  resolved "git+https://github.com/celo-org/bls12377js.git#cb38a4cfb643c778619d79b20ca3e5283a2122a6"
+  resolved "https://github.com/celo-org/bls12377js#cb38a4cfb643c778619d79b20ca3e5283a2122a6"
   dependencies:
     "@stablelib/blake2xs" "0.10.4"
     "@types/node" "^12.11.7"
@@ -5035,17 +5035,17 @@ eslint-config-impact-market@impactMarket/eslint-config-impact-market:
   version "2.0.2"
   resolved "https://codeload.github.com/impactMarket/eslint-config-impact-market/tar.gz/b758ccd068ac2e67e81679b80380bb11a7112c20"
   dependencies:
-    "@babel/eslint-parser" "^7.17.0"
-    "@babel/eslint-plugin" "^7.17.7"
-    "@typescript-eslint/eslint-plugin" "^5.20.0"
-    "@typescript-eslint/parser" "^5.20.0"
-    eslint-config-prettier "^8.5.0"
-    eslint-plugin-import "^2.26.0"
+    "@babel/eslint-parser" "^7.12.17"
+    "@babel/eslint-plugin" "^7.12.13"
+    "@typescript-eslint/eslint-plugin" "^5.12.0"
+    "@typescript-eslint/parser" "^5.12.0"
+    eslint-config-prettier "^8.3.0"
+    eslint-plugin-import "^2.23.4"
     eslint-plugin-prettier "^4.0.0"
-    eslint-plugin-react "^7.29.4"
-    eslint-plugin-react-hooks "^4.4.0"
-    eslint-plugin-sort-class-members "^1.14.1"
-    eslint-plugin-sort-imports-es6-autofix "^0.6.0"
+    eslint-plugin-react "^7.24.0"
+    eslint-plugin-react-hooks "^4.2.0"
+    eslint-plugin-sort-class-members "^1.9.0"
+    eslint-plugin-sort-imports-es6-autofix "^0.5.0"
 
 eslint-config-next@12.0.10:
   version "12.0.10"

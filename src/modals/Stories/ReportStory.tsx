@@ -5,6 +5,7 @@ import {
     Col,
     ModalWrapper,
     Row,
+    toast,
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
@@ -48,7 +49,10 @@ const ReportStory = () => {
 
             removeIndex(arrayId);
             setShowSuccess(1);
+
+            toast.success(<RichText content={modals.data.reportStorySuccess}/>);
         } catch (e) {
+            toast.error(<RichText content={modals.data.reportStoryError}/>);
             console.log(e);
         }
     };

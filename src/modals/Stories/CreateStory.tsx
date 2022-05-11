@@ -1,3 +1,4 @@
+/* eslint-disable max-depth */
 import {
     Box,
     Button,
@@ -6,6 +7,7 @@ import {
     ModalWrapper,
     Row,
     Thumbnail,
+    toast,
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
@@ -19,11 +21,6 @@ import React, { useEffect, useRef, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-
-type Inputs = {
-    img?: string;
-    message: string;
-};
 
 const TEXT_LIMIT = 256;
 
@@ -40,8 +37,8 @@ const CreateStory = () => {
         register,
         reset,
         handleSubmit,
-        formState: {}
-    } = useForm<Inputs>();
+        formState: { errors }
+    } = useForm();
     const { isSubmitting, isSubmitSuccessful } = useFormState({
         control
     });
@@ -53,30 +50,37 @@ const CreateStory = () => {
                 message: data.message
             };
 
-            if (data?.img?.length > 0) {
-                const type = data.img[0].type?.split('/')[1] || '';
+            const emptyDraft = /^\s*$/;
 
-                if (type) {
-                    const preSigned = await getPreSigned(type).unwrap();
+            if (!emptyDraft.test(data.message)) {
+                if (data?.img?.length > 0) {
+                    const type = data.img[0].type?.split('/')[1] || '';
 
-                    if (preSigned?.uploadURL) {
-                        await fetch(preSigned.uploadURL, {
-                            body: data.img[0],
-                            method: 'PUT'
-                        });
+                    if (type) {
+                        const preSigned = await getPreSigned(type).unwrap();
 
-                        payload = {
-                            ...payload,
-                            storyMediaPath: preSigned.filePath
-                        };
+                        if (preSigned?.uploadURL) {
+                            await fetch(preSigned.uploadURL, {
+                                body: data.img[0],
+                                method: 'PUT'
+                            });
+
+                            payload = {
+                                ...payload,
+                                storyMediaPath: preSigned.filePath
+                            };
+                        }
                     }
                 }
-            }
 
-            await createStory(payload);
-            setRefreshStories((refreshStory: boolean) => !refreshStory);
-            handleClose();
+                await createStory(payload);
+                setRefreshStories((refreshStory: boolean) => !refreshStory);
+                handleClose();
+
+                toast.success(<RichText content={modals.data.createStorySuccess}/>);
+            }
         } catch (e) {
+            toast.error(<RichText content={modals.data.createStoryError}/>);
             console.log(e);
         }
     };
@@ -135,12 +139,14 @@ const CreateStory = () => {
                 <Box mt={1.25}>
                     <Input
                         control={control}
+                        hint={errors?.message ? t('requiredField') : ''}
                         label={t('storyPostText')}
                         limit={TEXT_LIMIT}
                         name="message"
                         placeholder={t('writeSomethingHere')}
                         rows={6}
                         rules={{ required: true }}
+                        withError={errors?.message}
                     />
                 </Box>
                 <>
@@ -176,21 +182,21 @@ const CreateStory = () => {
 
                     {file !== '' && (
                         <Row fLayout="center">
-                                <Box mt={1}>
-                                    <Thumbnail
+                            <Box mt={1}>
+                                <Thumbnail
                                     handleClick={(event: any) => {
                                         preventDefault(event);
                                         clearFile();
                                     }}
                                     icon="trash"
                                     url={file}
-                                    />
-                                </Box>
+                                />
+                            </Box>
                         </Row>
                     )}
                 </>
                 <Row mt={1}>
-                    <Col colSize={{ sm: 6, xs: 12 }}>
+                    <Col colSize={{ sm: 6, xs: 6 }}>
                         <Button gray onClick={handleCancel} w="100%">
                             <RichText
                                 content={
@@ -200,7 +206,7 @@ const CreateStory = () => {
                         </Button>
                     </Col>
 
-                    <Col colSize={{ sm: 6, xs: 12 }}>
+                    <Col colSize={{ sm: 6, xs: 6 }}>
                         <Button isLoading={isSubmitting} type="submit" w="100%">
                             <RichText
                                 content={

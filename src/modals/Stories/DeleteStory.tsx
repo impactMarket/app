@@ -5,6 +5,7 @@ import {
     Col,
     ModalWrapper,
     Row,
+    toast,
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
@@ -32,7 +33,10 @@ const DeleteStory = () => {
 
             removeIndex(arrayId);
             handleClose();
+
+            toast.success(<RichText content={modals.data.deleteStorySuccess}/>);
         } catch (e) {
+            toast.error(<RichText content={modals.data.deleteStoryError}/>);
             console.log(e);
         }
     };
