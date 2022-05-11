@@ -31,10 +31,11 @@ const Form = ({ onSubmit }: any) => {
         e.preventDefault();
         reset();
     }
-
+    
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={1.5}>
+                { /* TODO: missing country flags in Currencies select */ }
                 <Select 
                     control={control}
                     isMultiple={false}
@@ -44,7 +45,6 @@ const Form = ({ onSubmit }: any) => {
                     withOptionsSearch
                 />
             </Box>
-            { /* TODO: carregar apenas os 4 idiomas disponíveis do Prismic (português, inglês, espanhol e francês) */ }
             <Box>
                 <Select 
                     control={control}

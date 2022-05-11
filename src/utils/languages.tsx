@@ -1,10 +1,3 @@
-import languagesJSON from '../assets/languages.json';
+import langConfig from '../../locales.config';
 
-export const languages: {
-    [key: string]: {
-        name: string;
-        nativeName: string;
-    };
-} = languagesJSON;
-
-export const languagesOptions = Object.entries(languages).map(([key, value]: any) => ({ label: value.name, value: key }));
+export const languagesOptions = Object.entries(langConfig).map(([, value]: any) => ({ flagKey: value.flagKey, label: value.label, value: value.shortCode }));
