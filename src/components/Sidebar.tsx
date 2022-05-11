@@ -1,5 +1,6 @@
 import {
     Avatar,
+    CircledIcon,
     Sidebar as SidebarBase,
     SidebarMenuGroup,
     SidebarMenuItem,
@@ -102,7 +103,7 @@ const SidebarFooter = (props: { user?: User }) => {
                 {...user}
                 address={formatAddress(address, [6, 4])}
                 name={getUserName(user)}
-                photo={{ url: getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) }}
+                photo={{ url: user?.avatarMediaPath ? getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) : '' }}
             />
         </Link>
     );
@@ -117,7 +118,7 @@ const SidebarMobileActions = (props: { user?: User }) => {
     }
 
     if (!user?.avatarMediaPath) {
-        return null
+        return <CircledIcon icon="user" />;
     }
 
     return <Avatar url={getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 })} />;

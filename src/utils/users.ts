@@ -23,7 +23,7 @@ export const getUserName = (user: PutPostUser) => {
     const lastName = user?.lastName?.split(' ').pop() || '';
 
     // TODO: verificar se é para colocar um nome por default
-    return `${firstName} ${lastName}`;
+    return (firstName || firstName) ? `${firstName} ${lastName}` : '';
 };
 
 export const checkUserPermission = (types: string[]) => {
