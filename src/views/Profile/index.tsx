@@ -158,6 +158,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={isLoading}>
+            <div>{JSON.stringify(auth)}</div>
             <Row>
                 <Col colSize={{ sm: 6, xs: 12 }}>
                     {(auth?.user?.firstName || auth?.user?.lastName) && <Display g900 medium>
