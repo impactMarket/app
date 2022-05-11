@@ -17,6 +17,7 @@ import PersonalForm from './PersonalForm';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
 
@@ -159,16 +160,16 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         <ViewContainer isLoading={isLoading}>
             <Row>
                 <Col colSize={{ sm: 6, xs: 12 }}>
-                    <Display g900 medium>
+                    {(auth?.user?.firstName || auth?.user?.lastName) && <Display g900 medium>
                         {getUserName(auth?.user)}
                     </Display>
-                    { /* TODO: verificar como é para ficar o link */ }
+                    }
                     <DropdownMenu
                         icon="chevronDown"
                         items={[
                             {
                                 icon: 'open',
-                                onClick: () => window.open(`https://alfajores-blockscout.celo-testnet.org/address/${auth?.user?.address}/transactions`),
+                                onClick: () => window.open(config.explorerUrl?.replace('#USER#', auth?.user?.address)),
                                 title: t('openInExplorer')
                             },
                             {

@@ -165,7 +165,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                             }
                                             {
                                                 (isClaimable || claimAllowed) &&
-                                                <Button default isLoading={loadingButton} large onClick={claimFunds}>
+                                                <Button default disabled={loadingButton} isLoading={loadingButton} large onClick={claimFunds}>
                                                     <String id="claim" /> ~{claimAmountDisplay}
                                                 </Button>
                                             }

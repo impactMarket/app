@@ -34,7 +34,12 @@ const config = {
     /*
      * Images Bucket
      */
-    imagesBucket: process.env.NEXT_PUBLIC_IMAGES_BUCKET!
+    imagesBucket: process.env.NEXT_PUBLIC_IMAGES_BUCKET!,
+
+    /*
+     * Explorer URL
+     */
+    explorerUrl: process.env.NEXT_PUBLIC_EXPLORER_URL!
 };
 
 export default config;

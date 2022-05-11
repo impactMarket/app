@@ -38,6 +38,8 @@ const Form = ({ onSubmit }: any) => {
                     control={control}
                     label={additionalInfoLabelChildren}
                     name="children"
+                    onKeyDown={(e: any) => e.key === 'e' && e.preventDefault()}
+                    type="number"
                     wrapperProps={{
                         maxW: { sm: "50%", xs: "100%" }
                     }}
