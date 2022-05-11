@@ -1,5 +1,6 @@
 import { Alfajores, CeloMainnet } from '@celo-tools/use-contractkit';
 import { AppContext } from '../components/WrapperProvider';
+import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
 import { removeCookies, setCookies } from 'cookies-next';
 import { removeCredentials, setCredentials } from '../state/slices/auth';
@@ -24,7 +25,7 @@ const useWallet = () => {
             const connector = await connectFromHook();
 
             const payload = await createUser({
-                address: connector.kit.connection.config.from
+                address: getAddress(connector.kit.connection.config.from)
             }).unwrap();
 
             dispatch(setCredentials({ 
