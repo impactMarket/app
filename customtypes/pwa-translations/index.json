@@ -495,6 +495,13 @@
         },
         "type": "Text"
       },
+      "string-requiredField": {
+        "config": {
+          "label": "requiredField",
+          "placeholder": "This field is required."
+        },
+        "type": "Text"
+      },
       "string-saveChanges": {
         "config": {
           "label": "saveChanges",
@@ -706,15 +713,6 @@
         "type": "StructuredText",
         "config": {
           "label": "fillRequiredFields",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,em,hyperlink,strong"
-        }
-      },
-      "message-required-field": {
-        "type": "StructuredText",
-        "config": {
-          "label": "requiredField",
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
