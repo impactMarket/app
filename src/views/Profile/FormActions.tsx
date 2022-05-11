@@ -12,7 +12,7 @@ const FormActions = ({ handleCancel, isSubmitting }: any) => {
                         <Button default disabled={isSubmitting} gray mr={0.75} onClick={(e: any) => handleCancel(e)}>
                             <String id="cancel" />
                         </Button>
-                        <Button default isLoading={isSubmitting} type="submit">
+                        <Button default disabled={isSubmitting} isLoading={isSubmitting} type="submit">
                             <String id="saveChanges" />
                         </Button>
                     </Col>

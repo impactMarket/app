@@ -86,6 +86,7 @@ const Form = ({ onSubmit }: any) => {
                             control={control}
                             label={t('age')}
                             name="age"
+                            onKeyDown={(e: any) => e.key === 'e' && e.preventDefault()}
                             type="number"
                         />
                     </Col>
