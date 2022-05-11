@@ -15,8 +15,8 @@ const useGuard = () => {
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
-    const authCheck = (userPaths: Routes) => {
-        if(!userPaths.includes(router.pathname)) {
+    const authCheck = (route: string | undefined, userPaths: Routes) => {
+        if((route && !userPaths.includes(route)) || (!route && !userPaths.includes(router.pathname))) {
             setAuthorized(false);
             router.push('/');
         } 
@@ -25,7 +25,7 @@ const useGuard = () => {
         }
     };
 
-    const handleRouteComplete = async (_: any, { shallow }: any) => {
+    const handleRouteComplete = async (route: string | undefined, { shallow }: any) => {
         if(!shallow) {
             setIsLoading(true);
 
@@ -50,7 +50,7 @@ const useGuard = () => {
                 }
 
                 // on initial load - run auth check
-                authCheck(userPaths);
+                authCheck(route, userPaths);
 
                 setIsLoading(false);
             } catch (error) {
