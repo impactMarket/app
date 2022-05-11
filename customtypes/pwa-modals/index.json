@@ -154,6 +154,24 @@
           "placeholder": ""
         },
         "type": "Text"
+      },
+      "create-story-success": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Create Story Success",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "create-story-error": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Create Story Error",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
       }
     },
     "delete-story": {
@@ -186,6 +204,24 @@
           "placeholder": ""
         },
         "type": "Text"
+      },
+      "delete-story-success": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Delete Story Success",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "delete-story-error": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Delete Story Error",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
       }
     },
     "report-story": {
@@ -232,6 +268,24 @@
               }
             }
           }
+        }
+      },
+      "report-story-success": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Report Story Success",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "report-story-error": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Report Story Error",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
         }
       }
     },
