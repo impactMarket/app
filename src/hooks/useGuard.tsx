@@ -1,4 +1,4 @@
-import { Routes, beneficiaryRoutes, privateRoutes, publicRoutes } from '../utils/routes';
+import { beneficiaryRoutes, privateRoutes, publicRoutes } from '../utils/routes';
 import { getUserTypes, userBeneficiary } from '../utils/users';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
@@ -15,75 +15,59 @@ const useGuard = () => {
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
-    const authCheck = (route: string | undefined, userPaths: Routes) => {
-        if((route && !userPaths.includes(route)) || (!route && !userPaths.includes(router.pathname))) {
-            setAuthorized(false);
-            router.push('/');
-        } 
-        else {
-            setAuthorized(true);
-        }
-    };
-
-    const handleRouteComplete = async (route: string | undefined, { shallow }: any) => {
+    const handleRouteStart = (_: any, { shallow }: any) => {
         if(!shallow) {
             setIsLoading(true);
+        }
+    }
 
+    useEffect(() => {
+        const authCheck = async () => {
             try {
                 // Build available User Paths based on his type
                 let userPaths = [...publicRoutes];
-
+    
                 if(auth?.token) {
                     const user = await getUser().unwrap();
                     const type = getUserTypes(user);
                     
                     store.dispatch(setUser({ user }));
                     store.dispatch(setType({ type }));
-
+    
                     // If there's a login, include the Private Paths
                     userPaths = userPaths.concat(privateRoutes);
-
+    
                     // Beneficiary type - include the respective Paths
                     if(type?.includes(userBeneficiary)) {
                         userPaths = userPaths.concat(beneficiaryRoutes);
                     }
                 }
-
-                // on initial load - run auth check
-                authCheck(route, userPaths);
+    
+                if(!userPaths.includes(router.pathname)) {
+                    setAuthorized(false);
+                    router.push('/');
+                } 
+                else {
+                    setAuthorized(true);
+                }
 
                 setIsLoading(false);
             } catch (error) {
                 setIsLoading(false);
-
-                console.log('Error on init\n', error);
+    
+                console.log('Error on auth check\n', error);
             }
-        }
-    };
+        };
 
-    useEffect(() => {
-        handleRouteComplete(undefined, {});
-    }, []);
-
-    useEffect(() => {
-        const handleRouteStart = (_: any, { shallow }: any) => {
-            if (!shallow) {
-                setAuthorized(false);
-                setIsLoading(true);
-            }
-        }
+        authCheck();
 
         router.events.on('routeChangeStart', handleRouteStart);
-
-        // on route change complete - run auth check
-        router.events.on('routeChangeComplete', handleRouteComplete);
 
         // unsubscribe from events in useEffect return function
         return () => {
             router.events.off('routeChangeStart', handleRouteStart);
-            router.events.off('routeChangeComplete', handleRouteComplete);
         };
-    }, [auth?.token, router]);
+    }, [auth?.token, router.pathname]);
 
     return { authorized, isLoading };
 };
