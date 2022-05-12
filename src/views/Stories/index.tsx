@@ -73,24 +73,28 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
                     </Col>
                 </CanBeRendered>
             </Row>
-            <Tabs defaultIndex={getByKey('user') ? 1 : 0}>
-                <TabList>
-                    <Tab
-                        onClick={() => clear('user')}
-                        title={t('allStories')}
-                    />
-
-                    <CanBeRendered types={['beneficiary', 'manager']}>
+            {auth?.user && (
+                <Tabs defaultIndex={getByKey('user') ? 1 : 0}>
+                    <TabList>
                         <Tab
-                            onClick={() => update('user', auth?.user?.address)}
-                            title={t('myStories')}
+                            onClick={() => clear('user')}
+                            title={t('allStories')}
                         />
-                    </CanBeRendered>
-                </TabList>
-                <Filters />
-                <FakeTabPanel />
-                <FakeTabPanel />
-            </Tabs>
+
+                        <CanBeRendered types={['beneficiary', 'manager']}>
+                            <Tab
+                                onClick={() =>
+                                    update('user', auth?.user?.address)
+                                }
+                                title={t('myStories')}
+                            />
+                        </CanBeRendered>
+                    </TabList>
+                    <FakeTabPanel />
+                    <FakeTabPanel />
+                </Tabs>
+            )}
+            <Filters />
             <StoryList refreshStory={refreshStories} />
         </ViewContainer>
     );
