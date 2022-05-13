@@ -14,7 +14,7 @@ import DeleteForm from './DeleteForm';
 import ImageForm from './ImageForm';
 import Message from '../../libs/Prismic/components/Message';
 import PersonalForm from './PersonalForm';
-import React from 'react';
+import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
@@ -23,6 +23,7 @@ import useWallet from '../../hooks/useWallet';
 
 const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
+    const [imageLoading, toggleImageLoading] = useState(false);
 
     const { extractFromView } = usePrismicData();
     const { 
@@ -77,6 +78,8 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const onImageSubmit: SubmitHandler<any> = async (data) => {
         try {
             if(data?.length > 0) {
+                toggleImageLoading(true);
+                
                 let success = false;
                 const type = data[0].type?.split('/')[1] || '';
 
@@ -107,12 +110,16 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 if(!success) {
                     toast.error(<Message id="errorOccurred" />);
                 }
+
+                toggleImageLoading(false);
             }
         }
         catch(e) {
             console.log(e);
 
             toast.error(<Message id="errorOccurred" />);
+
+            toggleImageLoading(false);
         }
     }
 
@@ -191,7 +198,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 </Col>
             </Row>
             <Box mt={{ sm: 4, xs: 2 }}>
-                {renderCard(photoTitle, photoDescription, <ImageForm onSubmit={onImageSubmit} />, true)}
+                {renderCard(photoTitle, photoDescription, <ImageForm isLoading={imageLoading} onSubmit={onImageSubmit} />, true)}
             </Box>
             <Box>
                 {renderCard(personalTitle, personalDescription, <PersonalForm onSubmit={onSubmit} />)}

@@ -5,10 +5,9 @@ import { useForm } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import InputUpload from '../../components/InputUpload';
-import React, { useState } from "react";
+import React from "react";
 
-const Form = ({ onSubmit }: any) => {
-    const [isLoading, toggleLoading] = useState(false);
+const Form = ({ isLoading, onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
     const { extractFromView } = usePrismicData();
     const { uploadImage } = extractFromView('formSections') as any;
@@ -17,16 +16,13 @@ const Form = ({ onSubmit }: any) => {
     
     const image = getImage({ filePath: auth?.user?.avatarMediaPath, fit: 'cover', height: 120, width: 120 });
 
-    // TODO: esta função está a ser chamada logo no inicio, não espera pelo onChange do input e nem mostra o Spinner quando está a fazer upload */
+    // TODO: this function is being called at page load, instead of waiting for an image being selected
     const handleFiles = (data: any) => {
         try {
-            toggleLoading(true);
             onSubmit(data);
-            toggleLoading(false);
         }
         catch(e) {
             console.log(e);
-            toggleLoading(false);
         }
     }
 
@@ -34,7 +30,7 @@ const Form = ({ onSubmit }: any) => {
         <>
             {
                 isLoading ?
-                <Spinner isActive margin="auto" />
+                <Box fLayout="center" flex minH={7.5}><Spinner isActive /></Box>
                 :
                 <form>
                     <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout={{ sm: "center start", xs: "start" }} flex pl={1.5} pr={1.5}>
