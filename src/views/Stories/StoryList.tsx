@@ -236,13 +236,15 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                 <Col colSize={{ sm: 10, xs: 11 }}>
                     <Card mt={1}>
                         {story?.storyMediaPath && (
-                            <Box
-                                bgImg={getMedia(story?.storyMediaPath)}
-                                h={22.188}
-                                pt="56.25%"
-                                radius={0.5}
-                                w="100%"
-                            />
+                            // <Box
+                            //     bgImg={getMedia(story?.storyMediaPath)}
+                            //     maxH={{ sm: 62.5, xs: 37.5 }}
+                            //     pt="56.25%"
+                            //     radius={0.5}
+                            // />
+
+                            // eslint-disable-next-line @next/next/no-img-element
+                            <img alt="" height="auto" src={getMedia(story?.storyMediaPath)} width="100%"/>
                         )}
                         <Row fLayout="between" mt={0.625}>
                             <Col colSize={{ sm: 6, xs: 12 }} ml={0.625}>
