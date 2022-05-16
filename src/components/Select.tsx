@@ -1,4 +1,4 @@
-import { Select as BaseSelect, SelectProps as BaseSelectProps, Col, CountryFlag, Icon, Row, Text } from '@impact-market/ui';
+import { Select as BaseSelect, SelectProps as BaseSelectProps, Box, CountryFlag, Icon, Text } from '@impact-market/ui';
 import { Controller } from "react-hook-form";
 import React, { useState } from 'react';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
@@ -36,10 +36,10 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
 
     const renderLabelWithIcon = (label: string, value: string) => {
         return (
-            <Row fLayout="center start" margin={0}>
-                {showFlag && <Col padding={0}><CountryFlag countryCode={value} height={1.2} mr={0.5} /></Col>}
-                <Col padding={0}><Text g900>{label || value}</Text></Col>
-            </Row>
+            <Box fLayout="center start" flex>
+                {showFlag && <CountryFlag countryCode={value} height={1.2} mr={0.5} />}
+                <Text g900>{label || value}</Text>
+            </Box>
         );
     };
 
