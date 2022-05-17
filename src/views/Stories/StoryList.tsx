@@ -1,6 +1,4 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import {
-    Avatar,
     Box,
     Button,
     Card,
@@ -8,8 +6,8 @@ import {
     CountryFlag,
     Divider,
     DropdownMenu,
-    Img,
     Row,
+    Spinner,
     Text,
     openModal
 } from '@impact-market/ui';
@@ -19,11 +17,11 @@ import {
     useLoveStoryMutation
 } from '../../api/story';
 import { getCountryNameFromInitials } from '../../utils/countries';
-import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import CanBeRendered from '../../components/CanBeRendered';
+import Image from '../../components/Image';
 import NoStoriesFound from './NoStoriesFound';
 import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
@@ -148,14 +146,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         }
     };
 
-    const getMedia = (filePath: string) =>
-        getImage({
-            filePath,
-            fit: 'cover',
-            height: 0,
-            width: 0
-        });
-
     const onloveStory = async (id: number, index: number) => {
         try {
             if (!auth?.user) {
@@ -236,22 +226,20 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             <Row fLayout="center" key={index}>
                 <Col colSize={{ sm: 10, xs: 11 }}>
                     <Card mt={1}>
-                        {story?.storyMediaPath && (
-                            <Img alt="" maxH={{ sm: 62.5, xs: 37.5}} radius={0.5} url={getMedia(story?.storyMediaPath)} w="100%"/>
+                        {story?.storyMediaPath && (  
+                        <Box pt="60%" style={{position: 'relative'}} w="100%">
+                            <Image alt="" src={story?.storyMediaPath} style={{borderRadius: '8px'}} />
+                        </Box>
+                          
                         )}
                         <Row fLayout="between" mt={0.625}>
                             <Col colSize={{ sm: 6, xs: 12 }} ml={0.625}>
                                 <Row>
                                     <Box flex>
                                         <Box>
-                                            <Avatar
-                                                h={3}
-                                                url={getMedia(
-                                                    story?.community
-                                                        ?.coverMediaPath
-                                                )}
-                                                w={3}
-                                            />
+                                        <Box h={3} pt="100%" style={{position: 'relative'}}  w={3}>
+                                            <Image alt="" src={story?.community?.coverMediaPath} style={{borderRadius: "50%"}} />
+                                        </Box>
                                         </Box>
                                         <Box ml={1} mr={1}>
                                             <Text g700 semibold>
@@ -378,9 +366,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 pt={0}
                                 right
                             >
-                                <CanBeRendered
-                                    types={['beneficiary', 'manager']}
-                                >
+                                <CanBeRendered types={['beneficiary', 'manager']}>
                                     <DropdownMenu
                                         asButton
                                         icon="ellipsis"
@@ -404,7 +390,11 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                 renderStory(story, index)
             )}
             {(loadingStories || offset < stories.count) && (
-                <div ref={sentryRef} />
+                <div ref={sentryRef}> 
+                <Row fLayout="center" pb={1} pt={1}>
+                    <Spinner isActive />
+                </Row>
+                </div>
             )}
         </div>
     );
