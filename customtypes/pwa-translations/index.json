@@ -33,6 +33,20 @@
         },
         "type": "Text"
       },
+      "string-active": {
+        "config": {
+          "label": "active",
+          "placeholder": "Active"
+        },
+        "type": "Text"
+      },
+      "string-addBeneficiary": {
+        "config": {
+          "label": "addBeneficiary",
+          "placeholder": "Add Beneficiary"
+        },
+        "type": "Text"
+      },
       "string-address": {
         "config": {
           "label": "address",
@@ -96,10 +110,24 @@
         },
         "type": "Text"
       },
+      "string-beneficiaryValoraWalletAddress": {
+        "config": {
+          "label": "beneficiaryValoraWalletAddress",
+          "placeholder": "Beneficiary Valora Wallet Address"
+        },
+        "type": "Text"
+      },
       "string-bio": {
         "config": {
           "label": "bio",
           "placeholder": "Bio"
+        },
+        "type": "Text"
+      },
+      "string-blocked": {
+        "config": {
+          "label": "blocked",
+          "placeholder": "Blocked"
         },
         "type": "Text"
       },
@@ -128,6 +156,13 @@
         "config": {
           "label": "claimPerBeneficiary",
           "placeholder": "Claim per beneficiary"
+        },
+        "type": "Text"
+      },
+      "string-claimableFunds": {
+        "config": {
+          "label": "claimableFunds",
+          "placeholder": "Claimable funds"
         },
         "type": "Text"
       },
@@ -163,6 +198,13 @@
         "config": {
           "label": "comments",
           "placeholder": "Comments"
+        },
+        "type": "Text"
+      },
+      "string-communityAmbassador": {
+        "config": {
+          "label": "communityAmbassador",
+          "placeholder": "Community Ambassador"
         },
         "type": "Text"
       },
@@ -215,6 +257,13 @@
         },
         "type": "Text"
       },
+      "string-createdBy": {
+        "config": {
+          "label": "createdBy",
+          "placeholder": "Created by"
+        },
+        "type": "Text"
+      },
       "string-currency": {
         "config": {
           "label": "currency",
@@ -264,6 +313,13 @@
         },
         "type": "Text"
       },
+      "string-donors": {
+        "config": {
+          "label": "donors",
+          "placeholder": "Donors"
+        },
+        "type": "Text"
+      },
       "string-editDetails": {
         "config": {
           "label": "editDetails",
@@ -306,6 +362,20 @@
         },
         "type": "Text"
       },
+      "string-generateProposal": {
+        "config": {
+          "label": "generateProposal",
+          "placeholder": "Generate Proposal"
+        },
+        "type": "Text"
+      },
+      "string-goal": {
+        "config": {
+          "label": "goal",
+          "placeholder": "Goal"
+        },
+        "type": "Text"
+      },
       "string-help": {
         "config": {
           "label": "help",
@@ -317,6 +387,13 @@
         "config": {
           "label": "hours",
           "placeholder": "Hours"
+        },
+        "type": "Text"
+      },
+      "string-inactive": {
+        "config": {
+          "label": "inactive",
+          "placeholder": "Inactive"
         },
         "type": "Text"
       },
@@ -362,6 +439,13 @@
         },
         "type": "Text"
       },
+      "string-lowOnFunds": {
+        "config": {
+          "label": "lowOnFunds",
+          "placeholder": "Low on funds"
+        },
+        "type": "Text"
+      },
       "string-male": {
         "config": {
           "label": "male",
@@ -401,6 +485,13 @@
         "config": {
           "label": "myStories",
           "placeholder": "My Stories"
+        },
+        "type": "Text"
+      },
+      "string-neBeneficiaries": {
+        "config": {
+          "label": "neBeneficiaries",
+          "placeholder": "No beneficiaries found."
         },
         "type": "Text"
       },
@@ -467,6 +558,27 @@
         },
         "type": "Text"
       },
+      "string-proposal": {
+        "config": {
+          "label": "proposal",
+          "placeholder": "Proposal"
+        },
+        "type": "Text"
+      },
+      "string-proposals": {
+        "config": {
+          "label": "proposals",
+          "placeholder": "Proposals"
+        },
+        "type": "Text"
+      },
+      "string-raisedFrom": {
+        "config": {
+          "label": "raisedFrom",
+          "placeholder": "reaised from"
+        },
+        "type": "Text"
+      },
       "string-readMore": {
         "config": {
           "label": "readMore",
@@ -495,6 +607,13 @@
         },
         "type": "Text"
       },
+      "string-requests": {
+        "config": {
+          "label": "requests",
+          "placeholder": "Requests"
+        },
+        "type": "Text"
+      },
       "string-requiredField": {
         "config": {
           "label": "requiredField",
@@ -520,6 +639,13 @@
         "config": {
           "label": "seconds",
           "placeholder": "Seconds"
+        },
+        "type": "Text"
+      },
+      "string-seeMore": {
+        "config": {
+          "label": "seeMore",
+          "placeholder": "See more"
         },
         "type": "Text"
       },
@@ -555,6 +681,13 @@
         "config": {
           "label": "selected",
           "placeholder": "Selected"
+        },
+        "type": "Text"
+      },
+      "string-sendMessage": {
+        "config": {
+          "label": "sendMessage",
+          "placeholder": "Send Message"
         },
         "type": "Text"
       },
@@ -600,6 +733,13 @@
         },
         "type": "Text"
       },
+      "string-suspiciousActivity": {
+        "config": {
+          "label": "suspiciousActivity",
+          "placeholder": "Suspicious Activity"
+        },
+        "type": "Text"
+      },
       "string-timeIncrement": {
         "config": {
           "label": "timeIncrement",
@@ -607,10 +747,52 @@
         },
         "type": "Text"
       },
+      "string-totalBeneficiaries": {
+        "config": {
+          "label": "totalBeneficiaries",
+          "placeholder": "Total Beneficiaries"
+        },
+        "type": "Text"
+      },
+      "string-totalManagers": {
+        "config": {
+          "label": "totalManagers",
+          "placeholder": "Total Managers"
+        },
+        "type": "Text"
+      },
       "string-ubi": {
         "config": {
           "label": "ubi",
           "placeholder": "UBI"
+        },
+        "type": "Text"
+      },
+      "string-voteHasEnded": {
+        "config": {
+          "label": "voteHasEnded",
+          "placeholder": "Vote has ended"
+        },
+        "type": "Text"
+      },
+      "string-voteIsRunning": {
+        "config": {
+          "label": "voteIsRunning",
+          "placeholder": "Vote is running"
+        },
+        "type": "Text"
+      },
+      "string-votedNo": {
+        "config": {
+          "label": "votedNo",
+          "placeholder": "Voted No"
+        },
+        "type": "Text"
+      },
+      "string-votedYes": {
+        "config": {
+          "label": "votedYes",
+          "placeholder": "Voted Yes"
         },
         "type": "Text"
       },
@@ -625,6 +807,13 @@
         "config": {
           "label": "writeSomethingHere",
           "placeholder": "Write something here"
+        },
+        "type": "Text"
+      },
+      "string-you": {
+        "config": {
+          "label": "you",
+          "placeholder": "You"
         },
         "type": "Text"
       },
@@ -716,6 +905,42 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-onboardedBeneficiary": {
+        "type": "StructuredText",
+        "config": {
+          "label": "onboardedBeneficiary",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-monitorAllTransactions": {
+        "type": "StructuredText",
+        "config": {
+          "label": "monitorAllTransactions",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-beneficiaryAdded": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiaryAdded",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-beneficiaryRemoved": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiaryRemoved",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,strong"
         }
       }
     }

@@ -1,0 +1,130 @@
+{
+  "id": "pwa-view-proposals",
+  "label": "[PWA] [View] Proposals",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "type": "Text",
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        }
+      },
+      "seo-description": {
+        "type": "Text",
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        }
+      },
+      "seo-keywords": {
+        "type": "Text",
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        }
+      },
+      "seo-image": {
+        "type": "Image",
+        "config": {
+          "label": "SEO Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      }
+    },
+    "heading": {
+      "heading-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "heading-content": {
+        "type": "Text",
+        "config": {
+          "label": "Description",
+          "placeholder": ""
+        }
+      }
+    },
+    "messages": {
+      "message-voteOnProposals": {
+        "type": "StructuredText",
+        "config": {
+          "label": "voteOnProposals",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-totalClaimAmount": {
+        "type": "StructuredText",
+        "config": {
+          "label": "totalClaimAmount",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-minutes-increment": {
+        "type": "StructuredText",
+        "config": {
+          "label": "minutesIncrement",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-notAllowedVote": {
+        "type": "StructuredText",
+        "config": {
+          "label": "notAllowedVote",
+          "placeholder": "You are not allowed to vote",
+          "allowTargetBlank": true,
+          "single": "paragraph,hyperlink,strong"
+        }
+      }
+    },
+    "strings": {
+      "string-proposalDeclined": {
+        "type": "Text",
+        "config": {
+          "label": "Proposal Declined",
+          "placeholder": "Proposal Declined"
+        }
+      },
+      "string-proposalApproved": {
+        "type": "Text",
+        "config": {
+          "label": "Proposal Approved",
+          "placeholder": "Proposal Approved"
+        }
+      },
+      "string-proposal-executed": {
+        "type": "Text",
+        "config": {
+          "label": "Proposal Executed",
+          "placeholder": "Proposal Executed"
+        }
+      },
+      "string-proposal-expired": {
+        "type": "Text",
+        "config": {
+          "label": "Proposal Expired",
+          "placeholder": "Proposal Expired"
+        }
+      },
+      "string-proposal-canceled": {
+        "type": "Text",
+        "config": {
+          "label": "Proposal Canceled",
+          "placeholder": "Proposal Canceled"
+        }
+      }
+    }
+  }
+}
