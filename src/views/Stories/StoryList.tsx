@@ -8,6 +8,7 @@ import {
     CountryFlag,
     Divider,
     DropdownMenu,
+    Img,
     Row,
     Text,
     openModal
@@ -236,13 +237,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                 <Col colSize={{ sm: 10, xs: 11 }}>
                     <Card mt={1}>
                         {story?.storyMediaPath && (
-                            <Box
-                                bgImg={getMedia(story?.storyMediaPath)}
-                                h={22.188}
-                                pt="56.25%"
-                                radius={0.5}
-                                w="100%"
-                            />
+                            <Img alt="" maxH={{ sm: 62.5, xs: 37.5}} radius={0.5} url={getMedia(story?.storyMediaPath)} w="100%"/>
                         )}
                         <Row fLayout="between" mt={0.625}>
                             <Col colSize={{ sm: 6, xs: 12 }} ml={0.625}>
