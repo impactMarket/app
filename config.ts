@@ -39,7 +39,12 @@ const config = {
     /*
      * Explorer URL
      */
-    explorerUrl: process.env.NEXT_PUBLIC_EXPLORER_URL!
+    explorerUrl: process.env.NEXT_PUBLIC_EXPLORER_URL!,
+
+    /*
+     * Graph URL
+     */
+    graphUrl: process.env.NEXT_PUBLIC_GRAPH_URL!
 };
 
 export default config;
