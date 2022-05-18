@@ -1,3 +1,4 @@
+import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
@@ -16,7 +17,12 @@ import modals from '../modals';
 import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
 
-const { baseUrl } = config;
+const { baseUrl, graphUrl } = config;
+
+const apolloClient = new ApolloClient({
+    cache: new InMemoryCache(),
+    uri: graphUrl
+  });
 
 const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
@@ -80,9 +86,11 @@ const App = (props: AppProps) => {
             <DesignSystemProvider>
                 <WrapperProvider>
                     <Provider store={store}>
-                        <ModalManager modals={modals} />
-                        <Toaster />
-                        <InnerApp {...props} />
+                        <ApolloProvider client={apolloClient}>
+                            <ModalManager modals={modals} />
+                            <Toaster />
+                            <InnerApp {...props} />
+                        </ApolloProvider>
                     </Provider>
                 </WrapperProvider>
             </DesignSystemProvider>
