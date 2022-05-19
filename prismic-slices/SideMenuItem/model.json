@@ -12,6 +12,22 @@
       "description": "SideMenuItem",
       "primary": {},
       "items": {
+        "isVisible": {
+          "type": "Boolean",
+          "config": {
+            "label": "Is visible",
+            "placeholder_false": "false",
+            "placeholder_true": "true",
+            "default_value": true
+          }
+        },
+        "uid": {
+          "type": "Text",
+          "config": {
+            "label": "Uid",
+            "placeholder": "Unique identifier name"
+          }
+        },
         "icon": {
           "config": {
             "label": "Icon",
@@ -33,7 +49,8 @@
           },
           "type": "Text"
         }
-      }
+      },
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
     },
     {
       "id": "separator",
@@ -42,7 +59,8 @@
       "version": "sktwi1xtmkfgx8626",
       "description": "SideMenuItem",
       "primary": {},
-      "items": {}
+      "items": {},
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
     },
     {
       "id": "withHeader",
@@ -90,7 +108,8 @@
           },
           "type": "Text"
         }
-      }
+      },
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
     }
   ]
 }
