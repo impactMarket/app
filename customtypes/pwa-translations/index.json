@@ -47,6 +47,13 @@
         },
         "type": "Text"
       },
+      "string-addNewManager": {
+        "config": {
+          "label": "addNewManager",
+          "placeholder": "Add new Manager"
+        },
+        "type": "Text"
+      },
       "string-address": {
         "config": {
           "label": "address",
@@ -58,6 +65,13 @@
         "config": {
           "label": "age",
           "placeholder": "Age"
+        },
+        "type": "Text"
+      },
+      "string-all": {
+        "config": {
+          "label": "all",
+          "placeholder": "All"
         },
         "type": "Text"
       },
@@ -86,6 +100,13 @@
         "config": {
           "label": "alreadyClaimed",
           "placeholder": "You have already claimed {{ claimed }} of {{ total }}"
+        },
+        "type": "Text"
+      },
+      "string-ambassadors": {
+        "config": {
+          "label": "ambassadors",
+          "placeholder": "Ambassadors"
         },
         "type": "Text"
       },
@@ -320,6 +341,13 @@
         },
         "type": "Text"
       },
+      "string-edit": {
+        "config": {
+          "label": "edit",
+          "placeholder": "Edit"
+        },
+        "type": "Text"
+      },
       "string-editDetails": {
         "config": {
           "label": "editDetails",
@@ -453,6 +481,20 @@
         },
         "type": "Text"
       },
+      "string-managers": {
+        "config": {
+          "label": "managers",
+          "placeholder": "Managers"
+        },
+        "type": "Text"
+      },
+      "string-maxPerBeneficiary": {
+        "config": {
+          "label": "maxPerBeneficiary",
+          "placeholder": "Max. per beneficiary"
+        },
+        "type": "Text"
+      },
       "string-maximumPerBeneficiary": {
         "config": {
           "label": "maximumPerBeneficiary",
@@ -460,10 +502,24 @@
         },
         "type": "Text"
       },
+      "string-merchands": {
+        "config": {
+          "label": "merchands",
+          "placeholder": "Merchands"
+        },
+        "type": "Text"
+      },
       "string-minutes": {
         "config": {
           "label": "minutes",
           "placeholder": "Minutes"
+        },
+        "type": "Text"
+      },
+      "string-myCommunities": {
+        "config": {
+          "label": "myCommunities",
+          "placeholder": "My Communities"
         },
         "type": "Text"
       },
@@ -593,6 +649,13 @@
         },
         "type": "Text"
       },
+      "string-removeManager": {
+        "config": {
+          "label": "removeManager",
+          "placeholder": "Remove Manager"
+        },
+        "type": "Text"
+      },
       "string-reportAsInappropriate": {
         "config": {
           "label": "reportAsInappropriate",
@@ -705,6 +768,13 @@
         },
         "type": "Text"
       },
+      "string-share": {
+        "config": {
+          "label": "share",
+          "placeholder": "Share"
+        },
+        "type": "Text"
+      },
       "string-sort": {
         "config": {
           "label": "sort",
@@ -758,6 +828,13 @@
         "config": {
           "label": "totalManagers",
           "placeholder": "Total Managers"
+        },
+        "type": "Text"
+      },
+      "string-trancheMinMax": {
+        "config": {
+          "label": "trancheMinMax",
+          "placeholder": "Tranche (Min./Max.)"
         },
         "type": "Text"
       },

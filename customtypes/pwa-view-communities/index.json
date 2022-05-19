@@ -52,6 +52,26 @@
           "single": "paragraph,strong,em,hyperlink"
         }
       }
+    },
+    "messages": {
+      "message-supportingCommunities": {
+        "type": "StructuredText",
+        "config": {
+          "label": "supportingCommunities",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityState": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityState",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
     }
   }
 }

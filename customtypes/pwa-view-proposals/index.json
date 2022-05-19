@@ -87,6 +87,60 @@
           "allowTargetBlank": true,
           "single": "paragraph,hyperlink,strong"
         }
+      },
+      "message-voteRegistered": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Vote Registered",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-voteNotRegistered": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Vote Not Registered",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-proposalsExecuted": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Proposals Executed",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-proposalsNotExecuted": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Proposals Not Executed",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-requestsGenerated": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Requests Generated",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-requestsNotGenerated": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Requests Not Generated",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
       }
     },
     "strings": {
@@ -123,6 +177,13 @@
         "config": {
           "label": "Proposal Canceled",
           "placeholder": "Proposal Canceled"
+        }
+      },
+      "string-execute-proposal": {
+        "type": "Text",
+        "config": {
+          "label": "Execute Proposal",
+          "placeholder": "Execute Proposal"
         }
       }
     }
