@@ -8,7 +8,7 @@ import {
 } from '@celo-tools/use-contractkit';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
 import { provider } from '../helpers';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import config from '../../config';
 
@@ -35,7 +35,7 @@ type BaseContext = BaseState & {
 const UtilsWrapper = (props: WithChildrenProps & BaseState) => {
     const { address, web3, children } = props;
 
-    if (!address || !web3) {
+    if (!web3) {
         return children;
     }
 
@@ -54,6 +54,10 @@ const AppProvider = (props: WithChildrenProps & BaseState) => {
     const { children, ...forwardState } = props;
 
     const [state, setState] = useState<BaseState>(forwardState);
+
+    useEffect(() => {
+        setState(state => ({ ...state, ...forwardState }))
+    }, [forwardState?.address])
 
     return (
         <AppContext.Provider value={{ ...state, setState }}>
