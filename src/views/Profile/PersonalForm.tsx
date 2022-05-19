@@ -42,7 +42,7 @@ const Form = ({ onSubmit }: any) => {
     }, [isSubmitSuccessful]);
 
     useEffect(() => {
-        if(errors?.firstName || errors?.lastName || errors?.country) {
+        if(errors?.firstName || errors?.lastName || errors?.country || errors?.bio) {
             // TODO: add text to Prismic
             toast.error('Please fill in all required fields!');
         }
@@ -104,11 +104,14 @@ const Form = ({ onSubmit }: any) => {
                     <Col colSize={12}>
                         <Input 
                             control={control}
+                            hint={errors?.bio ? 'This field is required' : ''}
                             label={t('bio')}
                             limit={275}
                             name="bio"
                             placeholder={introduction}
                             rows={6}
+                            rules={{ required: true }}
+                            withError={errors?.bio}
                         />
                     </Col>
                 </Row>
