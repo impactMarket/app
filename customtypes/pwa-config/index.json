@@ -39,8 +39,23 @@
       "aside-common-menu": {
         "config": {
           "label": "aside-common-menu",
-          "placeholder": "",
           "fields": {
+            "isVisible": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is visible",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "uid": {
+              "type": "Text",
+              "config": {
+                "label": "Uid",
+                "placeholder": ""
+              }
+            },
             "icon": {
               "config": {
                 "label": "Icon",
@@ -71,8 +86,70 @@
       "aside-footer-menu": {
         "config": {
           "label": "aside-footer-menu",
-          "placeholder": "",
           "fields": {
+            "isVisible": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is visible",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "uid": {
+              "type": "Text",
+              "config": {
+                "label": "Uid",
+                "placeholder": ""
+              }
+            },
+            "icon": {
+              "config": {
+                "label": "Icon",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "label": {
+              "config": {
+                "label": "Label",
+                "placeholder": ""
+              },
+              "type": "Text"
+            },
+            "url": {
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              },
+              "type": "Text"
+            }
+          }
+        },
+        "type": "Group"
+      }
+    },
+    "aside-user-footer-menu": {
+      "aside-user-footer-menu": {
+        "config": {
+          "label": "aside-user-footer-menu",
+          "fields": {
+            "isVisible": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is visible",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "uid": {
+              "type": "Text",
+              "config": {
+                "label": "Uid",
+                "placeholder": ""
+              }
+            },
             "icon": {
               "config": {
                 "label": "Icon",

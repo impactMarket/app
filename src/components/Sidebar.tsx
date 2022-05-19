@@ -81,10 +81,11 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
 
     const Wrapper = isInternalLink ? Link : React.Fragment as any;
     const wrapperProps = isInternalLink ? { href: url, passHref: true } : {};
+    const linkProps = isInternalLink ? { href: url } : { href: url, rel: 'noopener noreferrer', target: '_blank' }
 
     return (
         <Wrapper {...wrapperProps}>
-            <SidebarMenuItem {...forwardProps} />
+            <SidebarMenuItem {...forwardProps} {...linkProps} />
         </Wrapper>
     )
 }
@@ -96,7 +97,7 @@ const SidebarFooter = (props: { user?: User }) => {
     if (!address) {
         return <ConnectButton fluid />
     }
-    
+
     return (
         <Link href="/profile" passHref>
             <SidebarUserButton
@@ -135,27 +136,32 @@ const Sidebar = () => {
     const checkRoute = (route: string | undefined) =>
         typeof route === 'string' ? asPath.split('?')[0] === route : false;
 
-    const parseMenuItems = (items: any) => items.map((item: any) => ({
+    const parseMenuItems = (items: any) => items?.map((item: any) => ({
         isActive: checkRoute(item?.url as string),
         ...item
     })) as any;
 
     useEffect(() => {
-        const { commonMenu: commonMenuFromPrismic, footerMenu: footerMenuFromPrismic } = (extractFromConfig('aside') || {}) as any;
+        const { commonMenu: commonMenuFromPrismic, footerMenu: footerMenuFromPrismic, userFooterMenu: userFooterMenuFromPrismic } = (extractFromConfig('aside') || {}) as any;
         const { data: userConfigData } = userConfig?.find(({ uid }: any) => uid === getUserType(user)) || {};
         const { items: menuItems, withCommon, withFooter } = (extractFromData(userConfigData, 'asideMenu') || {}) as any;
 
         const menus = menuItems?.map(({ items }: any) => parseMenuItems(items)) as SidebarMenuItemProps[][];
 
+        console.log(userFooterMenuFromPrismic);
+
         const commonMenu = (withCommon ? parseMenuItems(commonMenuFromPrismic) : []) as SidebarMenuItemProps[];
-        const footerMenu = (withFooter ? parseMenuItems(footerMenuFromPrismic) : []) as SidebarMenuItemProps[];
+        const footerCommonMenu = (withFooter ? parseMenuItems(footerMenuFromPrismic) : []) as SidebarMenuItemProps[];
+        const footerUserMenu = (withFooter && !!user ? parseMenuItems(userFooterMenuFromPrismic) : []) as SidebarMenuItemProps[];
+
+        const footerMenu = [...footerCommonMenu, ...footerUserMenu];
 
         setData({
             commonMenu,
             footerMenu,
             menus
         })
-    }, [user, asPath]);
+    }, [user]);
 
     return (
         <SidebarBase
@@ -165,21 +171,21 @@ const Sidebar = () => {
         >
             {data?.menus?.map((group, groupIndex) => (
                 <SidebarMenuGroup key={groupIndex}>
-                    {group.map((item, index) => (
+                    {group.map((item, index) => item?.isVisible && (
                         <MenuItem {...item} key={index} />
                     ))}
                 </SidebarMenuGroup>
             ))}
             {!!data?.commonMenu?.length && (
-                <SidebarMenuGroup isCollapsible={!!user} title={!!user ? 'impactMarket' : undefined}>
-                    {data?.commonMenu.map((item, index) => (
+                <SidebarMenuGroup isCollapsible={!!data?.menus?.length} title={!!data?.menus?.length ? 'impactMarket' : undefined}>
+                    {data?.commonMenu.map((item, index) => item?.isVisible && (
                         <MenuItem {...item} key={index} />
                     ))}
                 </SidebarMenuGroup>
             )}
             {!!data?.footerMenu?.length && (
                 <SidebarMenuGroup mt="auto">
-                    {data?.footerMenu.map((item, index) => (
+                    {data?.footerMenu.map((item, index) => item?.isVisible && (
                         <MenuItem {...item} key={index} />
                     ))}
                 </SidebarMenuGroup>
