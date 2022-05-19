@@ -2,8 +2,8 @@ import { GetStaticPaths, GetStaticProps } from "next"
 
 import { ClientConfig } from "@prismicio/client"
 
+import Community from "../../views/Community"
 import Prismic from "../../libs/Prismic/Prismic"
-import SingleRequest from "../../views/Request"
 
 export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
     const res = await fetch(
@@ -40,7 +40,7 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
     const data = await Prismic.getByTypes({
         clientOptions,
         lang,
-        types: 'pwa-view-requests'
+        types: 'pwa-view-communities'
     });
 
     //  Dynamic pages
@@ -50,12 +50,12 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
 
     return {
         props: {
-            communityId: community.data.id,
+            communityData: community?.data,
             data,
-            view: 'requests'
+            view: 'communities'
         },
         revalidate: 10
     };
 };
 
-export default SingleRequest;
+export default Community;

@@ -27,6 +27,19 @@ export interface Countries {
     country: string;
 }
 
+export interface Reviews {
+    count: number;
+    review: string;
+}
+
+export interface ReviewsByCountry {
+    country: string;
+}
+
+export interface Contract {
+    communityId: number;
+}
+
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -49,12 +62,36 @@ export const communityApi = emptySplitApi.injectEndpoints({
         getCommunityById: builder.query<Community, string>({
             query: id => `communities/${id}`
         }),
+        //  Get single community by id
+        getContractData: builder.mutation<Contract, number>({
+            query: id => ({
+                method: 'GET',
+                url: `communities/${id}/contract`
+            }),
+            transformResponse: (response: { data?: Contract }) => response.data
+        }),
         getCountryByCommunities: builder.mutation<Countries[], void>({
             query: () => ({
                 method: 'GET',
                 url: `communities/count?groupBy=country`
             }),
             transformResponse: (response: { data?: Countries[] }) => response.data
+        }),
+        //  Get reviews by country
+        getReviewsByCountry: builder.mutation<ReviewsByCountry, string>({
+            query: (status: string) => ({
+                method: 'GET',
+                url: `communities/count?groupBy=reviewByCountry${status && `&status=${status}`}`
+            }),
+            transformResponse: (response: { data?: ReviewsByCountry }) => response.data
+        }),
+        //  Get reviews count
+        getReviewsCount: builder.mutation<Reviews[], void>({
+            query: () => ({
+                method: 'GET',
+                url: `communities/count?groupBy=review`
+            }),
+            transformResponse: (response: { data?: Reviews[] }) => response.data
         }),
         //  Update community review status (accepted, claimed, declined, pending)
         updateReview: builder.mutation<Update, { body: any; id: number }>({
@@ -74,5 +111,8 @@ export const {
     useGetCommunityMutation,
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
-    useGetCountryByCommunitiesMutation
+    useGetCountryByCommunitiesMutation,
+    useGetReviewsCountMutation,
+    useGetReviewsByCountryMutation,
+    useGetContractDataMutation
 } = communityApi;

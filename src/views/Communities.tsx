@@ -16,41 +16,31 @@ import {
     Text,
     ViewContainer
 } from '@impact-market/ui';
+import { getImage } from '../utils/images';
 
 import { useGetCommunitiesMutation } from '../api/community';
-import { useGetUserMutation } from '../api/user';
 
-import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 
-const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
+const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
-
-    const { extractFromView } = usePrismicData();
-    const { title, content } = extractFromView('heading') as any;
-
-    //  Review has 4 states: 'pending', 'accepted', 'claimed', 'declined'
 
     const [loading, setLoading] = useState(false);
     const [communities, setCommunities] = useState({}) as any;
-    const [myCountrySelected, setMyCountrySelected] = useState(true);
-    const [review, setReview] = useState('pending');
-    const [reviews] = useState(['pending', 'accepted', 'claimed', 'declined']);
+
+    const [reviews] = useState(['all', 'suspicious-activity', 'low-on-funds']);
 
     const [getCommunities] = useGetCommunitiesMutation();
-    const [getUser] = useGetUserMutation();
 
     useEffect(() => {
         const init = async () => {
             try {
                 setLoading(true);
 
-                const user: any = await getUser();
-
                 const communities = await getCommunities({
-                    country: myCountrySelected ? user?.data?.country : undefined,
-                    review
+                    country: undefined,
+                    review: 'accepted'
                 });
 
                 setCommunities(communities);
@@ -64,42 +54,35 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         };
 
         init();
-    }, [myCountrySelected, review]);
+    }, []);
+
+    const getMedia = (filePath: string) =>
+        getImage({
+            filePath,
+            fit: 'cover',
+            height: 0,
+            width: 0
+        });
+
 
     return (
         <ViewContainer isLoading={isLoading}>
             <Display g900 medium>
-                {title}
+                My Communities
             </Display>
-            <RichText content={content} g500 mt={0.25} />
+            <RichText content="You are currently supporting X communitites in X country." g500 mt={0.25} />            
 
             <Tabs>
                 <TabList>
                     <Tab
-                        onClick={() => setMyCountrySelected(true)}
-                        title={<String id="myCountry" />}
+                        title="All"
                     />
                     <Tab
-                        onClick={() => setMyCountrySelected(false)}
-                        title={<String id="otherCountries" />}
+                        title="Suspicious Activity"
                     />
-                </TabList>
-            </Tabs>
-
-            <Tabs>
-                <TabList>
-                    {reviews.map((review, key) => (
-                        <Tab
-                            key={key}
-                            // Verify with Bernardo if numbers should be used in tabs:
-                            // number={
-                            //     !!Object.keys(communities).length &&
-                            //     communities.data.count
-                            // }
-                            onClick={() => setReview(review)}
-                            title={<String id={review} />}
-                        />
-                    ))}
+                    <Tab
+                        title="Low on Funds"
+                    />
                 </TabList>
 
                 {!!Object.keys(communities).length &&
@@ -115,30 +98,19 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                         communities.data.rows.map(
                                             (community: any, key: number) => (
                                                 <Link
-                                                    href={`/requests/${community.id}`}
+                                                    href={`/communities/${community.id}`}
                                                     key={key}
                                                     passHref
                                                 >
                                                     <Card as="a">
-                                                        <Box>
-                                                            {
-                                                                // eslint-disable-next-line @next/next/no-img-element
-                                                                <img
-                                                                    alt=""
-                                                                    src={
-                                                                        community.coverImage
-                                                                    }
-                                                                    style={{
-                                                                        height:
-                                                                            '200px',
-                                                                        objectFit:
-                                                                            'cover',
-                                                                        width:
-                                                                            '100%'
-                                                                    }}
-                                                                />
-                                                            }
-                                                        </Box>
+                                                        {!!community?.coverMediaPath &&
+                                                            <Box
+                                                                bgImg={getMedia(community?.coverMediaPath)}
+                                                                h={12.5}
+                                                                radius={0.5}
+                                                                w="100%"
+                                                            />
+                                                         }     
                                                         <Text
                                                             g900
                                                             margin="0.7 0"
@@ -147,7 +119,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                                                         >
                                                             {community.name}
                                                         </Text>
-                                                        <Box>
+                                                        <Box fLayout="center start" inlineFlex>
                                                             <Box inlineFlex mr={1}>
                                                                 <Icon
                                                                     g500
@@ -198,4 +170,4 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     );
 };
 
-export default Requests;
+export default Communities;
