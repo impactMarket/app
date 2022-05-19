@@ -28,6 +28,8 @@ export interface PutPostUser {
     avatarMediaPath?: string;
     beneficiary?: any;
     manager?: any;
+    subDAOMember?: any;
+    ambassador?: any;
 }
 
 interface PreSigned {

@@ -39,6 +39,40 @@ export interface ReviewsByCountry {
 export interface Contract {
     communityId: number;
 }
+export interface PendingCommunities {
+    data: {
+        count: number;
+        rows: [{
+            name: string;
+            description: string;
+            country: string;
+            city: string;
+            coverMediaPath: string;
+            ambassadorAddress: string;
+            proposals?: boolean;
+            contract: {
+                maxClaim: number;
+                baseInterval: number;
+                claimAmount: number;
+                incrementInterval: number;
+            };
+            success: boolean;
+            userHasVoted?: boolean;
+        }];
+    };
+    success: boolean;
+};
+
+export interface CommunityContract {
+    data: {
+        communityId: number;
+        claimAmount: string;
+        maxClaim: string;
+        baseInterval: number;
+        incrementInterval: number;  
+    };
+    success: boolean;
+};
 
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
@@ -59,16 +93,15 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: Community }) => response.data
         }),
-        getCommunityById: builder.query<Community, string>({
+        getCommunityById: builder.query<CommunityContract, string>({
             query: id => `communities/${id}`
         }),
-        //  Get single community by id
-        getContractData: builder.mutation<Contract, number>({
-            query: id => ({
+        //  Get single community contract
+        getCommunityContract: builder.mutation<CommunityContract, { id: any }>({
+            query: (id: any) => ({
                 method: 'GET',
                 url: `communities/${id}/contract`
-            }),
-            transformResponse: (response: { data?: Contract }) => response.data
+            })
         }),
         getCountryByCommunities: builder.mutation<Countries[], void>({
             query: () => ({
@@ -76,6 +109,12 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/count?groupBy=country`
             }),
             transformResponse: (response: { data?: Countries[] }) => response.data
+        }),
+        getPendingCommunities: builder.mutation<PendingCommunities, {limit: number, offset: number}>({
+            query: ({limit, offset}) => ({
+                method: 'GET',
+                url: `communities?status=pending&review=accepted${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
+            })
         }),
         //  Get reviews by country
         getReviewsByCountry: builder.mutation<ReviewsByCountry, string>({
@@ -92,7 +131,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/count?groupBy=review`
             }),
             transformResponse: (response: { data?: Reviews[] }) => response.data
-        }),
+        }),  
         //  Update community review status (accepted, claimed, declined, pending)
         updateReview: builder.mutation<Update, { body: any; id: number }>({
             query: ({ body, id }: any) => ({
@@ -114,5 +153,6 @@ export const {
     useGetCountryByCommunitiesMutation,
     useGetReviewsCountMutation,
     useGetReviewsByCountryMutation,
-    useGetContractDataMutation
+    useGetCommunityContractMutation,
+    useGetPendingCommunitiesMutation,
 } = communityApi;
