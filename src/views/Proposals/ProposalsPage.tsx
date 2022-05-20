@@ -95,12 +95,9 @@ const ProposalsPage = () => {
                     <Box>
                         {proposalCount > 0 &&
                             proposals.map((p, index) => (
-                                <Proposal
-                                    data={p}
-                                    key={index}
-                                    quorum={quorumVotes}
-                                />
-                            ))}
+                                <Proposal data={p} key={index} quorum={quorumVotes} />
+                            ))
+                        }
                     </Box>
                     <Pagination
                         currentPage={currentPage}

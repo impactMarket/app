@@ -20,7 +20,7 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const [getPendingCommunities] = useGetPendingCommunitiesMutation();
     const [requestsCount, setRequestsCount] = useState<number>();
-    const { proposalCount, isReady } = useUBICommittee();
+    const { isReady } = useUBICommittee();
     const [loading, setLoading] = useState(false);
     const { view } = usePrismicData();
     const { t } = useTranslations();
@@ -38,12 +38,11 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
                     offset
                 }).unwrap();
 
-                setRequestsCount(response?.data?.count);
-
+                setRequestsCount(response?.count);
                 setLoading(false);
             } catch (error) {
                 console.log(error);
-
+                
                 return false;
             };      
         };
@@ -60,14 +59,14 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
 
             <Tabs>
                 <TabList>
-                    <Tab number={proposalCount} title={t('proposals')} />
+                    <Tab title={t('proposals')} />
                     <Tab number={requestsCount} title={t('requests')}  />
                 </TabList>
                 <TabPanel>
                     <ProposalsPage />
                 </TabPanel>
                 <TabPanel>
-                    <AddCommunityPage />
+                    <AddCommunityPage setRequestsCount={setRequestsCount} />
                 </TabPanel>
             </Tabs>
         </ViewContainer>
