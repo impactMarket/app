@@ -11,7 +11,7 @@ import {
 import String from '../../libs/Prismic/components/String';
 
 
-const Beneficiaries = ({ data } : any) => (
+const Beneficiaries = ({ data } : any) => (    
     !!Object.keys(data).length && (
         <Grid cols={{ sm: 4, xs: 2 }}>
             {!!data?.beneficiaries &&
@@ -59,7 +59,7 @@ const Beneficiaries = ({ data } : any) => (
             {!!data?.maxClaim &&
                 <Card>
                     <Text g500 mb={0.3} regular small>
-                        Max. per beneficiary
+                        <String id="maxPerBeneficiary"/>
                     </Text>
                     <Grid cols={2}>
                         <Text g900 medium semibold>
@@ -101,7 +101,7 @@ const Beneficiaries = ({ data } : any) => (
             {(!!data?.minTranche && !!data?.maxTranche) &&            
                 <Card>
                     <Text g500 mb={0.3} regular small>
-                        Tranche (Min./Max.)
+                        <String id="trancheMinMax"/>
                     </Text>
                     <Grid cols={2}>
                         <Text g900 medium semibold>

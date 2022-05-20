@@ -14,16 +14,18 @@ import {
 } from '@impact-market/ui';
 
 import String from '../../libs/Prismic/components/String';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
 const Header = ({ community, updateReview } : any) => {
     const router = useRouter()
+    const { t } = useTranslations();
 
     return (
         <>
             <Box as="a" onClick={() => router.back()}>    
                 <Label
-                    content="Back"
+                    content={<String id="back"/>}
                     icon="arrowLeft"
                 />                      
             </Box>
@@ -73,7 +75,7 @@ const Header = ({ community, updateReview } : any) => {
                                         margin="0 0.5 0 0"
                                         n01
                                     />
-                                    Edit
+                                    <String id="edit"/>
                                 </Button>
 
                                 {community?.review === 'accepted' ? (
@@ -84,7 +86,7 @@ const Header = ({ community, updateReview } : any) => {
                                                 margin="0 0.5 0 0"
                                                 p700
                                             />
-                                            Share
+                                            <String id="share"/>
                                         </Button>
                                         <Button ml={0.5} secondary>
                                             <Icon
@@ -105,7 +107,7 @@ const Header = ({ community, updateReview } : any) => {
                                                 }
                                             ]}
                                             rtl
-                                            title={<String id="actions"/>}
+                                            title={t('actions')}
                                         />  
                                     </Box>  
                                 )}                                  

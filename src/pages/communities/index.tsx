@@ -11,12 +11,12 @@ export const getStaticProps: GetStaticProps = async ({
 }) => {
     const clientOptions = previewData as ClientConfig;
 
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-community' });
+    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-communities' });
 
     return {
         props: {
             data,
-            view: 'community'  
+            view: 'communities'  
         }
     };
 };

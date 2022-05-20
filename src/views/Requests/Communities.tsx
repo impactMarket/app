@@ -9,21 +9,12 @@ import {
     Icon,
     Text
 } from '@impact-market/ui';
-import { getImage } from '../../utils/images';
+import Image from '../../components/Image'
 
 import String from '../../libs/Prismic/components/String';
 
-const Communities = ({ communities } : any) => {   
 
-    //  Get image 
-    const getMedia = (filePath: string) =>
-        getImage({
-            filePath,
-            fit: 'cover',
-            height: 0,
-            width: 0
-        });
-
+const Communities = ({ communities } : any) => {  
 
     return (
         <Grid colSpan={1.5} cols={{ sm: 4, xs: 1 }}>
@@ -39,12 +30,9 @@ const Communities = ({ communities } : any) => {
                         >
                             <Card as="a">
                                 {!!community?.coverMediaPath &&
-                                    <Box
-                                        bgImg={getMedia(community?.coverMediaPath)}
-                                        h={12.5}
-                                        radius={0.5}
-                                        w="100%"
-                                    />
+                                    <Box h={12.5} radius={0.5} style={{position: 'relative'}} w="100%">
+                                        <Image alt=""  src={community?.coverMediaPath} style={{borderRadius: '8px'}}/>
+                                    </Box>
                                     }  
                                 <Text
                                     g900

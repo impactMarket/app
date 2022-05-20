@@ -8,8 +8,10 @@ import {
 
 import { useGetCommunityContractMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 import Beneficiaries from './Beneficiaries'
+import CanBeRendered from '../../components/CanBeRendered';
 import Header from './Header'
 import Managers from './Managers'
+import Message from '../../libs/Prismic/components/Message';
 import getManagers from './mockData'
 
 import { gql, useQuery } from '@apollo/client';
@@ -31,9 +33,9 @@ query communityQuery($id: String!) {
 const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props) => {
     const { communityData, isLoading } = props;
     const router = useRouter()
-
-    const { loading: queryLoading, data } = useQuery(communityQuery, {
-        variables: { id: !!communityData?.contractAddress },
+    
+    const { data } = useQuery(communityQuery, {
+        variables: { id: communityData?.contractAddress?.toLowerCase() },
     });
 
     const [communityId] = useState(communityData.id);
@@ -45,7 +47,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
-    const [getCommunityContract] = useGetCommunityContractMutation();
+    const [getCommunityContract] = useGetCommunityContractMutation()
 
     useEffect(() => {
         const getData = async () => {
@@ -88,7 +90,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
             setLoading(false);
 
-            toast.success('Successfully changed community review state!');
+            toast.success(<Message id="communityState" variables={{ review }} />);
 
             //  Send to /requests if community was declined
             review === 'declined' && router.push('/requests')
@@ -96,24 +98,30 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         } catch (error) {
             console.log(error);
 
-            toast.error('Please try again later.');
+            toast.error(<Message id="errorOcurred"/>);
 
             return false;
         }
     };
-
+    
     return (
         <ViewContainer isLoading={loading || isLoading}>
             <Header community={community} updateReview={functionUpdateReview}/>
-            <Beneficiaries 
-                data={
-                    //  If community has address (it means it was accepted in proposals) get the data from thegraph. 
+
+            {/* If community has already contract data (from API or thegraph), show <Beneficiaries/> */}
+            {(!!contractData.data || !!data?.communityEntity) &&
+                <Beneficiaries 
+                    //  If community exists in thegraph (it has contract address) get the data from thegraph. 
                     //  If not, get from API
-                    !!communityData?.contractAddress ? (!queryLoading && data?.communityEntity) : contractData.data
-                }
-            />
+                    data={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
+                />
+            }
+            
+            {/* If community was accepted, show <Managers/>  */}
             {community?.review === 'accepted' &&
-                <Managers community={community} managers={managers}/> 
+                <CanBeRendered types={['ambassador']}>
+                    <Managers community={community} managers={managers}/> 
+                </CanBeRendered>
             }
         </ViewContainer>
     );
