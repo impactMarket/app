@@ -14,7 +14,6 @@ const Image = (props: any) => {
                 height: 2,
                 width: 2
             })}
-            height="100%"
             layout="fill"
             objectFit="cover"
             placeholder="blur"
@@ -24,7 +23,6 @@ const Image = (props: any) => {
                 height: 0,
                 width: 0
             })}
-            width="100%"
             {...forwardProps}
         />
     );
