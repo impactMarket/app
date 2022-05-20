@@ -49,6 +49,8 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 const reviews = await getReviewsCount().unwrap()
                 const reviewsByCountry = await getReviewsByCountry("pending").unwrap()
 
+                console.log(user)
+
                 setCommunities(communities);
                 setUserCountry(user?.data?.country)
                 setNumberOfCommunitiesByReview(reviews)

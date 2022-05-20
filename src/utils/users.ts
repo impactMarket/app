@@ -8,12 +8,14 @@ export const userDemo = 'demo';
 export const userDonor = 'donor';
 export const userManager = 'manager';
 export const userBeneficiary = 'beneficiary';
+export const userAmbassador = 'ambassador';
 
 export const getUserTypes = (user: PutPostUser) => {
     const types = [userDonor];
 
     if(user?.beneficiary) types.push(userBeneficiary);
     if(user?.manager) types.push(userManager);
+    if(user?.ambassador) types.push(userAmbassador);
 
     return types;
 };
