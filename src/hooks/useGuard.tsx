@@ -30,6 +30,8 @@ const useGuard = () => {
                 if(auth?.token) {
                     const user = await getUser().unwrap();
                     const type = getUserTypes(user);
+
+                    console.log(user)
                     
                     store.dispatch(setUser({ user }));
                     store.dispatch(setType({ type }));

@@ -45,7 +45,11 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
+<<<<<<< Updated upstream
     const [getContractData] = useGetContractDataMutation();
+=======
+    const [getCommunityContract] = useGetCommunityContractMutation();
+>>>>>>> Stashed changes
 
     useEffect(() => {
         const getData = async () => {
@@ -56,7 +60,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 const managersData = await getManagers();
 
                 //  Get community's contract data
-                const contractData = await getContractData(community?.id).unwrap()
+                const contractData = await getCommunityContract(community?.id).unwrap()
 
                 setManagers(managersData);
                 setContractData(contractData)

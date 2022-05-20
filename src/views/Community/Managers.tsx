@@ -14,8 +14,32 @@ import {
     Text
 } from '@impact-market/ui';
 
+import { gql, useQuery } from '@apollo/client';
+
+//  Get managers data from thegraph
+const managersQuery = gql`
+query managersQuery {
+    managerEntities {
+        id
+        address
+        community {
+            id
+        }
+        state
+        since
+        until
+        added
+        removed    
+    }
+}
+`;
+
 
 const Managers = ({ community, managers } : any) => {
+
+    const { loading, data } = useQuery(managersQuery);
+
+    console.log(data)
 
     return (
         !!Object.keys(community).length && (
