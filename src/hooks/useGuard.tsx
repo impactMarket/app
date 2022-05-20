@@ -1,5 +1,5 @@
-import { beneficiaryRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
-import { getUserTypes, userBeneficiary, userManager } from '../utils/users';
+import { ambassadorRoutes, beneficiaryRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
+import { getUserTypes, userAmbassador, userBeneficiary, userManager } from '../utils/users';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useEffect, useState } from 'react';
@@ -45,6 +45,11 @@ const useGuard = () => {
                     // Manager type - include the respective Paths
                     if(type?.includes(userManager)) {
                         userPaths = userPaths.concat(managerRoutes);
+                    }
+
+                    // Ambassador type - include the respective Paths
+                    if(type?.includes(userAmbassador)) {
+                        userPaths = userPaths.concat(ambassadorRoutes);
                     }
                 }
     

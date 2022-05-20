@@ -481,6 +481,13 @@
         },
         "type": "Text"
       },
+      "string-manageCommunityBeneficiaries": {
+        "config": {
+          "label": "manageCommunityBeneficiaries",
+          "placeholder": "Manage community beneficiaries"
+        },
+        "type": "Text"
+      },
       "string-managers": {
         "config": {
           "label": "managers",
@@ -842,6 +849,13 @@
         "config": {
           "label": "ubi",
           "placeholder": "UBI"
+        },
+        "type": "Text"
+      },
+      "string-viewAll": {
+        "config": {
+          "label": "viewAll",
+          "placeholder": "View All"
         },
         "type": "Text"
       },
