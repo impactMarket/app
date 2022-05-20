@@ -309,74 +309,40 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Text>
                             </Box>
                         )}
-                        <Row fLayout="center" mt={0}>
-                            <Col colSize={{ sm: 3, xs: 12 }}>
-                                <Button
-                                    fluid="xs"
-                                    gray
-                                    icon={
-                                        story.engagement.userLoved
-                                            ? 'heartFilled'
-                                            : 'heart'
-                                    }
-                                    onClick={() => onloveStory(story.id, index)}
-                                    sColor={
-                                        story.engagement.userLoved ? 'e600' : ''
-                                    }
-                                >
-                                    <Text g700 medium>
-                                        <String
-                                            id={
-                                                story.engagement.userLoved
-                                                    ? 'loved'
-                                                    : 'love'
-                                            }
-                                        />
-                                    </Text>
-                                </Button>
-                            </Col>
 
-                            <Col
-                                center
-                                colSize={{ sm: 5, xs: 6 }}
-                                show={{ sm: 'flex', xs: 'none' }}
-                            >
-                                {story.engagement.loves !== 0 && (
-                                    <Text g600 regular small>
-                                        {story.engagement.loves}{' '}
-                                        <String id="loves" />
-                                    </Text>
+                        <Box fLayout="start between" flex mt={{sm: 1, xs: 0}}>
+                            <Row fLayout="center start" margin={0} w="100%">
+                                <Col colSize={{ sm: 3, xs: 12}} padding={0}>
+                                    <Button
+                                        fluid="xs"
+                                        gray
+                                        icon={story.engagement.userLoved ? 'heartFilled' : 'heart'}
+                                        onClick={() => onloveStory(story.id, index)}
+                                        sColor={story.engagement.userLoved ? 'e600' : ''}
+                                    >
+                                        <Text as="div" g700 medium>
+                                            <String id={ story.engagement.userLoved ? 'loved' : 'love'} />
+                                        </Text>
+                                    </Button>
+                                </Col>
+
+                                {story.engagement.loves > 0 && (
+                                    <Col colSize={{ sm: 6, xs: 12 }} padding={0} pl={{ sm: 1, xs: 0}} pt={{ sm: 0, xs: 1}}>
+                                        <Text g600 regular small>
+                                            {story.engagement.loves}{' '}
+                                            <String id="loves" /> 
+                                        </Text>
+                                    </Col>
                                 )}
-                            </Col>
-                            <Col
-                                colSize={{ sm: 5, xs: 6 }}
-                                pt={0}
-                                show={{ sm: 'none', xs: 'center' }}
-                            >
-                                {story.engagement.loves !== 0 && (
-                                    <Text g600 regular small>
-                                        {story.engagement.loves}{' '}
-                                        <String id="loves" />
-                                    </Text>
-                                )}
-                            </Col>
-                            <Col
-                                colSize={{ sm: 4, xs: 6 }}
-                                pb={{ sm: 0, xs: 1 }}
-                                pt={0}
-                                right
-                            >
-                                <CanBeRendered types={['beneficiary', 'manager']}>
-                                    <DropdownMenu
-                                        asButton
-                                        icon="ellipsis"
-                                        items={items}
-                                        rtl
-                                        wrapperProps={{ padding: 0.3 }}
-                                    />
-                                </CanBeRendered>
-                            </Col>
-                        </Row>
+                              
+                            </Row>
+
+                            <CanBeRendered types={['beneficiary', 'manager']}>
+                                <Box pl={{sm: 0, xs: 1}}>
+                                    <DropdownMenu asButton icon="ellipsis" items={items} rtl wrapperProps={{ padding: 0.3 }} />
+                                </Box>
+                            </CanBeRendered>
+                        </Box>
                     </Card>
                 </Col>
             </Row>
