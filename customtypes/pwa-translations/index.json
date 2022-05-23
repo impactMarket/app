@@ -54,6 +54,20 @@
         },
         "type": "Text"
       },
+      "string-added": {
+        "config": {
+          "label": "added",
+          "placeholder": "Added"
+        },
+        "type": "Text"
+      },
+      "string-addedOn": {
+        "config": {
+          "label": "addedOn",
+          "placeholder": "Added on"
+        },
+        "type": "Text"
+      },
       "string-address": {
         "config": {
           "label": "address",
@@ -313,6 +327,13 @@
         },
         "type": "Text"
       },
+      "string-delete": {
+        "config": {
+          "label": "delete",
+          "placeholder": "Delete"
+        },
+        "type": "Text"
+      },
       "string-deleteAccount": {
         "config": {
           "label": "deleteAccount",
@@ -558,6 +579,13 @@
         },
         "type": "Text"
       },
+      "string-next": {
+        "config": {
+          "label": "next",
+          "placeholder": "Next"
+        },
+        "type": "Text"
+      },
       "string-noCommunities": {
         "config": {
           "label": "noCommunities",
@@ -569,6 +597,13 @@
         "config": {
           "label": "notifications",
           "placeholder": "Notifications"
+        },
+        "type": "Text"
+      },
+      "string-open": {
+        "config": {
+          "label": "open",
+          "placeholder": "Open"
         },
         "type": "Text"
       },
@@ -621,6 +656,13 @@
         },
         "type": "Text"
       },
+      "string-previous": {
+        "config": {
+          "label": "previous",
+          "placeholder": "Previous"
+        },
+        "type": "Text"
+      },
       "string-proposal": {
         "config": {
           "label": "proposal",
@@ -663,6 +705,20 @@
         },
         "type": "Text"
       },
+      "string-removed": {
+        "config": {
+          "label": "removed",
+          "placeholder": "Removed"
+        },
+        "type": "Text"
+      },
+      "string-report": {
+        "config": {
+          "label": "report",
+          "placeholder": "Report"
+        },
+        "type": "Text"
+      },
       "string-reportAsInappropriate": {
         "config": {
           "label": "reportAsInappropriate",
@@ -702,6 +758,13 @@
         "config": {
           "label": "search",
           "placeholder": "Search"
+        },
+        "type": "Text"
+      },
+      "string-searchForName": {
+        "config": {
+          "label": "searchForName",
+          "placeholder": "Search for name"
         },
         "type": "Text"
       },
