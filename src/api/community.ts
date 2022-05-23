@@ -2,12 +2,13 @@ import { PutPostUser } from './user';
 import { emptySplitApi } from './index';
 import qs from 'query-string';
 
-interface Community {
+export interface Community {
     coverImage: string;
     currency: string;
     name: string;
     id: any;
     state: any;
+    language: string;
 }
 
 interface Communities {
@@ -107,6 +108,13 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: PutPostUser }) => response.data
         }),
+        getCommunityBeneficiaries: builder.mutation<any, {filters: string, limit: number, offset: number}>({
+            query: ({filters, limit, offset}) => ({
+                method: 'GET',
+                url: `communities/beneficiaries?${!!filters ? `${filters}` : ''}${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
+            }),
+            transformResponse: (response: { data?: any }) => response.data
+        }),
         getCommunityById: builder.query<CommunityContract, string>({
             query: id => `communities/${id}`
         }),
@@ -171,5 +179,6 @@ export const {
     useGetReviewsByCountryMutation,
     useGetCommunityContractMutation,
     useGetPendingCommunitiesMutation,
-    useGetCommunityAmbassadorMutation
+    useGetCommunityAmbassadorMutation,
+    useGetCommunityBeneficiariesMutation
 } = communityApi;

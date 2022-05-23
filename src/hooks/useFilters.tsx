@@ -28,7 +28,7 @@ const useFilters = () => {
      * @param {string | string[]} value Content or multiple content as array
      * @returns {boolean} Returns boolean
      */
-    const isSelected = (key: string, value: string | string[]) => {
+    const isSelected = (key: string, value: string | string[] | number) => {
         if (Array.isArray(query?.[key])) {
             const arr = query?.[key] as string[];
 
@@ -41,7 +41,7 @@ const useFilters = () => {
     /**
      * Return all values from a given key
      * @param {string} key Name of the field
-     * @returns {string | string[]} Returns single or multiple selected values
+     * @returns {string | string[] | number | number[]} Returns single or multiple selected values
      */
     const getByKey = (key: string) => query?.[key];
 
@@ -51,7 +51,7 @@ const useFilters = () => {
      * @param {string | string[]} value A value to add to url parameters
      * @returns {Callback} just returns the callback (push function result)
      */
-    const update = (nameOrObject: string | Object, value?: string | string[]) => {
+    const update = (nameOrObject: string | Object, value?: string | string[] | number | number[]) => {
         const shallowQuery = { ...query };
 
         if (isObject(nameOrObject)) {
