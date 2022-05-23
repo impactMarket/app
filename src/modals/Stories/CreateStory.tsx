@@ -47,11 +47,11 @@ const CreateStory = () => {
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
             let payload: any = {
-                message: data.message
+                message: data.message.trim()
             };
 
             const emptyDraft = /^\s*$/;
-
+            
             if (!emptyDraft.test(data.message)) {
                 if (data?.img?.length > 0) {
                     const type = data.img[0].type?.split('/')[1] || '';
@@ -73,15 +73,20 @@ const CreateStory = () => {
                     }
                 }
 
-                await createStory(payload);
+                const postRequest: any = await createStory(payload);
+
+                if(postRequest?.error) {
+                    toast.error(<RichText content={modals.data.createStoryError}/>);
+                } else {
+                    toast.success(<RichText content={modals.data.createStorySuccess}/>);
+                }
+
                 setRefreshStories((refreshStory: boolean) => !refreshStory);
                 handleClose();
-
-                toast.success(<RichText content={modals.data.createStorySuccess}/>);
             }
-        } catch (e) {
+        } catch (error) {
             toast.error(<RichText content={modals.data.createStoryError}/>);
-            console.log(e);
+            console.log(error);
         }
     };
 
@@ -196,7 +201,7 @@ const CreateStory = () => {
                     )}
                 </>
                 <Row mt={1}>
-                    <Col colSize={{ sm: 6, xs: 6 }}>
+                    <Col colSize={{ sm: 6, xs: 6 }} pr={0.5}>
                         <Button gray onClick={handleCancel} w="100%">
                             <RichText
                                 content={
@@ -206,7 +211,7 @@ const CreateStory = () => {
                         </Button>
                     </Col>
 
-                    <Col colSize={{ sm: 6, xs: 6 }}>
+                    <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
                         <Button isLoading={isSubmitting} type="submit" w="100%">
                             <RichText
                                 content={

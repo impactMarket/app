@@ -1,6 +1,6 @@
 import { Col, Row } from '@impact-market/ui';
 import { getCountryNameFromInitials } from '../../utils/countries';
-import { useGetCountryByCommunitiesMutation } from '../../api/community';
+import { useGetCountriesWithStoriesMutation } from '../../api/story';
 import React, { useEffect, useState } from 'react';
 import Select from '../../components/Select';
 import useFilters from '../../hooks/useFilters';
@@ -13,7 +13,7 @@ interface CountriesList {
 
 const Filters = () => {
     const { update, getByKey } = useFilters();
-    const [getCountries] = useGetCountryByCommunitiesMutation();
+    const [getCountries] = useGetCountriesWithStoriesMutation();
     const [countries, setCountries] = useState<CountriesList[]>([]);
     const { t } = useTranslations();
 
@@ -35,17 +35,17 @@ const Filters = () => {
 
         getCountriesMethod();
     }, []);
-
+    
     return (
-        <Row mt={0.625}>
-            <Col colSize={{ sm: 3, xs: 12 }}>
+        <Row>
+            <Col colSize={{ sm: 4, xs: 12 }}>
                 <Select
                     callback={(value: any) => update('country', value)}
-                    clearLabel={t('clear')}
                     initialValue={getByKey('country')}
                     isClearable
                     isMultiple
                     options={countries}
+                    placeholder={`${t('allCountries')} (${countries.length})` }
                     showFlag
                     withOptionsSearch
                 />

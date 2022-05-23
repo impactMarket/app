@@ -34,40 +34,22 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
     const FakeTabPanel = TabPanel as any;
     const types = [userDonor, userBeneficiary];
     const { address } = useWallet();
-    const validation =
-        address &&
-        auth?.user &&
-        auth?.type?.some((value: string) => types.includes(value));
+    const validation = address && auth?.user && auth?.type?.some((value: string) => types.includes(value));
 
     return (
         <ViewContainer isLoading={isLoading}>
             <Row>
                 <Col
-                    colSize={
-                        validation ? { sm: 8, xs: 12 } : { sm: 12, xs: 12 }
-                    }
-                >
+                    colSize={validation ? { sm: 8, xs: 12 } : { sm: 12, xs: 12 }} >
                     <Display medium>
                         <String id="stories" />
                     </Display>
 
-                    <RichText
-                        content={view.data.headingContent}
-                        g500
-                        mt={0.25}
-                    />
+                    <RichText content={view.data.headingContent} g500 mt={0.25} />
                 </Col>
                 <CanBeRendered types={['beneficiary', 'manager']}>
-                    <Col
-                        colSize={validation ? { sm: 4, xs: 12 } : { sm: 0 }}
-                        tAlign={{ sm: 'right', xs: 'left' }}
-                    >
-                        <Button
-                            icon="plus"
-                            onClick={() =>
-                                openModal('createStory', { setRefreshStories })
-                            }
-                        >
+                    <Col colSize={validation ? { sm: 4, xs: 12 } : { sm: 0 }} tAlign={{ sm: 'right', xs: 'left' }} >
+                        <Button icon="plus" onClick={() => openModal('createStory', { setRefreshStories })} >
                             <String id="createStory" />
                         </Button>
                     </Col>
@@ -76,18 +58,9 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
             {auth?.user && (
                 <Tabs defaultIndex={getByKey('user') ? 1 : 0}>
                     <TabList>
-                        <Tab
-                            onClick={() => clear('user')}
-                            title={t('allStories')}
-                        />
-
+                        <Tab onClick={() => clear('user')} title={t('allStories')} />
                         <CanBeRendered types={['beneficiary', 'manager']}>
-                            <Tab
-                                onClick={() =>
-                                    update('user', auth?.user?.address)
-                                }
-                                title={t('myStories')}
-                            />
+                            <Tab onClick={() => update('user', auth?.user?.address) } title={t('myStories')}/>
                         </CanBeRendered>
                     </TabList>
                     <FakeTabPanel />

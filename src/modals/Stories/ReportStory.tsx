@@ -5,6 +5,7 @@ import {
     Col,
     ModalWrapper,
     Row,
+    Text,
     toast,
     useModal
 } from '@impact-market/ui';
@@ -14,6 +15,7 @@ import { useReportStoryMutation } from '../../api/story';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import Select from '../../components/Select';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 type Inputs = {
     reportAs: number;
@@ -24,6 +26,7 @@ const ReportStory = () => {
     const [reportStory] = useReportStoryMutation();
     const { handleClose, storyId, arrayId, removeIndex } = useModal();
     const { modals } = usePrismicData();
+    const { t } = useTranslations();
     const {
         control,
         reset,
@@ -40,7 +43,7 @@ const ReportStory = () => {
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            await reportStory({
+            const reportRequest: any = await reportStory({
                 body: {
                     typeId: data.reportAs
                 },
@@ -50,7 +53,12 @@ const ReportStory = () => {
             removeIndex(arrayId);
             setShowSuccess(1);
 
-            toast.success(<RichText content={modals.data.reportStorySuccess}/>);
+            if(reportRequest?.error) {
+                toast.error(<RichText content={modals.data.reportStoryError}/>);
+            } else {
+                toast.success(<RichText content={modals.data.reportStorySuccess}/>);
+            }
+
         } catch (e) {
             toast.error(<RichText content={modals.data.reportStoryError}/>);
             console.log(e);
@@ -124,7 +132,7 @@ const ReportStory = () => {
                             />
 
                             <Row mt={1}>
-                                <Col colSize={{ sm: 6, xs: 12 }}>
+                                <Col colSize={{ sm: 6, xs: 6 }} pr={0.5}>
                                     <Button
                                         gray
                                         onClick={handleCancel}
@@ -139,14 +147,9 @@ const ReportStory = () => {
                                     </Button>
                                 </Col>
 
-                                <Col colSize={{ sm: 6, xs: 12 }}>
+                                <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
                                     <Button isLoading={isSubmitting} w="100%">
-                                        <RichText
-                                            content={
-                                                modals.data
-                                                    .reportStoryConfirmButtonLabel
-                                            }
-                                        />
+                                        <Text>{t('report')}</Text>
                                     </Button>
                                 </Col>
                             </Row>
