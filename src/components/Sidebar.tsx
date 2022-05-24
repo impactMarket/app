@@ -106,13 +106,13 @@ const SidebarFooter = (props: { user?: User }) => {
     }
 
     return (
-        <Link href="/profile" passHref>  
+        <Link href="/profile" passHref>
             <SidebarUserButton
                 {...user}
                 address={formatAddress(address, [6, 4])}
                 name={getUserName(user)}
-                photo={{ url: user?.avatarMediaPath ? getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) : '' }}
                 onClick={(e) => asPath === '/profile' && e.preventDefault()}
+                photo={{ url: user?.avatarMediaPath ? getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) : '' }}
             />
         </Link>
     );
