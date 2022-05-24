@@ -30,8 +30,13 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
-    const auth = useSelector(selectCurrentUser);
+    const auth = useSelector(selectCurrentUser); 
+    const language = auth?.user?.language || 'en-US';
     const currency = auth?.user?.currency || 'USD';
+    const localeCurrency = Intl.NumberFormat(language, {
+        style: 'currency',
+        currency: currency
+    });
     const router = useRouter();
     const { t } = useTranslations();
 
@@ -124,8 +129,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
     const cardTitle = view.data.claimCardStates[cardType].title;
     const cardMessage = view.data.claimCardStates[cardType].text;
-    const cardImage = view.data.claimCardStates[cardType].image;
-    const claimAmountDisplay = currencyFormat(claimAmount, currency);
+    const cardImage = view.data.claimCardStates[cardType].image; 
+    const claimAmountDisplay = currencyFormat(claimAmount, localeCurrency);
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
@@ -181,7 +186,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 </Card>
             }
             <Text g500 mt={2} small>
-                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, currency), total: currencyFormat(maxClaim, currency) }} />
+                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, localeCurrency), total: currencyFormat(maxClaim, localeCurrency) }} />
             </Text>
             <ProgressBar mt={0.5} progress={(claimedAmount / maxClaim) * 100}/>
             {
