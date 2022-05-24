@@ -383,6 +383,41 @@
         },
         "type": "Text"
       },
+      "string-errorEmail": {
+        "config": {
+          "label": "errorEmail",
+          "placeholder": "Invalid email"
+        },
+        "type": "Text"
+      },
+      "string-errorMaxNumber": {
+        "config": {
+          "label": "errorMaxNumber",
+          "placeholder": "Maximum value: {{ value }}"
+        },
+        "type": "Text"
+      },
+      "string-errorMaxString": {
+        "config": {
+          "label": "errorMaxString",
+          "placeholder": "Maximum characters: {{ value }}"
+        },
+        "type": "Text"
+      },
+      "string-errorMinNumber": {
+        "config": {
+          "label": "errorMinNumber",
+          "placeholder": "Minimum value: {{ value }}"
+        },
+        "type": "Text"
+      },
+      "string-errorMinString": {
+        "config": {
+          "label": "errorMinString",
+          "placeholder": "Minimum characters: {{ value }}"
+        },
+        "type": "Text"
+      },
       "string-female": {
         "config": {
           "label": "female",
@@ -541,6 +576,13 @@
         "config": {
           "label": "minutes",
           "placeholder": "Minutes"
+        },
+        "type": "Text"
+      },
+      "string-more": {
+        "config": {
+          "label": "more",
+          "placeholder": "More"
         },
         "type": "Text"
       },
