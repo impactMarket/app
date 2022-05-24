@@ -16,7 +16,7 @@ export const currenciesOptions = Object.entries(currencies).map(([key, value]: a
 
 export const currencyFormat = (number: number, localeCurrency: Intl.NumberFormat) => {
     const rates = useSelector(selectRates);
-    const currency = localeCurrency.resolvedOptions().currency;
+    const { currency } = localeCurrency.resolvedOptions();
     
     if (currency !== 'USD') {
         const rate = rates.find((elem: Rate) => elem.currency === currency)?.rate || 1;
