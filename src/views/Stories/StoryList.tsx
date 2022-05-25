@@ -25,6 +25,7 @@ import Image from '../../components/Image';
 import NoStoriesFound from './NoStoriesFound';
 import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
+import Trim from '../../components/Trim';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
@@ -223,9 +224,9 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         }
 
         return (
-            <Row fLayout="center" key={index}>
-                <Col colSize={{ sm: 10, xs: 11 }}>
-                    <Card mt={1}>
+            <Row fLayout="center" key={index} >
+                <Col colSize={{ sm: 10, xs: 11 }} padding={0} pb={1} >
+                    <Card mt={1} >
                         {story?.storyMediaPath && (  
                         <Box pt="60%" style={{position: 'relative'}} w="100%">
                             <Image alt="" src={story?.storyMediaPath} style={{borderRadius: '8px'}} />
@@ -246,29 +247,12 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                                 {story.community.name}
                                             </Text>
                                             <Text as="div" g500 regular small>
-                                                <Box
-                                                    fLayout="center start"
-                                                    flex
-                                                >
-                                                    <CountryFlag
-                                                        countryCode={
-                                                            story.community
-                                                                .country
-                                                        }
-                                                        height={1.2}
-                                                        mr={0.5}
-                                                    />
+                                                <Box fLayout="center start" flex >
+                                                    <CountryFlag countryCode={story.community.country} height={1.2} mr={0.5} />
                                                     <Box>
                                                         <Text>
-                                                            {
-                                                                story.community
-                                                                    .city
-                                                            }
-                                                            ,{' '}
-                                                            {getCountryNameFromInitials(
-                                                                story.community
-                                                                    .country
-                                                            )}
+                                                            {story.community.city},{' '}
+                                                            {getCountryNameFromInitials(story.community.country)}
                                                         </Text>
                                                     </Box>
                                                 </Box>
@@ -278,16 +262,12 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Row>
                             </Col>
                             {story?.message && (
-                                <Text
-                                    g800
-                                    large
-                                    medium
-                                    pb={0}
-                                    pt={0}
-                                    show={{ sm: 'none', xs: 'flex' }}
-                                >
-                                    {story.message}
-                                </Text>
+                                <Box show={{ sm: 'none', xs: 'flex' }}>
+                                    <Box >
+                                        <Trim g800 large limit={100} medium message={story.message} pb={0} pt={0} rows={4} />
+                                    </Box>
+                                </Box>
+
                             )}
                             <Col colSize={{ sm: 3, xs: 12 }} right>
                                 {/* Countribute Button */}
@@ -303,11 +283,11 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                         </Row>
                         <Divider mt={1.625} show={{ sm: 'flex', xs: 'none' }} />
                         {story?.message && (
-                            <Box show={{ sm: 'flex', xs: 'none' }}>
-                                <Text g800 large medium>
-                                    {story.message}
-                                </Text>
+                        <Box show={{ sm: 'flex', xs: 'none' }}>
+                            <Box >
+                                <Trim g800 large limit={256} medium message={story.message} pb={0} pt={0} rows={4} />
                             </Box>
+                        </Box>
                         )}
 
                         <Box fLayout="start between" flex mt={{sm: 1, xs: 0}}>
@@ -357,7 +337,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             )}
             {(loadingStories || offset < stories.count) && (
                 <div ref={sentryRef}> 
-                <Row fLayout="center" pb={1} pt={1}>
+                <Row fLayout="center" h="50vh" pb={1} pt={1}>
                     <Spinner isActive />
                 </Row>
                 </div>

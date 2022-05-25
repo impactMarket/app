@@ -40,6 +40,11 @@ interface PreSigned {
     uploadURL?: string;
 }
 
+interface CountryWithStory {
+    country?: string;
+    count?: number;
+}
+
 // Define a service using a base URL and expected endpoints
 export const storyApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -59,6 +64,14 @@ export const storyApi = emptySplitApi.injectEndpoints({
             transformResponse: (response: { data: Story }) => response.data
         }),
         // Get preSigned URL for image upload
+        getCountriesWithStories: builder.mutation<CountryWithStory[], void>({
+            query: () => ({
+                method: 'GET',
+                url: `stories/count?groupBy=country`
+            }),
+            transformResponse: (response: { data: CountryWithStory[] }) => response.data
+        }),
+        // Get Countries with stories
         getPreSigned: builder.mutation<PreSigned, void>({
             query: (type: any) => ({
                 method: 'GET',
@@ -95,4 +108,4 @@ export const storyApi = emptySplitApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetStoryByIdQuery, useGetPreSignedMutation, useGetStoriesMutation, useCreateStoryMutation, useLoveStoryMutation, useReportStoryMutation, useDeleteStoryMutation } = storyApi;
+export const { useGetStoryByIdQuery, useGetCountriesWithStoriesMutation, useGetPreSignedMutation, useGetStoriesMutation, useCreateStoryMutation, useLoveStoryMutation, useReportStoryMutation, useDeleteStoryMutation } = storyApi;

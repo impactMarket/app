@@ -5,6 +5,7 @@ import {
     Col,
     ModalWrapper,
     Row,
+    Text,
     toast,
     useModal
 } from '@impact-market/ui';
@@ -13,11 +14,13 @@ import { useDeleteStoryMutation } from '../../api/story';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import React, { useEffect } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const DeleteStory = () => {
     const [deleteStory] = useDeleteStoryMutation();
     const { handleClose, storyId, arrayId, removeIndex } = useModal();
     const { modals } = usePrismicData();
+    const { t } = useTranslations();
     const {
         control,
         reset,
@@ -29,12 +32,17 @@ const DeleteStory = () => {
 
     const onSubmit: SubmitHandler<any> = async () => {
         try {
-            await deleteStory(storyId);
+            const deleteRequest: any = await deleteStory(storyId);
 
             removeIndex(arrayId);
             handleClose();
 
-            toast.success(<RichText content={modals.data.deleteStorySuccess}/>);
+            if(deleteRequest?.error) {
+                toast.error(<RichText content={modals.data.deleteStoryError}/>);
+            } else {
+                toast.success(<RichText content={modals.data.deleteStorySuccess}/>);
+            }
+
         } catch (e) {
             toast.error(<RichText content={modals.data.deleteStoryError}/>);
             console.log(e);
@@ -65,7 +73,7 @@ const DeleteStory = () => {
                     small
                 />
                 <Row mt={1}>
-                    <Col colSize={{ sm: 6, xs: 12 }}>
+                    <Col colSize={{ sm: 6, xs: 6 }} pr={0.5}>
                         <Button gray onClick={handleClose} w="100%">
                             <RichText
                                 content={
@@ -75,18 +83,14 @@ const DeleteStory = () => {
                         </Button>
                     </Col>
 
-                    <Col colSize={{ sm: 6, xs: 12 }}>
+                    <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
                         <Button
                             error
                             isLoading={isSubmitting}
                             onClick={onSubmit}
                             w="100%"
                         >
-                            <RichText
-                                content={
-                                    modals.data.deleteStoryConfirmButtonLabel
-                                }
-                            />
+                            <Text>{t('delete')}</Text>
                         </Button>
                     </Col>
                 </Row>

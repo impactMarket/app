@@ -1,6 +1,7 @@
 import { Select as BaseSelect, SelectProps as BaseSelectProps, Box, CountryFlag, Icon, Text } from '@impact-market/ui';
 import { Controller } from "react-hook-form";
 import React, { useState } from 'react';
+import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 type Partial<BaseSelectProps> = {
@@ -25,6 +26,17 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
     const newValue = isMultiple && initialValue && !Array.isArray(initialValue) ? [initialValue]: initialValue;
     const [value, setValue] = useState(newValue || '');
     const { t } = useTranslations();
+    const { getByKey } = useFilters();
+
+    const clearLabel = () => {
+        const textProps = getByKey('country') ? { p600: true } : { g400: true };
+    
+        return (
+            <Text medium {...textProps}>
+                {t('clear')}...
+            </Text>
+        );
+    };
 
     const handleSelect = (e: any) => {
         if (typeof callback === 'function') {
@@ -69,6 +81,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
             <>
                 { label && <Text g700 mb={0.375} medium small>{label}</Text> }
                 <BaseSelect
+                    clearLabel={clearLabel}
                     isMultiple={isMultiple}
                     onChange={handleSelect}
                     optionsSearchPlaceholder={t('search')}
