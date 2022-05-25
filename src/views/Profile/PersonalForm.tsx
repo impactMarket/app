@@ -1,15 +1,22 @@
 /* eslint-disable sort-keys */
-import { Box, Col, Row, toast } from '@impact-market/ui';
+import { Box, Col, Row } from '@impact-market/ui';
 import { countriesOptions } from '../../utils/countries';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
+import { useYupValidationResolver, yup } from '../../helpers/yup';
 import FormActions from './FormActions';
 import Input from '../../components/Input';
 import React, { useEffect } from "react";
 import Select from '../../components/Select';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+
+const schema = yup.object().shape({
+    age: yup.number().positive().integer().min(1).max(150).nullable(true).transform((_, val) => val === '' ? null : Number(val)),
+    firstName: yup.string().max(30),
+    lastName: yup.string().max(30)
+});
 
 const Form = ({ onSubmit }: any) => {
     const auth = useSelector(selectCurrentUser);
@@ -25,13 +32,14 @@ const Form = ({ onSubmit }: any) => {
 
     const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm({
         defaultValues: {
-            age: auth?.user?.age || undefined,
+            age: auth?.user?.age || '',
             bio: auth?.user?.bio || '',
-            country: auth?.user?.country || '',
+            country: auth?.user?.country || undefined,
             firstName: auth?.user?.firstName || '',
             gender: auth?.user?.gender || '',
             lastName: auth?.user?.lastName || ''
-        }
+        },
+        resolver: useYupValidationResolver(schema)
     });
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
 
@@ -41,42 +49,31 @@ const Form = ({ onSubmit }: any) => {
         }
     }, [isSubmitSuccessful]);
 
-    useEffect(() => {
-        if(errors?.firstName || errors?.lastName || errors?.country || errors?.bio) {
-            // TODO: add text to Prismic
-            toast.error('Please fill in all required fields!');
-        }
-    }, [errors]);
-
     const handleCancel = (e: any) => {
         e.preventDefault();
         reset();
-    } 
+    }
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box pl={1.5} pr={1.5}>
                 <Row>
                     <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 1, xs: 0.75 }}>
-                        { /* TODO: add text to Prismic */ }
                         <Input 
                             control={control}
-                            hint={errors?.firstName ? 'This field is required' : ''}
+                            hint={errors?.firstName ? t(errors?.firstName?.message?.key)?.replace('{{ value }}', errors?.firstName?.message?.value) : ''}
                             label={t('firstName')}
                             name="firstName"
-                            rules={{ required: true }}
-                            withError={errors?.firstName}
+                            withError={!!errors?.firstName}
                         />
                     </Col>
                     <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0.75 }}>
-                        { /* TODO: add text to Prismic */ }
                         <Input 
                             control={control}
-                            hint={errors?.lastName ? 'This field is required' : ''}
+                            hint={errors?.lastName ? t(errors?.lastName?.message?.key)?.replace('{{ value }}', errors?.lastName?.message?.value) : ''}
                             label={t('lastName')}
                             name="lastName"
-                            rules={{ required: true }}
-                            withError={errors?.lastName}
+                            withError={!!errors?.lastName}
                         />
                     </Col>
                 </Row>
@@ -84,10 +81,12 @@ const Form = ({ onSubmit }: any) => {
                     <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 1, xs: 0.75 }}>
                         <Input 
                             control={control}
+                            hint={errors?.age ? t(errors?.age?.message?.key)?.replace('{{ value }}', errors?.age?.message?.value) : ''}
                             label={t('age')}
                             name="age"
-                            onKeyDown={(e: any) => e.key === 'e' && e.preventDefault()}
+                            onKeyDown={(e: any) => (e.key === 'e' || e.key === '-') && e.preventDefault()}
                             type="number"
+                            withError={!!errors?.age}
                         />
                     </Col>
                     <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0.75 }}>
@@ -104,30 +103,23 @@ const Form = ({ onSubmit }: any) => {
                     <Col colSize={12}>
                         <Input 
                             control={control}
-                            hint={errors?.bio ? 'This field is required' : ''}
                             label={t('bio')}
                             limit={275}
                             name="bio"
                             placeholder={introduction}
                             rows={6}
-                            rules={{ required: true }}
-                            withError={errors?.bio}
                         />
                     </Col>
                 </Row>
                 <Row mt={0.5}>
                     <Col colSize={12}>
-                        { /* TODO: add text to Prismic */ } 
                         <Select
                             control={control}
-                            hint={errors?.country ? 'This field is required' : ''}
                             isMultiple={false}
                             label={t('country')}
                             name="country"
                             options={countriesOptions}
-                            rules={{ required: true }}
                             showFlag
-                            withError={errors?.country}
                             withOptionsSearch
                         />
                     </Col>

@@ -17,6 +17,7 @@ import PersonalForm from './PersonalForm';
 import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import _ from 'lodash';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
@@ -57,7 +58,10 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            const result = await updateUser(data).unwrap();
+            // Replace empty strings with undefined to prevent errors in API
+            const payload = _.mapValues(data, v => v === '' ? null : v);
+            
+            const result = await updateUser(payload).unwrap();
 
             if(result) {
                 dispatch(setUser({ user: { ...result }}));
@@ -68,10 +72,13 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 toast.error(<Message id="errorOccurred" />);
             }
         }
-        catch(e) {
+        catch(e: any) {
             console.log(e);
 
-            toast.error(<Message id="errorOccurred" />);
+            // TODO: instead of showing the error message directly, use codes in API and translate content in Prismic perhaps
+            if(e?.data?.error) {
+                toast.error(e?.data?.error);
+            }
         }
     };
 
@@ -123,7 +130,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         }
     }
 
-    // TODO: verificar se fica como está o delete
+    // TODO: check if Delete stays as it is
     const onDelete = async () => {
         try {
             await deleteUser();
