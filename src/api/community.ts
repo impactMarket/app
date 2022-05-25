@@ -40,27 +40,24 @@ export interface Contract {
     communityId: number;
 }
 export interface PendingCommunities {
-    data: {
-        count: number;
-        rows: [{
-            name: string;
-            description: string;
-            country: string;
-            city: string;
-            coverMediaPath: string;
-            ambassadorAddress: string;
-            proposals?: boolean;
-            contract: {
-                maxClaim: number;
-                baseInterval: number;
-                claimAmount: number;
-                incrementInterval: number;
-            };
-            success: boolean;
-            userHasVoted?: boolean;
-        }];
-    };
-    success: boolean;
+    count: number;
+    rows: [{
+        name: string;
+        description: string;
+        country: string;
+        city: string;
+        coverMediaPath: string;
+        ambassadorAddress: string;
+        proposals?: boolean;
+        contract: {
+            maxClaim: number;
+            baseInterval: number;
+            claimAmount: number;
+            incrementInterval: number;
+        };
+        success: boolean;
+        userHasVoted?: boolean;
+    }];
 };
 
 export interface CommunityContract {
@@ -114,7 +111,8 @@ export const communityApi = emptySplitApi.injectEndpoints({
             query: ({limit, offset}) => ({
                 method: 'GET',
                 url: `communities?status=pending&review=accepted${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
-            })
+            }),
+            transformResponse: (response: { data?: PendingCommunities }) => response.data
         }),
         //  Get reviews by country
         getReviewsByCountry: builder.mutation<ReviewsByCountry, string>({

@@ -1,15 +1,19 @@
+/* eslint-disable no-nested-ternary */
 import { Box, Pagination, Row, Spinner, Text } from '@impact-market/ui';
-import { useGetPendingCommunitiesMutation } from '../../api/community';
+import {
+    PendingCommunities,
+    useGetPendingCommunitiesMutation
+} from '../../api/community';
 import Community from './Community';
 import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
 
-const AddCommunityPage = () => {
+const AddCommunityPage = ({ setRequestsCount }: any) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [communities, setCommunities] = useState([]);
+    const [communities, setCommunities] = useState<PendingCommunities>();
     const [getPendingCommunities] = useGetPendingCommunitiesMutation();
     const limit = 2;
-
+    
     // Pagination
     const [offset, setItemOffset] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
@@ -25,8 +29,8 @@ const AddCommunityPage = () => {
                     offset
                 }).unwrap();
 
-                setTotalCount(response?.data?.count);
-                setCommunities(response?.data?.rows || []);
+                setTotalCount(response?.count);
+                setCommunities(response);
                 setIsLoading(false);
             } catch (error) {
                 console.log(error);
@@ -59,9 +63,22 @@ const AddCommunityPage = () => {
         }
     };
 
+    const removeIndex = (id: number) => {
+        setCommunities((oldCommunities: { count: number, rows: any }) => ({
+            count: oldCommunities.rows.filter((community: any) => id !== community.id).length,
+            rows: oldCommunities.rows.filter((community: any) => id !== community.id)})
+        );
+
+        setRequestsCount(totalCount - 1);
+    };
+
     return (
         <>
-            {!communities && !isLoading && (
+            {isLoading || !communities ? (
+                <Row fLayout="center" h="50vh" mt={2}>
+                    <Spinner isActive />
+                </Row>
+            ) : totalCount === 0 ? (
                 <Box mt="25vh">
                     <Row fLayout="center">
                         <Text>
@@ -69,17 +86,12 @@ const AddCommunityPage = () => {
                         </Text>
                     </Row>
                 </Box>
-            )}
-            {isLoading ? (
-                <Row fLayout="center" h="50vh" mt={2}>
-                    <Spinner isActive />
-                </Row>
             ) : (
                 <Box pb={2}>
                     <Box>
-                        <Box style={{ marginTop: 32 }}>
-                            {communities.map((community, index) => (
-                                <Community key={index} {...community} />
+                        <Box mt={2}>
+                            {communities.rows.map((community, index) => (
+                                <Community data={community} key={index} {...community} removeIndex={removeIndex} />
                             ))}
                         </Box>
                     </Box>
@@ -91,8 +103,7 @@ const AddCommunityPage = () => {
                         nextLabel="Next"
                         pageCount={pageCount}
                         previousIcon="arrowLeft"
-                        previousLabel="Previous"
-                    />
+                        previousLabel="Previous" />
                 </Box>
             )}
         </>

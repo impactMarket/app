@@ -6,7 +6,8 @@ import {
     Divider,
     Label,
     Row,
-    Text
+    Text,
+    toast
 } from '@impact-market/ui';
 import { ProposalType } from './ProposalsPage';
 import { selectCurrentUser } from '../../state/slices/auth';
@@ -24,25 +25,20 @@ interface proposalProps {
 }
 
 const Proposal: React.FC<proposalProps> = ({ data }) => {
-    const [proposals, setProposals] = useState<ProposalType>(data);
     const { execute, vote } = useUBICommittee();
+    const { t } = useTranslations();
+    const { view } = usePrismicData();
+    const [proposals, setProposals] = useState<ProposalType>(data);
+    const [loadingButtonYes, toggleLoadingButtonYes] = useState<boolean | undefined>();
+    const [loadingButtonExecute, toggleLoadingButtonExecute] = useState(false);
     const objDescription = proposals.description ? JSON.parse(proposals.description) : {};
     const voteRunning = ['active'];
     const auth = useSelector(selectCurrentUser);
-    const { t } = useTranslations();
-    const { view } = usePrismicData();
-    const [loadingButtonNo, toggleLoadingButtonNo] = useState(false);
-    const [loadingButtonYes, toggleLoadingButtonYes] = useState(false);
-    const [disableButtonNo, toggleDisableButtonNo] = useState(false);
-    const [disableButtonYes, toggleDisableButtonYes] = useState(false);
-    const [loadingButtonExecute, toggleLoadingButtonExecute] = useState(false);
-    const [newVotesFor, setNewVotesFor] = useState(data.votesFor);
-    const [newVotesAgainst, setNewVotesAgainst] = useState(data.votesAgainst);
-
+   
     const handleVote = (a: number) => {
         if (proposals.userVoted === 0) {
             const votesNo = a - 1;
-            
+
             return votesNo;
         }
 
@@ -52,88 +48,56 @@ const Proposal: React.FC<proposalProps> = ({ data }) => {
             return votesYes;
         }
     };
-    
+
     const executeFunction = async (id: number) => {
         try {
             toggleLoadingButtonExecute(true);
             await execute(id);
-            setProposals({...proposals, status: 'executed'});
+            setProposals({ ...proposals, status: 'executed' });
             toggleLoadingButtonExecute(false);
+            toast.success(<RichText content={view.data.messageProposalsExecuted}/>);
         } catch (error) {
+            toast.error(<RichText content={view.data.messageProposalsNotExecuted}/>);
             toggleLoadingButtonExecute(false);
         }
-    }
+    };
 
     const voteFunction = async (id: number, votersChoice: number) => {
         try {
-            if(votersChoice === 1) {
-                toggleLoadingButtonYes(true);
-                toggleDisableButtonNo(true);
-                await vote(id, 1);
-                toggleLoadingButtonYes(false);
-                changeVote(1);
-            } else {
-                toggleLoadingButtonNo(true);
-                toggleDisableButtonYes(true);
-                await vote(id, 0);
-                toggleLoadingButtonNo(false);
-                changeVote(0);
-            }
+            toggleLoadingButtonYes(votersChoice === 1);
+            await vote(id, votersChoice === 1 ? 1 : 0);
+            
+            setProposals((oldValue) => ({
+                ...oldValue,
+                status: handleStatus( oldValue.votesFor, oldValue.votesAgainst, oldValue.status, votersChoice ),
+                userVoted: votersChoice,
+                votesAgainst: votersChoice === 0 ? oldValue.votesAgainst + 1 : oldValue.votesAgainst,
+                votesFor: votersChoice === 1 ? oldValue.votesFor + 1 : oldValue.votesFor
+            }));
+            toggleLoadingButtonYes(undefined);
+            toast.success(<RichText content={view.data.messageVoteRegistered}/>);
         } catch (error) {
-            if(votersChoice === 1) {
-                toggleLoadingButtonYes(false);
-                toggleDisableButtonNo(false);
-            } else {
-                toggleLoadingButtonNo(false);
-                toggleDisableButtonYes(false);
-            }
+            toast.error(<RichText content={view.data.messageVoteNotRegistered}/>);
+            toggleLoadingButtonYes(undefined);
         }
-    }
+    };
 
-    const handleVoteAgainst = (state: number) => {
-        const oldVotesAgainst = data.votesAgainst;
-
-        if(state === 0) {
-            setNewVotesAgainst(oldVotesAgainst + 1);
-
-            return oldVotesAgainst + 1;
+    const handleStatus = (
+        votesFor: number,
+        votesAgainst: number,
+        oldStatus: 'canceled' | 'executed' | 'ready' | 'defeated' | 'expired' | 'active',
+        state: number
+    ) => {
+        if (state === 0 && votesAgainst + 1 === 2) {
+            return 'defeated';
         }
-
-        return oldVotesAgainst;
-    }
-
-    const handleVoteFor = (state: number) => {
-        const oldVotesFor = data.votesFor;
         
-        if(state === 1) {
-            setNewVotesFor(oldVotesFor + 1);
-
-            return oldVotesFor + 1;
+        if (state === 1 && votesFor + 1 === 2) {
+            return 'ready';
         }
 
-        return oldVotesFor;
-    }
-
-    const handleStatus = () => {
-        if(newVotesFor === 2) {
-            return 'ready'
-        } 
-
-        if(newVotesAgainst === 2) {
-            return 'defeated'
-        }
-
-        return data.status  
-    }
-
-    const changeVote = (state: number) => {
-        setProposals({
-            ...proposals,
-            status: handleStatus(),
-            votesAgainst: handleVoteAgainst(state),
-            votesFor: handleVoteFor(state)
-        })
-    }
+        return oldStatus;
+    };
 
     return (
         <Card mt={1}>
@@ -141,7 +105,7 @@ const Proposal: React.FC<proposalProps> = ({ data }) => {
                 <String id="proposal" /> #{proposals.id}
             </Text>
             <Row pb={0.25} pt={0.5}>
-                <Col colSize={{ sm: 8 , xs: 12}}>
+                <Col colSize={{ sm: 8, xs: 12 }}>
                     <Row>
                         <Text g500 pr={0}>
                             <String id="createdBy" />:
@@ -176,35 +140,52 @@ const Proposal: React.FC<proposalProps> = ({ data }) => {
                     {proposals.status === 'canceled' && (
                         <Label content={view.data.stringProposalCanceled} error icon="arrowDown" />
                     )}
-
                 </Col>
             </Row>
 
             <Divider />
+            
             <Row fLayout="center start">
                 <Col pl={0}>
-                        {!auth?.type?.includes('subDAOMember') && voteRunning?.includes(proposals.status) &&
+                    {!auth?.type?.includes('subDAOMember') &&
+                        voteRunning?.includes(proposals.status) && (
                             <Label content={<RichText content={view.data.messageNotAllowedVote}/>} error icon="sad" ml={1} />
-                        }
+                        )}
 
                     <CanBeRendered types={['subDAOMember']}>
-                    {proposals.userVoted === -1 && proposals.status === 'active' && (
-                        <>
-                            <Button disabled={disableButtonNo} error isLoading={loadingButtonNo} ml={1} mr={0.5} onClick={() => voteFunction(proposals.id, 0)} >
-                                <String id="decline" />
-                            </Button>
+                        {proposals.userVoted === -1 &&
+                            proposals.status === 'active' && (
+                                <>
+                                    <Button
+                                        disabled={loadingButtonYes}
+                                        error
+                                        isLoading={loadingButtonYes === false}
+                                        ml={1}
+                                        mr={0.5}
+                                        onClick={() => voteFunction(proposals.id, 0)}
+                                    >
+                                        <String id="decline" />
+                                    </Button>
 
-                            <Button disabled={disableButtonYes} isLoading={loadingButtonYes} ml={1} onClick={() =>  voteFunction(proposals.id, 1)} success >
-                                <String id="accept" />
-                            </Button>
-                        </>
-                    )}
+                                    <Button
+                                        disabled={loadingButtonYes === false}
+                                        isLoading={loadingButtonYes}
+                                        ml={1}
+                                        onClick={() =>
+                                            voteFunction(proposals.id, 1)
+                                        }
+                                        success
+                                    >
+                                        <String id="accept" />
+                                    </Button>
+                                </>
+                            )}
 
-                    {proposals.status === 'ready' && (
-                        <Button isLoading={loadingButtonExecute} ml={1} mr={1.938} onClick={() => executeFunction(proposals.id)} >
-                            <RichText content={view.data.stringProposalExecuted}/>
-                        </Button>
-                    )}
+                        {proposals.status === 'ready' && (
+                            <Button isLoading={loadingButtonExecute} ml={1} mr={1.938} onClick={() => executeFunction(proposals.id)}>
+                                <RichText content={view.data.stringExecuteProposal} />
+                            </Button>
+                        )}
                     </CanBeRendered>
 
                     {proposals.status !== 'active' && (
@@ -214,7 +195,6 @@ const Proposal: React.FC<proposalProps> = ({ data }) => {
                 <Col pl={0}>
                     <Row>
                         <Box flex pr={0.25}>
-
                             {proposals.userVoted === 1 && (
                                 <>
                                     <Text g800 pl={0.5} semibold>
@@ -239,7 +219,6 @@ const Proposal: React.FC<proposalProps> = ({ data }) => {
                                     </Text>
                                 </>
                             )}
-
 
                             <Text pl={0.5} pr={0.5}>
                                 ·
