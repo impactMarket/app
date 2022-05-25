@@ -817,6 +817,13 @@
         },
         "type": "Text"
       },
+      "string-seeLess": {
+        "config": {
+          "label": "seeLess",
+          "placeholder": "See less"
+        },
+        "type": "Text"
+      },
       "string-seeMore": {
         "config": {
           "label": "seeMore",
@@ -1137,6 +1144,31 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,strong"
+        }
+      },
+      "message-communityState": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityState",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-supportingCommunities": {
+        "type": "StructuredText",
+        "config": {
+          "label": "supportingCommunities",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "slices1": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {}
         }
       }
     }
