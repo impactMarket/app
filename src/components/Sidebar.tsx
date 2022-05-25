@@ -48,12 +48,6 @@ const getUserType = (user: User) => {
     return 'donor';
 }
 
-const abortIfActive = (isActive: boolean) => {
-    return (event: React.MouseEvent) => {
-        isActive && event.preventDefault();
-    }
-};
-
 const ConnectButton = (props: any) => {
     const [isConnecting, setIsConnecting] = useState(false);
 
@@ -99,7 +93,6 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
 const SidebarFooter = (props: { user?: User }) => {
     const { user } = props;
     const { address, wrongNetwork } = useWallet();
-    const { asPath } = useRouter();
     
     useEffect(() => {   
         if(wrongNetwork) {
@@ -117,7 +110,6 @@ const SidebarFooter = (props: { user?: User }) => {
                 {...user}
                 address={formatAddress(address, [6, 4])}
                 name={getUserName(user)}
-                onClick={(e) => asPath === '/profile' && e.preventDefault()}
                 photo={{ url: user?.avatarMediaPath ? getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) : '' }}
             />
         </Link>
@@ -184,21 +176,21 @@ const Sidebar = () => {
             {data?.menus?.map((group, groupIndex) => (
                 <SidebarMenuGroup key={groupIndex}>
                     {group.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} key={index} onClick={abortIfActive(item?.isActive)} />
+                        <MenuItem {...item} key={index} />
                     ))}
                 </SidebarMenuGroup>
             ))}
             {!!data?.commonMenu?.length && (
                 <SidebarMenuGroup isCollapsible={!!data?.menus?.length} title={!!data?.menus?.length ? 'impactMarket' : undefined}>
                     {data?.commonMenu.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} key={index} onClick={abortIfActive(item?.isActive)} />
+                        <MenuItem {...item} key={index} />
                     ))}
                 </SidebarMenuGroup>
             )}
             {!!data?.footerMenu?.length && (
                 <SidebarMenuGroup mt="auto">
                     {data?.footerMenu.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} key={index} onClick={abortIfActive(item?.isActive)} />
+                        <MenuItem {...item} key={index} />
                     ))}
                 </SidebarMenuGroup>
             )}
