@@ -4,7 +4,7 @@ import {
     CeloMainnet,
     ContractKitProvider,
     Network,
-    useContractKit,
+    useContractKit
 } from '@celo-tools/use-contractkit';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
 import { provider } from '../helpers';
@@ -57,7 +57,7 @@ const AppProvider = (props: WithChildrenProps & BaseState) => {
 
     useEffect(() => {
         setState(state => ({ ...state, ...forwardState }))
-    }, [forwardState?.address])
+    }, [forwardState?.address, forwardState?.network])
 
     return (
         <AppContext.Provider value={{ ...state, setState }}>
@@ -73,7 +73,7 @@ const KitWrapper = (props: WithChildrenProps) => {
     const { address, connect, destroy: disconnect, initialised: isReady, network, kit } = useContractKit();
 
     const forwardData = { address, connect, disconnect, isReady, network };
-
+    
     return (
         <UtilsWrapper address={address} web3={kit.web3}>
             <AppProvider {...forwardData}>
@@ -86,23 +86,32 @@ const KitWrapper = (props: WithChildrenProps) => {
 
 const WrapperProvider = (props: WithChildrenProps) => {
     const { children } = props;
+    const [network, setNetwork] = useState() as any;
 
-    const currentNetwork =
-        provider.connection.url.indexOf('alfajores') !== -1
-            ? Alfajores
-            : CeloMainnet;
+    const networks = [CeloMainnet, Alfajores];
+
+    useEffect(() => {
+        const lastUsedNetworkName = window.localStorage.getItem('use-contractkit/last-used-network');
+        const defaultNetwork = networks.find(({ rpcUrl }: any) => rpcUrl === provider.connection.url);
+        const network = networks.find(({ name }: any) => name === lastUsedNetworkName) || defaultNetwork;
+
+        setNetwork(network);
+    }, []);
+
+    if (!network) {
+        return null;
+    }
 
     return (
         <ContractKitProvider
             dapp={{
                 description: 'Decentralized Poverty Alleviation Protocol',
-                icon:
-                    'https://dzrx8kf1cwjv9.cloudfront.net/impactmarket/PACT_Token_Ticker_Blue@2x.png',
+                icon: 'https://dzrx8kf1cwjv9.cloudfront.net/impactmarket/PACT_Token_Ticker_Blue@2x.png',
                 name: 'impactMarket',
                 url: 'https://impactmarket.com'
             }}
-            network={currentNetwork}
-            networks={[CeloMainnet, Alfajores]}
+            network={network}
+            networks={networks}
         >
             <KitWrapper>
                 {children}
