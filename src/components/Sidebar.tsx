@@ -132,7 +132,7 @@ const SidebarMobileActions = (props: { user?: User }) => {
 }
 
 const Sidebar = () => {
-    const { asPath } = useRouter();
+    const { asPath, push } = useRouter();
     const { user } = useSelector(selectCurrentUser);
 
     const [data, setData] = useState<MenusState | undefined>();
@@ -167,9 +167,29 @@ const Sidebar = () => {
         })
     }, [user]);
 
+    const handleLogoClick = (e: any) => {
+        e.preventDefault();
+
+        if ((user?.roles).includes('beneficiary')){
+            return push('/beneficiary')
+        }
+        if ((user?.roles).includes('manager')){
+            return push('/')
+        }
+        if ((user?.roles).includes('ambassador')){
+            return push('/requests')
+        } 
+        if ((user?.roles).includes('subDAOMember')){
+            return push('/proposals')
+        }
+
+        return push('/')
+    }
+
     return (
         <SidebarBase
-            footer={<SidebarFooter isActive={checkRoute('/profile')} user={user} />}
+            footer={<SidebarFooter user={user} />}
+            handleLogoClick={handleLogoClick}
             isLoading={!data}
             mobileActions={<SidebarMobileActions user={user} />}
         >
