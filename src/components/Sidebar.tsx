@@ -92,7 +92,13 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
 
 const SidebarFooter = (props: { user?: User }) => {
     const { user } = props;
-    const { address } = useWallet();
+    const { address, wrongNetwork } = useWallet();
+    
+    useEffect(() => {   
+        if(wrongNetwork) {
+            openModal('wrongNetwork');
+        }
+    }, [wrongNetwork]);
 
     if (!address) {
         return <ConnectButton fluid />
@@ -147,8 +153,6 @@ const Sidebar = () => {
         const { items: menuItems, withCommon, withFooter } = (extractFromData(userConfigData, 'asideMenu') || {}) as any;
 
         const menus = menuItems?.map(({ items }: any) => parseMenuItems(items)) as SidebarMenuItemProps[][];
-
-        console.log(userFooterMenuFromPrismic);
 
         const commonMenu = (withCommon ? parseMenuItems(commonMenuFromPrismic) : []) as SidebarMenuItemProps[];
         const footerCommonMenu = (withFooter ? parseMenuItems(footerMenuFromPrismic) : []) as SidebarMenuItemProps[];
