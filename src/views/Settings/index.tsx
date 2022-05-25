@@ -30,11 +30,17 @@ const Settings: React.FC<{ isLoading?: boolean }> = props => {
 
                 toast.success(<Message id="successfullyChangedData" />);
             }
+            else {
+                toast.error(<Message id="errorOccurred" />);
+            }
         }
-        catch(e) {
+        catch(e: any) {
             console.log(e);
 
-            toast.error(<Message id="errorOccurred" />);
+            // TODO: instead of showing the error message directly, use codes in API and translate content in Prismic perhaps
+            if(e?.data?.error) {
+                toast.error(e?.data?.error);
+            }
         }
     };
 
