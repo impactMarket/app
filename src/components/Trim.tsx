@@ -22,7 +22,7 @@ const Trim = (props: any) => {
           {showMore ? message : `${splitMessage.slice(0, rows).join('\n').substring(0, limit)}...`}
         </Text>
         <TextLink onClick={() => setShowMore(!showMore)}>
-              {showMore ? t('seeLess') : t('seeMore')}
+              {showMore ? t('seeLess') : `${t('seeMore')}...`}
         </TextLink>
     </>
   )

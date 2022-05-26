@@ -37,7 +37,7 @@ const Filters = () => {
     }, []);
     
     return (
-        <Row>
+        <Row pb={1}>
             <Col colSize={{ sm: 4, xs: 12 }}>
                 <Select
                     callback={(value: any) => update('country', value)}

@@ -224,16 +224,16 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         }
 
         return (
-            <Row fLayout="center" key={index} >
+            <Row fLayout="center" key={index}>
                 <Col colSize={{ sm: 10, xs: 11 }} padding={0} pb={1} >
-                    <Card mt={1} >
+                    <Card mt={1} padding={0}>
                         {story?.storyMediaPath && (  
                         <Box pt="60%" style={{position: 'relative'}} w="100%">
-                            <Image alt="" src={story?.storyMediaPath} style={{borderRadius: '8px'}} />
+                            <Image alt="" src={story?.storyMediaPath} style={{borderTopLeftRadius: '8px', borderTopRightRadius: '8px'}} />
                         </Box>
                           
                         )}
-                        <Row fLayout="between" mt={0.625}>
+                        <Row fLayout="between" mt={0.625} pl={1} pr={1}>
                             <Col colSize={{ sm: 6, xs: 12 }} ml={0.625}>
                                 <Row>
                                     <Box flex>
@@ -263,8 +263,8 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             </Col>
                             {story?.message && (
                                 <Box show={{ sm: 'none', xs: 'flex' }}>
-                                    <Box >
-                                        <Trim g800 large limit={100} medium message={story.message} pb={0} pt={0} rows={4} />
+                                    <Box>
+                                        <Trim g800 large limit={100} message={story.message} pb={0} pt={0} rows={4} />
                                     </Box>
                                 </Box>
 
@@ -281,16 +281,18 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Button> */}
                             </Col>
                         </Row>
-                        <Divider mt={1.625} show={{ sm: 'flex', xs: 'none' }} />
+                        <Box pl={1} pr={1}>
+                            <Divider mt={1.625} show={{ sm: 'flex', xs: 'none' }}/>
+                        </Box>
                         {story?.message && (
                         <Box show={{ sm: 'flex', xs: 'none' }}>
-                            <Box >
-                                <Trim g800 large limit={256} medium message={story.message} pb={0} pt={0} rows={4} />
+                            <Box pl={1} pr={1}>
+                                <Trim g800 large limit={256} message={story.message} pb={0} pt={0} rows={4} />
                             </Box>
                         </Box>
                         )}
 
-                        <Box fLayout="start between" flex mt={{sm: 1, xs: 0}}>
+                        <Box fLayout="start between" flex mt={{sm: 2, xs: 0}} pb={1} pl={1} pr={1}>
                             <Row fLayout="center start" margin={0} w="100%">
                                 <Col colSize={{ sm: 3, xs: 12}} padding={0}>
                                     <Button
