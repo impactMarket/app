@@ -10,6 +10,7 @@ import {
 } from '@impact-market/ui';
 import { formatAddress } from '../utils/formatAddress';
 import { getImage } from '../utils/images';
+import { getNotifications } from '../state/slices/notifications';
 import { getUserName } from '../utils/users';
 import { selectCurrentUser } from '../state/slices/auth';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -50,6 +51,7 @@ type MenusState = {
     commonMenu?: SidebarMenuItemProps[],
     footerMenu?: SidebarMenuItemProps[],
     menus?: SidebarMenuItemProps[][],
+    flags?: any
 }
 
 const getUserType = (user: User) => {
@@ -155,6 +157,7 @@ const SidebarMobileActions = (props: { user?: User }) => {
 const Sidebar = () => {
     const { asPath, push } = useRouter();
     const { user } = useSelector(selectCurrentUser);
+    const { notifications } = useSelector(getNotifications);
 
     const [data, setData] = useState<MenusState | undefined>();
 
@@ -183,10 +186,11 @@ const Sidebar = () => {
 
         setData({
             commonMenu,
+            flags: notifications,
             footerMenu,
             menus
         })
-    }, [user]);
+    }, [user, notifications]);
 
     const handleLogoClick = () => {
         let route = '/';
@@ -220,21 +224,21 @@ const Sidebar = () => {
             {data?.menus?.map((group, groupIndex) => (
                 <SidebarMenuGroup key={groupIndex}>
                     {group.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} key={index} />
+                        <MenuItem {...item} flag={data.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
                     ))}
                 </SidebarMenuGroup>
             ))}
             {!!data?.commonMenu?.length && (
                 <SidebarMenuGroup isCollapsible={!!data?.menus?.length} title={!!data?.menus?.length ? 'impactMarket' : undefined}>
                     {data?.commonMenu.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} key={index} />
+                        <MenuItem {...item} flag={data.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
                     ))}
                 </SidebarMenuGroup>
             )}
             {!!data?.footerMenu?.length && (
                 <SidebarMenuGroup mt="auto">
                     {data?.footerMenu.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} key={index} />
+                        <MenuItem {...item} flag={data.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
                     ))}
                 </SidebarMenuGroup>
             )}

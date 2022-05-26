@@ -44,6 +44,26 @@ interface PreSigned {
     uploadURL?: string;
 }
 
+export interface Notification {
+    count: number;
+    rows: [{
+        id: number;
+        userId: number;
+        type: number;
+        params: {
+            userAddress: string;
+            contentId: number;
+        };
+        read: boolean;
+        createdAt: string;
+    }]
+}
+
+export interface UnreadNotifications {
+    success : boolean;
+    data: number;
+}
+
 // Define a service using a base URL and expected endpoints
 export const userApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -73,6 +93,14 @@ export const userApi = emptySplitApi.injectEndpoints({
                 url: 'users'
             })
         }),
+        // Get notifications
+        getNotifications: builder.mutation<Notification[], {limit: number, offset: number}>({
+            query: ({limit, offset}) => ({
+                method: 'GET',
+                url: `users/notifications?${!!offset ? `&offset=${offset}` : ''}${!!limit ? `&limit=${limit}` : ''}`
+            }),
+            transformResponse: (response: { data: Notification[] }) => response.data
+        }),
         // Get preSigned URL for image upload
         getPreSigned: builder.mutation<PreSigned, void>({
             query: type => ({
@@ -80,6 +108,13 @@ export const userApi = emptySplitApi.injectEndpoints({
                 url: `users/presigned?mime=${type}`
             }),
             transformResponse: (response: { data: PreSigned }) => response.data
+        }),
+        // Get number of unread notifications
+        getUnreadNotifications: builder.mutation<UnreadNotifications, void>({
+            query: () => ({
+                method: 'GET',
+                url: 'users/notifications/unread'
+            })
         }),
         // Get profile
         getUser: builder.mutation<User, void>({
@@ -95,6 +130,14 @@ export const userApi = emptySplitApi.injectEndpoints({
                 url: `users/${id}`
             }),
             transformResponse: (response: { data: User }) => response.data
+        }),
+        // Mark notifications as read
+        updateNotifications: builder.mutation<Notification[], {body: any}>({
+            query: ({body}) => ({
+                body,
+                method: 'PUT',
+                url: 'users/notifications/read'
+            })
         }),
         // Edit profile
         updateUser: builder.mutation<User, PutPostUser>({
@@ -114,8 +157,11 @@ export const {
     useAcceptRulesMutation,
     useCreateUserMutation,
     useDeleteUserMutation,
+    useGetNotificationsMutation,
+    useGetUnreadNotificationsMutation,
     useGetUserMutation,
     useGetUserByIdMutation,
+    useUpdateNotificationsMutation,
     useUpdateUserMutation,
     useGetPreSignedMutation
 } = userApi;
