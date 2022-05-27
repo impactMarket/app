@@ -124,6 +124,17 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
     const allowClaim = () => toggleClaim(true);
 
+    const scrollIntoView = (isActive: boolean, el: HTMLElement) => {
+        setTimeout(() => {
+            if (!isActive) {
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            };
+        }, 300);
+    };
+
     const cardType = !hasFunds ? 1 : !isClaimable && !claimAllowed ? 0 : 2;
     const cardIcon = cardType === 0 ? "clock" : cardType === 1 ? "alertCircle" : "coinStack";
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
@@ -194,7 +205,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 <Accordion mt={2}>
                     {
                         view.data.faq.map((faq: any, index: number) =>
-                            <AccordionItem key={index} title={faq.title}>
+                            <AccordionItem key={index} scrollIntoView={scrollIntoView} title={faq.title}>
                                 <RichText content={faq.content} g500 small />
                             </AccordionItem>
                         )
