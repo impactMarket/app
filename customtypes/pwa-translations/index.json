@@ -243,6 +243,20 @@
         },
         "type": "Text"
       },
+      "string-communityFundsRunningOut": {
+        "config": {
+          "label": "communityFundsRunningOut",
+          "placeholder": "Community funds running out."
+        },
+        "type": "Text"
+      },
+      "string-communityRunOutOfFunds": {
+        "config": {
+          "label": "communityRunOutOfFunds",
+          "placeholder": "Community has run out of funds."
+        },
+        "type": "Text"
+      },
       "string-confirm": {
         "config": {
           "label": "confirm",
@@ -436,6 +450,13 @@
         "config": {
           "label": "firstName",
           "placeholder": "First name"
+        },
+        "type": "Text"
+      },
+      "string-fundsRequested": {
+        "config": {
+          "label": "fundsRequested",
+          "placeholder": "Funds Requested"
         },
         "type": "Text"
       },
@@ -772,6 +793,13 @@
         "config": {
           "label": "reportSuspiciousActivity",
           "placeholder": "Report Suspicious Activity"
+        },
+        "type": "Text"
+      },
+      "string-requestMoreFunds": {
+        "config": {
+          "label": "requestMoreFunds",
+          "placeholder": "Request more funds"
         },
         "type": "Text"
       },
@@ -1162,6 +1190,42 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-beneficiariesNotAllowance": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiariesNotAllowance",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityFundsRunOutIn": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityFundsRunOutIn",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-communityReceivedFromDAO": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityReceivedFromDAO",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-beneficiariesCanResume": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiariesCanResume",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
         }
       },
       "slices1": {

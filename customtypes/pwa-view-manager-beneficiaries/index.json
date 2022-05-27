@@ -1,0 +1,56 @@
+{
+  "id": "pwa-view-manager-beneficiaries",
+  "label": "[PWA] [View] Manager Beneficiaries",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "type": "Text",
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        }
+      },
+      "seo-description": {
+        "type": "Text",
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        }
+      },
+      "seo-keywords": {
+        "type": "Text",
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        }
+      },
+      "seo-image": {
+        "type": "Text",
+        "config": {
+          "label": "SEO image",
+          "placeholder": ""
+        }
+      }
+    },
+    "heading": {
+      "heading-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "Beneficiaries"
+        }
+      },
+      "heading-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Content",
+          "placeholder": "Manage community beneficiaries.",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      }
+    }
+  }
+}
