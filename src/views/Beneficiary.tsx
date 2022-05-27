@@ -31,7 +31,12 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { title, content } = extractFromView('heading') as any;
 
     const auth = useSelector(selectCurrentUser);
+    const language = auth?.user?.language || 'en-US';
     const currency = auth?.user?.currency || 'USD';
+    const localeCurrency = new Intl.NumberFormat(language, {
+        currency,
+        style: 'currency'
+    });
     const router = useRouter();
     const { t } = useTranslations();
 
@@ -119,13 +124,24 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
     const allowClaim = () => toggleClaim(true);
 
+    const scrollIntoView = (isActive: boolean, el: HTMLElement) => {
+        setTimeout(() => {
+            if (!isActive) {
+                el.scrollIntoView({
+                    behavior: 'smooth',
+                    block: 'nearest'
+                });
+            };
+        }, 300);
+    };
+
     const cardType = !hasFunds ? 1 : !isClaimable && !claimAllowed ? 0 : 2;
     const cardIcon = cardType === 0 ? "clock" : cardType === 1 ? "alertCircle" : "coinStack";
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
     const cardTitle = view.data.claimCardStates[cardType].title;
     const cardMessage = view.data.claimCardStates[cardType].text;
     const cardImage = view.data.claimCardStates[cardType].image;
-    const claimAmountDisplay = currencyFormat(claimAmount, currency);
+    const claimAmountDisplay = currencyFormat(claimAmount, localeCurrency);
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
@@ -181,7 +197,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 </Card>
             }
             <Text g500 mt={2} small>
-                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, currency), total: currencyFormat(maxClaim, currency) }} />
+                <String id="alreadyClaimed" variables={{ claimed: currencyFormat(claimedAmount, localeCurrency), total: currencyFormat(maxClaim, localeCurrency) }} />
             </Text>
             <ProgressBar mt={0.5} progress={(claimedAmount / maxClaim) * 100}/>
             {
@@ -189,7 +205,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                 <Accordion mt={2}>
                     {
                         view.data.faq.map((faq: any, index: number) =>
-                            <AccordionItem key={index} title={faq.title}>
+                            <AccordionItem key={index} scrollIntoView={scrollIntoView} title={faq.title}>
                                 <RichText content={faq.content} g500 small />
                             </AccordionItem>
                         )

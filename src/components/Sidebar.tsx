@@ -90,7 +90,7 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
     )
 }
 
-const SidebarFooter = (props: { user?: User }) => {
+const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
     const { user } = props;
     const { address, wrongNetwork } = useWallet();
     
@@ -107,7 +107,7 @@ const SidebarFooter = (props: { user?: User }) => {
     return (
         <Link href="/profile" passHref>
             <SidebarUserButton
-                {...user}
+                {...props}
                 address={formatAddress(address, [6, 4])}
                 name={getUserName(user)}
                 photo={{ url: user?.avatarMediaPath ? getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) : '' }}
@@ -169,7 +169,7 @@ const Sidebar = () => {
 
     return (
         <SidebarBase
-            footer={<SidebarFooter user={user} />}
+            footer={<SidebarFooter isActive={checkRoute('/profile')} user={user} />}
             isLoading={!data}
             mobileActions={<SidebarMobileActions user={user} />}
         >

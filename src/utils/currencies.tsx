@@ -14,19 +14,17 @@ export const currencies: {
 
 export const currenciesOptions = Object.entries(currencies).map(([key, value]: any) => ({ label: value.name, value: key }));
 
-export const currencyFormat = (number: number, currency: string) => {
+export const currencyFormat = (number: number, localeCurrency: Intl.NumberFormat) => {
     const rates = useSelector(selectRates);
-    const currencySymbol = getCurrencySymbol(currency);
-
-    // TODO: Verificar se é preciso limitar/arredondar as casas decimais do valor
+    const { currency } = localeCurrency.resolvedOptions();
     
-    if(currency !== 'USD') {
+    if (currency !== 'USD') {
         const rate = rates.find((elem: Rate) => elem.currency === currency)?.rate || 1;
 
-        return `${currencySymbol}${number * rate}`;
+        return localeCurrency.format(number * rate);
     }
 
-    return `${currencySymbol}${number}`;
+    return localeCurrency.format(number);
 };
 
 export function getCurrencySymbol(currency: string) {
