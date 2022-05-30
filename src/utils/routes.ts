@@ -8,6 +8,6 @@ export const demoRoutes: Routes = [];
 
 export const beneficiaryRoutes: Routes = ['/beneficiary'];
 
-export const managerRoutes: Routes = ['/manager/beneficiaries'];
+export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/communities', '/communities/[id]'];
 
 export const ambassadorRoutes: Routes = ['/requests'];
