@@ -49,7 +49,12 @@ const config = {
     /**
      * Google Analytics
      */
-    gaId: process.env.NEXT_PUBLIC_GA
+    gaId: process.env.NEXT_PUBLIC_GA,
+
+    /*
+     * Public URL
+     */
+    publicUrl: process.env.NEXT_PUBLIC_URL!
 };
 
 export default config;

@@ -2,6 +2,18 @@ import { getImage } from '../utils/images';
 import Img from 'next/image';
 import React from 'react';
 
+const getImageOptions = (forwardProps: any)  => {
+    if(forwardProps?.layout === "raw") {
+        return forwardProps
+    }
+
+    return {
+        layout: "fill",
+        objectFit: "cover",
+        ...forwardProps
+    }
+}
+
 const Image = (props: any) => {
     const { src: filePath, ...forwardProps } = props;
 
@@ -14,8 +26,6 @@ const Image = (props: any) => {
                 height: 2,
                 width: 2
             })}
-            layout="fill"
-            objectFit="cover"
             placeholder="blur"
             src={getImage({
                 filePath,
@@ -23,7 +33,7 @@ const Image = (props: any) => {
                 height: 0,
                 width: 0
             })}
-            {...forwardProps}
+            {...getImageOptions(forwardProps)}
         />
     );
 };
