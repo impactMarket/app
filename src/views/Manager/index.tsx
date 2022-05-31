@@ -2,8 +2,8 @@
 import { Box, Display, ViewContainer } from '@impact-market/ui';
 import { getCommunityEntity } from '../../graph/community';
 import { selectCurrentUser } from '../../state/slices/auth';
-import { useBeneficiary } from '@impact-market/utils';
 import { useGetCommunityAmbassadorMutation, useGetCommunityMutation } from '../../api/community';
+import { useManager } from '@impact-market/utils';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
@@ -42,7 +42,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
         return null;
     }
 
-    const { isReady, community: { hasFunds }, fundsRemainingDays } = useBeneficiary(
+    const { canRequestFunds, community: { hasFunds }, fundsRemainingDays, isReady, requestFunds } = useManager(
         auth?.user?.manager?.community
     );
 
@@ -117,7 +117,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity || communityEntity?.loading}>
-            <Alerts fundsRemainingDays={fundsRemainingDays} hasFunds={hasFunds} />
+            <Alerts canRequestFunds={canRequestFunds} fundsRemainingDays={fundsRemainingDays} hasFunds={hasFunds} requestFunds={requestFunds} />
             <Display g900 medium>
                 {title}
             </Display>
