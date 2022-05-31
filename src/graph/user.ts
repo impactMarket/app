@@ -8,3 +8,13 @@ export const getCommunityBeneficiaries = gql`
         }
     }
 `;
+
+export const getBeneficiary = gql`
+    query getBeneficiary($id: String!) {
+        beneficiaryEntity(id: $id) {
+            address
+            id
+            state
+        }
+    }
+`;
