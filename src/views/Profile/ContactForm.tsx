@@ -10,10 +10,11 @@ import React, { useEffect } from "react";
 import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
+const emailRegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
 const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const schema = yup.object().shape({
-    email: yup.string().email(),
+    email: yup.string().matches(emailRegExp).email(),
     phone: yup.string().matches(phoneRegExp).nullable(true).transform((_, val) => val === '' ? null : val)
 });
 
@@ -50,7 +51,7 @@ const Form = ({ onSubmit }: any) => {
                 <Box mb={1.5}>
                     <Input 
                         control={control}
-                        hint={errors?.email ? t(errors?.email?.message) : ''}
+                        hint={errors?.email ? t('errorEmail') : ''}
                         label={t('email')}
                         name="email"
                         withError={!!errors?.email}
