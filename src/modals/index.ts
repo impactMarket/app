@@ -2,6 +2,7 @@ import dynamic from 'next/dynamic';
 
 const modals = {
     addBeneficiary: dynamic(() => import('./AddBeneficiary'), { ssr: false }),
+    addManager: dynamic(() => import('./AddManager'), { ssr: false }),
     communityRules: dynamic(() => import('./CommunityRules'), { ssr: false }),
     createStory: dynamic(() => import('./Stories/CreateStory'), { ssr: false }),
     deleteStory: dynamic(() => import('./Stories/DeleteStory'), { ssr: false }),

@@ -11,11 +11,15 @@ import {
     Tab,
     TabList,
     Tabs,
-    Text
+    Text,
+    openModal
 } from '@impact-market/ui';
 
+import String from '../../libs/Prismic/components/String';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Managers = ({ community, managers } : any) => {
+    const { t } = useTranslations();
 
     return (
         !!Object.keys(community).length && (
@@ -24,25 +28,27 @@ const Managers = ({ community, managers } : any) => {
                     <Tabs>
                         <TabList>
                             <Tab
-                                title="Managers"
+                                title={t('managers')}
                             />
                             <Tab
-                                title="Ambassadors"
+                                title={t('ambassadors')}
                             />
                             <Tab
-                                title="Merchands"
+                                title={t('merchands')}
                             />
                         </TabList>
                     </Tabs>
                 </Box>
 
                <Box mb={1} right>
-                    <Button>
-                        <Icon
-                            icon="userPlus"
-                            margin="0 0.5 0 0"
-                        />
-                        Add new Manager
+                    <Button
+                        icon="userPlus"
+                        margin="0 0.5 0 0"
+                        onClick={() =>
+                            openModal('addManager')
+                        }
+                    >
+                        <String id="addNewManager"/>
                     </Button>
                 </Box> 
 
@@ -106,7 +112,7 @@ const Managers = ({ community, managers } : any) => {
                                         margin="0 0.5 0 0"
                                         p700
                                     />
-                                    Remove Manager
+                                    <String id="removeManager"/>
                                 </Button>
                             </Box>
                         </Card>

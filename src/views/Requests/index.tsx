@@ -1,3 +1,4 @@
+import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -5,8 +6,8 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 
+import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation, useGetReviewsByCountryMutation, useGetReviewsCountMutation } from '../../api/community';
-import { useGetUserMutation } from '../../api/user';
 
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import CountryTabs from './CountryTabs'
@@ -15,6 +16,7 @@ import RichText from '../../libs/Prismic/components/RichText';
 
 const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
+    const { user } = useSelector(selectCurrentUser);
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
@@ -26,31 +28,29 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const [myCountrySelected, setMyCountrySelected] = useState(true);
     const [review, setReview] = useState('pending');
     
-    const [userCountry, setUserCountry] = useState() as any
+    const [userCountry] = useState(user?.country) as any
     const [numberOfCommunitiesByReview, setNumberOfCommunitiesByReview] = useState({}) as any
     const [reviewsByCountry, setReviewsByCountry] = useState({}) as any
 
     const [getCommunities] = useGetCommunitiesMutation();
     const [getReviewsByCountry] = useGetReviewsByCountryMutation()
     const [getReviewsCount] = useGetReviewsCountMutation()
-    const [getUser] = useGetUserMutation();
 
     useEffect(() => {
+
         const init = async () => {
             try {
                 setLoading(true);
 
-                const user: any = await getUser();
                 const communities = await getCommunities({
                     // eslint-disable-next-line no-nested-ternary
-                    country: myCountrySelected ? (user?.data?.country === null ? 0 : user?.data?.country) : undefined,
+                    country: myCountrySelected ? (user?.country === null ? 0 : user?.country) : undefined,
                     review
                 });
                 const reviews = await getReviewsCount().unwrap()
                 const reviewsByCountry = await getReviewsByCountry("pending").unwrap()
 
                 setCommunities(communities);
-                setUserCountry(user?.data?.country)
                 setNumberOfCommunitiesByReview(reviews)
                 setReviewsByCountry(reviewsByCountry)
 
@@ -65,7 +65,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         init();
     }, [myCountrySelected, review]);
 
-    
+        
     return (
         <ViewContainer isLoading={isLoading}>
             <Display g900 medium>
