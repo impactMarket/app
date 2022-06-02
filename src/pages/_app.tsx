@@ -9,7 +9,9 @@ import { setToken } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useGetExchangeRatesMutation } from '../api/generic';
 import ErrorPage from 'next/error';
+import GoogleAnalytics from '../components/GoogleAnalytics';
 import React, { useEffect } from 'react';
+import SEO from '../components/SEO';
 import Sidebar from '../components/Sidebar';
 import WrapperProvider  from '../components/WrapperProvider';
 import config from '../../config';
@@ -69,7 +71,7 @@ const App = (props: AppProps) => {
     const { asPath, locale } = router;
     const url = `${baseUrl}/${locale}${asPath}`;
 
-    const { data, view } = pageProps;
+    const { data, meta = {}, view } = pageProps;
 
     if(!view) {
         const ErrorContent = ErrorPage as any;
@@ -87,9 +89,11 @@ const App = (props: AppProps) => {
                 <WrapperProvider>
                     <Provider store={store}>
                         <ApolloProvider client={apolloClient}>
+                            <SEO meta={meta} />
                             <ModalManager modals={modals} />
                             <Toaster />
                             <InnerApp {...props} />
+                            <GoogleAnalytics />
                         </ApolloProvider>
                     </Provider>
                 </WrapperProvider>
