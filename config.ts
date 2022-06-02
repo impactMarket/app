@@ -54,7 +54,17 @@ const config = {
     /*
      * Public URL
      */
-    publicUrl: process.env.NEXT_PUBLIC_URL!
+    publicUrl: process.env.NEXT_PUBLIC_URL!,
+
+    /**
+     * MapBox API Key
+     */
+    mapBoxApiKey: process.env.NEXT_PUBLIC_MAPBOX_KEY!,
+
+    /**
+     * MapBox API style
+     */
+    mapBoxStyle: process.env.NEXT_PUBLIC_MAPBOX_STYLE!
 };
 
 export default config;
