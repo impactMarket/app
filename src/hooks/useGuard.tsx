@@ -1,5 +1,6 @@
 import { ambassadorRoutes, beneficiaryRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
 import { getUserTypes, userAmbassador, userBeneficiary, userManager } from '../utils/users';
+import { pageview } from '../helpers/gtag';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useEffect, useState } from 'react';
@@ -19,6 +20,10 @@ const useGuard = () => {
         if(!shallow) {
             setIsLoading(true);
         }
+    }
+
+    const handleRouteComplete = (url: string) => {
+        pageview(url);
     }
 
     useEffect(() => {
@@ -73,9 +78,13 @@ const useGuard = () => {
 
         router.events.on('routeChangeStart', handleRouteStart);
 
+        router.events.on('routeChangeComplete', handleRouteComplete);
+
         // unsubscribe from events in useEffect return function
         return () => {
             router.events.off('routeChangeStart', handleRouteStart);
+
+            router.events.off('routeChangeComplete', handleRouteComplete);
         };
     }, [auth?.token, router.pathname]);
 

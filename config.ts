@@ -44,7 +44,12 @@ const config = {
     /*
      * Graph URL
      */
-    graphUrl: process.env.NEXT_PUBLIC_GRAPH_URL!
+    graphUrl: process.env.NEXT_PUBLIC_GRAPH_URL!,
+
+    /**
+     * Google Analytics
+     */
+    gaId: process.env.NEXT_PUBLIC_GA
 };
 
 export default config;
