@@ -47,6 +47,20 @@
         },
         "type": "Text"
       },
+      "string-addManager": {
+        "config": {
+          "label": "addManager",
+          "placeholder": "Add Manager"
+        },
+        "type": "Text"
+      },
+      "string-addManagerAddress": {
+        "config": {
+          "label": "addManagerAddress",
+          "placeholder": "Add manager address"
+        },
+        "type": "Text"
+      },
       "string-addNewManager": {
         "config": {
           "label": "addNewManager",
@@ -156,6 +170,13 @@
         "config": {
           "label": "bio",
           "placeholder": "Bio"
+        },
+        "type": "Text"
+      },
+      "string-block:": {
+        "config": {
+          "label": "block:",
+          "placeholder": "Block"
         },
         "type": "Text"
       },
@@ -432,10 +453,24 @@
         },
         "type": "Text"
       },
+      "string-errorPhoneNumber": {
+        "config": {
+          "label": "errorPhoneNumber",
+          "placeholder": "Invalid phone number"
+        },
+        "type": "Text"
+      },
       "string-female": {
         "config": {
           "label": "female",
           "placeholder": "Female"
+        },
+        "type": "Text"
+      },
+      "string-fieldRequired": {
+        "config": {
+          "label": "fieldRequired",
+          "placeholder": "This field is required"
         },
         "type": "Text"
       },
@@ -649,10 +684,38 @@
         },
         "type": "Text"
       },
+      "string-noActionsFound": {
+        "config": {
+          "label": "noActionsFound",
+          "placeholder": "No actions found."
+        },
+        "type": "Text"
+      },
       "string-noCommunities": {
         "config": {
           "label": "noCommunities",
           "placeholder": "No Communities"
+        },
+        "type": "Text"
+      },
+      "string-noRecordsFounds": {
+        "config": {
+          "label": "noRecordsFounds",
+          "placeholder": "No records found."
+        },
+        "type": "Text"
+      },
+      "string-noResults": {
+        "config": {
+          "label": "noResults",
+          "placeholder": "There are no results to show!"
+        },
+        "type": "Text"
+      },
+      "string-noTransactionsFound": {
+        "config": {
+          "label": "noTransactionsFound",
+          "placeholder": "No transactions found."
         },
         "type": "Text"
       },
@@ -712,6 +775,13 @@
         },
         "type": "Text"
       },
+      "string-pending:": {
+        "config": {
+          "label": "pending:",
+          "placeholder": "Pending"
+        },
+        "type": "Text"
+      },
       "string-phoneNumber": {
         "config": {
           "label": "phoneNumber",
@@ -758,6 +828,13 @@
         "config": {
           "label": "releaseCommunity",
           "placeholder": "Release community"
+        },
+        "type": "Text"
+      },
+      "string-removeBeneficiary": {
+        "config": {
+          "label": "removeBeneficiary",
+          "placeholder": "Remove Beneficiary"
         },
         "type": "Text"
       },
@@ -985,10 +1062,31 @@
         },
         "type": "Text"
       },
+      "string-transactions": {
+        "config": {
+          "label": "transactions",
+          "placeholder": "Transactions"
+        },
+        "type": "Text"
+      },
       "string-ubi": {
         "config": {
           "label": "ubi",
           "placeholder": "UBI"
+        },
+        "type": "Text"
+      },
+      "string-unblock": {
+        "config": {
+          "label": "unblock",
+          "placeholder": "Unblock"
+        },
+        "type": "Text"
+      },
+      "string-valid": {
+        "config": {
+          "label": "valid",
+          "placeholder": "Valid"
         },
         "type": "Text"
       },
@@ -1226,6 +1324,78 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "message-communitiesJoined": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communitiesJoined",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-managerAdded": {
+        "type": "StructuredText",
+        "config": {
+          "label": "managerAdded",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-managerNotification": {
+        "type": "StructuredText",
+        "config": {
+          "label": "managerNotification",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-onboardedBeneficiaries": {
+        "type": "StructuredText",
+        "config": {
+          "label": "onboardedBeneficiaries",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-managerFrom": {
+        "type": "StructuredText",
+        "config": {
+          "label": "managerFrom",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-beneficiaryBlocked": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiaryBlocked",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-beneficiaryUnblocked": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiaryUnblocked",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-beneficiaryRemove": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiaryRemove",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
         }
       },
       "slices1": {
