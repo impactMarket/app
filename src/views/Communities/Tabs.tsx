@@ -23,22 +23,21 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
     const restOfText = statusFilter?.slice(1)
     const status = `${firstLetter}${restOfText}`
     
-    //  Todo: Add texts on Prismic
     const dropdownItems = [
         {
             icon: 'check',
             onClick: () => setStatusFilter('valid'),
-            title: 'Valid'
+            title: t('valid')
         },
         {
             icon: 'loader',
             onClick: () => setStatusFilter('pending'),
-            title: 'Pending'
+            title: t('pending')
         },
         {
             icon: 'trash',
             onClick: () => setStatusFilter('removed'),
-            title: 'Removed'
+            title: t('removed')
         }
     ];
 

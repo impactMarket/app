@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 
@@ -7,7 +8,7 @@ import {
 } from '@impact-market/ui';
 
 import { selectCurrentUser } from '../../state/slices/auth';
-import { useGetCommunitiesMutation, useGetReviewsByCountryMutation, useGetReviewsCountMutation } from '../../api/community';
+import { useGetCommunitiesMutation, useGetReviewsByCountryMutation } from '../../api/community';
 
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import CountryTabs from './CountryTabs'
@@ -21,20 +22,17 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
-    //  Review has 4 states: 'pending', 'accepted', 'claimed', 'declined'
-
     const [loading, setLoading] = useState(false);
     const [communities, setCommunities] = useState({}) as any;
     const [myCountrySelected, setMyCountrySelected] = useState(true);
     const [review, setReview] = useState('pending');
     
     const [userCountry] = useState(user?.country) as any
-    const [numberOfCommunitiesByReview, setNumberOfCommunitiesByReview] = useState({}) as any
-    const [reviewsByCountry, setReviewsByCountry] = useState({}) as any
+    const [allCountries, setAllCountries] = useState({}) as any
+    const [otherCountries, setOtherCountries] = useState({}) as any
 
     const [getCommunities] = useGetCommunitiesMutation();
     const [getReviewsByCountry] = useGetReviewsByCountryMutation()
-    const [getReviewsCount] = useGetReviewsCountMutation()
 
     useEffect(() => {
 
@@ -43,16 +41,24 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 setLoading(true);
 
                 const communities = await getCommunities({
-                    // eslint-disable-next-line no-nested-ternary
-                    country: myCountrySelected ? (user?.country === null ? 0 : user?.country) : undefined,
+                    country: myCountrySelected ? (user?.country === null ? 0 : user?.country.toUpperCase()) : undefined,
+                    excludeCountry: myCountrySelected ? undefined : (user?.country === null ? 0 : user?.country.toUpperCase()),
                     review
                 });
-                const reviews = await getReviewsCount().unwrap()
-                const reviewsByCountry = await getReviewsByCountry("pending").unwrap()
+                
+                //  Number for tabs
+                const allCountries = await getReviewsByCountry({
+                    status: "pending",
+                }).unwrap()
+                const otherCountries = await getReviewsByCountry({
+                    excludeCountry: userCountry,
+                    status: "pending"
+                }).unwrap()
+
+                setAllCountries(allCountries)
+                setOtherCountries(otherCountries)
 
                 setCommunities(communities);
-                setNumberOfCommunitiesByReview(reviews)
-                setReviewsByCountry(reviewsByCountry)
 
                 setLoading(false);
             } catch (error) {
@@ -73,16 +79,17 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
             </Display>
             <RichText content={content} g500 mt={0.25} />
             <CountryTabs 
-                reviewsByCountry={reviewsByCountry}
+                allCountries={allCountries}
+                otherCountries={otherCountries}
                 setMyCountrySelected={setMyCountrySelected}
                 userCountry={userCountry}
             />
             <ReviewTabs 
+                allCountries={allCountries}
                 communities={communities}
                 loading={loading}
                 myCountrySelected={myCountrySelected}
-                numberOfCommunitiesByReview={numberOfCommunitiesByReview}
-                reviewsByCountry={reviewsByCountry}
+                otherCountries={otherCountries}
                 setReview={setReview}
                 userCountry={userCountry}
             />

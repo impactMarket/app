@@ -4,20 +4,18 @@ import React, { useEffect, useState } from 'react';
 import { ViewContainer, toast } from '@impact-market/ui';
 import { gql, useQuery } from '@apollo/client';
 
-import {
-    useGetCommunityContractMutation, useGetCommunityMutation, useUpdateReviewMutation
-} from '../../api/community';
+import { useGetCommunityContractMutation, useGetCommunityManagersMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 import CanBeRendered from '../../components/CanBeRendered';
 import CommunityDetails from './CommunityDetails';
 import Header from './Header';
 import Managers from './Managers';
 import Message from '../../libs/Prismic/components/Message';
-import getManagers from './mockData';
 
 //  Get community data from thegraph
 const communityQuery = gql`
 query communityQuery($id: String!) {
     communityEntity(id: $id) {
+        id
         beneficiaries
         claimAmount
         maxClaim
@@ -46,14 +44,15 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
     const [getCommunityContract] = useGetCommunityContractMutation()
+    const [getCommunityManagers] = useGetCommunityManagersMutation()
 
     useEffect(() => {
         const getData = async () => {
             try {
                 setLoading(true)
-
+                
                 //  Get managers
-                const managersData = await getManagers();
+                const managersData = await getCommunityManagers(community?.id).unwrap()
 
                 //  Get community's contract data
                 const contractData = await getCommunityContract(community?.id).unwrap()
@@ -111,7 +110,13 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
             />
             {community?.review === 'accepted' &&
                 <CanBeRendered types={['ambassador']}>
-                    <Managers community={community} managers={managers}/> 
+                    <Managers 
+                        //  If community exists in thegraph (it has contract address) get the data from thegraph. 
+                        //  If not, get from API
+                        community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
+                        managers={managers?.data?.rows}
+                        status={communityData?.status}
+                    /> 
                 </CanBeRendered>
             }
         </ViewContainer>

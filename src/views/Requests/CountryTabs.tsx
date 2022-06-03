@@ -9,34 +9,32 @@ import {
 import String from '../../libs/Prismic/components/String';
 
 
-const CountryTabs = ({ setMyCountrySelected, reviewsByCountry, userCountry } : any) => {    
-    
-    const myCountryNumberOfCommunities = () => {
-        let numberOfCommunities = 0 as number
+const CountryTabs = ({ userCountry, allCountries, otherCountries, setMyCountrySelected }: any) => {   
 
-        !!Object.keys(reviewsByCountry).length && (
-            reviewsByCountry.filter((countryName: any) => countryName.country === userCountry).map((country: any) => {
-                numberOfCommunities = parseInt(country.count, 10)
+    //  Get how many communties there are in My Country
+    const myCountryCommunities = () => {
+        let myCountryCommunities = 0 as number
+
+        !!Object.keys(allCountries).length && (
+            allCountries.filter((countryName: any) => countryName?.country === userCountry).map((country: any) => {
+                myCountryCommunities = parseInt(country?.pending, 10) + parseInt(country?.claimed, 10) + parseInt(country?.declined, 10) 
             }
         ))
 
-        return numberOfCommunities
+        return myCountryCommunities
     }
 
-    const otherCountriesNumberOfCommunities = () => {
-        const numberOfCommunitiesArray = [] as any
-        const numberOfAcceptedCommunitiesArray = [] as any
+    //  Get how many communties there are in Other Countries
+    const otherCountriesCommunities = () => {
+        const otherCountriesCommunities = [] as any
 
-        !!Object.keys(reviewsByCountry).length && (
-            reviewsByCountry.map((country: any) => {
-                numberOfCommunitiesArray.push(parseInt(country.count, 10)) 
-                numberOfAcceptedCommunitiesArray.push(parseInt(country.accepted, 10))   
+        !!Object.keys(otherCountries).length && (
+            otherCountries.map((country: any) => {
+                otherCountriesCommunities.push(parseInt(country?.pending, 10) + parseInt(country?.claimed, 10) + parseInt(country?.declined, 10) )
             })
         )
 
-        const numberOfCommunitiesCalc = numberOfCommunitiesArray.reduce((a: number, b: number) => a + b, 0) - numberOfAcceptedCommunitiesArray.reduce((a: number, b: number) => a + b, 0)
-
-        return numberOfCommunitiesCalc
+        return otherCountriesCommunities.reduce((a: any, b: any) => a + b, 0)
     }
 
 
@@ -44,12 +42,12 @@ const CountryTabs = ({ setMyCountrySelected, reviewsByCountry, userCountry } : a
             <Tabs>
                 <TabList>
                     <Tab
-                        number={myCountryNumberOfCommunities()}
+                        number={myCountryCommunities()}
                         onClick={() => setMyCountrySelected(true)}
                         title={<String id="myCountry" />}
                     />
                     <Tab
-                        number={otherCountriesNumberOfCommunities()}
+                        number={otherCountriesCommunities()}
                         onClick={() => setMyCountrySelected(false)}
                         title={<String id="otherCountries" />}
                     />

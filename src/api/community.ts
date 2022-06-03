@@ -37,10 +37,15 @@ export interface Reviews {
 
 export interface ReviewsByCountry {
     country: string;
+    excludeCountry: string;
 }
 
 export interface Contract {
     communityId: number;
+}
+
+export interface CommunityManagers {
+    address: string;
 }
 export interface PendingCommunities {
     count: number;
@@ -125,12 +130,12 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/contract`
             })
         }),
-        getCommunityManagers: builder.mutation<any, {community: string, filters: string, limit: number, offset: number}>({
-            query: ({community, filters, limit, offset}) => ({
+        //  Get community managers
+        getCommunityManagers: builder.mutation<CommunityManagers, { id: any }>({
+            query: (id: any) => ({
                 method: 'GET',
-                url: `communities/${community}/managers?${!!filters ? `${filters}` : ''}${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
-            }),
-            transformResponse: (response: { data?: any }) => response.data
+                url: `communities/${id}/managers`
+            })
         }),
         getCountryByCommunities: builder.mutation<Countries[], void>({
             query: () => ({
@@ -147,10 +152,10 @@ export const communityApi = emptySplitApi.injectEndpoints({
             transformResponse: (response: { data?: PendingCommunities }) => response.data
         }),
         //  Get reviews by country
-        getReviewsByCountry: builder.mutation<ReviewsByCountry, string>({
-            query: (status: string) => ({
+        getReviewsByCountry: builder.mutation<ReviewsByCountry, Record<string, any>>({
+            query: (filters: Record<string, any>) => ({
                 method: 'GET',
-                url: `communities/count?groupBy=reviewByCountry${status && `&status=${status}`}`
+                url: qs.stringifyUrl({query:{limit:999, ...filters}, url:'communities/count?groupBy=reviewByCountry'})
             }),
             transformResponse: (response: { data?: ReviewsByCountry }) => response.data
         }),
@@ -178,6 +183,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
 // auto-generated based on the defined endpoints
 export const {
     useGetBeneficiariesMutation,
+    useGetCommunityBeneficiariesMutation,
     useGetCommunityMutation,
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
@@ -187,6 +193,5 @@ export const {
     useGetCommunityContractMutation,
     useGetPendingCommunitiesMutation,
     useGetCommunityAmbassadorMutation,
-    useGetCommunityBeneficiariesMutation,
     useGetCommunityManagersMutation
 } = communityApi;
