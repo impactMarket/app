@@ -145,6 +145,13 @@
         },
         "type": "Text"
       },
+      "string-backers": {
+        "config": {
+          "label": "backers",
+          "placeholder": "Backers"
+        },
+        "type": "Text"
+      },
       "string-beneficiaries": {
         "config": {
           "label": "beneficiaries",
@@ -555,6 +562,13 @@
         "config": {
           "label": "learnAndEarn",
           "placeholder": "Learn & Earn"
+        },
+        "type": "Text"
+      },
+      "string-learnMore": {
+        "config": {
+          "label": "learnMore",
+          "placeholder": "Learn More"
         },
         "type": "Text"
       },

@@ -71,6 +71,24 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "message-beneficiariesHelped": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiariesHelped",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-exploreContract": {
+        "type": "StructuredText",
+        "config": {
+          "label": "exploreContract",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
       }
     }
   }
