@@ -79,9 +79,53 @@ export interface CommunityContract {
     success: boolean;
 };
 
+interface PostCommunity {
+    requestByAddress: string;
+    name: string;
+    contractAddress?: string;
+    description: string;
+    language: string;
+    currency: string;
+    city: string;
+    country: string;
+    gps: {
+        latitude: number;
+        longitude: number;
+    };
+    email: string;
+    coverMediaPath: string;
+    txReceipt?: Object;
+    contractParams: {
+        claimAmount: string;
+        maxClaim: string;
+        baseInterval: number;
+        incrementInterval: number;
+    };
+};
+
+interface PreSigned {
+    filePath?: string;
+    filename?: string;
+    media?: {
+        height?: number;
+        id?: number;
+        url?: string;
+        width?: number;
+    }
+    uploadURL?: string;
+}
+
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
+        createCommunity: builder.mutation<Community, PostCommunity>({
+            query: body => ({
+                body,
+                method: 'POST',
+                url: 'communities'
+            }),
+            transformResponse: (response: { data: Community }) => response.data
+        }),
         getBeneficiaries: builder.mutation<any, void>({
             query: () => ({
                 method: 'GET',
@@ -138,6 +182,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: CommunityManagers }) => response.data
         }),
+        // Get preSigned URL for image upload
+        getCommunityPreSigned: builder.mutation<PreSigned, void>({
+            query: type => ({
+                method: 'GET',
+                url: `communities/media/${type}`
+            }),
+            transformResponse: (response: { data: PreSigned }) => response.data
+        }),
         getCountryByCommunities: builder.mutation<Countries[], void>({
             query: () => ({
                 method: 'GET',
@@ -183,8 +235,8 @@ export const communityApi = emptySplitApi.injectEndpoints({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const {
+    useCreateCommunityMutation,
     useGetBeneficiariesMutation,
-    useGetCommunityBeneficiariesMutation,
     useGetCommunityMutation,
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
@@ -194,5 +246,7 @@ export const {
     useGetCommunityContractMutation,
     useGetPendingCommunitiesMutation,
     useGetCommunityAmbassadorMutation,
-    useGetCommunityManagersMutation
+    useGetCommunityManagersMutation,
+    useGetCommunityBeneficiariesMutation,
+    useGetCommunityPreSignedMutation
 } = communityApi;

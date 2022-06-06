@@ -64,7 +64,12 @@ const config = {
     /**
      * MapBox API style
      */
-    mapBoxStyle: process.env.NEXT_PUBLIC_MAPBOX_STYLE!
+    mapBoxStyle: process.env.NEXT_PUBLIC_MAPBOX_STYLE!,
+    
+    /**
+     * Google Places Key
+     */
+    googlePlacesKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY
 };
 
 export default config;

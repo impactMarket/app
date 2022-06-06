@@ -3,6 +3,7 @@ import { useCallback } from "react";
 
 yup.setLocale({
     number: {
+        integer: () => ({ key: 'errorIntegerNumber' }),
         max: ({ max }) => ({ key: 'errorMaxNumber', value: max }),
         min: ({ min }) => ({ key: 'errorMinNumber', value: min })
     },

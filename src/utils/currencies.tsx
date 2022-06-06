@@ -38,3 +38,14 @@ export function getCurrencySymbol(currency: string) {
         }
     )[currency.toUpperCase()].symbol;
 }
+
+export const convertCurrency = (number: number, rates: Rate[], from: string, to: string) => {
+    if (from === to) {
+        return number;
+    }
+
+    const fromRate = rates.find((elem: Rate) => elem.currency === from)?.rate || 1;
+    const toRate = rates.find((elem: Rate) => elem.currency === to)?.rate || 1;
+
+    return (toRate / fromRate) * number;
+};

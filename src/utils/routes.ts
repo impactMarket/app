@@ -2,7 +2,7 @@ export type Routes = string[];
 
 export const publicRoutes: Routes = ['/', '/stories', '/proposals', '/communities', '/communities/[id]'];
 
-export const privateRoutes: Routes = ['/profile', '/settings'];
+export const privateRoutes: Routes = ['/profile', '/settings', '/manager/communities/add'];
 
 export const demoRoutes: Routes = [];
 
