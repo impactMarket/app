@@ -6,9 +6,7 @@ import { getUserName } from '../../utils/users';
 import React from 'react';
 import String from '../../libs/Prismic/components/String';
 
-// TODO: remove temporary "disabled" once we have the Managers page finished
 type Cards = {
-    disabled?: boolean;
     number: number;
     title: string;
     url: string;
@@ -33,8 +31,7 @@ const renderCard = (card: Cards, index: number, type: number) => {
                 <Box w="100%">
                     <Divider />
                     <Box fLayout="end" flex pl={1.5} pr={1.5}>
-                        { /* TODO: remove temporary "disabled" once we have the Managers page finished */ }
-                        <TextLink disabled={card.disabled} href={card.url} medium p700 small><String id="viewAll" /></TextLink>
+                        <TextLink href={card.url} medium p700 small><String id="viewAll" /></TextLink>
                     </Box>
                 </Box>
             </Card>
