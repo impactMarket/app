@@ -1,10 +1,13 @@
-// import { Cookies, withCookies } from 'react-cookie';
-import { Text } from '@impact-market/ui';
-import { position } from 'polished';
 import React, { useEffect, useRef, useState } from 'react';
-import config from '../../config';
+
+import { position } from 'polished';
 import mapboxgl from 'mapbox-gl';
 import styled from 'styled-components';
+
+// import { Cookies, withCookies } from 'react-cookie';
+import { Text } from '@impact-market/ui';
+
+import config from '../../config';
 
 const mapboxglAccessToken = config.mapBoxApiKey;
 const mapStyle = config.mapBoxStyle;
@@ -48,7 +51,6 @@ const MapWrapper = styled.div`
 //  WIP
 //  TODO: 
 //     - Add cookies
-//     - Test community with claim locations
 
 
 const Map = (props: MapProps) => {
@@ -82,11 +84,13 @@ const Map = (props: MapProps) => {
 
             setMap(map);
 
-            // const bounds = new mapboxgl.LngLatBounds();
+            const bounds = new mapboxgl.LngLatBounds();
+            
+            
 
-            // claims.forEach(claim => bounds.extend([claim.gps.longitude, claim.gps.latitude]));
-            // bounds.setNorthEast({ lat: bounds.getNorthEast().lat + 2, lng: bounds.getNorthEast().lng });
-            // bounds.setSouthWest({ lat: bounds.getSouthWest().lat - 2, lng: bounds.getSouthWest().lng });
+            claims.forEach(claim => bounds.extend([claim.gps.longitude, claim.gps.latitude]));
+            bounds.setNorthEast({ lat: bounds.getNorthEast().lat + 2, lng: bounds.getNorthEast().lng });
+            bounds.setSouthWest({ lat: bounds.getSouthWest().lat - 2, lng: bounds.getSouthWest().lng });
 
             const claimFeatures = [claims].map(claim => ({
                 geometry: {
@@ -96,8 +100,8 @@ const Map = (props: MapProps) => {
                 type: 'Feature'
             }));
 
-            // map.fitBounds(bounds);
-            // map.setMaxZoom(12);
+            map.fitBounds(bounds);
+            map.setMaxZoom(12);
 
             if (
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(

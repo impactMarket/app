@@ -1,30 +1,11 @@
-import { Col, Grid, Row } from '@impact-market/ui';
-import { mq } from 'styled-gen';
+import { Box, Col, Grid, Row } from '@impact-market/ui';
+import styled from 'styled-components';
+
 import Beneficiaries from './Beneficiaries';
 import DonateCard from '../../components/DonateCard';
 import Image from '../../components/Image';
 import Map from '../../components/Map';
 import Trim from '../../components/Trim';
-import styled, { css } from 'styled-components';
-
-const MapWrapper = styled.div`
-    border-radius: 16px 0px 0px 16px;
-    height: 100%;
-    overflow: hidden;
-    width: 100%;
-
-    ${mq.phone(css`
-        border-radius: 4.2449px;
-    `)};
-`;
-
-const BoderedImage = styled(Image)`
-    border-radius: 0 8px 0 0;
-
-    ${mq.phone(css`
-        border-radius: 0;
-    `)};
-`;
 
 const CommunityWrapper = styled(Grid)`
     > .grid-col:nth-child(2) {
@@ -33,11 +14,14 @@ const CommunityWrapper = styled(Grid)`
 `;
 
 const CommunityDetails = ({ community, data }: any) => {
+    const { claimLocations, gps, contractAddress } = community;
+    const { maxClaim } = data;
+
     const contributed = community?.state?.contributed || 0;
     const contributors = community?.state?.contributors || 0;
     const beneficiaries = community?.state?.beneficiaries || 0;
-    const maxClaim = data?.maxClaim || 0;
-    const contractAddress = community?.contractAddress || '0';
+
+    const claims = claimLocations?.length ? claimLocations?.map((claim: any) => ({ gps: claim })) : [{ gps }];
 
     return (
         <>
@@ -48,21 +32,24 @@ const CommunityDetails = ({ community, data }: any) => {
                 reverse="phone"
             >
                 <Row mt={0.5} rowReverse>
-                    <Col
-                        colSize={{ sm: 4, xs: 12 }}
+                    <Box 
+                        borderRadius={{sm: '0 8px 0 0', xs: '0'}}
+                        fGrow="1"
+                        flex
                         h={{ xs: 22 }}
+                        overflow="hidden"
                         style={{ position: 'relative' }}
                     >
-                        <BoderedImage alt="" src={community?.coverMediaPath} />
-                    </Col>
+                        <Image alt="" src={community?.coverMediaPath}/>
+                    </Box>
                     <Col
                         colSize={{ sm: 8, xs: 12 }}
                         h={{ sm: 22, xs: 11 }}
                         padding={0}
                     >
-                        <MapWrapper>
-                            <Map claims={community?.gps} />
-                        </MapWrapper>
+                        <Box borderRadius={{sm: '16px 0 0 16px', xs: '0'}} h="100%" overflow="hidden">
+                            <Map claims={claims} />
+                        </Box>
                     </Col>
                 </Row>
                 <Beneficiaries data={data} />

@@ -1,20 +1,28 @@
-import { Box, Button, Card, Text } from '@impact-market/ui';
+import React from 'react';
+import _ from 'lodash';
+
+import { useSelector } from 'react-redux';
+
+import {
+    Box,
+    Button,
+    Card,
+    Text,
+    TextLink,
+    openModal
+} from '@impact-market/ui';
+
 import { currencyFormat } from '../utils/currencies';
 import { formatAddress } from '../utils/formatAddress';
 import { formatPercentage } from '../utils/percentages';
-import { mq } from 'styled-gen';
 import { selectCurrentUser } from '../state/slices/auth';
-import { useSelector } from 'react-redux';
 import ProgressBar from './ProgressBar';
-import React from 'react';
-import styled, { css } from 'styled-components';
+import config from '../../config';
+
+import String from '../libs/Prismic/components/String';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-const DonateCardWrapper = styled(Card)`
-    ${mq.phone(css`
-        display: none;
-    `)};
-`;
+
 
 interface DonateCardProps {
     raised: number;
@@ -24,9 +32,18 @@ interface DonateCardProps {
     backers: number;
 }
 
-// TODO: Handle missing translations
+// TODO:
+// - Handle missing translations
+// - Add action to contribute button
+
 const DonateCard: React.FC<DonateCardProps> = (props) => {
-    const { raised, goal, contractAddress, beneficiariesNumber, backers } = props;
+    const {
+        raised,
+        goal,
+        contractAddress,
+        beneficiariesNumber,
+        backers
+    } = props;
     const { t } = useTranslations();
     const quotient = raised / goal || 0;
     const auth = useSelector(selectCurrentUser);
@@ -39,35 +56,41 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
     });
 
     return (
-        <DonateCardWrapper padding={1.4}>
+        <Card padding={1.4} show={{sm: 'block', xs: 'none'}}>
             <Box fLayout="center" flex>
                 <Text center g900 maxW={14} medium semibold>
-                    Your contribution will help {beneficiariesNumber} beneficiaries.
+                    Your contribution will help {beneficiariesNumber}{' '}
+                    beneficiaries.
                 </Text>
             </Box>
             <Box mt={1.5}>
-                <Button h={3.8} w="100%">
+                <Button
+                    h={3.8}
+                    onClick={() => openModal('contribute')}
+                    w="100%"
+                >
                     <Text large medium>
-                        {t('contribute')}
+                        <String id="contribute" />
                     </Text>
                 </Button>
             </Box>
             <Box fLayout="between" flex mt={1}>
                 <Box left>
-                    <Text center g500 mt={1} small >
-                        {`${t('raisedFrom')} ${backers} Backers`}
+                    <Text center g500 mt={1} small>
+                        {`${_.upperFirst(t('raisedFrom'))} ${backers} Backers`}
                     </Text>
                 </Box>
                 <Box right>
-                    <Text center g500 mt={1} small >
-                        {t('goal')}
+                    <Text center g500 mt={1} small>
+                        <String id="goal" />
                     </Text>
                 </Box>
             </Box>
             <Box fLayout="between" flex>
                 <Box left>
                     <Text g900 semibold small>
-                        {currencyFormat(raised, localeCurrency)} ({formatPercentage(quotient)})
+                        {currencyFormat(raised, localeCurrency)} (
+                        {formatPercentage(quotient)})
                     </Text>
                 </Box>
                 <Box right>
@@ -77,15 +100,27 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
                 </Box>
             </Box>
             <Box mt={0.8}>
-                <ProgressBar progress={30} state={{ info: true }} />
+                <ProgressBar
+                    progress={quotient * 100}
+                    state={{ info: false }}
+                />
             </Box>
-            <Text center g500 mt={1} small >
+            <Text center g500 mt={1} small>
                 Explore the community Contract
             </Text>
-            <Text center large p600 semibold >
-                {formatAddress(contractAddress, [6, 5])}
-            </Text>
-        </DonateCardWrapper>
+            <Box center>
+                <TextLink
+                    large
+                    onClick={() =>
+                        window.open(`${config.explorerUrl}${contractAddress}`)
+                    }
+                    p600
+                    semibold
+                >
+                    {formatAddress(contractAddress, [6, 5])}
+                </TextLink>
+            </Box>
+        </Card>
     );
 };
 

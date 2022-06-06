@@ -52,7 +52,6 @@
     "react-redux": "7.2.6",
     "react-use-a2hs": "0.0.2",
     "styled-components": "5.3.5",
-    "styled-gen": "1.4.8",
     "yup": "0.32.11"
   },
   "devDependencies": {
