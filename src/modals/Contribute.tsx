@@ -14,14 +14,15 @@ import {
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from "react-hook-form";
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import Message from '../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
-
 import styled from 'styled-components';
+import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const BorderWrapper = styled(Box)`
-    padding: 0.5rem;
+    padding: 1rem;
     border: 1px solid ${colors.g300};
     border-radius: 8px;
 `;
@@ -42,11 +43,15 @@ const Contribute = () => {
     });
     const { isSubmitting } = useFormState({ control });
     const [approving, setApproving] = useState(false);
+    const { extractFromModals } = usePrismicData();
+    const { t } = useTranslations();
+    
+    const { placeholder, balance, content, tip, title } = extractFromModals('contribute') as any;
     
     const onSubmit: SubmitHandler<any> = () => {
         try {
             setApproving(true);
-            //  Todo: add the contribute logic
+            //  TODO: add the contribute logic
             // eslint-disable-next-line no-alert
             alert('In progress')
         }
@@ -71,18 +76,16 @@ const Contribute = () => {
                 </Col>
             </Box>
             <RichText
-                content="Contribute"
+                content={title}
                 large
                 mt={1.25}
                 semibold
             />
             
             
-            {/* Todo: Add texts on Prismic */}
-            {/* ADD link for Learn more */}
+            {/* TODO:  ADD link for Learn more */}
             <RichText
-                content="The number of PACT rewards you will get may vary 
-                    depending on your contribution and total raised in the last 30 epochs."
+                content={content}
                 g500
                 mt={0.5}
                 small
@@ -95,23 +98,24 @@ const Contribute = () => {
                     regular
                     small
             >
-                Learn more
+                {t('learnMore')}
             </TextLink>
             <form onSubmit={handleSubmit(onSubmit)}>
                 <Box mt={1.25}>
                     <BorderWrapper>
-                        <Box fLayout="between" flex>
+                        <Box fLayout="between" flex mb={0.5}>
                             <Box>
-                                {/* Add currency icon */}
+                                {/* TODO:  Add currency icon */}
                                 {/* <Currency currency="cUSD" /> */}
                                 <Text bold ml={0.5} small>
                                     cUSD
                                 </Text>
                             </Box>
-                            <Box>
+                            {/* TODO: Add balance from wallet */}
+                            <Box fLayout="end" flex>
+                            <RichText content={balance} regular small variables={{ balance: 10 }}/>
                                 <Text regular small>
-                                    {/* TODO: Add balance from wallet */}
-                                    Balance: 10 cUSD
+                                    {' cUSD'}
                                 </Text>
                             </Box>
                         </Box>
@@ -119,7 +123,9 @@ const Contribute = () => {
                             control={control}
                             hint={errors?.value ? 'This field is required' : ''}
                             label="Contribute"
+                            mt={0.5}
                             name="value"
+                            placeholder={placeholder}
                             rules={{ required: true }}
                             style={{'font-size': '1.5rem'}}
                             withError={!!errors?.value}
@@ -132,19 +138,19 @@ const Contribute = () => {
                 </Box>
                 <Row mt={0.5}>
                     <Col colSize={{ sm: 6, xs: 6 }} fLayout="center" flex>
-                        <Box bgColor={colors.p500} padding="4px 10px" radius="50%">
+                        <Box bgColor={colors.p500} borderRadius="50%" padding="4px 10px">
                             <Text n01 regular small>1</Text>
                         </Box>
                     </Col>
                     <Col colSize={{ sm: 6, xs: 6 }} fLayout="center" flex>
-                        <Box bgColor={colors.p200} padding="4px 10px" radius="50%">
+                        <Box bgColor={colors.p200} borderRadius="50%" padding="4px 10px">
                             <Text n01 regular small>2</Text>
                         </Box>
                     </Col>
                 </Row>
 
                 <Row>
-                    {/* Add validations */}
+                    {/* TODO:  Add validations */}
                     <Col colSize={{ sm: 6, xs: 6 }} pr={0.25}>
                         <Button disabled={isSubmitting} type="submit" w="100%">
                             <RichText
@@ -155,15 +161,14 @@ const Contribute = () => {
                     <Col colSize={{ sm: 6, xs: 6 }} pl={0.25}>
                         <Button disabled isLoading={isSubmitting} type="submit" w="100%">
                             <RichText
-                                content= "Contribute"                       
+                                content={title}
                             />
                         </Button>
                     </Col>
                 </Row>
-                {/* ADD link for troubleshoot area */}
+                {/* TODO: ADD link for troubleshoot area */}
                 { approving && <RichText
-                    content="This operation may take a couple seconds to complete. 
-                        If you encounter any error please read our troubleshooting section."
+                    content={tip}
                     g500
                     mt={0.5}
                     small

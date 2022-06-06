@@ -1,8 +1,6 @@
 import React from 'react';
 import _ from 'lodash';
 
-import { useSelector } from 'react-redux';
-
 import {
     Box,
     Button,
@@ -11,18 +9,18 @@ import {
     TextLink,
     openModal
 } from '@impact-market/ui';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+import { useSelector } from 'react-redux';
 
 import { currencyFormat } from '../utils/currencies';
 import { formatAddress } from '../utils/formatAddress';
 import { formatPercentage } from '../utils/percentages';
 import { selectCurrentUser } from '../state/slices/auth';
 import ProgressBar from './ProgressBar';
-import config from '../../config';
-
+import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
+import config from '../../config';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
-
-
 
 interface DonateCardProps {
     raised: number;
@@ -33,7 +31,6 @@ interface DonateCardProps {
 }
 
 // TODO:
-// - Handle missing translations
 // - Add action to contribute button
 
 const DonateCard: React.FC<DonateCardProps> = (props) => {
@@ -44,7 +41,10 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
         beneficiariesNumber,
         backers
     } = props;
+
     const { t } = useTranslations();
+    const { view } = usePrismicData();
+
     const quotient = raised / goal || 0;
     const auth = useSelector(selectCurrentUser);
     const language = auth?.user?.language || 'en-US';
@@ -54,14 +54,19 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
         maximumFractionDigits: 0,
         style: 'currency'
     });
-
+    
     return (
-        <Card padding={1.4} show={{sm: 'block', xs: 'none'}}>
+        <Card padding={1.4} show={{ sm: 'block', xs: 'none' }}>
             <Box fLayout="center" flex>
-                <Text center g900 maxW={14} medium semibold>
-                    Your contribution will help {beneficiariesNumber}{' '}
-                    beneficiaries.
-                </Text>
+                <RichText
+                    center
+                    content={view.data.messageBeneficiariesHelped}
+                    g900
+                    maxW={14}
+                    medium
+                    semibold
+                    variables={{ beneficiariesNumber }}
+                />
             </Box>
             <Box mt={1.5}>
                 <Button
@@ -77,7 +82,7 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
             <Box fLayout="between" flex mt={1}>
                 <Box left>
                     <Text center g500 mt={1} small>
-                        {`${_.upperFirst(t('raisedFrom'))} ${backers} Backers`}
+                        {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t('backers')}`}
                     </Text>
                 </Box>
                 <Box right>
@@ -105,9 +110,13 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
                     state={{ info: false }}
                 />
             </Box>
-            <Text center g500 mt={1} small>
-                Explore the community Contract
-            </Text>
+            <RichText
+                center
+                content={view.data.messageExploreContract}
+                g500
+                mt={1}
+                small
+            />
             <Box center>
                 <TextLink
                     large
