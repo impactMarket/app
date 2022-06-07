@@ -1,6 +1,6 @@
 import { Box, Pagination, Row, Spinner } from '@impact-market/ui';
 import { useContractKit } from '@celo-tools/use-contractkit';
-import { useUBICommittee } from '@impact-market/utils';
+import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import Proposal from './Proposal';
 import React, { useEffect, useState } from 'react';
 
@@ -32,7 +32,7 @@ const ProposalsPage = () => {
         getProposals,
         isReady,
         quorumVotes
-    } = useUBICommittee();
+    } = useImpactMarketCouncil();
     const [proposals, setProposals] = useState<ProposalType[]>([]);
     const [loading, setLoading] = useState(false);
 

@@ -7,8 +7,8 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 import { useGetPendingCommunitiesMutation } from '../../api/community';
+import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import { useUBICommittee } from '@impact-market/utils';
 import AddCommunityPage from './AddCommunityPage';
 import ProposalsPage from './ProposalsPage';
 import React, { useEffect, useState } from 'react';
@@ -20,7 +20,7 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const [getPendingCommunities] = useGetPendingCommunitiesMutation();
     const [requestsCount, setRequestsCount] = useState<number>();
-    const { isReady } = useUBICommittee();
+    const { isReady } = useImpactMarketCouncil();
     const [loading, setLoading] = useState(false);
     const { view } = usePrismicData();
     const { t } = useTranslations();
