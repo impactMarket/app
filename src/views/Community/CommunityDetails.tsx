@@ -21,7 +21,9 @@ const CommunityDetails = ({ community, data }: any) => {
     const contributors = community?.state?.contributors || 0;
     const beneficiaries = community?.state?.beneficiaries || 0;
 
-    const claims = claimLocations?.length ? claimLocations?.map((claim: any) => ({ gps: claim })) : [{ gps }];
+    const claims = claimLocations?.length
+        ? claimLocations?.map((claim: any) => ({ ...claim }))
+        : [gps];
 
     return (
         <>
@@ -32,22 +34,26 @@ const CommunityDetails = ({ community, data }: any) => {
                 reverse="phone"
             >
                 <Row mt={0.5} rowReverse>
-                    <Box 
-                        borderRadius={{sm: '0 8px 0 0', xs: '0'}}
+                    <Box
+                        borderRadius={{ sm: '0 8px 0 0', xs: '0' }}
                         fGrow="1"
                         flex
                         h={{ xs: 22 }}
                         overflow="hidden"
                         style={{ position: 'relative' }}
                     >
-                        <Image alt="" src={community?.coverMediaPath}/>
+                        <Image alt="Community cover image" src={community?.coverMediaPath} />
                     </Box>
                     <Col
                         colSize={{ sm: 8, xs: 12 }}
                         h={{ sm: 22, xs: 11 }}
                         padding={0}
                     >
-                        <Box borderRadius={{sm: '16px 0 0 16px', xs: '0'}} h="100%" overflow="hidden">
+                        <Box
+                            borderRadius={{ sm: '16px 0 0 16px', xs: '0' }}
+                            h="100%"
+                            overflow="hidden"
+                        >
                             <Map claims={claims} />
                         </Box>
                     </Col>

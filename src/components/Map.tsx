@@ -14,24 +14,14 @@ const mapStyle = config.mapBoxStyle;
 
 mapboxgl.accessToken = config.mapBoxApiKey;
 
-interface IClaimLocationGps {
+interface IClaimLocation {
     latitude: number;
     longitude: number;
-}
-
-interface IClaimLocation {
-    gps: IClaimLocationGps;
 }
 
 type MapProps = {
     claims: IClaimLocation[];
     // cookies: Cookies;
-};
-
-type MapPosProps = {
-    lng: string | boolean | number;
-    lat: string | boolean | number;
-    zoom: string | boolean | number;
 };
 
 const MapWrapper = styled.div`
@@ -49,20 +39,12 @@ const MapWrapper = styled.div`
 `;
 
 //  WIP
-//  TODO: 
+//  TODO:
 //     - Add cookies
-
 
 const Map = (props: MapProps) => {
     const { claims } = props;
-
     const [map, setMap] = useState<mapboxgl.Map>(undefined as any);
-    const [mapPos, setMapPos] = useState<MapPosProps>({
-        lat: claims?.latitude || 0,
-        lng: claims?.longitude || 0,
-        zoom: 4
-    });
-
     const mapContainer = useRef<any>();
 
     useEffect(() => {
@@ -74,25 +56,29 @@ const Map = (props: MapProps) => {
 
             if (typeof window === 'undefined' || node === null) return;
 
+            const bounds = new mapboxgl.LngLatBounds();
+
+            claims.forEach((claim) =>
+                bounds.extend([claim?.longitude, claim?.latitude])
+            );
+            bounds.setNorthEast({
+                lat: bounds.getNorthEast().lat + 2,
+                lng: bounds.getNorthEast().lng + 2
+            });
+            bounds.setSouthWest({
+                lat: bounds.getSouthWest().lat - 2,
+                lng: bounds.getSouthWest().lng - 2
+            });
+
             const map = new mapboxgl.Map({
                 attributionControl: false,
-                center: [mapPos.lat, mapPos.lng],
                 container: node,
-                style: mapStyle,
-                zoom: mapPos.zoom
+                style: mapStyle
             });
 
             setMap(map);
 
-            const bounds = new mapboxgl.LngLatBounds();
-            
-            
-
-            claims.forEach(claim => bounds.extend([claim.gps.longitude, claim.gps.latitude]));
-            bounds.setNorthEast({ lat: bounds.getNorthEast().lat + 2, lng: bounds.getNorthEast().lng });
-            bounds.setSouthWest({ lat: bounds.getSouthWest().lat - 2, lng: bounds.getSouthWest().lng });
-
-            const claimFeatures = [claims].map(claim => ({
+            const claimFeatures = claims.map((claim) => ({
                 geometry: {
                     coordinates: [claim.longitude, claim.latitude],
                     type: 'Point'
@@ -114,13 +100,6 @@ const Map = (props: MapProps) => {
 
             // Add zoom and rotation controls to the map.
             map.addControl(new mapboxgl.NavigationControl());
-
-            map.on('move', () => {
-                const { lat, lng } = map.getCenter();
-                const zoom = map.getZoom();
-
-                setMapPos({ lat, lng, zoom });
-            });
 
             const mapData = {
                 features: claimFeatures,
