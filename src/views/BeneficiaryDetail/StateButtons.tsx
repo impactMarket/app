@@ -9,7 +9,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
 
     const [loadingBlockButton, setLoadingBlockButton] = useState(false);
     const [loadingRemoveButton, setLoadingRemoveButton] = useState(false);
-    const [userState, setUserState] = useState(beneficiary.state);
+    const [userState, setUserState] = useState(beneficiary?.beneficiary?.state);
 
     const { lockBeneficiary, removeBeneficiary, unlockBeneficiary } = useManager(community);
 
@@ -90,15 +90,18 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
     }
 
     // TODO: add texts to Prismic
+    // TODO: what happens if a user is already "Removed"? Do we show any information? Just disable the remove button?
 
     return (
         <>
             {
-                userState === 0 ?
+                userState === 0 &&
                 <Button disabled={loadingBlockButton || loadingRemoveButton} icon="userCross" isLoading={loadingBlockButton} mr={1} onClick={blockUser} secondary>
                     Block
                 </Button>
-                :
+            }
+            {
+                userState === 2 &&
                 <Button disabled={loadingBlockButton || loadingRemoveButton} icon="userCheck" isLoading={loadingBlockButton} mr={1} onClick={unblockUser} secondary>
                     Unblock
                 </Button>

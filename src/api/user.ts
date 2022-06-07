@@ -89,6 +89,13 @@ export const userApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
+        getUserById: builder.mutation<User, string>({
+            query: (id) => ({
+                method: 'GET',
+                url: `users/${id}`
+            }),
+            transformResponse: (response: { data: User }) => response.data
+        }),
         // Edit profile
         updateUser: builder.mutation<User, PutPostUser>({
             query: body => ({
@@ -108,6 +115,7 @@ export const {
     useCreateUserMutation,
     useDeleteUserMutation,
     useGetUserMutation,
+    useGetUserByIdMutation,
     useUpdateUserMutation,
     useGetPreSignedMutation
 } = userApi;
