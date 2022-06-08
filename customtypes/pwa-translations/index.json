@@ -803,6 +803,13 @@
         },
         "type": "Text"
       },
+      "string-present": {
+        "config": {
+          "label": "present",
+          "placeholder": "Present"
+        },
+        "type": "Text"
+      },
       "string-previous": {
         "config": {
           "label": "previous",
@@ -1407,6 +1414,15 @@
         "type": "StructuredText",
         "config": {
           "label": "beneficiaryRemove",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-managerRemoved": {
+        "type": "StructuredText",
+        "config": {
+          "label": "managerRemoved",
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
