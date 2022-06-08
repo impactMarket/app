@@ -24,7 +24,7 @@ interface proposalProps {
     quorum: number;
 }
 
-const Proposal: React.FC<proposalProps> = ({ data }) => {
+const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
     const { execute, vote } = useImpactMarketCouncil();
     const { t } = useTranslations();
     const { view } = usePrismicData();
@@ -88,11 +88,11 @@ const Proposal: React.FC<proposalProps> = ({ data }) => {
         oldStatus: 'canceled' | 'executed' | 'ready' | 'defeated' | 'expired' | 'active',
         state: number
     ) => {
-        if (state === 0 && votesAgainst + 1 === 2) {
+        if (state === 0 && votesAgainst + 1 === quorum) {
             return 'defeated';
         }
         
-        if (state === 1 && votesFor + 1 === 2) {
+        if (state === 1 && votesFor + 1 === quorum) {
             return 'ready';
         }
 
@@ -147,12 +147,12 @@ const Proposal: React.FC<proposalProps> = ({ data }) => {
             
             <Row fLayout="center start">
                 <Col pl={0}>
-                    {!auth?.type?.includes('subDAOMember') &&
+                    {!auth?.type?.includes('councilMember') &&
                         voteRunning?.includes(proposals.status) && (
                             <Label content={<RichText content={view.data.messageNotAllowedVote}/>} error icon="sad" ml={1} />
                         )}
 
-                    <CanBeRendered types={['subDAOMember']}>
+                    <CanBeRendered types={['councilMember']}>
                         {proposals.userVoted === -1 &&
                             proposals.status === 'active' && (
                                 <>
