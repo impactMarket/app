@@ -56,6 +56,12 @@ const useGuard = () => {
                     if(type?.includes(userAmbassador)) {
                         userPaths = userPaths.concat(ambassadorRoutes);
                     }
+
+
+                    // Ambassador type - include the respective Paths
+                    if(type?.includes(userAmbassador)) {
+                        userPaths = userPaths.concat(ambassadorRoutes);
+                    }
                 }
     
                 if(!userPaths.includes(router.pathname)) {

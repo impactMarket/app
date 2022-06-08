@@ -28,7 +28,7 @@ export interface PutPostUser {
     avatarMediaPath?: string;
     beneficiary?: any;
     manager?: any;
-    subDAOMember?: any;
+    councilMember?: any;
     ambassador?: any;
 }
 

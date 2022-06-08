@@ -34,7 +34,7 @@ const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
     const objDescription = proposals.description ? JSON.parse(proposals.description) : {};
     const voteRunning = ['active'];
     const auth = useSelector(selectCurrentUser);
-   
+
     const handleVote = (a: number) => {
         if (proposals.userVoted === 0) {
             const votesNo = a - 1;
