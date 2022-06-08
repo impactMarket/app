@@ -85,7 +85,7 @@ export const storyApi = emptySplitApi.injectEndpoints({
                 url: `stories?${!!filters ? `${filters}` : ''}${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
             }),
         }),
-        getStoryById: builder.query<Story, string>({
+        getStoryById: builder.mutation<Story, string>({
             query: id => `stories/${id}`
         }),
         loveStory: builder.mutation<Story, number>({
@@ -108,4 +108,4 @@ export const storyApi = emptySplitApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetStoryByIdQuery, useGetCountriesWithStoriesMutation, useGetPreSignedMutation, useGetStoriesMutation, useCreateStoryMutation, useLoveStoryMutation, useReportStoryMutation, useDeleteStoryMutation } = storyApi;
+export const { useGetStoryByIdMutation, useGetCountriesWithStoriesMutation, useGetPreSignedMutation, useGetStoriesMutation, useCreateStoryMutation, useLoveStoryMutation, useReportStoryMutation, useDeleteStoryMutation } = storyApi;
