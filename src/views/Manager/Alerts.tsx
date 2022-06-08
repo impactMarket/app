@@ -1,23 +1,15 @@
 import { Alert, Button, toast } from '@impact-market/ui';
-import { selectCurrentUser } from '../../state/slices/auth';
-import { useManager } from '@impact-market/utils';
-import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Alerts: React.FC<{ fundsRemainingDays: number; hasFunds: boolean; }> = props => {
-    const { fundsRemainingDays, hasFunds } = props;
+const Alerts: React.FC<{ canRequestFunds: boolean; fundsRemainingDays: number; hasFunds: boolean; requestFunds: Function }> = props => {
+    const { canRequestFunds, fundsRemainingDays, hasFunds, requestFunds } = props;
     const [loading, setLoading] = useState(false);
     const [requestSuccess, setRequestSuccess] = useState(false);
     const [fundsReceived] = useState(0);
     
-    const auth = useSelector(selectCurrentUser);
     const { t } = useTranslations();
-    
-    const { requestFunds } = useManager(
-        auth?.user?.manager?.community
-    );
 
     const requestMoreFunds = async () => {
         try {
@@ -45,10 +37,10 @@ const Alerts: React.FC<{ fundsRemainingDays: number; hasFunds: boolean; }> = pro
 
         return (
             <Button 
-                disabled={loading} 
+                disabled={!canRequestFunds || loading} 
                 icon={requestSuccess ? 'checkCircle' : 'plus'} 
                 isLoading={loading} 
-                onClick={() => !requestSuccess && requestMoreFunds()}
+                onClick={() => !requestSuccess && canRequestFunds && requestMoreFunds()}
                 reverse={requestSuccess}
                 {...state}
             >
@@ -70,7 +62,7 @@ const Alerts: React.FC<{ fundsRemainingDays: number; hasFunds: boolean; }> = pro
                     title={t('communityRunOutOfFunds')}
                 />
             }
-            {fundsRemainingDays <= 3 && fundsRemainingDays > 0 &&
+            {fundsRemainingDays > 0 && fundsRemainingDays <= 3 && 
                 <Alert 
                     button={renderButton()}
                     icon="alertTriangle" 
