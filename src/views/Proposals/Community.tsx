@@ -130,7 +130,7 @@ const Community = ({ data, removeIndex }: any) => {
                                 </Col>
 
                                 <Col colSize={3} right>
-                                    <CanBeRendered types={['subDAOMember']}>
+                                    <CanBeRendered types={['councilMember']}>
                                         {!isAdded && (
                                             <Button disabled={isLoading} isLoading={!!isLoading} onClick={handleAddCommunity} >
                                                 <String id="generateProposal" />
