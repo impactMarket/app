@@ -11,9 +11,9 @@ import {
 } from '@impact-market/ui';
 import { ProposalType } from './ProposalsPage';
 import { selectCurrentUser } from '../../state/slices/auth';
+import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
-import { useUBICommittee } from '@impact-market/utils';
 import CanBeRendered from '../../components/CanBeRendered';
 import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
@@ -25,7 +25,7 @@ interface proposalProps {
 }
 
 const Proposal: React.FC<proposalProps> = ({ data }) => {
-    const { execute, vote } = useUBICommittee();
+    const { execute, vote } = useImpactMarketCouncil();
     const { t } = useTranslations();
     const { view } = usePrismicData();
     const [proposals, setProposals] = useState<ProposalType>(data);

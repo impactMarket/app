@@ -14,8 +14,8 @@ import { frequencyToText } from '@impact-market/utils/frequencyToText';
 import { getCountryNameFromInitials } from '../../utils/countries';
 import { toNumber } from '@impact-market/utils/toNumber';
 import { toToken } from '@impact-market/utils/toToken';
+import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import { useUBICommittee } from '@impact-market/utils/useUBICommittee';
 import CanBeRendered from '../../components/CanBeRendered';
 import Image from '../../components/Image';
 import Link from 'next/link';
@@ -27,7 +27,7 @@ import config from '../../../config';
 
 const Community = ({ data, removeIndex }: any) => {
     const [community] = useState(data);
-    const { addCommunity } = useUBICommittee();
+    const { addCommunity } = useImpactMarketCouncil();
     const [isLoading, setIsLoading] = useState(false);
     const [isAdded, setIsAdded] = useState(false);
     const [getCommunityContract] = useGetCommunityContractMutation();
