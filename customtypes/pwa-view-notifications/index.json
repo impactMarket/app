@@ -1,0 +1,95 @@
+{
+  "id": "pwa-view-notifications",
+  "label": "[PWA] [View] Notifications",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "type": "Text",
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        }
+      },
+      "seo-description": {
+        "type": "Text",
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        }
+      },
+      "seo-keywords": {
+        "type": "Text",
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        }
+      },
+      "seo-image": {
+        "type": "Image",
+        "config": {
+          "label": "SEO image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      }
+    },
+    "heading": {
+      "heading-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "heading-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Content",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      }
+    },
+    "messages": {
+      "message-type0Title": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type0Title",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-type0Description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type0Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-type1Title": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type1Title",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-type1Description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type1Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
+    }
+  }
+}
