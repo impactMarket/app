@@ -18,3 +18,12 @@ export const getBeneficiary = gql`
         }
     }
 `;
+
+export const getCommunityManagers = gql`
+    query getCommunityManagers($address: String!) {
+        managerEntities(where: {community: $address}) {
+            id
+            state
+        }
+    }
+`;

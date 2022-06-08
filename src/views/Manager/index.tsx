@@ -75,17 +75,14 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
 
     useEffect(() => {
         // TODO: add final URL's
-        // TODO: remove temporary "disabled" once we have the Managers page finished
 
         setPrimaryCards([
             {
-                disabled: false,
                 number: communityEntity?.data?.communityEntity?.beneficiaries || 0,
                 title: t('totalBeneficiaries'),
                 url: '/manager/beneficiaries'
             },
             {
-                disabled: true,
                 number: communityEntity?.data?.communityEntity?.managers || 0,
                 title: t('totalManagers'),
                 url: '/manager/managers'

@@ -11,6 +11,7 @@ type Partial<BaseTableProps> = {
 
 type TableProps = {
     callback: Function;
+    callbackProps?: Object;
     itemsPerPage: number;
 };
 
@@ -36,7 +37,7 @@ const sortToObject = (sort: string) => {
 }
 
 const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
-    const { columns, callback, itemsPerPage, ...forwardProps } = props; 
+    const { columns, callback, callbackProps, itemsPerPage, ...forwardProps } = props; 
 
     const tableRef = useRef<null | HTMLDivElement>(null);
     const [sortKey, setSortKey] = useState({}) as any;
@@ -95,7 +96,8 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
                 const data = await callback({
                     filters,
                     limit: itemsPerPage,
-                    offset: itemOffset
+                    offset: itemOffset,
+                    ...callbackProps
                 }).unwrap();
 
                 setRows(data?.rows || []);
