@@ -1,20 +1,18 @@
 import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
-import {
-    ViewContainer,
-    toast
-} from '@impact-market/ui';
-
-import { useGetCommunityContractMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
-import Beneficiaries from './Beneficiaries'
-import CanBeRendered from '../../components/CanBeRendered';
-import Header from './Header'
-import Managers from './Managers'
-import Message from '../../libs/Prismic/components/Message';
-import getManagers from './mockData'
-
+import { ViewContainer, toast } from '@impact-market/ui';
 import { gql, useQuery } from '@apollo/client';
+
+import {
+    useGetCommunityContractMutation, useGetCommunityMutation, useUpdateReviewMutation
+} from '../../api/community';
+import CanBeRendered from '../../components/CanBeRendered';
+import CommunityDetails from './CommunityDetails';
+import Header from './Header';
+import Managers from './Managers';
+import Message from '../../libs/Prismic/components/Message';
+import getManagers from './mockData';
 
 //  Get community data from thegraph
 const communityQuery = gql`
@@ -107,17 +105,10 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     return (
         <ViewContainer isLoading={loading || isLoading}>
             <Header community={community} updateReview={functionUpdateReview}/>
-
-            {/* If community has already contract data (from API or thegraph), show <Beneficiaries/> */}
-            {(!!contractData.data || !!data?.communityEntity) &&
-                <Beneficiaries 
-                    //  If community exists in thegraph (it has contract address) get the data from thegraph. 
-                    //  If not, get from API
-                    data={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
-                />
-            }
-            
-            {/* If community was accepted, show <Managers/>  */}
+            <CommunityDetails
+                community={community}
+                data={data?.communityEntity ?? contractData.data}
+            />
             {community?.review === 'accepted' &&
                 <CanBeRendered types={['ambassador']}>
                     <Managers community={community} managers={managers}/> 
