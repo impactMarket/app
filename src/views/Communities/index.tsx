@@ -10,6 +10,7 @@ import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 
+import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
 import TabList from './Tabs'
 
@@ -23,6 +24,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
 
     const [loading, setLoading] = useState(false);
     const [communities, setCommunities] = useState({}) as any;
+    const [supportingCommunities, setSupportingCommunities] = useState({}) as any;
 
     const [activeTab, setActiveTab] = useState('all')
     const [statusFilter, setStatusFilter] = useState('valid')
@@ -42,7 +44,13 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                     status: activeTab === 'myCommunities' ? statusFilter : undefined
                 });
 
+                const totalValidCommunities = await getCommunities({
+                    ambassadorAddress: user?.address,
+                    status: 'valid'
+                });
+
                 setCommunities(communities);
+                setSupportingCommunities(totalValidCommunities)
 
                 setLoading(false);
             } catch (error) {
@@ -55,16 +63,34 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
         init();
     }, [activeTab, statusFilter]);
 
+
+    //  Get how many countries the ambassador is suporting
+    const supportingCountries = () => {
+        const supportingCountries = [] as any
+
+        supportingCommunities?.data?.rows.map((community: any) => {
+            supportingCountries.push(community?.country)
+        })
+
+        const deleteDuplicatedCountries = [...new Set(supportingCountries)];
+
+        return deleteDuplicatedCountries.length
+    }
+    
+
     return (
         <ViewContainer isLoading={isLoading}>
             <Display g900 medium>
                 {title}
             </Display>   
             {(user?.roles.includes('ambassador') && activeTab === 'myCommunities') ?
-                <RichText content={content} g500 mt={0.25} variables = {{ communities: communities?.data?.count, country: 'X' }} /> 
+                <RichText content={content} g500 mt={0.25} variables = {{ communities: supportingCommunities?.data?.count, countries: supportingCountries() }} /> 
             :
-                //  Todo: Add texts on Prismic
-                <RichText content="Here you will find all the communities that joined impactMarket." g500 mt={0.25}/>
+                <Message 
+                    g500
+                    id="communitiesJoined" 
+                    mt={0.25}
+                />
             }          
             <TabList
                 activeTab={activeTab}

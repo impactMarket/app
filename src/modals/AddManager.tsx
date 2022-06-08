@@ -3,20 +3,23 @@ import {
     Button,
     CircledIcon,
     Col,
-    Input,
     ModalWrapper,
     Row,
     toast,
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from "react-hook-form";
+import { useAmbassador } from '@impact-market/utils/useAmbassador';
+import Input from '../components/Input';
 import Message from '../libs/Prismic/components/Message';
 import React from 'react';
 import RichText from '../libs/Prismic/components/RichText';
+import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 
 const AddManager = () => {
-    const { handleClose } = useModal();
+    const { handleClose, community } = useModal();
+    const { t } = useTranslations();
 
     const { handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {
@@ -24,12 +27,21 @@ const AddManager = () => {
         }
     });
     const { isSubmitting } = useFormState({ control });
+
+    const { addManager } = useAmbassador();
     
-    const onSubmit: SubmitHandler<any> = () => {
+    const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            //  Todo: all the logic (add manager)
-            // eslint-disable-next-line no-alert
-            alert('In progress')
+            const { status } = await addManager(community?.id, data?.address);
+
+            if(status) {
+                handleClose();
+
+                toast.success(<Message id="managerAdded" />);
+            }
+            else {
+                toast.error(<Message id="errorOccurred" />);
+            }
         }
         catch(e) {
             console.log(e);
@@ -43,15 +55,14 @@ const AddManager = () => {
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
             <CircledIcon icon="flash" large />
             <RichText
-                content="Add Manager"
+                content={t('addManager')}
                 large
                 mt={1.25}
                 semibold
             />
-            {/* Todo: Add texts on Prismic */}
-            <RichText
-                content="The new manager will receive a notification and can immediatly start adding new beneficiaries."
-                g500
+            <Message 
+                g500 
+                id="managerNotification"
                 mt={0.5}
                 small
             />
@@ -59,8 +70,8 @@ const AddManager = () => {
                 <Box mt={1.25}>
                     <Input
                         control={control}
-                        hint={errors?.address ? 'This field is required' : ''}
-                        label="Add manager address"
+                        hint={errors?.address ? t('fieldRequired') : ''}
+                        label={t('addManagerAddress')}
                         name="address"
                         rules={{ required: true }}
                         withError={!!errors?.address}
@@ -70,14 +81,14 @@ const AddManager = () => {
                     <Col colSize={{ sm: 6, xs: 6 }}>
                         <Button disabled={isSubmitting} gray onClick={handleClose} type="button" w="100%">
                             <RichText
-                                content="Cancel"
+                                content={t('cancel')}
                             />
                         </Button>
                     </Col>
                     <Col colSize={{ sm: 6, xs: 6 }}>
                         <Button disabled={isSubmitting} isLoading={isSubmitting} type="submit" w="100%">
                             <RichText
-                                content= "Add Manager"                       
+                                content= {t('addManager')}                     
                             />
                         </Button>
                     </Col>

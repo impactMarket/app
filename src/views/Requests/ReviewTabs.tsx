@@ -11,30 +11,36 @@ import {
 import Communities from './Communities'
 import String from '../../libs/Prismic/components/String';
 
-const ReviewTabs = ({ communities, loading, reviewsByCountry, numberOfCommunitiesByReview, myCountrySelected, userCountry, setReview } : any) => {    
-
+const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCountrySelected, userCountry, setReview } : any) => {  
+    
+    //  Review has 4 states: 'pending', 'accepted', 'claimed', 'declined'
     const [reviews] = useState(['pending', 'claimed', 'declined']);
 
-    //  Get how many communties there are in each review (pending, claimed, declined)
-    const numberOfEachReview = (review: any) => {
-        let otherCountriesNumberOfReviews = 0
+    //  Get how many communties there are in each review - My Country
+    const myCountryCommunities = (review: any) => {
         let myCountryNumberOfReviews = {} as any
 
-        !!myCountrySelected ?
-            !!Object.keys(reviewsByCountry).length && (
-                reviewsByCountry.filter((communitiesNumber: any) => 
-                    userCountry === communitiesNumber?.country).map((quantity: any) => (
-                        myCountryNumberOfReviews = quantity
-                    )) 
-            )
-        :
-            !!Object.keys(numberOfCommunitiesByReview).length && (
-                numberOfCommunitiesByReview.filter((reviewName: any) => reviewName.review === review).map((count: any) => (
-                    otherCountriesNumberOfReviews = parseInt(count.count, 10)
-                ))
-            )
+        !!Object.keys(allCountries).length && (
+            allCountries.filter((countryName: any) => 
+                userCountry === countryName?.country).map((quantity: any) => (
+                    myCountryNumberOfReviews = quantity
+                )) 
+        )
+        
+        return isNaN(parseInt(myCountryNumberOfReviews[review], 10)) ? 0 : parseInt(myCountryNumberOfReviews[review], 10)
+    }
 
-        return !!myCountrySelected ? parseInt(myCountryNumberOfReviews[review], 10) : otherCountriesNumberOfReviews
+    //  Get how many communties there are in each review (pending, claimed, declined) - Other Countries
+    const otherCountriesCommunities = (review: any) => {
+        const otherCountriesNumberOfReviews = [] as any
+        
+        !!Object.keys(otherCountries).length && (
+            otherCountries.map((country: any) => (
+                    otherCountriesNumberOfReviews.push(parseInt(country?.[review], 10))
+                )) 
+        )
+        
+        return otherCountriesNumberOfReviews.reduce((a: any, b: any) => a + b, 0)
     }
 
 
@@ -44,7 +50,12 @@ const ReviewTabs = ({ communities, loading, reviewsByCountry, numberOfCommunitie
                     {reviews.map((review, key) => (
                         <Tab
                             key={key}
-                            number={isNaN(numberOfEachReview(review)) ? 0 : numberOfEachReview(review)}
+                            number={
+                                !!myCountrySelected ?
+                                    myCountryCommunities(review)
+                                :
+                                    otherCountriesCommunities(review)
+                                }
                             onClick={() => setReview(review)}
                             title={<String id={review} />}
                         />
