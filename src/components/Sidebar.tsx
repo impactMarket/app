@@ -28,6 +28,10 @@ type User = {
         community?: string;
         state: number;
     },
+    manager?: {
+        community?: string;
+        state: number;
+    },
     currency?: string;
     firstName?: string;
     lastName?: string;
@@ -41,8 +45,11 @@ type MenusState = {
 }
 
 const getUserType = (user: User) => {
+    if (!!user?.manager?.community) {
+        return 'manager';
+    };
     if (!!user?.beneficiary?.community) {
-        return 'beneficiary'
+        return 'beneficiary';
     };
 
     return 'donor';
