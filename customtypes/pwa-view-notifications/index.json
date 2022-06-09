@@ -89,6 +89,15 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "message-allNotificationsSent": {
+        "type": "StructuredText",
+        "config": {
+          "label": "allNotificationsSent",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
       }
     }
   }

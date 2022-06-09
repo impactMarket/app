@@ -1,0 +1,177 @@
+{
+  "id": "pwa-view-manager-add-community",
+  "label": "[PWA] [View] Manager Add Community",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "type": "Text",
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        }
+      },
+      "seo-description": {
+        "type": "Text",
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        }
+      },
+      "seo-keywords": {
+        "type": "Text",
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        }
+      },
+      "seo-image": {
+        "type": "Image",
+        "config": {
+          "label": "SEO image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      }
+    },
+    "heading": {
+      "heading-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "Community Submission"
+        }
+      },
+      "heading-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Content",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,hyperlink,em"
+        }
+      }
+    },
+    "form-sections": {
+      "form-sections-community-title": {
+        "type": "Text",
+        "config": {
+          "label": "Community Title",
+          "placeholder": ""
+        }
+      },
+      "form-sections-community-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Community Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-community-alert": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Community Alert",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-community-description-placeholder": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Community Description Placeholder",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-community-image-upload": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Community Image Upload",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-community-image-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Community Image Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,strong,hyperlink"
+        }
+      },
+      "form-sections-contract-title": {
+        "type": "Text",
+        "config": {
+          "label": "Contract Title",
+          "placeholder": ""
+        }
+      },
+      "form-sections-contract-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Contract Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-contract-alert": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Contract Alert",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-contract-first-text": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Contract First Text",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-contract-second-text": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Contract Second Text",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "form-sections-contract-private-title": {
+        "type": "Text",
+        "config": {
+          "label": "Contract Private Title",
+          "placeholder": ""
+        }
+      },
+      "form-sections-contract-private-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Contract Private Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "slices2": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {}
+        }
+      }
+    }
+  }
+}

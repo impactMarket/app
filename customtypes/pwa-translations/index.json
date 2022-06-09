@@ -138,6 +138,13 @@
         },
         "type": "Text"
       },
+      "string-amountPerClaim": {
+        "config": {
+          "label": "amountPerClaim",
+          "placeholder": "Amount per claim"
+        },
+        "type": "Text"
+      },
       "string-back": {
         "config": {
           "label": "back",
@@ -149,6 +156,13 @@
         "config": {
           "label": "backers",
           "placeholder": "Backers"
+        },
+        "type": "Text"
+      },
+      "string-baseInterval": {
+        "config": {
+          "label": "baseInterval",
+          "placeholder": "Base Interval"
         },
         "type": "Text"
       },
@@ -205,6 +219,13 @@
         "config": {
           "label": "charactersLeft",
           "placeholder": "characters left"
+        },
+        "type": "Text"
+      },
+      "string-cityCountry": {
+        "config": {
+          "label": "cityCountry",
+          "placeholder": "City, Country"
         },
         "type": "Text"
       },
@@ -271,10 +292,24 @@
         },
         "type": "Text"
       },
+      "string-communityDescription": {
+        "config": {
+          "label": "communityDescription",
+          "placeholder": "Community Description"
+        },
+        "type": "Text"
+      },
       "string-communityFundsRunningOut": {
         "config": {
           "label": "communityFundsRunningOut",
           "placeholder": "Community funds running out."
+        },
+        "type": "Text"
+      },
+      "string-communityName": {
+        "config": {
+          "label": "communityName",
+          "placeholder": "Community Name"
         },
         "type": "Text"
       },
@@ -614,10 +649,24 @@
         },
         "type": "Text"
       },
+      "string-manager": {
+        "config": {
+          "label": "manager",
+          "placeholder": "Manager"
+        },
+        "type": "Text"
+      },
       "string-managers": {
         "config": {
           "label": "managers",
           "placeholder": "Managers"
+        },
+        "type": "Text"
+      },
+      "string-maxClaim": {
+        "config": {
+          "label": "maxClaim",
+          "placeholder": "Max. claim"
         },
         "type": "Text"
       },
@@ -709,6 +758,20 @@
         "config": {
           "label": "noCommunities",
           "placeholder": "No Communities"
+        },
+        "type": "Text"
+      },
+      "string-noManagers": {
+        "config": {
+          "label": "noManagers",
+          "placeholder": "No Managers"
+        },
+        "type": "Text"
+      },
+      "string-noManagersFound": {
+        "config": {
+          "label": "noManagersFound",
+          "placeholder": "No managers found."
         },
         "type": "Text"
       },
@@ -929,6 +992,13 @@
         },
         "type": "Text"
       },
+      "string-searchByCityCountry": {
+        "config": {
+          "label": "searchByCityCountry",
+          "placeholder": "Search by city/country"
+        },
+        "type": "Text"
+      },
       "string-searchForName": {
         "config": {
           "label": "searchForName",
@@ -1038,6 +1108,13 @@
         "config": {
           "label": "storyPostText",
           "placeholder": "Story post text"
+        },
+        "type": "Text"
+      },
+      "string-submit": {
+        "config": {
+          "label": "submit",
+          "placeholder": "Submit"
         },
         "type": "Text"
       },
@@ -1171,6 +1248,13 @@
         "config": {
           "label": "yourBalance",
           "placeholder": "Your balance"
+        },
+        "type": "Text"
+      },
+      "string-yourProfilePhoto": {
+        "config": {
+          "label": "yourProfilePhoto",
+          "placeholder": "Your profile photo"
         },
         "type": "Text"
       }
@@ -1426,6 +1510,15 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityHasntOnboarded": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityHasntOnboarded",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,hyperlink,strong,em"
         }
       },
       "slices1": {
