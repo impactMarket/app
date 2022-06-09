@@ -131,11 +131,12 @@ export const communityApi = emptySplitApi.injectEndpoints({
             })
         }),
         //  Get community managers
-        getCommunityManagers: builder.mutation<CommunityManagers, { id: any }>({
-            query: (id: any) => ({
+        getCommunityManagers: builder.mutation<CommunityManagers, {community: string, filters?: string, limit?: number, offset?: number}>({
+            query: ({community, filters, limit, offset}) => ({
                 method: 'GET',
-                url: `communities/${id}/managers`
-            })
+                url: `communities/${community}/managers?${!!filters ? `${filters}` : ''}${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
+            }),
+            transformResponse: (response: { data?: CommunityManagers }) => response.data
         }),
         getCountryByCommunities: builder.mutation<Countries[], void>({
             query: () => ({

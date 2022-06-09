@@ -52,7 +52,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 setLoading(true)
                 
                 //  Get managers
-                const managersData = await getCommunityManagers(community?.id).unwrap()
+                const managersData = await getCommunityManagers({ community: community?.id }).unwrap()
 
                 //  Get community's contract data
                 const contractData = await getCommunityContract(community?.id).unwrap()

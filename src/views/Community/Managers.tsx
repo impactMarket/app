@@ -83,7 +83,7 @@ const Managers = ({ community, managers, status } : any) => {
                     </Box> 
                 }
 
-                {!managers.length ?
+                {!managers?.length ?
                     // Todo: Add string "No Managers" on prismic
                     <Text>No Managers</Text>
                 :
