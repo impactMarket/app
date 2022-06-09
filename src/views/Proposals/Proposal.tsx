@@ -106,11 +106,11 @@ const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
             </Text>
             <Row pb={0.25} pt={0.5}>
                 <Col colSize={{ sm: 8, xs: 12 }}>
-                    <Row>
-                        <Text g500 pr={0}>
+                    <Row pt={1}>
+                        <Text g500 pb={0} pr={0} pt={0}>
                             <String id="createdBy" />:
                         </Text>
-                        <Text g500 p600 pl={1}>
+                        <Text g500 p600 pl={1} pt={0}>
                             {proposals.proposer}
                         </Text>
                     </Row>
@@ -143,113 +143,126 @@ const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
                 </Col>
             </Row>
 
-            <Divider />
-            
-            <Row fLayout="center start">
-                <Col pl={0}>
-                    {!auth?.type?.includes('councilMember') &&
-                        voteRunning?.includes(proposals.status) && (
-                            <Label content={<RichText content={view.data.messageNotAllowedVote}/>} error icon="sad" ml={1} />
-                        )}
+            <Divider/>
 
-                    <CanBeRendered types={['councilMember']}>
-                        {proposals.userVoted === -1 &&
-                            proposals.status === 'active' && (
-                                <>
-                                    <Button
-                                        disabled={loadingButtonYes}
-                                        error
-                                        isLoading={loadingButtonYes === false}
-                                        ml={1}
-                                        mr={0.5}
-                                        onClick={() => voteFunction(proposals.id, 0)}
-                                    >
-                                        <String id="decline" />
-                                    </Button>
+            <Row fLayout="center start" pb={1} >
+                {!auth?.type?.includes('councilMember') && voteRunning?.includes(proposals.status) && (
+                    <Col pb={0}>
+                        <Label content={<RichText content={view.data.messageNotAllowedVote}/>} error icon="sad" />
+                    </Col>
+                )}
+                <CanBeRendered types={['councilMember']}>
+                    {proposals.userVoted === -1 && proposals.status === 'active' && (
+                        <Col pb={0} pr={0}>
+                            <>
+                                <Button
+                                    disabled={loadingButtonYes}
+                                    error
+                                    isLoading={loadingButtonYes === false}
+                                    onClick={() => voteFunction(proposals.id, 0)}
+                                >
+                                    <String id="decline" />
+                                </Button>
 
-                                    <Button
-                                        disabled={loadingButtonYes === false}
-                                        isLoading={loadingButtonYes}
-                                        ml={1}
-                                        onClick={() =>
-                                            voteFunction(proposals.id, 1)
-                                        }
-                                        success
-                                    >
-                                        <String id="accept" />
-                                    </Button>
-                                </>
-                            )}
+                                <Button
+                                    disabled={loadingButtonYes === false}
+                                    isLoading={loadingButtonYes}
+                                    ml={1}
+                                    onClick={() =>
+                                        voteFunction(proposals.id, 1)
+                                    }
+                                    success
+                                >
+                                    <String id="accept" />
+                                </Button>
+                            </>
+                        </Col>
+                    )}
 
-                        {proposals.status === 'ready' && (
-                            <Button isLoading={loadingButtonExecute} ml={1} mr={1.938} onClick={() => executeFunction(proposals.id)}>
+                    {proposals.status === 'ready' && (
+                        <Col pb={0} pr={0}>
+                            <Button isLoading={loadingButtonExecute} onClick={() => executeFunction(proposals.id)}>
                                 <RichText content={view.data.stringExecuteProposal} />
                             </Button>
-                        )}
-                    </CanBeRendered>
-
-                    {proposals.status !== 'active' && (
-                        <Label content={t('voteHasEnded')} ml={1} />
+                        </Col>
                     )}
-                </Col>
-                <Col pl={0}>
-                    <Row>
-                        <Box flex pr={0.25}>
-                            {proposals.userVoted === 1 && (
-                                <>
-                                    <Text g800 pl={0.5} semibold>
-                                        <String id="you" /> +
-                                    </Text>
-                                    <Text g800 pl={0.5} pr={0} semibold>
-                                        {handleVote(proposals.votesFor)}
-                                    </Text>
-                                    <Text g500 pl={0.25}>
-                                        <String id="votedYes" />
-                                    </Text>
-                                </>
-                            )}
+                </CanBeRendered>
 
-                            {proposals.userVoted !== 1 && (
-                                <>
-                                    <Text g800 pr={0} semibold>
-                                        {proposals.votesFor}
-                                    </Text>
-                                    <Text g500 pl={0.25}>
-                                        <String id="votedYes" />
-                                    </Text>
-                                </>
-                            )}
+                    {proposals.status !== 'active' && proposals.status !== 'ready' && (
+                        <Col pb={0} pr={0}>
+                            <Label content={t('voteHasEnded')}/>
+                        </Col>
+                    )}
 
-                            <Text pl={0.5} pr={0.5}>
-                                ·
-                            </Text>
+                <Col flex maxW="100%" pb={0} pl={1} pt={1}>
+                    {proposals.userVoted === 1 && (
+                        <Row padding={1}>
+                            <Col flex padding={0}>
+                                <Text as="div" flex g800 pl={0} pr={0.25} semibold>
+                                    <String id="you" /> + {handleVote(proposals.votesFor)} 
+                                </Text>
+                                <Text g500 pr={0.25}>
+                                    <String id="votedYes" />
+                                </Text>
+                                <Text pl={0.25} pr={0.5}>·</Text>
+                            </Col>
 
-                            {proposals.userVoted === 0 && (
-                                <>
-                                    <Text g800 semibold>
-                                        <String id="you" /> +
-                                    </Text>
-                                    <Text g800 pl={0.5} pr={0} semibold>
-                                        {handleVote(proposals.votesAgainst)}
-                                    </Text>
-                                    <Text g500 pl={0.25}>
-                                        <String id="votedNo" />
-                                    </Text>
-                                </>
-                            )}
+                            <Col flex padding={0}>
+                                <Text g800  pr={0} semibold>
+                                    {proposals.votesAgainst}
+                                </Text>
+                                <Text g500 pl={0.25} pr={0}>
+                                    <String id="votedNo" />
+                                </Text>
+                            </Col>
+                        </Row>
+                    )}
 
-                            {proposals.userVoted !== 0 && (
-                                <>
-                                    <Text g800 pl={0.5} pr={0} semibold>
-                                        {proposals.votesAgainst}
-                                    </Text>
-                                    <Text g500 pl={0.25}>
-                                        <String id="votedNo" />
-                                    </Text>
-                                </>
-                            )}
-                        </Box>
-                    </Row>
+                    {proposals.userVoted === 0 && (
+                         <Row padding={1}>
+                            <Col flex padding={0}>
+                                <Text g800 pr={0} semibold>
+                                    {proposals.votesFor}
+                                </Text>
+                                <Text g500 pl={0.25} pr={0.25}>
+                                    <String id="votedYes" />
+                                </Text>
+                                <Text pl={0.25} pr={0.5}>·</Text>
+                            </Col>
+
+                            <Col flex padding={0}>
+                                <Text g800  pr={0} semibold>
+                                    <String id="you" /> + {handleVote(proposals.votesAgainst)} 
+                                </Text>
+                                <Text g500 pl={0.25} pr={0}>
+                                    <String id="votedNo" />
+                                </Text>
+                            </Col>
+                        </Row>
+                    )}
+
+                    {proposals.userVoted === -1 && (
+                        <Row padding={1}>
+                            <Col flex padding={0}>
+                                <Text g800 pr={0} semibold>
+                                    {proposals.votesFor}
+                                </Text>
+                                <Text g500 pl={0.25} pr={0.25}>
+                                    <String id="votedYes" />
+                                </Text>
+                                <Text pl={0.25} pr={0.5}>·</Text>
+                            </Col>
+
+                            <Col flex padding={0}>
+                                <Text g800  pr={0} semibold>
+                                    {proposals.votesAgainst}
+                                </Text>
+                                <Text g500 pl={0.25} pr={0}>
+                                    <String id="votedNo" />
+                                </Text>
+                            </Col>
+                        </Row>
+                    )}
                 </Col>
             </Row>
             <Row>

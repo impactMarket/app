@@ -258,7 +258,7 @@ const OpenStory: React.FC = () => {
                         <Row>
                             <Box fLayout="start between" flex mt={1} padding={1} pt={0} w="100%" >
                                 <Row fLayout="center start" margin={0} w="100%">
-                                    <Col colSize={{sm: 5, xs: 12}} padding={0} >
+                                    <Col colSize={{sm: 7, xs: 12}} padding={0} >
                                         <Button
                                             fluid="xs"
                                             gray
@@ -271,7 +271,7 @@ const OpenStory: React.FC = () => {
                                         </Button>
                                     </Col>
                                     {story?.engagement?.loves > 0 && (
-                                        <Col colSize={{sm: 6, xs: 12}} padding={0} pl={{sm: 1, xs: 0}} pt={{sm: 0, xs: 1}}>
+                                        <Col colSize={{sm: 5, xs: 12}} padding={0} pl={{sm: 1, xs: 0}} pt={{sm: 0, xs: 1}}>
                                             <Text as="div" g600 regular small>
                                                 {story?.engagement?.loves}{' '}<String id="loves" />
                                             </Text>

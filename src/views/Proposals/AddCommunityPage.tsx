@@ -8,11 +8,11 @@ import Community from './Community';
 import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
 
-const AddCommunityPage = ({ setRequestsCount }: any) => {
+const AddCommunityPage = ({ setRequestsCount, requestsCount }: any) => {
     const [isLoading, setIsLoading] = useState(false);
     const [communities, setCommunities] = useState<PendingCommunities>();
     const [getPendingCommunities] = useGetPendingCommunitiesMutation();
-    const limit = 2;
+    const limit = 10;
     
     // Pagination
     const [offset, setItemOffset] = useState(0);
@@ -63,15 +63,6 @@ const AddCommunityPage = ({ setRequestsCount }: any) => {
         }
     };
 
-    const removeIndex = (id: number) => {
-        setCommunities((oldCommunities: { count: number, rows: any }) => ({
-            count: oldCommunities.rows.filter((community: any) => id !== community.id).length,
-            rows: oldCommunities.rows.filter((community: any) => id !== community.id)})
-        );
-
-        setRequestsCount(totalCount - 1);
-    };
-
     return (
         <>
             {isLoading || !communities ? (
@@ -91,7 +82,7 @@ const AddCommunityPage = ({ setRequestsCount }: any) => {
                     <Box>
                         <Box mt={2}>
                             {communities.rows.map((community, index) => (
-                                <Community data={community} key={index} {...community} removeIndex={removeIndex} />
+                                <Community data={community} key={index} {...community} requestsCount={requestsCount} setRequestsCount={setRequestsCount}/>
                             ))}
                         </Box>
                     </Box>

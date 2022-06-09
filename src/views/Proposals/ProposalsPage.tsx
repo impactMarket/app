@@ -4,7 +4,7 @@ import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCoun
 import Proposal from './Proposal';
 import React, { useEffect, useState } from 'react';
 
-const itemsPerPage = 2;
+const itemsPerPage = 10;
 
 export interface ProposalType {
     id: number;
