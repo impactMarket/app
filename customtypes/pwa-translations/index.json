@@ -194,9 +194,9 @@
         },
         "type": "Text"
       },
-      "string-block:": {
+      "string-block": {
         "config": {
-          "label": "block:",
+          "label": "block",
           "placeholder": "Block"
         },
         "type": "Text"
@@ -548,6 +548,13 @@
         "config": {
           "label": "generateProposal",
           "placeholder": "Generate Proposal"
+        },
+        "type": "Text"
+      },
+      "string-generatedSuccessfully": {
+        "config": {
+          "label": "generatedSuccessfully",
+          "placeholder": "Generated successfully"
         },
         "type": "Text"
       },
