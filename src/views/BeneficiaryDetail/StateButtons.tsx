@@ -3,6 +3,7 @@ import { Button, toast } from '@impact-market/ui';
 import { useManager } from '@impact-market/utils';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useState } from 'react';
+import String from '../../libs/Prismic/components/String';
 
 const StateButtons: React.FC<{ beneficiary: any, community: string }> = props => {
     const { beneficiary, community } = props;
@@ -20,8 +21,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
             const { status } = await lockBeneficiary(beneficiary.address);
 
             if(status) {
-                // TODO: add texts to Prismic
-                toast.success('The Beneficiary was blocked successfully!');
+                toast.success(<Message id="beneficiaryBlocked" />);
 
                 // User is now "locked"
                 setUserState(2);
@@ -45,8 +45,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
             const { status } = await unlockBeneficiary(beneficiary.address);
 
             if(status) {
-                // TODO: add texts to Prismic
-                toast.success('The Beneficiary was unblocked successfully!');
+                toast.success(<Message id="beneficiaryUnblocked" />);
 
                 // User is now "active"
                 setUserState(0);
@@ -69,10 +68,8 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
 
             const { status } = await removeBeneficiary(beneficiary.address);
 
-            // TODO: after removing a user, should we return to beneficiaries list?
             if(status) {
-                // TODO: add texts to Prismic
-                toast.success('The Beneficiary was removed successfully!');
+                toast.success(<Message id="beneficiaryRemove" />);
 
                 // User is now "removed"
                 setUserState(1);
@@ -89,7 +86,6 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
         }
     }
 
-    // TODO: add texts to Prismic
     // TODO: what happens if a user is already "Removed"? Do we show any information? Just disable the remove button?
 
     return (
@@ -97,17 +93,17 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
             {
                 userState === 0 &&
                 <Button disabled={loadingBlockButton || loadingRemoveButton} icon="userCross" isLoading={loadingBlockButton} mr={1} onClick={blockUser} secondary>
-                    Block
+                    <String id="block" />
                 </Button>
             }
             {
                 userState === 2 &&
                 <Button disabled={loadingBlockButton || loadingRemoveButton} icon="userCheck" isLoading={loadingBlockButton} mr={1} onClick={unblockUser} secondary>
-                    Unblock
+                    <String id="unblock" />
                 </Button>
             }
             <Button disabled={userState === 1 || loadingRemoveButton || loadingBlockButton} icon="userMinus" isLoading={loadingRemoveButton} onClick={removeUser}>
-                Remove Beneficiary
+                <String id="removeBeneficiary" />
             </Button>
         </>
     );

@@ -22,11 +22,10 @@ const getColumns = (currency: any) => {
             minWidth: 14,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
-                    { /* TODO: add "small" size to CircledIcon: 32 x 32 px */ }
                     {!!data.avatarMediaPath ? 
                         <Avatar extrasmall url={getImage({ filePath: data.avatarMediaPath, fit: 'cover', height: 32, width: 32 })} />  
                         : 
-                        <CircledIcon icon="user" />
+                        <CircledIcon icon="user" small />
                     }
                     <Box pl={0.75}>
                         {(!!data.firstName || !!data.lastName) && (

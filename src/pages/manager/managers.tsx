@@ -3,8 +3,6 @@ import { GetStaticProps } from 'next';
 import Managers from '../../views/Managers';
 import Prismic from '../../libs/Prismic/Prismic';
 
-// TODO: create view in Prismic 
-
 export const getStaticProps: GetStaticProps = async ({
     locale: lang,
     previewData

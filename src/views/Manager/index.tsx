@@ -74,8 +74,6 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
     }, []);
 
     useEffect(() => {
-        // TODO: add final URL's
-
         setPrimaryCards([
             {
                 number: communityEntity?.data?.communityEntity?.beneficiaries || 0,
@@ -89,7 +87,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
             }
         ]);
 
-        // TODO: secondary cards commented by Bernardo request for now, finish them later
+        // TODO: secondary cards commented by Bernardo request for now, finish them later and add add final URL's
 
         // setSecondaryCards([
         //     {

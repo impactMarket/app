@@ -1,9 +1,9 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Box, Display, Tab, TabList, TabPanel, Tabs, Text, ViewContainer } from '@impact-market/ui';
+import { Box, Display, Tab, TabList, TabPanel, Tabs, ViewContainer } from '@impact-market/ui';
 import { getCommunityManagers } from '../../graph/user';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunityMutation } from '../../api/community';
-// import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -12,6 +12,7 @@ import Filters from './Filters';
 import ManagersList from './ManagersList';
 import NoManagers from './NoManagers';
 import React, { useEffect, useState } from 'react';
+import RichText from '../../libs/Prismic/components/RichText';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -21,11 +22,8 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const [community, setCommunity] = useState({}) as any;
     const FakeTabPanel = TabPanel as any;
 
-    // TODO: load info from Prismic
-    // const { extractFromView } = usePrismicData();
-    // const { title, content } = extractFromView('heading') as any;
-    const title = 'Managers';
-    const content = 'View all community managers.';
+    const { extractFromView } = usePrismicData();
+    const { title, content } = extractFromView('heading') as any;
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
@@ -71,9 +69,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                 <Display g900  medium>
                     {title}
                 </Display>
-                <Text g500 mt={0.25}>
-                    {content}
-                </Text>
+                <RichText content={content} g500 mt={0.25} />
             </Box>
             {
                 communityManagers?.data?.managerEntities?.length > 0 ?

@@ -58,11 +58,10 @@ const Form = ({ onSubmit }: any) => {
                     />
                 </Box>
                 { /* TODO: finish phone field (like it is in the design) */ }
-                { /* TODO: add text to Prismic */ }
                 <Box mb={1.5}>
                     <Input 
                         control={control}
-                        hint={errors?.phone ? 'Invalid phone number' : ''}
+                        hint={errors?.phone ? t('errorPhoneNumber') : ''}
                         label={t('phoneNumber')}
                         name="phone"
                         withError={!!errors?.phone}
