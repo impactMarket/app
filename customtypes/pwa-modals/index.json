@@ -356,6 +356,24 @@
           "placeholder": ""
         }
       }
+    },
+    "wrong-network": {
+      "wrong-network-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "Incorrect network."
+        }
+      },
+      "wrong-network-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      }
     }
   }
 }
