@@ -1,22 +1,23 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Avatar, Box, CircledIcon, Display, DropdownMenu, Icon, Tab, TabList, TabPanel, Tabs, Text, TextLink, ViewContainer, toast } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
-import { getBeneficiary } from '../../graph/user';
 import { selectCurrentUser } from '../../state/slices/auth';
 // import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { getImage } from '../../utils/images';
 import { getUserName, userManager } from '../../utils/users';
-import { useQuery } from '@apollo/client';
+import { useGetUserByIdMutation } from '../../api/user';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import StateButtons from './StateButtons';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
+    const [loadingUser, toggleLoadingUser] = useState(true);
+    const [user, setUser] = useState({}) as any;
 
     // TODO: load information from prismic and use it in the content
     // const { view } = usePrismicData({ list: true });
@@ -24,6 +25,7 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
     const { t } = useTranslations();
+    const [getUser] = useGetUserByIdMutation();
 
     // Check if current User has access to this page
     if(!auth?.type?.includes(userManager)) {
@@ -32,40 +34,54 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
         return null;
     }
 
-    // TODO: needs a new request in the API, for now we use TheGraph, but remove this once we have the request
-    const beneficiary = useQuery(getBeneficiary, { variables: { id: router?.query?.id } });
+    useEffect(() => {
+        const init = async () => {
+            try {
+                const id = router?.query?.id as any;
+                const data = await getUser(id).unwrap();
 
-    // If there's no Beneficiary with the current address, send to Beneficiaries page
-    if(!beneficiary?.loading && !beneficiary?.data) {
-        router.push('/manager/beneficiaries');
+                setUser(data);
 
-        return null;
-    }
+                toggleLoadingUser(false);
+            }
+            catch (error) {
+                console.log(error);
+
+                toggleLoadingUser(false);
+
+                router.push('/manager/beneficiaries');
+
+                return false;
+            }
+        };
+
+        init();
+    }, []);
 
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(auth?.user?.address);
+        navigator.clipboard.writeText(user?.address);
 
         toast.success(<Message id="copiedAddress" />);
     }
 
     return (
-        <ViewContainer isLoading={isLoading || beneficiary?.loading}>
-            <TextLink fLayout="center start" flex onClick={() => router.push('/manager/beneficiaries')}>
+        <ViewContainer isLoading={isLoading || loadingUser}>
+            <TextLink fLayout="center start" flex onClick={() => router.back()}>
                 <Icon icon="arrowLeft" mr={0.75} p700 />
                 { /* TODO: add text to Prismic */ }
                 <Text medium p700 small>Back</Text>
             </TextLink>
             <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout="start between" flex mt={1.5}>
                 <Box fLayout="center start" flex>
-                    {!!beneficiary?.data?.beneficiaryEntity?.avatarMediaPath ? 
-                        <Avatar mr={1.375} small url={getImage({ filePath: beneficiary.data.beneficiaryEntity.avatarMediaPath, fit: 'cover', height: 66, width: 66 })} />  
+                    {!!user?.avatarMediaPath ? 
+                        <Avatar mr={1.375} small url={getImage({ filePath: user.avatarMediaPath, fit: 'cover', height: 66, width: 66 })} />  
                         : 
                         <CircledIcon h={4.125} icon="user" large mr={1.375} w={4.125} />
                     }
                     <Box column flex>
-                        {(!!beneficiary?.data?.beneficiaryEntity?.firstName || !!beneficiary?.data?.beneficiaryEntity?.lastName) && (
+                        {(!!user?.firstName || !!user?.lastName) && (
                             <Display g900 mb={0.25} medium>
-                                {getUserName(beneficiary.data.beneficiaryEntity)}
+                                {getUserName(user)}
                             </Display>
                         )}
                         <DropdownMenu
@@ -73,7 +89,7 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
                             items={[
                                 {
                                     icon: 'open',
-                                    onClick: () => window.open(config.explorerUrl?.replace('#USER#', beneficiary?.data?.beneficiaryEntity?.address)),
+                                    onClick: () => window.open(config.explorerUrl?.replace('#USER#', user?.address)),
                                     title: t('openInExplorer')
                                 },
                                 {
@@ -82,12 +98,12 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
                                     title: t('copyAddress')
                                 }
                             ]}
-                            title={formatAddress(beneficiary?.data?.beneficiaryEntity?.address, [6, 4])}
+                            title={formatAddress(user?.address, [6, 4])}
                         />
                     </Box>
                 </Box>
                 <Box mt={{ sm: 0, xs: 1 }}>
-                    <StateButtons beneficiary={beneficiary?.data?.beneficiaryEntity} community={auth?.user?.manager?.community} />
+                    <StateButtons beneficiary={user} community={auth?.user?.manager?.community} />
                 </Box>
             </Box>
             <Box mt={0.5}>
