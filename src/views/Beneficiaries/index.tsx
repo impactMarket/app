@@ -42,7 +42,9 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const communityBeneficiaries = useQuery(getCommunityBeneficiaries, { variables: { address: auth?.user?.manager?.community } });
 
     useEffect(() => {
-        router.push('/manager/beneficiaries?state=active', undefined, { shallow: true });
+        if(!getByKey('state')) {
+            router.push('/manager/beneficiaries?state=active', undefined, { shallow: true });
+        }
 
         const init = async () => {
             try {
