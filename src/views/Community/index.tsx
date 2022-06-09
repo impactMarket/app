@@ -114,7 +114,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                         //  If community exists in thegraph (it has contract address) get the data from thegraph. 
                         //  If not, get from API
                         community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
-                        managers={managers?.data?.rows}
+                        managers={managers?.rows}
                         status={communityData?.status}
                     /> 
                 </CanBeRendered>

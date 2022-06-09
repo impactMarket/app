@@ -93,7 +93,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
         getCommunities: builder.mutation<Communities, Record<string, any>>({
             query: (filters: Record<string, any>) => ({
                 method: 'GET',
-                url: qs.stringifyUrl({query:{limit:999, ...filters}, url:'communities'})
+                url: qs.stringifyUrl({query:{ ...filters }, url:'communities'})
             }),
             transformResponse: (response: { data?: Communities }) => response.data
         }),

@@ -7,9 +7,11 @@ import {
 } from '@impact-market/ui';
 
 import String from '../../libs/Prismic/components/String';
+import useFilters from '../../hooks/useFilters';
 
 
-const CountryTabs = ({ userCountry, allCountries, otherCountries, setMyCountrySelected }: any) => {   
+const CountryTabs = ({ userCountry, allCountries, otherCountries, setMyCountrySelected }: any) => {  
+    const { update, getByKey } = useFilters();
 
     //  Get how many communties there are in My Country
     const myCountryCommunities = () => {
@@ -39,16 +41,20 @@ const CountryTabs = ({ userCountry, allCountries, otherCountries, setMyCountrySe
 
 
     return (
-            <Tabs>
+            <Tabs defaultIndex={
+                // eslint-disable-next-line no-nested-ternary
+                getByKey('country') === 'mycountry' ? 0 :
+                getByKey('country') === 'othercountries' ? 1 : 0
+            }>
                 <TabList>
                     <Tab
                         number={myCountryCommunities()}
-                        onClick={() => setMyCountrySelected(true)}
+                        onClick={() => { setMyCountrySelected(true); update('country', 'mycountry')}}
                         title={<String id="myCountry" />}
                     />
                     <Tab
                         number={otherCountriesCommunities()}
-                        onClick={() => setMyCountrySelected(false)}
+                        onClick={() => { setMyCountrySelected(false); update('country', 'othercountries') }}
                         title={<String id="otherCountries" />}
                     />
                 </TabList>
