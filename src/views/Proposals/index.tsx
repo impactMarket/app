@@ -14,6 +14,7 @@ import ProposalsPage from './ProposalsPage';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
@@ -24,6 +25,7 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     const [loading, setLoading] = useState(false);
     const { view } = usePrismicData();
     const { t } = useTranslations();
+    const { clear, update, getByKey } = useFilters();
 
     const limit = 1;
     const offset = 0;
@@ -53,20 +55,20 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     return (
         <ViewContainer isLoading={isLoading || loading || !isReady}>
             <Display>
-                <String id="proposal" />
+                <String id="proposals" />
             </Display>
             <RichText content={view.data.messageVoteOnProposals} g500 />
 
-            <Tabs>
+            <Tabs defaultIndex={getByKey('requests') ? 1 : 0}>
                 <TabList>
-                    <Tab title={t('proposals')} />
-                    <Tab number={requestsCount} title={t('requests')}  />
+                    <Tab onClick={() => clear('requests')} title={t('proposals')}/>
+                    <Tab number={requestsCount} onClick={() => update('requests', requestsCount)} title={t('requests')}/>
                 </TabList>
                 <TabPanel>
                     <ProposalsPage />
                 </TabPanel>
                 <TabPanel>
-                    <AddCommunityPage setRequestsCount={setRequestsCount} />
+                    <AddCommunityPage requestsCount={requestsCount} setRequestsCount={setRequestsCount} />
                 </TabPanel>
             </Tabs>
         </ViewContainer>
