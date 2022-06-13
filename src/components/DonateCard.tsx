@@ -81,12 +81,12 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
             </Box>
             <Box fLayout="between" flex mt={1}>
                 <Box left>
-                    <Text center g500 mt={1} small>
+                    <Text g500 left mt={1} small>
                         {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t('backers')}`}
                     </Text>
                 </Box>
                 <Box right>
-                    <Text center g500 mt={1} small>
+                    <Text g500 mt={1} right small>
                         <String id="goal" />
                     </Text>
                 </Box>
