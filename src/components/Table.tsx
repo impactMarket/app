@@ -161,15 +161,6 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
 
         setSortKey(newSort);
     };
-    
-    // TODO: add text to Prismic
-    /* 
-    * TODO: when it's loading results, it's showing the NoResults message, but it's already fixed in UI, just needs a new release
-    * After it's released edit the line "noResults": 
-    *   noResults={!loading && "There are no results to show!"}
-    *   »
-    *   noResults={"There are no results to show!"}
-    */
 
     return (
         <Box ref={tableRef} {...forwardProps}>
@@ -177,7 +168,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
                 columns={columns}
                 handleSort={handleSort}
                 isLoading={loading}
-                noResults={!loading && "There are no results to show!"}
+                noResults={t('noResults')}
                 pagination={
                     <Pagination
                         currentPage={currentPage}

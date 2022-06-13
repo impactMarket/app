@@ -3,8 +3,6 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import BeneficiaryDetail from '../../../views/BeneficiaryDetail';
 import Prismic from '../../../libs/Prismic/Prismic';
 
-// TODO: Load info from the right view
-
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = () => {
     return {
         fallback: 'blocking',

@@ -1,18 +1,16 @@
 import { Box, CircledIcon, Text } from '@impact-market/ui';
+import Message from '../../libs/Prismic/components/Message';
 import React from 'react';
-
-// TODO: add texts to Prismic
+import String from '../../libs/Prismic/components/String';
 
 const NoManagers: React.FC = () => {
     return (
         <Box column fLayout="center" flex h="80vh">
             <CircledIcon icon="userCross" info medium /> 
             <Text center g900 medium mt={1}>
-                No managers found.
+                <String id="noManagersFound" />
             </Text> 
-            <Text center g500 mt={0.25} small>
-                This community hasn`t yet onboarded any manager.
-            </Text>
+            <Message center g500 id="communityHasntOnboarded" mt={0.25} small />
         </Box>
     );
 };
