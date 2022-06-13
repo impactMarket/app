@@ -21,6 +21,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [community, setCommunity] = useState({}) as any;
+    const [refresh, setRefresh] = useState<Date>(new Date());
     const FakeTabPanel = TabPanel as any;
 
     const { extractFromView } = usePrismicData();
@@ -64,6 +65,11 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
         init();
     }, []);
 
+    const onAddBeneficiary = () => {
+        setRefresh(new Date());
+        communityBeneficiaries.refetch();
+    }
+
     return (
         <ViewContainer isLoading={isLoading || loadingCommunity || communityBeneficiaries?.loading}>
             <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout="start between" flex>
@@ -75,7 +81,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                 </Box>
                 {
                     communityBeneficiaries?.data?.beneficiaryEntities?.length > 0 &&
-                    <Button icon="plus" mt={{ sm: 0, xs: 1 }} onClick={() => openModal('addBeneficiary')}>
+                    <Button icon="plus" mt={{ sm: 0, xs: 1 }} onClick={() => openModal('addBeneficiary', { onAddBeneficiary })}>
                         <String id="addBeneficiary" />
                     </Button>
                 }
@@ -101,7 +107,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                         <FakeTabPanel />
                     </Tabs>
                     <Filters />
-                    <BeneficiariesList community={community} />
+                    <BeneficiariesList community={community} refresh={refresh} />
                 </Box>
                 :
                 <NoBeneficiaries />

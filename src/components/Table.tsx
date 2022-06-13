@@ -13,6 +13,7 @@ type TableProps = {
     callback: Function;
     callbackProps?: Object;
     itemsPerPage: number;
+    refresh?: Date;
 };
 
 const sortToString = (sort: any) => {
@@ -37,7 +38,7 @@ const sortToObject = (sort: string) => {
 }
 
 const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
-    const { columns, callback, callbackProps, itemsPerPage, ...forwardProps } = props; 
+    const { columns, callback, callbackProps, itemsPerPage, refresh, ...forwardProps } = props; 
 
     const tableRef = useRef<null | HTMLDivElement>(null);
     const [sortKey, setSortKey] = useState({}) as any;
@@ -75,6 +76,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
     }, []);
 
     // When filtering the results, the page must reset to the first one
+    // Refresh is a variable passed down to force the refresh of the results (If we add a new record for example)
     useEffect(() => {
         if(isReady && (!!search || !!state)) {
             clear('page');
@@ -83,7 +85,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
             setItemOffset(0);
             setChanged(new Date());
         }
-    }, [search, state]);
+    }, [search, state, refresh]);
 
     // Load results
     useEffect(() => {

@@ -80,8 +80,8 @@ const getColumns = (currency: any) => {
     ];
 };
 
-const BeneficiariesList: React.FC<{ community: Community }> = props => {
-    const { community } = props;
+const BeneficiariesList: React.FC<{ community: Community, refresh: Date }> = props => {
+    const { community, refresh } = props;
 
     const [getBeneficiaries] = useGetCommunityBeneficiariesMutation();
 
@@ -94,9 +94,10 @@ const BeneficiariesList: React.FC<{ community: Community }> = props => {
     return (
         <Table
             callback={getBeneficiaries}
-            columns={getColumns(localeCurrency)}    
-            itemsPerPage={itemsPerPage}
+            columns={getColumns(localeCurrency)}
+            itemsPerPage={itemsPerPage}    
             mt={1.25}
+            refresh={refresh}
         />
     );
 };
