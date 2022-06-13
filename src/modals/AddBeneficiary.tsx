@@ -13,7 +13,7 @@ import String from '../libs/Prismic/components/String';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const AddBeneficiary = () => {
-    const { handleClose } = useModal();
+    const { handleClose, onAddBeneficiary } = useModal();
 
     // TODO: load information from prismic and use it in the content
     // const { extractFromModals } = usePrismicData();
@@ -64,6 +64,7 @@ const AddBeneficiary = () => {
             
             if(status) {
                 handleClose();
+                onAddBeneficiary();
 
                 toast.success(<Message id="beneficiaryAdded" />);
             }
