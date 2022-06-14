@@ -19,7 +19,7 @@ const CommunityDetails = ({ community, data }: any) => {
 
     const contributed = community?.state?.contributed || 0;
     const contributors = community?.state?.contributors || 0;
-    const beneficiaries = community?.state?.beneficiaries || 0;
+    const beneficiaries = community?.state?.beneficiaries || '0';
 
     const claims = claimLocations?.length
         ? claimLocations?.map((claim: any) => ({ ...claim }))

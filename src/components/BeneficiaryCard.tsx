@@ -14,22 +14,24 @@ const BeneficiaryCard: React.FC<Props> = (props) => {
     const { label, icon, text } = props;
 
     return (
-        <Card>
-            <Text g500 mb={0.3} regular small>
-                <String id={label} />
-            </Text>
-            <Box fLayout="between" flex>
-                <Text g900 medium semibold>
-                    {text}
+        <Card flex h="100%">
+            <Box fDirection="column" fLayout="between" flex w="100%">
+                <Text g500 mb={0.3} regular small>
+                    <String id={label} />
                 </Text>
-                <Box right>
-                    <PulseIcon
-                        bgS100
-                        borderColor="s50"
-                        icon={icon}
-                        s600
-                        size={2}
-                    />
+                <Box fLayout="end between" flex>
+                    <Text g900 medium semibold>
+                        {text}
+                    </Text>
+                    <Box right>
+                        <PulseIcon
+                            bgS100
+                            borderColor="s50"
+                            icon={icon}
+                            s600
+                            size={2}
+                        />
+                    </Box>
                 </Box>
             </Box>
         </Card>

@@ -26,8 +26,8 @@ const Header = ({ community, updateReview }: any) => {
                 <Label content={<String id="back" />} icon="arrowLeft" />
             </Box>
             {!!Object.keys(community).length && (
-                <Grid cols={2} fDirection={{ sm: 'row', xs: 'column' }} mt={1}>
-                    <Box left>
+                <Grid cols={{ sm: 2, xs: 1 }} mt={1}>
+                    <Box>
                         <Display>{community?.name}</Display>
                         <Box fLayout="center start" inlineFlex mt={0.25}>
                             {!!community?.country && (
@@ -43,7 +43,7 @@ const Header = ({ community, updateReview }: any) => {
                         </Box>
                     </Box>
 
-                    <Box fLayout={{ sm: 'end', xs: 'start' }} flex>
+                    <Box flex>
                         {(community?.review === 'pending' ||
                             community?.review === 'declined') && (
                             <Box>
@@ -64,7 +64,7 @@ const Header = ({ community, updateReview }: any) => {
 
                         {(community?.review === 'claimed' ||
                             community?.review === 'accepted') && (
-                            <Box inlineFlex>
+                            <Box fGrow={1} fLayout="end" flex>
                                 <Button>
                                     <Icon icon="edit" margin="0 0.5 0 0" n01 />
                                     <String id="edit" />
@@ -72,7 +72,7 @@ const Header = ({ community, updateReview }: any) => {
 
                                 {community?.review === 'accepted' ? (
                                     <>
-                                        <Button ml={0.5} secondary>
+                                        <Button fGrow={{sm: 'initial', xs: 1}} flex ml={0.5} secondary>
                                             <Icon
                                                 icon="share"
                                                 margin="0 0.5 0 0"

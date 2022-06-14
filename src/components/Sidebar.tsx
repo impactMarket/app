@@ -174,23 +174,23 @@ const Sidebar = () => {
         })
     }, [user]);
 
-    const handleLogoClick = (e: any) => {
-        e.preventDefault();
+    const handleLogoClick = () => {
+        let route = '/';
 
-        if ((user?.roles).includes('beneficiary')){
-            return push('/beneficiary')
+        if ((user?.roles).includes('beneficiary')) {
+            route = '/beneficiary';
         }
-        if ((user?.roles).includes('manager')){
-            return push('/')
+        else if ((user?.roles).includes('manager')) {
+            route = '/';
         }
-        if ((user?.roles).includes('ambassador')){
-            return push('/requests')
+        else if ((user?.roles).includes('ambassador')) {
+            route = '/requests';
         } 
-        if ((user?.roles).includes('subDAOMember')){
-            return push('/proposals')
+        else if ((user?.roles).includes('subDAOMember')) {
+            route = '/proposals';
         }
 
-        return push('/')
+        return push(route, undefined, { shallow: true });
     }
 
     return (
