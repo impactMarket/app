@@ -44,7 +44,7 @@ const Manager: React.FC<{ communityAmbassador: PutPostUser, primaryCards: Cards[
 
     return (
         <>
-            <Row colSpan={1.5} mt={2} w="100%">
+            <Row colSpan={1.5} margin={0} mt={2} w="100%">
                 {
                     primaryCards?.length > 0 && primaryCards.map((card: any, index: number) => renderCard(card, index, 1))
                 }
@@ -95,7 +95,7 @@ const Manager: React.FC<{ communityAmbassador: PutPostUser, primaryCards: Cards[
             </Row>
             {
                 secondaryCards?.length > 0 &&
-                <Row colSpan={1.5} mt={1.5} w="100%">
+                <Row colSpan={1.5} margin={0} mt={1.5} w="100%">
                     {
                         secondaryCards.map((card: any, index: number) => renderCard(card, index, 2))
                     }

@@ -15,26 +15,28 @@ const ProgressBarComponent: React.FC<{ communityEntity: any, currency: string, l
     });
         
     return (
-        <Card mt={1.5} padding={1.5} w="100%">
-            <Box>
-                <ProgressBar
-                    label={<Text g500 small>{`${t('goal')}: ${currencyFormat(goal, localeCurrency)}`}</Text>}
-                    progress={goal > 0 ? communityEntity?.contributed * 100 / goal : 0}
-                    state={{ info: true }}
-                    title={<Text g900 semibold>{`${currencyFormat(communityEntity?.contributed || 0, localeCurrency)} ${t('raisedFrom')} ${communityEntity?.contributors || 0} ${t('donors')}`}</Text>}
-                />
-            </Box>
-            <Box mt={1.5}>
-                { /* TODO: add "<Label content={t('lowOnFunds')} icon="arrowDown" warning />" on label when Bernardo says */ }
-                { /* TODO: below 20% the progress bar turns "red". Confirm this percentage */ }
-                <ProgressBar
-                    minValue={20}
-                    progress={goal > 0 ? communityEntity?.estimatedFunds * 100 / goal : 0}
-                    state={{ info: true }}
-                    title={<Text g900 semibold>{`${t('claimableFunds')} (${currencyFormat(communityEntity?.estimatedFunds || 0, localeCurrency)})`}</Text>}
-                />
-            </Box>
-        </Card>
+        <Box mb={5} pl={0.75} pr={0.75} w="100%">
+            <Card mt={1.5} padding={1.5} w="100%">
+                <Box>
+                    <ProgressBar
+                        label={<Text g500 small>{`${t('goal')}: ${currencyFormat(goal, localeCurrency)}`}</Text>}
+                        progress={goal > 0 ? communityEntity?.contributed * 100 / goal : 0}
+                        state={{ info: true }}
+                        title={<Text g900 semibold>{`${currencyFormat(communityEntity?.contributed || 0, localeCurrency)} ${t('raisedFrom')} ${communityEntity?.contributors || 0} ${t('donors')}`}</Text>}
+                    />
+                </Box>
+                <Box mt={1.5}>
+                    { /* TODO: add "<Label content={t('lowOnFunds')} icon="arrowDown" warning />" on label when Bernardo says */ }
+                    { /* TODO: below 20% the progress bar turns "red". Confirm this percentage */ }
+                    <ProgressBar
+                        minValue={20}
+                        progress={goal > 0 ? communityEntity?.estimatedFunds * 100 / goal : 0}
+                        state={{ info: true }}
+                        title={<Text g900 semibold>{`${t('claimableFunds')} (${currencyFormat(communityEntity?.estimatedFunds || 0, localeCurrency)})`}</Text>}
+                    />
+                </Box>
+            </Card>
+        </Box>
     );
 };
 
