@@ -25,7 +25,7 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     const [loading, setLoading] = useState(false);
     const { view } = usePrismicData();
     const { t } = useTranslations();
-    const { clear, update, getByKey } = useFilters();
+    const { update, getByKey } = useFilters();
 
     const limit = 1;
     const offset = 0;
@@ -52,6 +52,14 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
             getCommunities();
     }, []);
 
+    const handleTab = () => {
+        if (getByKey('tab') === 'proposals' || getByKey('tab') === undefined) {
+            return 0
+        } else if (getByKey('tab') === 'requests') {
+            return 1
+        } 
+    }
+
     return (
         <ViewContainer isLoading={isLoading || loading || !isReady}>
             <Display>
@@ -59,10 +67,10 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
             </Display>
             <RichText content={view.data.messageVoteOnProposals} g500 />
 
-            <Tabs defaultIndex={getByKey('requests') ? 1 : 0}>
+            <Tabs defaultIndex={handleTab()}>
                 <TabList>
-                    <Tab onClick={() => clear('requests')} title={t('proposals')}/>
-                    <Tab number={requestsCount} onClick={() => update('requests', requestsCount)} title={t('requests')}/>
+                    <Tab onClick={() => update({ 'page': 1, 'tab': 'proposals'})} title={t('proposals')}/>
+                    <Tab number={requestsCount} onClick={() => update({ 'page': 1, 'tab': 'requests'})} title={t('requests')}/>
                 </TabList>
                 <TabPanel>
                     <ProposalsPage />
