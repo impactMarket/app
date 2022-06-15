@@ -84,8 +84,7 @@ const Managers = ({ community, managers, status } : any) => {
                 }
 
                 {!managers?.length ?
-                    // Todo: Add string "No Managers" on prismic
-                    <Text>No Managers</Text>
+                    <String id="noManagers"/>
                 :
                     <Grid cols={{ sm: 3, xs: 1 }}>
                         {managers?.map((manager: any, key: number) => (

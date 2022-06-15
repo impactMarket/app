@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
 
 import {
+    Pagination,
+    Row,
     Spinner,
     Tab,
     TabList,
@@ -10,8 +12,10 @@ import {
 
 import Communities from './Communities'
 import String from '../../libs/Prismic/components/String';
+import useFilters from '../../hooks/useFilters';
 
-const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCountrySelected, userCountry, setReview } : any) => {  
+const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCountrySelected, userCountry, setReview, currentPage, handlePageClick, pageCount } : any) => {  
+    const { update, getByKey } = useFilters();
     
     //  Review has 4 states: 'pending', 'accepted', 'claimed', 'declined'
     const [reviews] = useState(['pending', 'claimed', 'declined']);
@@ -45,7 +49,13 @@ const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCoun
 
 
     return (
-            <Tabs>
+            <Tabs 
+                defaultIndex={
+                    // eslint-disable-next-line no-nested-ternary
+                    getByKey('review') === 'pending' ? 0 : 
+                    getByKey('review') === 'claimed' ? 1 : 
+                    getByKey('review') === 'declined' && 2
+            }>
                 <TabList>
                     {reviews.map((review, key) => (
                         <Tab
@@ -56,7 +66,7 @@ const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCoun
                                 :
                                     otherCountriesCommunities(review)
                                 }
-                            onClick={() => setReview(review)}
+                            onClick={() => {setReview(review); update('review', review)}}
                             title={<String id={review} />}
                         />
                     ))}
@@ -66,11 +76,25 @@ const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCoun
                     reviews.map((key) => (
                         <TabPanel key={key}>
                             {loading ? (
-                                <Spinner isActive />
+                                <Row fLayout="center" h="50vh" mt={2}>
+                                    <Spinner isActive />
+                                </Row>
                             ) : (
-                                <Communities
-                                    communities={communities}
-                                />
+                                <>
+                                    <Communities
+                                        communities={communities}
+                                    />
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        handlePageClick={handlePageClick}
+                                        mt={2}
+                                        nextIcon="arrowRight"
+                                        nextLabel="Next"
+                                        pageCount={pageCount}
+                                        previousIcon="arrowLeft"
+                                        previousLabel="Previous"
+                                    />
+                                </>
                             )}
                         </TabPanel>
                     ))

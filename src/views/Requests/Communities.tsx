@@ -43,7 +43,7 @@ const Communities = ({ communities } : any) => {
                                     {community.name}
                                 </Text>
                                 <Box fLayout="center start" inlineFlex>
-                                    <Box inlineFlex mr={1}>
+                                    <Box fLayout="center start" inlineFlex mr={1}>
                                         <Icon
                                             g500
                                             icon="users"
@@ -54,13 +54,14 @@ const Communities = ({ communities } : any) => {
                                             regular
                                             small
                                         >
-                                            {community.state ? community.state.beneficiaries : '-'}
+                                            {community.state ? community.state.beneficiaries : 0}
                                         </Text>
                                     </Box>
-                                    <Box inlineFlex>
-                                        <Box mr={0.3}>
+                                    <Box fLayout="center start" inlineFlex>
+                                        <Box inlineFlex mr={0.3}>
                                             <CountryFlag
                                                 countryCode={community.country}
+                                                height={1}
                                             />
                                         </Box>
                                         <Text

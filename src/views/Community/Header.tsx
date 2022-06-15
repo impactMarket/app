@@ -8,7 +8,6 @@ import {
     Display,
     DropdownMenu,
     Grid,
-    Icon,
     Label,
     Text
 } from '@impact-market/ui';
@@ -64,15 +63,17 @@ const Header = ({ community, updateReview }: any) => {
 
                         {(community?.review === 'claimed' ||
                             community?.review === 'accepted') && (
-                            <Box fGrow={1} fLayout="end" flex>
-                                <Button>
+                            <Box  fGrow={1} fLayout="end" flex inlineFlex>
+                                {/* Todo: Add actions to Edit, Share and Heart button */}
+                                {/* <Button>
                                     <Icon icon="edit" margin="0 0.5 0 0" n01 />
                                     <String id="edit" />
-                                </Button>
+                                </Button> */}
 
                                 {community?.review === 'accepted' ? (
                                     <>
-                                        <Button fGrow={{sm: 'initial', xs: 1}} flex ml={0.5} secondary>
+                                        {/* Todo: Add actions to Edit, Share and Heart button */}
+                                        {/* <Button fGrow={{sm: 'initial', xs: 1}} flex ml={0.5} secondary>
                                             <Icon
                                                 icon="share"
                                                 margin="0 0.5 0 0"
@@ -82,7 +83,7 @@ const Header = ({ community, updateReview }: any) => {
                                         </Button>
                                         <Button ml={0.5} secondary>
                                             <Icon icon="heart" p700 />
-                                        </Button>
+                                        </Button> */}
                                     </>
                                 ) : (
                                     <Box ml={1}>
