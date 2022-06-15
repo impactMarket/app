@@ -374,6 +374,33 @@
           "single": "paragraph,strong,em,hyperlink"
         }
       }
+    },
+    "confirm-add-community": {
+      "create-add-community-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "create-add-community-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "create-add-community-beneficiary-able": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Benficiary Able",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
     }
   }
 }
