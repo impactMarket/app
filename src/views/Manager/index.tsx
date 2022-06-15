@@ -115,11 +115,13 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity || communityEntity?.loading}>
-            <Alerts canRequestFunds={canRequestFunds} fundsRemainingDays={fundsRemainingDays} hasFunds={hasFunds} requestFunds={requestFunds} />
-            <Display g900 medium>
-                {title}
-            </Display>
-            <RichText content={content} g500 mt={0.25} variables={{ community: community?.name }} />
+            <Box pl={0.75} pr={0.75}>
+                <Alerts canRequestFunds={canRequestFunds} fundsRemainingDays={fundsRemainingDays} hasFunds={hasFunds} requestFunds={requestFunds} />
+                <Display g900 medium>
+                    {title}
+                </Display>
+                <RichText content={content} g500 mt={0.25} variables={{ community: community?.name }} />
+            </Box>
             <Box column fLayout="start" flex>
                 <Cards communityAmbassador={communityAmbassador} primaryCards={primaryCards} secondaryCards={secondaryCards} />
                 <ProgressBar communityEntity={communityEntity?.data?.communityEntity} currency={community?.currency} language={language} />
