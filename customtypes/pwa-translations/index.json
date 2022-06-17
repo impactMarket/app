@@ -467,6 +467,13 @@
         },
         "type": "Text"
       },
+      "string-errorIntegerNumber": {
+        "config": {
+          "label": "errorIntegerNumber",
+          "placeholder": "Must be an integer"
+        },
+        "type": "Text"
+      },
       "string-errorMaxNumber": {
         "config": {
           "label": "errorMaxNumber",
@@ -558,6 +565,13 @@
         },
         "type": "Text"
       },
+      "string-goBack": {
+        "config": {
+          "label": "goBack",
+          "placeholder": "Go back"
+        },
+        "type": "Text"
+      },
       "string-goal": {
         "config": {
           "label": "goal",
@@ -576,6 +590,13 @@
         "config": {
           "label": "hours",
           "placeholder": "Hours"
+        },
+        "type": "Text"
+      },
+      "string-iConfirm": {
+        "config": {
+          "label": "iConfirm",
+          "placeholder": "I confirm"
         },
         "type": "Text"
       },
@@ -702,6 +723,13 @@
         "config": {
           "label": "minutes",
           "placeholder": "Minutes"
+        },
+        "type": "Text"
+      },
+      "string-months": {
+        "config": {
+          "label": "months",
+          "placeholder": "months"
         },
         "type": "Text"
       },
@@ -863,6 +891,20 @@
         "config": {
           "label": "pending:",
           "placeholder": "Pending"
+        },
+        "type": "Text"
+      },
+      "string-perDay": {
+        "config": {
+          "label": "perDay",
+          "placeholder": "per day"
+        },
+        "type": "Text"
+      },
+      "string-perWeek": {
+        "config": {
+          "label": "perWeek",
+          "placeholder": "per week"
         },
         "type": "Text"
       },
@@ -1244,6 +1286,13 @@
         },
         "type": "Text"
       },
+      "string-years": {
+        "config": {
+          "label": "years",
+          "placeholder": "years"
+        },
+        "type": "Text"
+      },
       "string-you": {
         "config": {
           "label": "you",
@@ -1526,6 +1575,15 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,hyperlink,strong,em"
+        }
+      },
+      "message-alreadyHasCommunity": {
+        "type": "StructuredText",
+        "config": {
+          "label": "alreadyHasCommunity",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
         }
       },
       "slices1": {
