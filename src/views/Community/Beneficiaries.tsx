@@ -16,6 +16,7 @@ const Beneficiaries = ({ data }: any) => {
         style: 'currency'
     });
     const { t } = useTranslations();
+    const { user } = useSelector(selectCurrentUser);
 
     return (
         !!data && (
@@ -49,11 +50,15 @@ const Beneficiaries = ({ data }: any) => {
                     />
                 )}
                 {!!data?.minTranche && !!data?.maxTranche && (
-                    <BeneficiaryCard
-                        icon="coins"
-                        label="trancheMinMax"
-                        text={`${data?.minTranche}/${data?.maxTranche}`}
-                    />
+                    //  Only show tranche min/max to community's ambassador
+                    user.ambassador.communities.some((x: any) => x === data.id) &&
+                        <BeneficiaryCard
+                            icon="coins"
+                            
+                            label="trancheMinMax"
+                            text={`${data?.minTranche}/${data?.maxTranche}`}
+                        />
+                    
                 )}
             </Grid>
         )

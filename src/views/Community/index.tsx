@@ -4,8 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ViewContainer, toast } from '@impact-market/ui';
 import { gql, useQuery } from '@apollo/client';
 
-import { useGetCommunityContractMutation, useGetCommunityManagersMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
-import CanBeRendered from '../../components/CanBeRendered';
+import { useGetCommunityAmbassadorMutation, useGetCommunityContractMutation, useGetCommunityManagersMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 import CommunityDetails from './CommunityDetails';
 import Header from './Header';
 import Managers from './Managers';
@@ -29,22 +28,25 @@ query communityQuery($id: String!) {
 const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props) => {
     const { communityData, isLoading } = props;
     const router = useRouter()
-    
-    const { data } = useQuery(communityQuery, {
-        variables: { id: communityData?.contractAddress?.toLowerCase() },
-    });
 
     const [communityId] = useState(communityData.id);
     const [community, setCommunity]= useState(communityData) as any;
     const [managers, setManagers]= useState(null);
     const [contractData, setContractData]= useState({}) as any;
-     
+    const [ambassador, setAmbassador]= useState({}) as any;
+    
+    const { data } = useQuery(communityQuery, {
+        variables: { id: communityData?.contractAddress?.toLowerCase() },
+    });
+
     const [loading, setLoading] = useState(true);
+    const [refreshingPage, setRefreshingPage] = useState(false);
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
     const [getCommunityContract] = useGetCommunityContractMutation()
     const [getCommunityManagers] = useGetCommunityManagersMutation()
+    const [getCommunityAmbassador] = useGetCommunityAmbassadorMutation();
 
     useEffect(() => {
         const getData = async () => {
@@ -57,8 +59,12 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 //  Get community's contract data
                 const contractData = await getCommunityContract(community?.id).unwrap()
 
-                setManagers(managersData);
+                //  Get community's ambassador
+                const ambassador = await getCommunityAmbassador(community?.id).unwrap()
+
+                setManagers(managersData)
                 setContractData(contractData)
+                setAmbassador(ambassador)
                 setLoading(false)
             } catch (error) {
                 console.log(error)
@@ -66,7 +72,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         }
 
         getData()
-    }, []);
+    }, [refreshingPage]);
 
     
     //  Update community review state and get new data
@@ -99,26 +105,24 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
             return false;
         }
-    };
-    
+    };  
+
     return (
-        <ViewContainer isLoading={loading || isLoading}>
+        <ViewContainer isLoading={loading || isLoading || refreshingPage}>
             <Header community={community} updateReview={functionUpdateReview}/>
             <CommunityDetails
                 community={community}
                 data={data?.communityEntity ?? contractData.data}
             />
-            {community?.review === 'accepted' &&
-                <CanBeRendered types={['ambassador']}>
-                    <Managers 
-                        //  If community exists in thegraph (it has contract address) get the data from thegraph. 
-                        //  If not, get from API
-                        community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
-                        managers={managers?.rows}
-                        status={communityData?.status}
-                    /> 
-                </CanBeRendered>
-            }
+            <Managers 
+                //  If community exists in thegraph (it has contract address) get the data from thegraph. 
+                //  If not, get from API
+                ambassador={ambassador}
+                community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
+                managers={managers?.rows}
+                setRefreshingPage={setRefreshingPage}
+                status={communityData?.status}
+            /> 
         </ViewContainer>
     );
 };

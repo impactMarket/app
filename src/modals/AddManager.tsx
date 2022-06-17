@@ -18,7 +18,7 @@ import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 
 const AddManager = () => {
-    const { handleClose, community } = useModal();
+    const { handleClose, community, setRefreshingPage} = useModal();
     const { t } = useTranslations();
 
     const { handleSubmit, control, formState: { errors } } = useForm({
@@ -32,6 +32,8 @@ const AddManager = () => {
     
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
+            setRefreshingPage(true)
+
             const { status } = await addManager(community?.id, data?.address);
 
             if(status) {
@@ -48,6 +50,8 @@ const AddManager = () => {
 
             toast.error(<Message id="errorOccurred" />);
         }
+
+        setRefreshingPage(false)
     };
 
 

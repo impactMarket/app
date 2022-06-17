@@ -18,7 +18,7 @@ import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, communities, communitiesTabs, loading, currentPage, handlePageClick, pageCount, user}: any) => {
+const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, communities, communitiesTabs, loading, currentPage, handlePageClick, pageCount, user, setItemOffset}: any) => {
     const { t } = useTranslations();
     const { update, getByKey } = useFilters();
     
@@ -54,12 +54,12 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
         }>
             <TabList>
                 <Tab
-                    onClick={() => {setActiveTab('all'); update('type', 'all') }}
+                    onClick={() => {setActiveTab('all'); update('type', 'all'); setItemOffset(0) }}
                     title={t('all')}
                 />
                 {user?.roles.includes('ambassador') &&
                     <Tab
-                        onClick={() => {setActiveTab('myCommunities'); update('type', 'mycommunities');}}
+                        onClick={() => {setActiveTab('myCommunities'); update('type', 'mycommunities'); setItemOffset(0)}}
                         title={t('myCommunities')}
                     />
                 }
@@ -90,7 +90,7 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
                             </Row>
                         ) : ( 
                             <>
-                                <Grid colSpan={1.5} cols={{ lg: 4, md:3, sm: 2, xs: 1 }}>
+                                <Grid colSpan={1.5} cols={{ lg: 4, md:2, sm: 2, xs: 1 }}>
                                     {communities?.data?.count === 0 ?
                                         <String id="noCommunities" />
                                     :
