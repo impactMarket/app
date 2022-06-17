@@ -18,7 +18,7 @@ import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, communities, communitiesTabs, loading, currentPage, handlePageClick, pageCount, user}: any) => {
+const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, communities, communitiesTabs, loading, currentPage, handlePageClick, pageCount, user, setItemOffset}: any) => {
     const { t } = useTranslations();
     const { update, getByKey } = useFilters();
     
@@ -45,21 +45,27 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
         }
     ];
 
+    const handleClickOnCommunityFilter = (communityFilter: any) => {
+        setActiveTab(communityFilter); 
+        update('type', communityFilter);
+        setItemOffset(0)
+    }
+    
 
     return (
         <Tabs defaultIndex={
             // eslint-disable-next-line no-nested-ternary
             getByKey('type') === 'all' ? 0 :
-            getByKey('type') === 'mycommunities' ? 1 : 0
+            getByKey('type') === 'myCommunities' ? 1 : 0
         }>
             <TabList>
                 <Tab
-                    onClick={() => {setActiveTab('all'); update('type', 'all') }}
+                    onClick={() => {handleClickOnCommunityFilter('all')}}
                     title={t('all')}
                 />
                 {user?.roles.includes('ambassador') &&
                     <Tab
-                        onClick={() => {setActiveTab('myCommunities'); update('type', 'mycommunities');}}
+                        onClick={() => handleClickOnCommunityFilter('myCommunities')}
                         title={t('myCommunities')}
                     />
                 }
@@ -90,7 +96,7 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
                             </Row>
                         ) : ( 
                             <>
-                                <Grid colSpan={1.5} cols={{ lg: 4, md:3, sm: 2, xs: 1 }}>
+                                <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }}>
                                     {communities?.data?.count === 0 ?
                                         <String id="noCommunities" />
                                     :

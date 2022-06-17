@@ -39,6 +39,11 @@ const CountryTabs = ({ userCountry, allCountries, otherCountries, setMyCountrySe
         return otherCountriesCommunities.reduce((a: any, b: any) => a + b, 0)
     }
 
+    const handleClickOnCountryFilter = (countryFilter: any, myCountrySelected: any) => {
+        setMyCountrySelected(myCountrySelected); 
+        update('country', countryFilter)
+    }
+    
 
     return (
             <Tabs defaultIndex={
@@ -49,12 +54,12 @@ const CountryTabs = ({ userCountry, allCountries, otherCountries, setMyCountrySe
                 <TabList>
                     <Tab
                         number={myCountryCommunities()}
-                        onClick={() => { setMyCountrySelected(true); update('country', 'mycountry')}}
+                        onClick={() => handleClickOnCountryFilter('mycountry', true)}
                         title={<String id="myCountry" />}
                     />
                     <Tab
                         number={otherCountriesCommunities()}
-                        onClick={() => { setMyCountrySelected(false); update('country', 'othercountries') }}
+                        onClick={() => handleClickOnCountryFilter('othercountries', false)}
                         title={<String id="otherCountries" />}
                     />
                 </TabList>

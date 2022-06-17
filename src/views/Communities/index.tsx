@@ -3,21 +3,18 @@ import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 
 import {
-    Display,
     ViewContainer
 } from '@impact-market/ui';
 
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation } from '../../api/community';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 
 import { useRouter } from 'next/router';
-import Message from '../../libs/Prismic/components/Message';
-import RichText from '../../libs/Prismic/components/RichText';
+import Header from './Header'
 import TabList from './Tabs';
 import useFilters from '../../hooks/useFilters';
 
-const itemsPerPage = 10;
+const itemsPerPage = 8;
 
 const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
@@ -25,16 +22,13 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const { getByKey } = useFilters();
     const router = useRouter();
 
-    const { extractFromView } = usePrismicData();
-    const { title, content } = extractFromView('heading') as any;
-
     const [loading, setLoading] = useState(false);
     const [communities, setCommunities] = useState({}) as any;
     const [supportingCommunities, setSupportingCommunities] = useState({}) as any;
 
     const [activeTab, setActiveTab] = useState(
         getByKey('type') === 'all' ? 'all' :
-        getByKey('type') === 'mycommunities' ? 'myCommunities' : 'all'
+        getByKey('type') === 'myCommunities' ? 'myCommunities' : 'all'
     );
     const [statusFilter, setStatusFilter] = useState(getByKey('state') || 'valid');
 
@@ -47,13 +41,12 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
 
-
     useEffect(() => {
         if(!getByKey('type')) {
             router.push('/communities?type=all', undefined, { shallow: true });
         }
 
-        if((getByKey('type') === 'mycommunities') && (!user?.roles.includes('ambassador'))) {
+        if((getByKey('type') === 'myCommunities') && (!user?.roles.includes('ambassador'))) {
             router.push('/communities?type=all', undefined, { shallow: true });
         }
 
@@ -65,8 +58,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                     ambassadorAddress: activeTab === 'all' ? undefined : user?.address,
                     limit: itemsPerPage,
                     offset: itemOffset,
-                    review: activeTab === 'all' ? 'accepted' : undefined,
-                    status: activeTab === 'myCommunities' ? statusFilter : undefined
+                    status: activeTab === 'myCommunities' ? statusFilter : 'valid'
                 });
 
                 const totalValidCommunities = await getCommunities({
@@ -87,7 +79,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
 
         init();
     }, [activeTab, statusFilter, itemOffset]);
-
+    
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {        
@@ -111,35 +103,14 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     };
 
-
-    //  Get how many countries the ambassador is suporting
-    const supportingCountries = () => {
-        const supportingCountries = [] as any
-
-        supportingCommunities?.data?.rows.map((community: any) => {
-            supportingCountries.push(community?.country)
-        })
-
-        const deleteDuplicatedCountries = [...new Set(supportingCountries)];
-
-        return deleteDuplicatedCountries.length
-    }
-    
-
     return (
         <ViewContainer isLoading={isLoading}>
-            <Display g900 medium>
-                {title}
-            </Display>   
-            {(user?.roles.includes('ambassador') && activeTab === 'myCommunities') ?
-                !loading && <RichText content={content} g500 mt={0.25} variables = {{ communities: supportingCommunities?.data?.count, countries: supportingCountries() }} /> 
-            :
-                <Message 
-                    g500
-                    id="communitiesJoined" 
-                    mt={0.25}
-                />
-            }          
+            <Header
+                activeTab={activeTab}
+                loading={loading}
+                supportingCommunities={supportingCommunities}
+                user={user}
+            />         
             <TabList
                 activeTab={activeTab}
                 communities={communities}
@@ -149,6 +120,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                 loading={loading}
                 pageCount={pageCount}
                 setActiveTab={setActiveTab}
+                setItemOffset={setItemOffset}
                 setStatusFilter={setStatusFilter}
                 statusFilter={statusFilter}
                 user={user}

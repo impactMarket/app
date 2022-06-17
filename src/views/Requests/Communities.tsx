@@ -17,7 +17,7 @@ import String from '../../libs/Prismic/components/String';
 const Communities = ({ communities } : any) => {  
 
     return (
-        <Grid colSpan={1.5} cols={{ sm: 4, xs: 1 }}>
+        <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }}>
             {communities.data.count === 0 ?
                 <String id="noCommunities" />
             :
