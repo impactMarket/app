@@ -32,6 +32,14 @@ type User = {
         community?: string;
         state: number;
     },
+    ambassador?: {
+        community?: string;
+        state: number;
+    },
+    councilMember?: {
+        community?: string;
+        state: number;
+    },
     currency?: string;
     firstName?: string;
     lastName?: string;
@@ -50,6 +58,12 @@ const getUserType = (user: User) => {
     };
     if (!!user?.beneficiary?.community) {
         return 'beneficiary';
+    };
+    if (!!user?.ambassador?.community) {
+        return 'ambassador';
+    };
+    if (!!user?.councilMember?.community) {
+        return 'councilMember';
     };
 
     return 'donor';
@@ -186,8 +200,11 @@ const Sidebar = () => {
         else if ((user?.roles).includes('ambassador')) {
             route = '/requests';
         } 
-        else if ((user?.roles).includes('subDAOMember')) {
+        else if ((user?.roles).includes('councilMember')) {
             route = '/proposals';
+        }
+        else if ((user?.roles).includes('ambassador')) {
+            route = '/communities';
         }
 
         return push(route, undefined, { shallow: true });
