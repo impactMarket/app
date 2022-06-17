@@ -27,12 +27,14 @@ import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const Managers = ({ community, managers, status } : any) => {
+const Managers = ({ community, managers, status, setRefreshingPage } : any) => {
     const { t } = useTranslations();
     const { removeManager } = useAmbassador();
 
     const removeManagerFunc = async (address: any) => {
         try {
+            setRefreshingPage(true)
+
             const { status } = await removeManager(community?.id, address);
 
             if(status) {
@@ -46,7 +48,11 @@ const Managers = ({ community, managers, status } : any) => {
             console.log(e);
 
             toast.error(<Message id="errorOccurred" />);
+
+            setRefreshingPage(false)
         }
+
+        setRefreshingPage(false)        
     }
 
     const copyToClipboard = (address: any) => {
@@ -75,7 +81,7 @@ const Managers = ({ community, managers, status } : any) => {
                             icon="userPlus"
                             margin="0 0.5 0 0"
                             onClick={() =>
-                                openModal('addManager', { community })
+                                openModal('addManager', { community, setRefreshingPage })
                             }
                         >
                             <String id="addNewManager"/>

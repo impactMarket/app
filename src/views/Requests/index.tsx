@@ -26,7 +26,8 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
-    const [loading, setLoading] = useState(false);
+    const [loadingCommunities, setLoadingCommunities] = useState(false);
+    const [numbersLoading, setNumbersLoading] = useState(false);
     const [communities, setCommunities] = useState({}) as any;
     const [myCountrySelected, setMyCountrySelected] = useState(
         getByKey('country') === 'mycountry' ? true :
@@ -48,11 +49,11 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
 
-
+    //  Communities
     useEffect(() => {
-        const init = async () => {
+        const communities = async () => {
             try {
-                setLoading(true);
+                setLoadingCommunities(true);
 
                 const communities = await getCommunities({
                     country: myCountrySelected ? (user?.country === null ? 0 : user?.country.toUpperCase()) : undefined,
@@ -61,6 +62,25 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                     offset: itemOffset,        
                     review,
                 });
+
+                setCommunities(communities);
+
+                setLoadingCommunities(false);
+            } catch (error) {
+                console.log(error);
+
+                return false;
+            }
+        };
+
+        communities();
+    }, [myCountrySelected, review, itemOffset]);
+
+    //  Tabs (countries and review) numbers
+    useEffect(() => {
+        const tabsNumber = async () => {
+            try {
+                setNumbersLoading(true)
                 
                 //  Number for tabs
                 const allCountries = await getReviewsByCountry({
@@ -74,9 +94,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 setAllCountries(allCountries)
                 setOtherCountries(otherCountries)
 
-                setCommunities(communities);
-
-                setLoading(false);
+                setNumbersLoading(false)
             } catch (error) {
                 console.log(error);
 
@@ -84,8 +102,8 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
             }
         };
 
-        init();
-    }, [myCountrySelected, review, itemOffset]);
+        tabsNumber();
+    }, []);
 
 
     //  Handle Pagination
@@ -112,7 +130,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
 
         
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer isLoading={isLoading || numbersLoading}>
             <Display g900 medium>
                 {title}
             </Display>
@@ -128,13 +146,12 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 communities={communities}
                 currentPage={currentPage}
                 handlePageClick={handlePageClick}
-                loading={loading}
+                loading={loadingCommunities}
                 myCountrySelected={myCountrySelected}
                 otherCountries={otherCountries}
                 pageCount={pageCount}
                 setReview={setReview}
                 userCountry={userCountry}
-
             />
         </ViewContainer>
     );

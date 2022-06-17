@@ -40,6 +40,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     const [contractData, setContractData]= useState({}) as any;
      
     const [loading, setLoading] = useState(true);
+    const [refreshingPage, setRefreshingPage] = useState(false);
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
@@ -66,7 +67,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         }
 
         getData()
-    }, []);
+    }, [refreshingPage]);
 
     
     //  Update community review state and get new data
@@ -102,7 +103,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     };
     
     return (
-        <ViewContainer isLoading={loading || isLoading}>
+        <ViewContainer isLoading={loading || isLoading || refreshingPage }>
             <Header community={community} updateReview={functionUpdateReview}/>
             <CommunityDetails
                 community={community}
@@ -115,6 +116,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                         //  If not, get from API
                         community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
                         managers={managers?.rows}
+                        setRefreshingPage={setRefreshingPage}
                         status={communityData?.status}
                     /> 
                 </CanBeRendered>
