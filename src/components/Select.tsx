@@ -11,6 +11,7 @@ type Partial<BaseSelectProps> = {
 type SelectProps = {
     callback?: Function;
     control?: any; 
+    disabled?: boolean;
     initialValue?: any;
     isMultiple?: boolean;
     label?: string, 
@@ -21,7 +22,7 @@ type SelectProps = {
 };
 
 const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
-    const { callback, control, initialValue, isMultiple, label, placeholder, name, rules, showFlag, ...forwardProps } = props;
+    const { callback, control, disabled, initialValue, isMultiple, label, placeholder, name, rules, showFlag, ...forwardProps } = props;
 
     const newValue = isMultiple && initialValue && !Array.isArray(initialValue) ? [initialValue]: initialValue;
     const [value, setValue] = useState(newValue || '');
@@ -82,6 +83,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
                 { label && <Text g700 mb={0.375} medium small>{label}</Text> }
                 <BaseSelect
                     clearLabel={clearLabel}
+                    disabled={disabled}
                     isMultiple={isMultiple}
                     onChange={handleSelect}
                     optionsSearchPlaceholder={t('search')}

@@ -49,6 +49,7 @@ const Form = ({ isLoading, onSubmit }: any) => {
                                 control={control}
                                 handleFiles={handleFiles}
                                 label={uploadImage}
+                                multiple={false}
                                 name="img"
                             />
                         </Box>

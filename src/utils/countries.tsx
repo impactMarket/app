@@ -32,3 +32,11 @@ export function getCountryNameFromInitials(countryInitials: string) {
 
     return 'Unknown';
 }
+
+export function getCountryCurrency(country: string) {
+    if (countries[country]) {
+        return countries[country].currency;
+    }
+
+    return null;
+}

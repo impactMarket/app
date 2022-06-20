@@ -4,6 +4,7 @@ const modals = {
     addBeneficiary: dynamic(() => import('./AddBeneficiary'), { ssr: false }),
     addManager: dynamic(() => import('./AddManager'), { ssr: false }),
     communityRules: dynamic(() => import('./CommunityRules'), { ssr: false }),
+    confirmAddCommunity: dynamic(() => import('./ConfirmAddCommunity'), { ssr: false }),
     contribute: dynamic(() => import('./Contribute'), { ssr: false }),
     createStory: dynamic(() => import('./Stories/CreateStory'), { ssr: false }),
     deleteStory: dynamic(() => import('./Stories/DeleteStory'), { ssr: false }),
