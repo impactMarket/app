@@ -146,6 +146,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
          } 
     }
 
+    // TODO use Prismic data
     return (
         <ViewContainer isLoading={isLoading || loading}>
             <Display medium>
