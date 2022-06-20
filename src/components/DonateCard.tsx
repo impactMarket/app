@@ -1,4 +1,5 @@
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useEffect } from 'react';
 import _ from 'lodash';
 
 import {
@@ -9,17 +10,16 @@ import {
     TextLink,
     openModal
 } from '@impact-market/ui';
-import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
-import { useSelector } from 'react-redux';
-
 import { currencyFormat } from '../utils/currencies';
 import { formatAddress } from '../utils/formatAddress';
 import { formatPercentage } from '../utils/percentages';
-import { selectCurrentUser } from '../state/slices/auth';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+
 import ProgressBar from './ProgressBar';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 import config from '../../config';
+import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 interface DonateCardProps {
@@ -29,9 +29,6 @@ interface DonateCardProps {
     beneficiariesNumber: number;
     backers: number;
 }
-
-// TODO:
-// - Add action to contribute button
 
 const DonateCard: React.FC<DonateCardProps> = (props) => {
     const {
@@ -44,17 +41,20 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
 
     const { t } = useTranslations();
     const { view } = usePrismicData();
+    const { update, getByKey } = useFilters();
+    const { asPath } = useRouter();
 
     const quotient = raised / goal || 0;
-    const auth = useSelector(selectCurrentUser);
-    const language = auth?.user?.language || 'en-US';
-    const currency = auth?.user?.currency || 'USD';
-    const localeCurrency = new Intl.NumberFormat(language, {
-        currency,
-        maximumFractionDigits: 0,
-        style: 'currency'
-    });
-    
+
+    useEffect(() => {
+        if (getByKey('contribute') !== undefined) {
+            openModal('contribute', {
+                contractAddress,
+                value: getByKey('contribute')
+            });
+        }
+    }, [asPath]);
+
     return (
         <Card padding={1.4} show={{ sm: 'block', xs: 'none' }}>
             <Box fLayout="center" flex>
@@ -71,7 +71,7 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
             <Box mt={1.5}>
                 <Button
                     h={3.8}
-                    onClick={() => openModal('contribute')}
+                    onClick={() => update('contribute', 0)}
                     w="100%"
                 >
                     <Text large medium>
@@ -82,7 +82,9 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
             <Box fLayout="between" flex mt={1}>
                 <Box left>
                     <Text g500 left mt={1} small>
-                        {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t('backers')}`}
+                        {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t(
+                            'backers'
+                        )}`}
                     </Text>
                 </Box>
                 <Box right>
@@ -94,13 +96,12 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
             <Box fLayout="between" flex>
                 <Box left>
                     <Text g900 semibold small>
-                        {currencyFormat(raised, localeCurrency)} (
-                        {formatPercentage(quotient)})
+                        {currencyFormat(raised)} ({formatPercentage(quotient)})
                     </Text>
                 </Box>
                 <Box right>
                     <Text g900 semibold small>
-                        {currencyFormat(goal, localeCurrency)}
+                        {currencyFormat(goal)}
                     </Text>
                 </Box>
             </Box>
@@ -121,7 +122,12 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
                 <TextLink
                     large
                     onClick={() =>
-                        window.open(`${config.explorerUrl}${contractAddress}`)
+                        window.open(
+                            config.explorerUrl?.replace(
+                                '#USER#',
+                                contractAddress
+                            )
+                        )
                     }
                     p600
                     semibold

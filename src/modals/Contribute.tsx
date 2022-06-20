@@ -8,18 +8,19 @@ import {
     ModalWrapper,
     Row,
     Text,
-    TextLink,
     colors,
     toast,
     useModal
 } from '@impact-market/ui';
-import { SubmitHandler, useForm, useFormState } from "react-hook-form";
+import { localeFormat } from '../utils/currencies';
+import { useCUSDBalance, useDonationMiner } from '@impact-market/utils';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+import BigNumber from 'bignumber.js';
 import Message from '../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import styled from 'styled-components';
-import useTranslations from '../libs/Prismic/hooks/useTranslations';
+import useFilters from '../hooks/useFilters';
 
 const BorderWrapper = styled(Box)`
     padding: 1rem;
@@ -33,35 +34,122 @@ const CloseButton = styled(Button)`
     }
 `;
 
+const ButtonWrapper = styled(Button)`
+    transition: none;
+    background-color: ${colors.s400};
+    border-color: ${colors.s400};
+
+    &:disabled {
+        background-color: ${colors.p600};
+        border-color: ${colors.p600};
+    }
+    &:hover:not([disabled]),
+    .button-spinner {
+        background-color: ${colors.s400};
+        border-color: ${colors.s400};
+    }
+`;
+
 const Contribute = () => {
-    const { handleClose } = useModal();
-
-    const { handleSubmit, control, formState: { errors } } = useForm({
-        defaultValues: {
-            value: ''
-        }
-    });
-    const { isSubmitting } = useFormState({ control });
-    const [approving, setApproving] = useState(false);
+    const { handleClose, contractAddress, value } = useModal();
+    const [step, setStep] = useState(0);
+    const [loading, setLoading] = useState(false);
+    const [approved, setApproved] = useState(0);
+    const [contribution, setContribution] = useState(value);
     const { extractFromModals } = usePrismicData();
-    const { t } = useTranslations();
-    
-    const { placeholder, balance, content, tip, title } = extractFromModals('contribute') as any;
-    
-    const onSubmit: SubmitHandler<any> = () => {
-        try {
-            setApproving(true);
-            //  TODO: add the contribute logic
-            // eslint-disable-next-line no-alert
-            alert('In progress')
-        }
-        catch(e) {
-            console.log(e);
+    const { placeholder, balance, content, tip, title } = extractFromModals(
+        'contribute'
+    ) as any;
+    const { approve, donateToCommunity, donateToTreasury } = useDonationMiner();
+    const { clear } = useFilters();
+    const balanceCUSD = useCUSDBalance();
+    const formattedBalance = localeFormat(balanceCUSD, {
+        maximumFractionDigits: 6,
+        maximumSignificantDigits: 6
+    });
+    const insuficientFunds = contribution <= 0 || contribution > balanceCUSD;
+    const isApprovalDisabled = step === 1 || insuficientFunds;
+    const isContributeDisabled =
+        step === 0 || insuficientFunds || contribution !== approved;
 
-            toast.error(<Message id="errorOccurred" />);
+    const handleChange = (e: any) => {
+        if (e.target.value !== approved) {
+            if (step == 1) {
+                setStep(0);
+            }
+        } else if (approved > 0) {
+            setStep(1);
         }
+
+        setContribution(e.target.value);
     };
 
+    const handleApprove = async () => {
+        if (loading || contribution > balance) {
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            BigNumber.config({ EXPONENTIAL_AT: 29 });
+            const amount = new BigNumber(contribution).toString();
+
+            const response = await approve(amount);
+
+            if (!response?.status) {
+                return toast.error('error');
+            }
+
+            toast.success('success');
+            setApproved(contribution);
+            setStep(1);
+        } catch (e) {
+            toast.error(<Message id="errorOccurred" />);
+        }
+
+        setLoading(false);
+    };
+
+    const handleContribute = async () => {
+        if (loading || contribution > balance) {
+            return;
+        }
+
+        setLoading(true);
+
+        try {
+            BigNumber.config({ EXPONENTIAL_AT: 29 });
+            const amount = new BigNumber(contribution).toString();
+
+            const response = !!contractAddress
+                ? await donateToCommunity(contractAddress, amount)
+                : await donateToTreasury(amount);
+
+            if (!response?.status) {
+                setLoading(false);
+
+                return toast.error(<Message id="errorOccurred" />);
+            }
+
+            toast.success('success');
+            closeModal();
+        } catch (error) {
+            toast.error(<Message id="errorOccurred" />);
+        }
+        setLoading(false);
+    };
+
+    const closeModal = () => {
+        clear('contribute');
+        handleClose();
+    };
+
+    const handleKeyPress = (event: any) => {
+        if (!/^\d*[\.{1}\d?]*$/.test(event.key)) {
+            event.preventDefault();
+        }
+    };
 
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
@@ -70,110 +158,109 @@ const Contribute = () => {
                     <CircledIcon icon="alertCircle" large />
                 </Col>
                 <Col fDirection="column" fLayout="center" flex>
-                    <CloseButton bgColor={colors.n01} gray onClick={handleClose} padding={0}>
-                        <Icon g900 icon="close"/>
+                    <CloseButton
+                        bgColor={colors.n01}
+                        gray
+                        onClick={closeModal}
+                        padding={0}
+                    >
+                        <Icon g900 icon="close" />
                     </CloseButton>
                 </Col>
             </Box>
-            <RichText
-                content={title}
-                large
-                mt={1.25}
-                semibold
-            />
-            
-            
-            {/* TODO:  ADD link for Learn more */}
-            <RichText
-                content={content}
-                g500
-                mt={0.5}
-                small
-            />
-            <TextLink
-                    onClick={() =>
-                        console.log('Learn more')
-                    }
-                    p600
-                    regular
-                    small
-            >
-                {t('learnMore')}
-            </TextLink>
-            <form onSubmit={handleSubmit(onSubmit)}>
-                <Box mt={1.25}>
-                    <BorderWrapper>
-                        <Box fLayout="between" flex mb={0.5}>
-                            <Box>
-                                {/* TODO:  Add currency icon */}
-                                {/* <Currency currency="cUSD" /> */}
-                                <Text bold ml={0.5} small>
-                                    cUSD
-                                </Text>
-                            </Box>
-                            {/* TODO: Add balance from wallet */}
-                            <Box fLayout="end" flex>
-                            <RichText content={balance} regular small variables={{ balance: 10 }}/>
-                                <Text regular small>
-                                    {' cUSD'}
-                                </Text>
-                            </Box>
-                        </Box>
-                        <Input
-                            control={control}
-                            hint={errors?.value ? 'This field is required' : ''}
-                            label="Contribute"
-                            mt={0.5}
-                            name="value"
-                            placeholder={placeholder}
-                            rules={{ required: true }}
-                            style={{'font-size': '1.5rem'}}
-                            withError={!!errors?.value}
-                            wrapperProps={{
-                                padding: {xs: 0},
-                                style: { boxShadow: "none", fontSize: '5.5rem' },
-                            }}
-                        />
-                    </BorderWrapper>
-                </Box>
-                <Row mt={0.5}>
-                    <Col colSize={{ sm: 6, xs: 6 }} fLayout="center" flex>
-                        <Box bgColor={colors.p500} borderRadius="50%" padding="4px 10px">
-                            <Text n01 regular small>1</Text>
-                        </Box>
-                    </Col>
-                    <Col colSize={{ sm: 6, xs: 6 }} fLayout="center" flex>
-                        <Box bgColor={colors.p200} borderRadius="50%" padding="4px 10px">
-                            <Text n01 regular small>2</Text>
-                        </Box>
-                    </Col>
-                </Row>
+            <RichText content={title} large mt={1.25} semibold />
 
-                <Row>
-                    {/* TODO:  Add validations */}
-                    <Col colSize={{ sm: 6, xs: 6 }} pr={0.25}>
-                        <Button disabled={isSubmitting} type="submit" w="100%">
+            <RichText content={content} g500 mt={0.5} small />
+            <Box mt={1.25}>
+                <BorderWrapper>
+                    <Box fLayout="between" flex mb={0.5}>
+                        <Box>
+                            {/* TODO:  Add currency icon */}
+                            {/* <Currency currency="cUSD" /> */}
+                            <Text bold ml={0.5} small>
+                                cUSD
+                            </Text>
+                        </Box>
+                        <Box fLayout="end" flex>
                             <RichText
-                                content="Approve cUSD"
+                                content={balance}
+                                regular
+                                small
+                                variables={{ balance: formattedBalance }}
                             />
-                        </Button>
-                    </Col>
-                    <Col colSize={{ sm: 6, xs: 6 }} pl={0.25}>
-                        <Button disabled isLoading={isSubmitting} type="submit" w="100%">
-                            <RichText
-                                content={title}
-                            />
-                        </Button>
-                    </Col>
-                </Row>
-                {/* TODO: ADD link for troubleshoot area */}
-                { approving && <RichText
-                    content={tip}
-                    g500
-                    mt={0.5}
-                    small
-                />}
-            </form>
+                            <Text regular small>
+                                {' cUSD'}
+                            </Text>
+                        </Box>
+                    </Box>
+                    <Input
+                        label="Contribute"
+                        mt={0.5}
+                        name="value"
+                        onChange={handleChange}
+                        onKeyPress={handleKeyPress}
+                        placeholder={placeholder}
+                        rules={{ required: true }}
+                        style={{ 'font-size': '1.5rem' }}
+                        value={contribution > 0 ? contribution : null}
+                        wrapperProps={{
+                            padding: { xs: 0 },
+                            style: { boxShadow: 'none', fontSize: '5.5rem' }
+                        }}
+                    />
+                </BorderWrapper>
+            </Box>
+            <Row mt={0.5}>
+                <Col colSize={{ sm: 6, xs: 6 }} fLayout="center" flex>
+                    <Box
+                        bgColor={isApprovalDisabled ? colors.p200 : colors.p500}
+                        borderRadius="50%"
+                        padding="4px 10px"
+                    >
+                        <Text n01 regular small>
+                            1
+                        </Text>
+                    </Box>
+                </Col>
+                <Col colSize={{ sm: 6, xs: 6 }} fLayout="center" flex>
+                    <Box
+                        bgColor={
+                            isContributeDisabled ? colors.p200 : colors.s400
+                        }
+                        borderRadius="50%"
+                        padding="4px 10px"
+                    >
+                        <Text n01 regular small>
+                            2
+                        </Text>
+                    </Box>
+                </Col>
+            </Row>
+
+            <Row>
+                <Col colSize={{ sm: 6, xs: 6 }} pr={0.25}>
+                    <Button
+                        disabled={isApprovalDisabled}
+                        isLoading={step === 0 && loading}
+                        onClick={handleApprove}
+                        w="100%"
+                    >
+                        <RichText content="Approve cUSD" />
+                    </Button>
+                </Col>
+                <Col colSize={{ sm: 6, xs: 6 }} pl={0.25}>
+                    <ButtonWrapper
+                        disabled={isContributeDisabled}
+                        isLoading={step === 1 && loading}
+                        onClick={handleContribute}
+                        w="100%"
+                    >
+                        <RichText content={title} />
+                    </ButtonWrapper>
+                </Col>
+            </Row>
+
+            {loading && <RichText content={tip} g500 mt={0.5} small />}
         </ModalWrapper>
     );
 };

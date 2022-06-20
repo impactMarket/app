@@ -4,6 +4,8 @@ import { Rate, selectRates } from '../state/slices/rates';
 import { useSelector } from 'react-redux';
 import currenciesJSON from '../assets/currencies.json';
 
+import { selectCurrentUser } from '../state/slices/auth';
+
 export const currencies: {
     [key: string]: {
         symbol: string;
@@ -14,8 +16,28 @@ export const currencies: {
 
 export const currenciesOptions = Object.entries(currencies).map(([key, value]: any) => ({ label: value.name, value: key }));
 
-export const currencyFormat = (number: number, localeCurrency: Intl.NumberFormat) => {
+export const localeFormat = (value: number, options: any = {}) => {
+    const auth = useSelector(selectCurrentUser);
+    const language = auth?.user?.language || 'en-US';
+
+    return new Intl.NumberFormat(language, options).format(value);
+}
+
+const defaultCurrency = () => {
+        const auth = useSelector(selectCurrentUser);
+        const language = auth?.user?.language || 'en-US';
+        const currency = auth?.user?.currency || 'USD';
+
+        return new Intl.NumberFormat(language, {
+            currency,
+            style: 'currency'
+        }
+    );
+};
+
+export const currencyFormat = (number: number, customCurrency: Intl.NumberFormat = null) => {
     const rates = useSelector(selectRates);
+    const localeCurrency = customCurrency || defaultCurrency();
     const { currency } = localeCurrency.resolvedOptions();
     
     if (currency !== 'USD') {

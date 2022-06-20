@@ -27,5 +27,7 @@ export const format = (date: any, formatString: string = 'PP') =>
 export const dateHelpers = {
     ago: (date: string | Date) => (formatDistanceToNowStrict(new Date(date), { addSuffix: true })),
 
-    unix: (date: number) => (date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : '')
+    compact: (date: string | Date) => (date ? format(new Date(date), 'MMM d, y') : ''),
+
+    unix: (date: number) => (date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : ''),
 };
