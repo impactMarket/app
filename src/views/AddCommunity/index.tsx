@@ -5,12 +5,14 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { emailRegExp } from '../../helpers/regex';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
+import { loadUnsavedChanges, useLeavePageConfirm, useWarnIfUnsavedChanges } from '../../hooks/useWarnIfUnsavedChanges';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { toCamelCase } from '../../helpers/toCamelCase';
 import { useCreateCommunityMutation, useGetCommunityPreSignedMutation } from '../../api/community';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
+import { useLocalStorage } from '../../hooks/useStorage';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useYupValidationResolver, yup } from '../../helpers/yup';
@@ -38,10 +40,10 @@ const schema = yup.object().shape({
 });
 
 const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
+    const { isLoading } = props;
     const auth = useSelector(selectCurrentUser);
     const language = auth?.user?.language || 'en-US';
-
-    const { isLoading } = props;
+    
     const [isSubmitting, toggleSubmitting] = useState(false);
     const [communityImage, setCommunityImage] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
@@ -57,8 +59,10 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [getUserPreSigned] = useGetPreSignedMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
-
-    const { handleSubmit, control, formState: { errors }, reset } = useForm({
+    const [, setAddCommunityInfo] = useLocalStorage('add-community-info', undefined);
+    const unsavedChanges = loadUnsavedChanges('add-community-info', auth?.user?.address);
+    
+    const { handleSubmit, control, formState: { errors, isDirty }, getValues, reset, setValue } = useForm({
         defaultValues: {
             baseInterval: '',
             claimAmount: '',
@@ -74,12 +78,44 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         resolver: useYupValidationResolver(schema)
     });
 
+    // console.log(isDirty);
+
+    const saveChanges = (e: any) => {
+        e.preventDefault();
+        console.log("saveChanges");
+
+        console.log(getValues());
+
+        setAddCommunityInfo({ address: auth?.user?.address, ...getValues() });
+    }
+
+    const reloadInfo = () => {
+        setValue('baseInterval', unsavedChanges?.baseInterval);
+        setValue('claimAmount', unsavedChanges?.claimAmount);
+        setValue('description', unsavedChanges?.description);
+        setValue('incrementInterval', unsavedChanges?.incrementInterval);
+        setValue('location', unsavedChanges?.location);
+        setValue('maxClaim', unsavedChanges?.maxClaim);
+        setValue('name', unsavedChanges?.name);
+    }
+
+    // console.log(addCommunityInfo);
+
+    // useWarnIfUnsavedChanges(isDirty, saveChanges);
+    // useLeavePageConfirm(isDirty);
+
     // Must have a login (and address) to create a Community
     if(!auth?.user?.address) {
         router.push('/');
 
         return null;
     }
+
+    useEffect(() => {
+        if(unsavedChanges) {
+            openModal('reloadInfoAddCommunity', { reloadInfo });
+        }
+    }, []);
 
     // If the user has no Currency selected in the Settings, use the Currency based on the selected Country
     const locationWatch = useWatch({ control, name: 'location' });
@@ -196,6 +232,11 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     return (
         <ViewContainer isLoading={isLoading}>
             <form onSubmit={handleSubmit(openSubmitModal)}>
+                <Box mb={2}>
+                    <Button icon="send" onClick={(e: any) => saveChanges(e)}>
+                        Save
+                    </Button>
+                </Box>
                 <Box fLayout="start between" fWrap="wrap" flex>
                     <Box column flex pr={{ sm: 2, xs: 0 }} w={{ sm: '80%', xs: '100%' }}>
                         <Display g900 medium>

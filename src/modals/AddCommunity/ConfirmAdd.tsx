@@ -1,13 +1,13 @@
 /* eslint-disable no-nested-ternary */
 import { Box, Button, CircledIcon, ModalWrapper, Text, useModal } from '@impact-market/ui';
-import { currencyFormat } from '../utils/currencies';
-import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+import { currencyFormat } from '../../utils/currencies';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import React from 'react';
-import RichText from '../libs/Prismic/components/RichText';
-import String from '../libs/Prismic/components/String';
-import useTranslations from '../libs/Prismic/hooks/useTranslations';
+import RichText from '../../libs/Prismic/components/RichText';
+import String from '../../libs/Prismic/components/String';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const ConfirmAddCommunity = () => {
+const ConfirmAdd = () => {
     const { currency, data, handleClose, isSubmitting, language, onSubmit } = useModal();
 
     const localeCurrency = new Intl.NumberFormat(language, {
@@ -46,4 +46,4 @@ const ConfirmAddCommunity = () => {
     )
 }
 
-export default ConfirmAddCommunity;
+export default ConfirmAdd;
