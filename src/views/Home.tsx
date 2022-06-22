@@ -1,4 +1,4 @@
-import { Display, ViewContainer } from '@impact-market/ui';
+import { ViewContainer } from '@impact-market/ui';
 import { checkUserPermission, userBeneficiary, userManager } from '../utils/users';
 import { useRouter } from 'next/router';
 import React from 'react';
@@ -21,10 +21,10 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
         return null;
     }
 
+    router.push('/communities?type=all');
+
     return (
-        <ViewContainer isLoading={isLoading}>
-            <Display>Welcome home</Display>
-        </ViewContainer>
+        <ViewContainer isLoading={isLoading} />
     );
 };
 

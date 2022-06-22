@@ -17,10 +17,7 @@ const languageRedirects = [
     { source: '/pt-br/:path*', destination: '/pt-BR/:path*' }
 ].map(redirect => ({ ...redirect, permanent: true }));
 
-const redirects = () => [
-    ...languageRedirects, 
-    { source: '/', destination: '/communities?type=all', permanent: true }
-];
+const redirects = () => languageRedirects;
 
 const images = {
     domains: ['impact-market.cdn.prismic.io', 'images.prismic.io', 'prismic-io.s3.amazonaws.com', 'dxdwf61ltxjyn.cloudfront.net', 'd3ma540h3o1zlk.cloudfront.net']

@@ -45,7 +45,7 @@ const Header = ({ community, updateReview }: any) => {
                     <Box flex>
                         {(community?.review === 'pending' ||
                             community?.review === 'declined') && (
-                            <Box fGrow={1} fLayout={{ sm: "end", xs: "start"}} flex>
+                            <Box fGrow={1} fLayout={{ sm: 'end', xs: 'start'}} flex>
                                 {community?.review !== 'declined' && (
                                     <Button
                                         mr={1}
