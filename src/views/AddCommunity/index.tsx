@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Button, Display, ViewContainer, openModal, toast } from '@impact-market/ui';
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
-import { convertCurrency } from '../../utils/currencies';
+import { emailRegExp } from '../../helpers/regex';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
@@ -17,6 +17,7 @@ import { useYupValidationResolver, yup } from '../../helpers/yup';
 import CommunityForm from './CommunityForm';
 import ContractForm from './ContractForm';
 import Message from '../../libs/Prismic/components/Message';
+import PersonalForm from './PersonalForm';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
@@ -27,7 +28,10 @@ const schema = yup.object().shape({
     claimAmount: yup.number().required().positive().min(0),
     // coverImg: yup.mixed().required(),
     description: yup.string().required(),
+    email: yup.string().required().matches(emailRegExp).email(),
+    firstName: yup.string().required().max(30),
     incrementInterval: yup.number().required().positive().integer().min(0),
+    lastName: yup.string().required().max(30),
     location: yup.mixed().required(),
     maxClaim: yup.number().required().positive().min(0),
     name: yup.string().required()
@@ -59,7 +63,10 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
             baseInterval: '',
             claimAmount: '',
             description: '',
+            email: auth?.user?.email || '',
+            firstName: auth?.user?.firstName || '',
             incrementInterval: '',
+            lastName: auth?.user?.lastName || '',
             location: null,
             maxClaim: '',
             name: ''
@@ -88,17 +95,11 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     };
 
     // TODO: check if all of this function is correct
-    // TODO: what happens if the user doesn't have any email yet?
-    /*
-    * TODO: check if this separation for city/country is correct
-    * Porto, Portugal » City: Porto / Country: Portugal
-    * Las Vegas, NV, EUA » City: Las Vegas, NV / Country: EUA
-    */
     const onSubmit = async (data: any) => {
         try {
             toggleSubmitting(true);
 
-            // User uploaded a photo for his profile
+            // User filled his Personal info
             if (profileImage) {
                 const type = profileImage.type?.split('/')[1] || '';
 
@@ -112,42 +113,34 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         });
 
                         if (result?.status === 200) {
-                            const userImage = await updateUser({
-                                avatarMediaPath: preSigned.filePath
+                            const userResult = await updateUser({
+                                avatarMediaPath: preSigned.filePath,
+                                email: data.email,
+                                firstName: data.firstName,
+                                lastName: data.lastName
                             }).unwrap();
 
-                            if (userImage) {
-                                dispatch(setUser({ user: { ...userImage }}));
+                            if (userResult) {
+                                dispatch(setUser({ user: { ...userResult }}));
                             }
                         }
                     }
                 }
             }
 
-            let { claimAmount, maxClaim } = data;
-
-            // If the currency is different than USD, convert to USD before adding the 0's
-            if (currency != 'USD') {
-                claimAmount = convertCurrency(data.claimAmount, rates, currency, 'USD');
-                maxClaim = convertCurrency(data.maxClaim, rates, currency, 'USD');
-            }
-
-            claimAmount *= 1000000000000000000;
-            maxClaim *= 1000000000000000000;
-
             const payload = {
                 city: data.location?.label?.substring(0, data.location?.label?.lastIndexOf(','))?.trim() || '',
                 contractParams: {
                     baseInterval: frequencyToNumber(data.baseInterval),
-                    claimAmount,
+                    claimAmount: (data.claimAmount * 1000000000000000000).toString(),
                     incrementInterval: data.incrementInterval * 12,
-                    maxClaim
+                    maxClaim: (data.maxClaim * 1000000000000000000).toString()
                 },
-                country: data.location?.label?.substring(data.location?.label?.lastIndexOf(',') + 1)?.trim() || '',
+                country: data.location?.country,
                 coverMediaPath: '',
                 currency,
                 description: data.description,
-                email: auth?.user?.email,
+                email: data.email,
                 gps: {
                     latitude: data.location?.gps?.lat || 0,
                     longitude: data.location?.gps?.lng || 0
@@ -223,14 +216,24 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         control={control} 
                         errors={errors} 
                         isLoading={isSubmitting}
-                        profileImage={profileImage} 
                         setCommunityImage={setCommunityImage} 
-                        setProfileImage={setProfileImage} 
-                        userImage={auth?.user?.avatarMediaPath} 
                     />
                 </Box>
+                {
+                    (!auth?.user?.email || !auth?.user?.avatarMediaPath || !auth?.user?.firstName || !auth?.user?.lastName) &&
+                    <Box mt={1.25}>
+                        <PersonalForm 
+                            control={control} 
+                            errors={errors} 
+                            isLoading={isSubmitting}
+                            profileImage={profileImage} 
+                            setProfileImage={setProfileImage} 
+                            user={auth?.user}
+                        />
+                    </Box>
+                }
                 <Box mt={1.25}>
-                    <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} />
+                    <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} />
                 </Box>
             </form>
         </ViewContainer>

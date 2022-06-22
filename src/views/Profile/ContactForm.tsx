@@ -1,4 +1,5 @@
 import { Box } from '@impact-market/ui';
+import { emailRegExp, phoneRegExp } from '../../helpers/regex';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useForm, useFormState } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -9,9 +10,6 @@ import Input from '../../components/Input';
 import React, { useEffect } from "react";
 import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-
-const emailRegExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
-const phoneRegExp = /^(\+?\d{0,4})?\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{3}\)?)\s?-?\s?(\(?\d{4}\)?)?$/;
 
 const schema = yup.object().shape({
     email: yup.string().matches(emailRegExp).email(),

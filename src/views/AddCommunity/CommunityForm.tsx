@@ -5,25 +5,18 @@ import Input from '../../components/Input';
 import InputUpload from '../../components/InputUpload';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
-import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, userImage: string, communityImage: any, profileImage: any, setCommunityImage: Function, setProfileImage: Function }> = props => {
-    const { communityImage, control, errors, isLoading, profileImage, setCommunityImage, setProfileImage, userImage } = props;
+const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, communityImage: any, setCommunityImage: Function }> = props => {
+    const { communityImage, control, errors, isLoading, setCommunityImage } = props;
     const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
-    const { communityAlert, communityDescription, communityDescriptionPlaceholder, communityImageDescription, communityImageUpload, communityTitle } = extractFromView('formSections') as any;
+    const { communityAlert, communityDescription, communityDescriptionPlaceholder, communityImageUpload, communityTitle } = extractFromView('formSections') as any;
     
     const handleCommunityImage = (event: any) => {
         if(event?.length > 0) {
             setCommunityImage(event[0]);
-        }
-    };
-
-    const handleProfileImage = (event: any) => {
-        if(event?.length > 0) {
-            setProfileImage(event[0]);
         }
     };
 
@@ -93,45 +86,18 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, u
                             <Box mt={0.75}>
                                 <Thumbnail
                                     disabled={isLoading}
+                                    h={10}
                                     handleClick={(event: any) => {
                                         event.preventDefault();
                                         setCommunityImage(null);
                                     }}
                                     icon="trash"
                                     url={URL.createObjectURL(communityImage)}
+                                    w={10}
                                 />
                             </Box>
                         )}
                     </Box>
-                    {
-                        userImage &&
-                        <Box mt={1.5}>
-                            <Text g700 mb={0.25} medium small><String id="yourProfilePhoto" /></Text>
-                            <RichText content={communityImageDescription} g500 mb={0.5} small />
-                            <InputUpload 
-                                accept={['image/png', 'image/jpeg']}
-                                control={control}
-                                disabled={isLoading}
-                                handleFiles={handleProfileImage}
-                                label={<RichText content={communityImageUpload} g500 regular small variables={{ height: 300, width: 300 }} />}
-                                multiple={false}
-                                name="profileImg"
-                            />
-                            {!!profileImage && (
-                                <Box mt={0.75}>
-                                    <Thumbnail
-                                        disabled={isLoading}
-                                        handleClick={(event: any) => {
-                                            event.preventDefault();
-                                            setProfileImage(null);
-                                        }}
-                                        icon="trash"
-                                        url={URL.createObjectURL(profileImage)}
-                                    />
-                                </Box>
-                            )}
-                        </Box>
-                    }
                 </Card>
             </Col>
         </Row>
