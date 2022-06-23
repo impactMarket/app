@@ -4,6 +4,7 @@ import { Grid } from '@impact-market/ui';
 import { currencyFormat } from '../../utils/currencies';
 import { selectCurrentUser } from '../../state/slices/auth';
 
+import { frequencyToText } from '@impact-market/utils/frequencyToText';
 import BeneficiaryCard from '../../components/BeneficiaryCard';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -17,6 +18,8 @@ const Beneficiaries = ({ data }: any) => {
     });
     const { t } = useTranslations();
     const { user } = useSelector(selectCurrentUser);
+
+    console.log('Claim Per Beneficiary: ', data?.claimAmount)
 
     return (
         !!data && (

@@ -4,6 +4,7 @@ import React, { useEffect, useState } from 'react';
 import { ViewContainer, toast } from '@impact-market/ui';
 import { gql, useQuery } from '@apollo/client';
 
+import { getCommunityBeneficiaries } from '../../graph/user';
 import { useGetCommunityAmbassadorMutation, useGetCommunityContractMutation, useGetCommunityManagersMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 import CommunityDetails from './CommunityDetails';
 import Header from './Header';
@@ -21,6 +22,7 @@ query communityQuery($id: String!) {
         minTranche
         maxTranche
         incrementInterval
+        baseInterval
     }
 }
 `;
@@ -39,6 +41,8 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         variables: { id: communityData?.contractAddress?.toLowerCase() },
     });
 
+    const communityBeneficiaries = useQuery(getCommunityBeneficiaries, { variables: { address: data?.communityEntity?.id } });
+     
     const [loading, setLoading] = useState(true);
     const [refreshingPage, setRefreshingPage] = useState(false);
 
@@ -106,6 +110,11 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
             return false;
         }
     };  
+    
+    console.log('Community: ', community)
+    console.log('Contract: ', contractData.data)
+    console.log('thegraph: ', data)
+    console.log('beneficiaries: ', communityBeneficiaries)
 
     return (
         <ViewContainer isLoading={loading || isLoading || refreshingPage}>

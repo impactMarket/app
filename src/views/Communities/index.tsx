@@ -14,12 +14,12 @@ import Header from './Header'
 import TabList from './Tabs';
 import useFilters from '../../hooks/useFilters';
 
-const itemsPerPage = 8;
+const itemsPerPage = 3;
 
 const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { user } = useSelector(selectCurrentUser);
-    const { getByKey } = useFilters();
+    const { update, getByKey } = useFilters();
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
@@ -40,6 +40,21 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const [itemOffset, setItemOffset] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
+    const [changed, setChanged] = useState<Date>(new Date());
+    const [ready, setReady] = useState(false);
+
+    // On page load, check if there's a page or orderBy in the url and save it to state
+    useEffect(() => {
+        if(!!getByKey('page')) {
+            const page = getByKey('page') as any;
+
+            setItemOffset((page - 1) * itemsPerPage);
+            setChanged(new Date());
+            setCurrentPage(page - 1);
+        }
+
+        setReady(true);
+    }, []);
 
     useEffect(() => {
         if(!getByKey('type')) {
@@ -78,7 +93,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
         };
 
         init();
-    }, [activeTab, statusFilter, itemOffset]);
+    }, [activeTab, statusFilter, itemOffset, ready, changed]);
     
 
     //  Handle Pagination
@@ -88,22 +103,23 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
 
             setItemOffset(newOffset);
             setCurrentPage(event.selected);
+            update('page', event.selected + 1);
         } else if (direction === 1 && currentPage > 0) {
             const newPage = currentPage - 1;
             const newOffset = (newPage * itemsPerPage) % communities?.data?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
+            update('page', newPage + 1);
         } else if (direction === 2 && currentPage < pageCount - 1) {
             const newPage = currentPage + 1;
             const newOffset = (newPage * itemsPerPage) % communities?.data?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
+            update('page', newPage + 1);
         }
     };
-
-    console.log(itemOffset)
 
 
     return (
