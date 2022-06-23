@@ -77,14 +77,12 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                     const SingleRequest : any = await getSingleStory(filterId).unwrap();
 
                     if(SingleRequest?.error) {
-                        // TODO toaster single request
                         clear('id');
                     } else {
                         openModal('openStory', {SingleRequest, loveStoryById: () => loveStoryById(parseInt(filterId, 10)), setStories});
                     }       
                 } 
             } catch (error) {
-                // TODO toaster sinle request
                 clear('id');
             }
         };

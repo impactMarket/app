@@ -10,4 +10,4 @@ export const beneficiaryRoutes: Routes = ['/beneficiary', '/mycommunity'];
 
 export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/manager/beneficiaries/[id]', '/manager/managers', '/mycommunity'];
 
-export const ambassadorRoutes: Routes = ['/requests'];
+export const ambassadorRoutes: Routes = ['/requests', '/ambassador', '/ambassador/reports'];
