@@ -19,7 +19,15 @@ const Beneficiaries = ({ data }: any) => {
     const { t } = useTranslations();
     const { user } = useSelector(selectCurrentUser);
 
-    console.log('Claim Per Beneficiary: ', data?.claimAmount)
+    const capitalizeBaseInterval = () => {
+        //  Get Day or Week string using frequencyToText util
+        const baseInterval = frequencyToText(data?.baseInterval)
+        const lowerCase = baseInterval.toLowerCase();
+        
+        return baseInterval.charAt(0).toUpperCase() + lowerCase.slice(1);
+    }
+
+    console.log(data)
 
     return (
         !!data && (
@@ -35,7 +43,7 @@ const Beneficiaries = ({ data }: any) => {
                     <BeneficiaryCard
                         icon="heart"
                         label="claimPerBeneficiary"
-                        text={`${currencyFormat(data?.claimAmount, localeCurrency)} / Day`}
+                        text={`${currencyFormat(data?.claimAmount, localeCurrency)} / ${capitalizeBaseInterval()}`}
                     />
                 )}
                 {!!data?.maxClaim && (
@@ -57,9 +65,8 @@ const Beneficiaries = ({ data }: any) => {
                     user.ambassador.communities.some((x: any) => x === data.id) &&
                         <BeneficiaryCard
                             icon="coins"
-                            
                             label="trancheMinMax"
-                            text={`${data?.minTranche}/${data?.maxTranche}`}
+                            text={`${currencyFormat(data?.minTranche, localeCurrency)}/${currencyFormat(data?.maxTranche, localeCurrency)}`}
                         />
                     
                 )}

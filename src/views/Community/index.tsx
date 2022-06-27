@@ -4,12 +4,11 @@ import React, { useEffect, useState } from 'react';
 import { ViewContainer, toast } from '@impact-market/ui';
 import { gql, useQuery } from '@apollo/client';
 
-import { getCommunityBeneficiaries } from '../../graph/user';
 import { useGetCommunityAmbassadorMutation, useGetCommunityContractMutation, useGetCommunityManagersMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 import CommunityDetails from './CommunityDetails';
 import Header from './Header';
-import Managers from './Managers';
 import Message from '../../libs/Prismic/components/Message';
+import UserTabs from './UserTabs';
 
 //  Get community data from thegraph
 const communityQuery = gql`
@@ -40,9 +39,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     const { data } = useQuery(communityQuery, {
         variables: { id: communityData?.contractAddress?.toLowerCase() },
     });
-
-    const communityBeneficiaries = useQuery(getCommunityBeneficiaries, { variables: { address: data?.communityEntity?.id } });
-     
+ 
     const [loading, setLoading] = useState(true);
     const [refreshingPage, setRefreshingPage] = useState(false);
 
@@ -110,11 +107,6 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
             return false;
         }
     };  
-    
-    console.log('Community: ', community)
-    console.log('Contract: ', contractData.data)
-    console.log('thegraph: ', data)
-    console.log('beneficiaries: ', communityBeneficiaries)
 
     return (
         <ViewContainer isLoading={loading || isLoading || refreshingPage}>
@@ -123,7 +115,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 community={community}
                 data={data?.communityEntity ?? contractData.data}
             />
-            <Managers 
+            <UserTabs 
                 //  If community exists in thegraph (it has contract address) get the data from thegraph. 
                 //  If not, get from API
                 ambassador={ambassador}

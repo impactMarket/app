@@ -22,7 +22,7 @@ import UserCard from './UserCard'
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const Managers = ({ ambassador, community, managers, status, setRefreshingPage } : any) => {
+const UserTabs = ({ ambassador, community, managers, status, setRefreshingPage } : any) => {
     const { t } = useTranslations();
     const { removeManager } = useAmbassador();
 
@@ -132,4 +132,4 @@ const Managers = ({ ambassador, community, managers, status, setRefreshingPage }
         )
 )}
 
-export default Managers;
+export default UserTabs;
