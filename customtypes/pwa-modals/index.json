@@ -401,6 +401,42 @@
           "single": "paragraph,em,hyperlink,strong"
         }
       }
+    },
+    "reload-info-add-community": {
+      "reload-info-add-community-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "reload-info-add-community-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      }
+    },
+    "community-submitted": {
+      "community-submitted-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "community-submited-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "hyperlink,em,paragraph,strong"
+        }
+      }
     }
   }
 }

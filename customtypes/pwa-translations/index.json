@@ -5,6 +5,34 @@
   "status": true,
   "json": {
     "strings": {
+      "string-Add Community": {
+        "config": {
+          "label": "Add Community",
+          "placeholder": "Add Community"
+        },
+        "type": "Text"
+      },
+      "string-Community Cover Image": {
+        "config": {
+          "label": "Community Cover Image",
+          "placeholder": "Community Cover Image"
+        },
+        "type": "Text"
+      },
+      "string-Dashboard": {
+        "config": {
+          "label": "Dashboard",
+          "placeholder": "Dashboard"
+        },
+        "type": "Text"
+      },
+      "string-View All": {
+        "config": {
+          "label": "View All",
+          "placeholder": "View All"
+        },
+        "type": "Text"
+      },
       "string-accept": {
         "config": {
           "label": "accept",
@@ -44,6 +72,13 @@
         "config": {
           "label": "addBeneficiary",
           "placeholder": "Add Beneficiary"
+        },
+        "type": "Text"
+      },
+      "string-addCommunity": {
+        "config": {
+          "label": "addCommunity",
+          "placeholder": "Add Community"
         },
         "type": "Text"
       },
@@ -334,6 +369,13 @@
         },
         "type": "Text"
       },
+      "string-continue": {
+        "config": {
+          "label": "continue",
+          "placeholder": "Continue"
+        },
+        "type": "Text"
+      },
       "string-contribute": {
         "config": {
           "label": "contribute",
@@ -380,6 +422,20 @@
         "config": {
           "label": "currency",
           "placeholder": "Currency"
+        },
+        "type": "Text"
+      },
+      "string-daily": {
+        "config": {
+          "label": "daily",
+          "placeholder": "Daily"
+        },
+        "type": "Text"
+      },
+      "string-dashboard": {
+        "config": {
+          "label": "dashboard",
+          "placeholder": "Dashboard"
         },
         "type": "Text"
       },
@@ -1006,6 +1062,13 @@
         },
         "type": "Text"
       },
+      "string-reportedSuspiciousActivity": {
+        "config": {
+          "label": "reportedSuspiciousActivity",
+          "placeholder": "Reported Suspicious Activity"
+        },
+        "type": "Text"
+      },
       "string-requestMoreFunds": {
         "config": {
           "label": "requestMoreFunds",
@@ -1083,6 +1146,13 @@
         },
         "type": "Text"
       },
+      "string-selectCountryFirst": {
+        "config": {
+          "label": "selectCountryFirst",
+          "placeholder": "Please select a Country first"
+        },
+        "type": "Text"
+      },
       "string-selectImage": {
         "config": {
           "label": "selectImage",
@@ -1122,6 +1192,13 @@
         "config": {
           "label": "sendReport",
           "placeholder": "Send Report"
+        },
+        "type": "Text"
+      },
+      "string-sendToReview": {
+        "config": {
+          "label": "sendToReview",
+          "placeholder": "Send to Review"
         },
         "type": "Text"
       },
@@ -1202,6 +1279,13 @@
         },
         "type": "Text"
       },
+      "string-totalTimeIncrement": {
+        "config": {
+          "label": "totalTimeIncrement",
+          "placeholder": "Total time increment after each claim"
+        },
+        "type": "Text"
+      },
       "string-trancheMinMax": {
         "config": {
           "label": "trancheMinMax",
@@ -1276,6 +1360,13 @@
         "config": {
           "label": "wallet",
           "placeholder": "Wallet"
+        },
+        "type": "Text"
+      },
+      "string-weekly": {
+        "config": {
+          "label": "weekly",
+          "placeholder": "Weekly"
         },
         "type": "Text"
       },

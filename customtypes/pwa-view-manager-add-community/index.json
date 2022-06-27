@@ -51,6 +51,47 @@
           "allowTargetBlank": true,
           "single": "paragraph,strong,hyperlink,em"
         }
+      },
+      "heading-alert": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Heading Alert",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "heading-submission-title": {
+        "type": "Text",
+        "config": {
+          "label": "Heading Submission Title",
+          "placeholder": ""
+        }
+      },
+      "heading-submission-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Heading Submission Content",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      },
+      "heading-community-title": {
+        "type": "Text",
+        "config": {
+          "label": "Heading Community Title",
+          "placeholder": ""
+        }
+      },
+      "heading-community-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Heading Community Content",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
       }
     },
     "form-sections": {
