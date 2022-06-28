@@ -136,7 +136,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
 
     const onLoveStoryFunction = (id: number, index: number) => {
         try {
-            const elementToEdit = stories.list.find(
+            const elementToEdit = stories?.list.find(
                 (_x, indexStory) => indexStory === index
             );
 
@@ -161,29 +161,28 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         }
     };
 
-    // Contribute button
-    // const onContribuite = async () => {
-    //     try {
-    //         if (!auth?.user) {
-    //             await connect();
-    //         } else {
-    //             // TODO contribuite functionality
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const onContribuite = async (communityId: number) => {
+        try {
+            if (!auth?.user) {
+                await connect();
+            } else {
+                router.push(`/communities/${communityId}?contribute=0`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const loveStoryById = (id: number) => {
         setStories((currentStory) => ({
             count: currentStory.count,
             list: currentStory.list.map((stories) => {
-                if (stories.id === id) {
+                if (stories?.id === id) {
                     return {
                         ...stories,
                         engagement: {
-                            loves: !stories.engagement.userLoved ? stories.engagement.loves + 1 : stories.engagement.loves - 1,
-                            userLoved: !stories.engagement.userLoved
+                            loves: !stories?.engagement?.userLoved ? stories?.engagement?.loves + 1 : stories?.engagement?.loves - 1,
+                            userLoved: !stories?.engagement?.userLoved
                         }
                     };
                 }
@@ -196,23 +195,23 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     const removeIndexById = (id: number) => {
         setStories((oldStories: {count: number; list: Story[]}) => ({
             count: oldStories.count--,
-            list: oldStories.list.filter((story) => story.id !== id)})
+            list: oldStories.list.filter((story) => story?.id !== id)})
         )
     }
 
     const renderStory = (story: any, index: number) => {
         const items = [];
 
-        if (story.isDeletable) {
+        if (story?.isDeletable) {
             items.unshift({
                 icon: 'trash',
-                onClick: () => openModal('deleteStory', { removeIndexById: () => removeIndexById(story.id), storyId: story.id }),
+                onClick: () => openModal('deleteStory', { removeIndexById: () => removeIndexById(story?.id), storyId: story?.id }),
                 title: t('deletePost')
             });
         } else {
             items.unshift({
                 icon: 'sad',
-                onClick: () => openModal('reportStory', { removeIndexById: () => removeIndexById(story.id), storyId: story.id }),
+                onClick: () => openModal('reportStory', { removeIndexById: () => removeIndexById(story?.id), storyId: story?.id }),
                 title: t('reportAsInappropriate')
             });
         }
@@ -247,10 +246,10 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                             </Link>
                                             <Text as="div" g500 regular small>
                                                 <Box fLayout="center start" flex >
-                                                    <CountryFlag countryCode={story.community.country} height={1.2} mr={0.5} />
+                                                    <CountryFlag countryCode={story?.community?.country} height={1.2} mr={0.5} />
                                                     <Box>
                                                         <Text>
-                                                            {story.community.city},{' '}{getCountryNameFromInitials(story.community.country)}
+                                                            {story?.community?.city},{' '}{getCountryNameFromInitials(story?.community?.country)}
                                                         </Text>
                                                     </Box>
                                                 </Box>
@@ -262,20 +261,20 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             {story?.message && (
                                 <Box show={{ sm: 'none', xs: 'flex' }}>
                                     <Box>
-                                        <Trim g800 large limit={100} message={story.message} pb={0} pt={0} rows={4} />
+                                        <Trim g800 large limit={100} message={story?.message} pb={0} pt={0} rows={4} />
                                     </Box>
                                 </Box>
                             )}
-                            <Col colSize={{ sm: 3, xs: 12 }} right>
-                                {/* Countribute Button */}
-                                {/* <Button
+                            <Col colSize={{ sm: 3, xs: 12 }} right >
+                                <Button
                                     fluid="xs"
                                     icon="coinStack"
-                                    onClick={() => onContribuite()}
+                                    mb={{sm: 0, xs: 1}}
+                                    onClick={() => onContribuite(story?.community?.id)}
                                     reverse
                                 >
                                     <String id="contribute" />
-                                </Button> */}
+                                </Button>
                             </Col>
                         </Row>
                         <Box pl={1} pr={1}>
@@ -284,7 +283,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                         {story?.message && (
                         <Box show={{ sm: 'flex', xs: 'none' }}>
                             <Box pl={1} pr={1}>
-                                <Trim g800 large limit={256} message={story.message} pb={0} pt={0} rows={4} />
+                                <Trim g800 large limit={256} message={story?.message} pb={0} pt={0} rows={4} />
                             </Box>
                         </Box>
                         )}
@@ -295,19 +294,19 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                     <Button
                                         fluid="xs"
                                         gray
-                                        icon={story.engagement.userLoved ? 'heartFilled' : 'heart'}
-                                        onClick={() => onloveStory(story.id, index)}
-                                        sColor={story.engagement.userLoved ? 'e600' : ''}
+                                        icon={story?.engagement?.userLoved ? 'heartFilled' : 'heart'}
+                                        onClick={() => onloveStory(story?.id, index)}
+                                        sColor={story?.engagement?.userLoved ? 'e600' : ''}
                                     >
                                         <Text as="div" g700 medium>
-                                            <String id={ story.engagement.userLoved ? 'loved' : 'love'} />
+                                            <String id={ story?.engagement?.userLoved ? 'loved' : 'love'} />
                                         </Text>
                                     </Button>
                                 </Col>
-                                {story.engagement.loves > 0 && (
+                                {story?.engagement?.loves > 0 && (
                                     <Col colSize={{ sm: 6, xs: 12 }} padding={0} pl={{ sm: 1, xs: 0}} pt={{ sm: 0, xs: 1}}>
                                         <Text g600 regular small>
-                                            {story.engagement.loves}{' '}<String id="loves" /> 
+                                            {story?.engagement?.loves}{' '}<String id="loves" /> 
                                         </Text>
                                     </Col>
                                 )}
@@ -326,11 +325,11 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
 
     return (
         <div>
-            {!loadingStories && stories.list.length === 0 && <NoStoriesFound />}
-            {stories.list.map((story: any, index: number) =>
+            {!loadingStories && stories?.list?.length === 0 && <NoStoriesFound />}
+            {stories?.list.map((story: any, index: number) =>
                 renderStory(story, index)
             )}
-            {(loadingStories || offset < stories.count) && (
+            {(loadingStories || offset < stories?.count) && (
                 <div ref={sentryRef}> 
                     <Row fLayout="center" h="50vh" pb={1} pt={1}>
                         <Spinner isActive />
