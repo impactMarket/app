@@ -1,6 +1,6 @@
 /* eslint-disable max-depth */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Box, Button, Display, ViewContainer, openModal, toast } from '@impact-market/ui';
+import { Alert, Box, Button, Display, ViewContainer, openModal, toast } from '@impact-market/ui';
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { emailRegExp } from '../../helpers/regex';
 import { frequencyToNumber } from '@impact-market/utils';
@@ -11,6 +11,7 @@ import { toCamelCase } from '../../helpers/toCamelCase';
 import { useCreateCommunityMutation, useGetCommunityPreSignedMutation } from '../../api/community';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
+import { useLocalStorage } from '../../hooks/useStorage';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useYupValidationResolver, yup } from '../../helpers/yup';
@@ -42,7 +43,8 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const language = auth?.user?.language || 'en-US';
 
     const { isLoading } = props;
-    const [isSubmitting, toggleSubmitting] = useState(false);
+    const [isReady, setIsReady] = useState(false);
+    const [isSubmitting, setSubmitting] = useState(false);
     const [communityImage, setCommunityImage] = useState(null);
     const [profileImage, setProfileImage] = useState(null);
     const [currency, setCurrency] = useState(auth?.user?.currency || null);
@@ -57,8 +59,10 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [getUserPreSigned] = useGetPreSignedMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
+    const [addCommunityInfo, setAddCommunityInfo, removeAddCommunityInfo] = useLocalStorage('add-community-info', undefined);
+    const unsavedChanges = addCommunityInfo?.address === auth?.user?.address ? addCommunityInfo : null;
 
-    const { handleSubmit, control, formState: { errors }, reset } = useForm({
+    const { handleSubmit, control, formState: { errors }, getValues, reset, setValue } = useForm({
         defaultValues: {
             baseInterval: '',
             claimAmount: '',
@@ -73,6 +77,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         },
         resolver: useYupValidationResolver(schema)
     });
+    const inputWatch = useWatch({ control });
 
     // Must have a login (and address) to create a Community
     if(!auth?.user?.address) {
@@ -81,23 +86,65 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         return null;
     }
 
-    // If the user has no Currency selected in the Settings, use the Currency based on the selected Country
-    const locationWatch = useWatch({ control, name: 'location' });
-        
+    // On start, check if there is any saved info to load (only loads if there's at least one field not empty)
     useEffect(() => {
-        if(!auth?.user?.currency && locationWatch?.country) {
-            setCurrency(getCountryCurrency(locationWatch.country) || 'USD');
+        if(
+            unsavedChanges && 
+            (
+                !!unsavedChanges?.baseInterval ||
+                !!unsavedChanges?.claimAmount ||
+                !!unsavedChanges?.description ||
+                (!!unsavedChanges?.email && !auth?.user?.email) ||
+                (!!unsavedChanges?.firstName && !auth?.user?.firstName) ||
+                !!unsavedChanges?.incrementInterval ||
+                (!!unsavedChanges?.lastName && !auth?.user?.lastName) ||
+                !!unsavedChanges?.location ||
+                !!unsavedChanges?.maxClaim ||
+                !!unsavedChanges?.name
+            )
+        ) {
+            openModal('reloadInfoAddCommunity', { reloadInfo });
         }
-    }, [locationWatch]);
 
+        setIsReady(true);
+    }, []);
+        
+    const reloadInfo = () => {
+        setValue('baseInterval', unsavedChanges?.baseInterval);
+        setValue('claimAmount', unsavedChanges?.claimAmount);
+        setValue('description', unsavedChanges?.description);
+        setValue('email', unsavedChanges?.email);
+        setValue('firstName', unsavedChanges?.firstName);
+        setValue('incrementInterval', unsavedChanges?.incrementInterval);
+        setValue('lastName', unsavedChanges?.lastName);
+        setValue('location', unsavedChanges?.location);
+        setValue('maxClaim', unsavedChanges?.maxClaim);
+        setValue('name', unsavedChanges?.name);
+    }
+
+    // If the user has no Currency selected in the Settings, use the Currency based on the selected Country        
+    useEffect(() => {
+        if(!auth?.user?.currency && inputWatch?.location?.country) {
+            setCurrency(getCountryCurrency(inputWatch.location.country) || 'USD');
+        }
+    }, [inputWatch?.location]);
+
+    // When changing any input, save everything to localStorage
+    useEffect(() => {
+        if(isReady) {
+            setAddCommunityInfo({ address: auth?.user?.address, ...getValues() });
+        }
+    }, [inputWatch]);
+
+    // Open confirmModal on form submit
     const openSubmitModal: SubmitHandler<any> = (data) => {
-        openModal('confirmAddCommunity', { currency, data, isSubmitting, language, onSubmit });
+        openModal('confirmAddCommunity', { data, isSubmitting, language, onSubmit });
     };
 
     // TODO: check if all of this function is correct
     const onSubmit = async (data: any) => {
         try {
-            toggleSubmitting(true);
+            setSubmitting(true);
 
             // User filled his Personal info
             if (profileImage) {
@@ -174,6 +221,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                             reset();
                             setCommunityImage(null);
                             setProfileImage(null);
+                            removeAddCommunityInfo();
                         }
                         else {
                             toast.error(<Message id="errorOccurred" />);
@@ -182,11 +230,11 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                 }
             }
 
-            toggleSubmitting(false);
+            setSubmitting(false);
         }
         catch(e: any) {
             console.log(e);
-            toggleSubmitting(false);
+            setSubmitting(false);
 
             // TODO: add error codes and texts to Prismic (for now we only have ALREADY_HAS_COMMUNITY)
             toast.error(<Message id={toCamelCase(e.data?.error?.name)} />);
@@ -196,7 +244,13 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     return (
         <ViewContainer isLoading={isLoading}>
             <form onSubmit={handleSubmit(openSubmitModal)}>
-                <Box fLayout="start between" fWrap="wrap" flex>
+                { /* TODO: define the final message that will appear here and add it to Prismic */ }
+                <Alert 
+                    icon="alertCircle"
+                    title="When creating a Community, all the information will be saved locally in your computer/phone, so you can resume and submit the Community whenever you want." 
+                    warning
+                />
+                <Box fLayout="start between" fWrap="wrap" flex mt={2}>
                     <Box column flex pr={{ sm: 2, xs: 0 }} w={{ sm: '80%', xs: '100%' }}>
                         <Display g900 medium>
                             {title}

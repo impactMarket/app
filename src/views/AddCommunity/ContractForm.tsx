@@ -84,7 +84,7 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
         }
 
         setClaimAmountSuffix(claimAmountText);
-    }, [claimAmountWatch]);
+    }, [claimAmountWatch, currency]);
 
     useEffect(() => {
         let maxClaimText = '';
@@ -97,7 +97,7 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
         }
 
         setMaxClaimSuffix(maxClaimText);
-    }, [maxClaimWatch]);
+    }, [maxClaimWatch, currency]);
 
     return (
         <Row>
