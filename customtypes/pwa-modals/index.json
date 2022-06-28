@@ -428,13 +428,13 @@
           "placeholder": ""
         }
       },
-      "community-submited-content": {
+      "community-submitted-content": {
         "type": "StructuredText",
         "config": {
           "label": "Description",
           "placeholder": "",
           "allowTargetBlank": true,
-          "single": "hyperlink,em,paragraph,strong"
+          "single": "paragraph,strong,em,hyperlink"
         }
       }
     }
