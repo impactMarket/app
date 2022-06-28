@@ -1,8 +1,4 @@
 {
-  "Add Community": "Add Community",
-  "Community Cover Image": "Community Cover Image",
-  "Dashboard": "Dashboard",
-  "View All": "View All",
   "accept": "Accept",
   "acceptClaim": "Accept/Claim",
   "accepted": "Accepted",
@@ -45,6 +41,7 @@
   "comment": "Comment",
   "comments": "Comments",
   "communityAmbassador": "Community Ambassador",
+  "communityCoverImage": "Community Cover Image",
   "communityDescription": "Community Description",
   "communityFundsRunningOut": "Community funds running out.",
   "communityName": "Community Name",

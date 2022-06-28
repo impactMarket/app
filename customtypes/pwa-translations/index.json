@@ -5,34 +5,6 @@
   "status": true,
   "json": {
     "strings": {
-      "string-Add Community": {
-        "config": {
-          "label": "Add Community",
-          "placeholder": "Add Community"
-        },
-        "type": "Text"
-      },
-      "string-Community Cover Image": {
-        "config": {
-          "label": "Community Cover Image",
-          "placeholder": "Community Cover Image"
-        },
-        "type": "Text"
-      },
-      "string-Dashboard": {
-        "config": {
-          "label": "Dashboard",
-          "placeholder": "Dashboard"
-        },
-        "type": "Text"
-      },
-      "string-View All": {
-        "config": {
-          "label": "View All",
-          "placeholder": "View All"
-        },
-        "type": "Text"
-      },
       "string-accept": {
         "config": {
           "label": "accept",
@@ -324,6 +296,13 @@
         "config": {
           "label": "communityAmbassador",
           "placeholder": "Community Ambassador"
+        },
+        "type": "Text"
+      },
+      "string-communityCoverImage": {
+        "config": {
+          "label": "communityCoverImage",
+          "placeholder": "Community Cover Image"
         },
         "type": "Text"
       },
