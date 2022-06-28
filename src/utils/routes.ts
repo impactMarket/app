@@ -6,8 +6,8 @@ export const privateRoutes: Routes = ['/profile', '/settings', '/manager/communi
 
 export const demoRoutes: Routes = [];
 
-export const beneficiaryRoutes: Routes = ['/beneficiary'];
+export const beneficiaryRoutes: Routes = ['/beneficiary', '/mycommunity'];
 
-export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/manager/beneficiaries/[id]', '/communities', '/communities/[id]', '/manager/managers'];
+export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/manager/beneficiaries/[id]', '/manager/managers', '/mycommunity'];
 
 export const ambassadorRoutes: Routes = ['/requests'];

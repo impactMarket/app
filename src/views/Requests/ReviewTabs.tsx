@@ -47,6 +47,11 @@ const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCoun
         return otherCountriesNumberOfReviews.reduce((a: any, b: any) => a + b, 0)
     }
 
+    const handleClickOnReviewFilter = (review: any) => {
+        setReview(review); 
+        update('review', review)
+    }
+
 
     return (
             <Tabs 
@@ -66,7 +71,7 @@ const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCoun
                                 :
                                     otherCountriesCommunities(review)
                                 }
-                            onClick={() => {setReview(review); update('review', review)}}
+                            onClick={() => handleClickOnReviewFilter(review)}
                             title={<String id={review} />}
                         />
                     ))}
