@@ -1,6 +1,7 @@
 import { emptySplitApi as api } from '../api';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/auth';
+import notificationsReducer from './slices/notifications';
 import ratesReducer from './slices/rates';
 
 export const store = configureStore({
@@ -10,6 +11,7 @@ export const store = configureStore({
         getDefaultMiddleware().concat(api.middleware),
     reducer: {
         auth: authReducer,
+        notifications: notificationsReducer,
         rates: ratesReducer,
         [api.reducerPath]: api.reducer
     }

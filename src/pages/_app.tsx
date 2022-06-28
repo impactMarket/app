@@ -2,12 +2,14 @@ import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
+import { addNotification } from '../state/slices/notifications';
 import { checkCookies, getCookie } from 'cookies-next';
 import { getLocation } from '../utils/position';
 import { setRates } from '../state/slices/rates';
 import { setToken } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useGetExchangeRatesMutation } from '../api/generic';
+import { useGetUnreadNotificationsMutation } from '../api/user';
 import ErrorPage from 'next/error';
 import GoogleAnalytics from '../components/GoogleAnalytics';
 import React, { useEffect } from 'react';
@@ -18,6 +20,7 @@ import config from '../../config';
 import modals from '../modals';
 import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
+
 
 const { baseUrl, graphUrl } = config;
 
@@ -32,6 +35,8 @@ const InnerApp = (props: AppProps) => {
     const { authorized, isLoading } = useGuard();
 
     const [getRates] = useGetExchangeRatesMutation();
+
+    const [getUnreadNotifications] = useGetUnreadNotificationsMutation();
 
     useEffect(() => {
         const init = async () => {
@@ -51,6 +56,26 @@ const InnerApp = (props: AppProps) => {
 
         init();
     }, []);
+
+    useEffect(() => {
+        const getFlags = async () => {
+            try {
+                const numberOfUnreadNotifications = await getUnreadNotifications().unwrap();
+
+                store.dispatch(addNotification({
+                    notification: {
+                        key: 'notifications',
+                        value: numberOfUnreadNotifications?.data || 0
+                    }
+                }))
+                
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getFlags();
+    }, [])
 
     const Content = Component as any;
 
