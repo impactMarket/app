@@ -3,18 +3,33 @@ import {
     Col,
     Grid,
     Row,
-    colors
+    colors,
+    toast
 } from '@impact-market/ui';
-// import { dateHelpers } from '../../helpers/dateHelpers';
+import { dateHelpers } from '../../helpers/dateHelpers';
 import styled from 'styled-components';
 
 import Beneficiaries from './Beneficiaries';
 import DonateCard from '../../components/DonateCard';
 import Image from '../../components/Image';
 import Map from '../../components/Map';
-// import Organization from '../../components/Organization';
-// import SocialLink from '../../components/SocialLink';
+import Organization from '../../components/Organization';
+import SocialLink from '../../components/SocialLink';
 import Trim from '../../components/Trim';
+
+import { selectCurrentUser } from '../../state/slices/auth';
+import { useSelector } from 'react-redux';
+import useWallet from '../../hooks/useWallet';
+
+import { frequencyToText } from '@impact-market/utils/frequencyToText';
+import { toNumber } from '@impact-market/utils/toNumber';
+import { toToken } from '@impact-market/utils/toToken';
+import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
+import { useState } from 'react';
+import BigNumber from 'bignumber.js';
+import RichText from '../../libs/Prismic/components/RichText';
+import config from '../../../config';
+import useFilters from '../../hooks/useFilters';
 
 const CommunityWrapper = styled(Grid)`
     > .grid-col:nth-child(2) {
@@ -26,17 +41,105 @@ const Divider = styled.hr`
     border: 1px solid ${colors.g200};
 `;
 
-const CommunityDetails = ({ community, data }: any) => {
-    const { claimLocations, gps, contractAddress } = community;
-    const { maxClaim } = data;
+const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) => {
+    const { gps = {}, contractAddress = null, status = '', state = {}, isPendingProposal = false, communitySocialMedia = [] } = community || {};
+    const { contributed = 0, contributors = 0, beneficiaries = '0' } = state || {};
+    const { maxClaim = 0, claimAmount = 0, incrementInterval = 0, baseInterval = 0 } = data || {};
+    const { description = '', logoMediaPath = '', name = '', socialMedia = [] } = promoter || {};
+    const { user } = useSelector(selectCurrentUser);
+    const { address, connect } = useWallet();
+    const [hasNoProposal, setHasNoProposal] = useState(isPendingProposal);
+    const { addCommunity } = useImpactMarketCouncil();
+    const isCouncilMember = user?.roles.includes('councilMember');
+    const claims = claimsLocation?.length ? claimsLocation : [gps];
+    const { update } = useFilters();
 
-    const contributed = community?.state?.contributed || 0;
-    const contributors = community?.state?.contributors || 0;
-    const beneficiaries = community?.state?.beneficiaries || '0';
+    const handleConnect = async () => {
+        try {
+            await connect();
+        } catch (error) {
+            // ADD error to Prismic
+            console.log('error');
+        }
+    };
 
-    const claims = claimLocations?.length
-        ? claimLocations?.map((claim: any) => ({ ...claim }))
-        : [gps];
+
+    const addProposal = async () => {
+        try {
+            const response = await addCommunity({
+                ambassador: community.ambassadorAddress,
+                baseInterval,
+                claimAmount: new BigNumber(claimAmount).shiftedBy(18).toString(), 
+                decreaseStep: toToken(0.01),
+                incrementInterval, 
+                managers: [community.requestByAddress],
+                maxClaim: new BigNumber(maxClaim).shiftedBy(18).toString(), 
+                maxTranche: toToken(5, { EXPONENTIAL_AT: 25 }),
+                minTranche: toToken(1),
+                proposalDescription: `
+                    ## Description:\n${ description }\n\n
+                    UBI Contract Parameters:\n
+                    Claim Amount: ${toNumber( new BigNumber(claimAmount).shiftedBy(18).toString() )}\n
+                    Max Claim: ${toNumber( new BigNumber(maxClaim).shiftedBy(18).toString() )}\n
+                    Base Interval: ${frequencyToText( +baseInterval )}\n
+                    Increment Interval: ${ (+incrementInterval * 5) / 60 } minutes\n\n\n
+                    More details: ${ config.baseUrl }/communities/${community.id}
+                `,
+                proposalTitle: `[New Community] ${community.name}`
+            });
+
+            console.log(response);
+            setHasNoProposal(false);
+            
+            // TODO: ADD TO PRISMIC
+            toast.success(
+                <RichText content="Your request was generated successfully!" />
+            );
+        } catch (error) {
+            console.log(error);
+            
+            toast.error(
+                <RichText content="Your request was not generated!" />
+            );
+        } 
+    };
+    
+
+    const cardAction = () => {
+        const generateProposal = {
+            action: () => addProposal(),
+            type: 'generateProposal'
+        };
+
+        const contribute = {
+            action: () => update('contribute', 0),
+            type: 'contribute'
+        };
+
+        const connectWallet = {
+            action: () => handleConnect(),
+            type: 'connectWallet'
+        };
+
+        const loggedAction = status === 'pending' && hasNoProposal && isCouncilMember
+                ? generateProposal
+                : contribute;
+
+        const button = !address ? connectWallet : loggedAction;
+
+        return button;
+    };
+
+    const SocialLinks = ({ socials }: any) => {
+        return socials?.map((social: any, index: number) => (
+            <SocialLink 
+                href={social.url}
+                icon={social.mediaType}
+                key={index}
+                label={social.url}
+            />
+        ));
+    };
 
     return (
         <>
@@ -74,11 +177,11 @@ const CommunityDetails = ({ community, data }: any) => {
                         </Box>
                     </Col>
                 </Row>
-                <Beneficiaries data={data} />
+                <Beneficiaries data={data} show={{ sm: 'flex', xs: 'none' }} />
             </CommunityWrapper>
 
-            <Row mt={1}>
-                <Col colSize={{ sm: 8, xs: 12 }} pr="2rem">
+            <Row mt={{sm: 1, xs: 2}}>
+                <Col colSize={{ sm: 8, xs: 12 }} order={{ sm: 0, xs: 2 }} pr={{ sm: 2, xs: 1 }}>
                     <Trim
                         g800
                         large
@@ -90,53 +193,41 @@ const CommunityDetails = ({ community, data }: any) => {
                     />
 
                     {/* TODO: 
-                     - Get organization and social data and pass it to the Organization and SocialLink components 
                      - handle social icons
                     */}
-
-                    {/* <Box fWrap="wrap" flex margin="1.5rem 0">
-                        <SocialLink
-                            href="www.oliviarhye.com"
-                            icon="edit"
-                            label="oliviarhye.com"
-                        />
-                        <SocialLink
-                            href="www.google.com"
-                            icon="edit"
-                            label="oliviarhye"
-                        />
-                    </Box> */}
+                     
+                     <Box fWrap="wrap" flex margin="1.5rem 0">
+                        <SocialLinks socials={communitySocialMedia} />
+                    </Box>
 
                     <Divider />
-
-                    {/* <Organization
-                        created={dateHelpers.compact('01/12/2020')}
-                        description="RIO is an NGO focused on integrating migrants/ refugees into host economies. Using entrepreneurship education workshops and professional mentoring, the NGO aims to increase the quantity and the quality of the entrepreneur coming from the community of migrants/refugees and this impacts not only the individual but the entire local economy. Nowadays working in two refugee camps (Krisan and Ampain) in Ghana and in Rio de Janeiro, Brazil."
-                        image={community?.coverMediaPath}
-                        name="Refugee Integration Organisation (RIO)"
-                    />
+                    
+                    {!!promoter && (
+                        <Organization
+                            created={dateHelpers.compact(community.createdAt)}
+                            description={description}
+                            image={logoMediaPath}
+                            name={name}
+                        />
+                    )}
 
                     <Box fWrap="wrap" flex margin="1.5rem 0">
-                        <SocialLink
-                            href="www.oliviarhye.com"
-                            icon="edit"
-                            label="thisistheorganizationdomain.com"
-                        />
-                        <SocialLink
-                            href="www.google.com"
-                            icon="edit"
-                            label="rio_org"
-                        />
-                    </Box> */}
+                        <SocialLinks socials={socialMedia} />
+                    </Box>
                 </Col>
-                <Col colSize={{ sm: 4, xs: 12 }} pl={0}>
-                    <DonateCard
-                        backers={contributors}
-                        beneficiariesNumber={beneficiaries}
-                        contractAddress={contractAddress}
-                        goal={maxClaim * beneficiaries}
-                        raised={contributed}
-                    />
+
+                <Col colSize={{ sm: 4, xs: 12 }} fDirection={{ xs: 'column' }} flex pl={{ sm: 0 }}>
+                    <Beneficiaries data={data} show={{ sm: 'none', xs: 'flex' }} />
+                    {(status !== 'pending' || (status === 'pending' && hasNoProposal && isCouncilMember)) && (
+                        <DonateCard
+                            backers={contributors}
+                            beneficiariesNumber={beneficiaries}
+                            contractAddress={contractAddress}
+                            goal={maxClaim * beneficiaries}
+                            raised={contributed}
+                            {...cardAction()}
+                        />
+                    )}
                 </Col>
             </Row>
         </>
