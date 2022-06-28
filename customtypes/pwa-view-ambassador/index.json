@@ -1,6 +1,6 @@
 {
-  "id": "pwa-view-reports",
-  "label": "[PWA] [View] Reports",
+  "id": "pwa-view-ambassador",
+  "label": "[PWA] [View] Ambassador",
   "repeatable": false,
   "status": true,
   "json": {
@@ -47,6 +47,17 @@
         "type": "StructuredText",
         "config": {
           "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
+    },
+    "messages": {
+      "message-communitiesPerforming": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communitiesPerforming",
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
