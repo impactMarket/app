@@ -9,6 +9,23 @@ export interface Community {
     id: any;
     state: any;
     language: string;
+    status?: string;
+    baseInterval?: number;
+    claimAmount?: string;
+    description?: string;
+    incrementInterval?: number;
+    maxClaim?: string;
+    country?: string;
+    city?: string;
+    gps?: {
+        latitude: number;
+        longitude: number;
+    }
+    placeId?: string;
+    coverMediaPath?: string;
+    requestByAddress?: string;
+    contractAddress?: string;
+    ambassadorAddress?: string;
 }
 
 interface Communities {
@@ -42,6 +59,10 @@ export interface ReviewsByCountry {
 
 export interface Contract {
     communityId: number;
+    claimAmount: string;
+    maxClaim: string;
+    baseInterval: number;
+    incrementInterval: number;
 }
 
 export interface CommunityManagers {
@@ -80,7 +101,7 @@ export interface CommunityContract {
 };
 
 interface PostCommunity {
-    requestByAddress: string;
+    requestByAddress?: string;
     name: string;
     contractAddress?: string;
     description: string;
@@ -101,6 +122,13 @@ interface PostCommunity {
         baseInterval: number;
         incrementInterval: number;
     };
+    placeId: string;
+};
+
+interface PostValidCommunity {
+    name: string;
+    description: string;
+    coverMediaPath: string;
 };
 
 interface PreSigned {
@@ -140,6 +168,22 @@ export const communityApi = emptySplitApi.injectEndpoints({
             query: body => ({
                 body,
                 method: 'POST',
+                url: 'communities'
+            }),
+            transformResponse: (response: { data: Community }) => response.data
+        }),
+        editPendingCommunity: builder.mutation<Community, { id: string, body: PostCommunity }>({
+            query: ({id , body}) => ({
+                body,
+                method: 'PATCH',
+                url: `communities/${id}`
+            }),
+            transformResponse: (response: { data: Community }) => response.data
+        }),
+        editValidCommunity: builder.mutation<Community, PostValidCommunity>({
+            query: body => ({
+                body,
+                method: 'PUT',
                 url: 'communities'
             }),
             transformResponse: (response: { data: Community }) => response.data
@@ -284,5 +328,7 @@ export const {
     useGetCommunityBeneficiariesMutation,
     useGetCommunityPreSignedMutation,
     useGetClaimsLocationsMutation,
-    useGetPromoterMutation
+    useGetPromoterMutation,
+    useEditPendingCommunityMutation,
+    useEditValidCommunityMutation
 } = communityApi;

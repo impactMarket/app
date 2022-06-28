@@ -21,10 +21,9 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
     const { extractFromView } = usePrismicData();
     const { contractDescription, contractFirstText, contractSecondText, contractTitle } = extractFromView('formSections') as any;
 
-    // TODO: add texts to Prismic
     const baseIntervals = [
-        { label: "Daily", value: 'day' },
-        { label: "Weekly", value: 'week' }
+        { label: t('daily'), value: 'day' },
+        { label: t('weekly'), value: 'week' }
     ];
 
     // TODO: Private Community - commented by Bernado request for now
@@ -121,12 +120,11 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
                     <RichText content={contractSecondText} g600 mt={2} small />
                     <Box fLayout="start" fWrap="wrap" flex mt={1.5}>
                         <Box pr={{ sm: 0.75, xs: 0 }} w={{ sm: '50%', xs: '100%' }}>
-                            { /* TODO: add text to Prismic */ }
                             <Input 
                                 control={control}
                                 disabled={!currency || isLoading}
                                 hint={!currency ? 
-                                    'Please select a Country first' : 
+                                    t('selectCountryFirst') : 
                                     errors?.claimAmount?.message?.key ? 
                                     t(errors?.claimAmount?.message?.key)?.replace('{{ value }}', errors?.claimAmount?.message?.value) : 
                                     errors?.claimAmount ? 
@@ -143,12 +141,11 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
                             />
                         </Box>
                         <Box pl={{ sm: 0.75, xs: 0 }} pt={{ sm: 0, xs: 1.5 }} w={{ sm: '50%', xs: '100%' }}>
-                            { /* TODO: add text to Prismic */ }
                             <Input 
                                 control={control}
                                 disabled={!currency || isLoading}
                                 hint={!currency ? 
-                                    'Please select a Country first' : 
+                                    t('selectCountryFirst') : 
                                     errors?.maxClaim?.message?.key ? 
                                     t(errors?.maxClaim?.message?.key)?.replace('{{ value }}', errors?.maxClaim?.message?.value) : 
                                     errors?.maxClaim ? 
@@ -179,7 +176,6 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
                             />
                         </Box>
                         <Box pl={{ sm: 0.75, xs: 0 }} pt={{ sm: 0, xs: 1.5 }} w={{ sm: '50%', xs: '100%' }}>
-                            { /* TODO: add text to Prismic */ }
                             <Input 
                                 control={control}
                                 disabled={isLoading}
@@ -189,7 +185,7 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
                                     t('fieldRequired') : 
                                     ''
                                 }
-                                label="Total time increment after each claim"
+                                label={t('totalTimeIncrement')}
                                 name="incrementInterval"
                                 onKeyDown={(e: any) => (e.key === 'e' || e.key === '-') && e.preventDefault()}
                                 suffix={t('minutes')}

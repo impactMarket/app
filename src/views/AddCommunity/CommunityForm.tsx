@@ -5,10 +5,11 @@ import Input from '../../components/Input';
 import InputUpload from '../../components/InputUpload';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
+import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, communityImage: any, setCommunityImage: Function }> = props => {
-    const { communityImage, control, errors, isLoading, setCommunityImage } = props;
+const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, communityImage: any, setCommunityImage: Function, communityStatus?: string, submitCount: number }> = props => {
+    const { communityImage, communityStatus, control, errors, isLoading, setCommunityImage, submitCount } = props;
     const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
@@ -21,7 +22,7 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
     };
 
     // TODO: check what links to add and how to add the links in "Learn to write description" and "Learn to choose a photo" texts
-
+    
     return (
         <Row>
             <Col colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
@@ -58,29 +59,30 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             withError={!!errors?.description}
                         />
                     </Box>
+                    {(!communityStatus || communityStatus === 'pending') &&
+                        <Box mt={1.5}>
+                            <GooglePlaces
+                                control={control}
+                                disabled={isLoading}
+                                hint={errors?.location ? t('fieldRequired') : ''}
+                                label={t('cityCountry')}
+                                name="location"
+                                withError={!!errors?.location}
+                            />
+                        </Box>
+                    }
                     <Box mt={1.5}>
-                        <GooglePlaces
-                            control={control}
-                            disabled={isLoading}
-                            hint={errors?.location ? t('fieldRequired') : ''}
-                            label={t('cityCountry')}
-                            name="location"
-                            withError={!!errors?.location}
-                        />
-                    </Box>
-                    <Box mt={1.5}>
-                        { /* TODO: add text to Prismic */ }
-                        <Text g700 mb={0.5} medium small>Community Cover Image</Text>
+                        <Text g700 mb={0.5} medium small><String id="communityCoverImage" /></Text>
                         <InputUpload 
                             accept={['image/png', 'image/jpeg']}
                             control={control}
                             disabled={isLoading}
                             handleFiles={handleCommunityImage}
-                            hint={errors?.coverImg ? t('fieldRequired') : ''}
+                            hint={submitCount > 0 && !communityImage ? t('fieldRequired') : ''}
                             label={<RichText content={communityImageUpload} g500 regular small variables={{ height: 300, width: 300 }} />}
                             multiple={false}
                             name="coverImg"
-                            withError={!!errors?.coverImg}
+                            withError={submitCount > 0 && !communityImage}
                         />
                         {!!communityImage && (
                             <Box mt={0.75}>
@@ -92,7 +94,7 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                                         setCommunityImage(null);
                                     }}
                                     icon="trash"
-                                    url={URL.createObjectURL(communityImage)}
+                                    url={typeof communityImage === 'string' ? communityImage : URL.createObjectURL(communityImage)}
                                     w={10}
                                 />
                             </Box>

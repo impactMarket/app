@@ -9,8 +9,8 @@ import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, user: PutPostUser, profileImage: any, setProfileImage: Function }> = props => {
-    const { control, errors, isLoading, profileImage, setProfileImage, user } = props;
+const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, user: PutPostUser, profileImage: any, setProfileImage: Function, submitCount: number }> = props => {
+    const { control, errors, isLoading, profileImage, setProfileImage, submitCount, user } = props;
     const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
@@ -23,7 +23,7 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
     };
 
     // TODO: check what link to add and how to add the links in "Learn to choose a photo" text
-    // TODO: add texts to Prismic
+    // TODO: add texts to view in Prismic
 
     return (
         <Row>
@@ -44,9 +44,11 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
                                 control={control}
                                 disabled={isLoading}
                                 handleFiles={handleProfileImage}
+                                hint={submitCount > 0 && !profileImage ? t('fieldRequired') : ''}
                                 label={<RichText content={communityImageUpload} g500 regular small variables={{ height: 300, width: 300 }} />}
                                 multiple={false}
                                 name="profileImg"
+                                withError={submitCount > 0 && !profileImage}
                             />
                             {!!profileImage && (
                                 <Box mt={0.75}>
