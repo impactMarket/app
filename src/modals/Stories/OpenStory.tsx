@@ -77,8 +77,8 @@ const OpenStory: React.FC = () => {
             setStory({
                 ...story,
                 engagement: {
-                    loves: !story.engagement.userLoved ? story.engagement.loves + 1 : story.engagement.loves - 1,
-                    userLoved: !story.engagement.userLoved
+                    loves: !story?.engagement?.userLoved ? story?.engagement?.loves + 1 : story?.engagement?.loves - 1,
+                    userLoved: !story?.engagement?.userLoved
                 }
             });
             loveStoryById(id);
@@ -104,7 +104,7 @@ const OpenStory: React.FC = () => {
     const removeIndexById = () => {
         setStories((oldStories: { count: number; list: Story[] }) => ({
             count: oldStories.count--,
-            list: oldStories.list.filter((story) => story.id.toString() !== filterId)})
+            list: oldStories.list.filter((story) => story?.id.toString() !== filterId)})
         );
     };
 
@@ -113,20 +113,20 @@ const OpenStory: React.FC = () => {
         toast.success(<Message id="copiedAddress" />);
     };
 
-    // Contribute button
-    // const onContribuite = async () => {
-    //     try {
-    //         if (!auth?.user) {
-    //             clear('id');    
-    //             handleClose();
-    //             await connect();
-    //         } else {
-    //             // TODO contribuite functionality
-    //         }
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // };
+    const onContribuite = async (communityId: number) => {
+        try {
+            if (!auth?.user) {
+                clear('id');    
+                handleClose();
+                await connect();
+            } else {
+                handleClose();
+                router.push(`/communities/${communityId}?contribute=0`);
+            }
+        } catch (error) {
+            console.log(error);
+        }
+    };
 
     const renderStory = () => {
         const items = [];
@@ -134,13 +134,13 @@ const OpenStory: React.FC = () => {
         if (story?.isDeletable) {
             items.unshift({
                 icon: 'trash',
-                onClick: () => openModal('deleteStory', {removeIndexById, setStories, story, storyId: story.id}),
+                onClick: () => openModal('deleteStory', {removeIndexById, setStories, story, storyId: story?.id}),
                 title: t('deletePost')
             });
         } else {
             items.unshift({
                 icon: 'sad',
-                onClick: () => openModal('reportStory', {removeIndexById, setStories, story, storyId: story.id}),
+                onClick: () => openModal('reportStory', {removeIndexById, setStories, story, storyId: story?.id}),
                 title: t('reportAsInappropriate')});
         }
 
@@ -243,17 +243,16 @@ const OpenStory: React.FC = () => {
                             )}
                         </Row>
 
-                        {/* TODO contribute fucntion */}
-                        {/* <Box pt={1} pb={0}>
+                        <Box pb={0} pt={1}>
                             <Button
                                 fluid="xs"
                                 icon="coinStack"
-                                onClick={() => onContribuite()}
+                                onClick={() => onContribuite(story?.community?.id)}
                                 reverse
                             >
                                 <String id="contribute" />
                             </Button>
-                        </Box> */}
+                        </Box>
 
                         <Row>
                             <Box fLayout="start between" flex mt={1} padding={1} pt={0} w="100%" >
