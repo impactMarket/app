@@ -137,7 +137,7 @@ interface Promoter {
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
         createCommunity: builder.mutation<Community, PostCommunity>({
-            query: body => ({
+            query: (body: any) => ({
                 body,
                 method: 'POST',
                 url: 'communities'
