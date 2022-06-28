@@ -36,7 +36,7 @@ const Header = ({ community, updateReview }: any) => {
                                 />
                             )}
 
-                            <Text extrasmall g500 medium>
+                            <Text g700 medium>
                                 {community?.city}
                             </Text>
                         </Box>
@@ -45,7 +45,7 @@ const Header = ({ community, updateReview }: any) => {
                     <Box flex>
                         {(community?.review === 'pending' ||
                             community?.review === 'declined') && (
-                            <Box>
+                            <Box fGrow={1} fLayout={{ sm: 'end', xs: 'start'}} flex>
                                 {community?.review !== 'declined' && (
                                     <Button
                                         mr={1}
@@ -81,7 +81,7 @@ const Header = ({ community, updateReview }: any) => {
                                             />
                                             <String id="share" />
                                         </Button>
-                                        <Button ml={0.5} secondary>
+                                        <Button ml={0.5} secondary h="100%">
                                             <Icon icon="heart" p700 />
                                         </Button> */}
                                     </>

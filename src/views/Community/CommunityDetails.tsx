@@ -1,16 +1,29 @@
-import { Box, Col, Grid, Row } from '@impact-market/ui';
+import {
+    Box,
+    Col,
+    Grid,
+    Row,
+    colors
+} from '@impact-market/ui';
+// import { dateHelpers } from '../../helpers/dateHelpers';
 import styled from 'styled-components';
 
 import Beneficiaries from './Beneficiaries';
 import DonateCard from '../../components/DonateCard';
 import Image from '../../components/Image';
 import Map from '../../components/Map';
+// import Organization from '../../components/Organization';
+// import SocialLink from '../../components/SocialLink';
 import Trim from '../../components/Trim';
 
 const CommunityWrapper = styled(Grid)`
     > .grid-col:nth-child(2) {
         padding: 0;
     }
+`;
+
+const Divider = styled.hr`
+    border: 1px solid ${colors.g200};
 `;
 
 const CommunityDetails = ({ community, data }: any) => {
@@ -42,7 +55,10 @@ const CommunityDetails = ({ community, data }: any) => {
                         overflow="hidden"
                         style={{ position: 'relative' }}
                     >
-                        <Image alt="Community cover image" src={community?.coverMediaPath} />
+                        <Image
+                            alt="Community cover image"
+                            src={community?.coverMediaPath}
+                        />
                     </Box>
                     <Col
                         colSize={{ sm: 8, xs: 12 }}
@@ -62,7 +78,7 @@ const CommunityDetails = ({ community, data }: any) => {
             </CommunityWrapper>
 
             <Row mt={1}>
-                <Col colSize={{ sm: 8, xs: 12 }}>
+                <Col colSize={{ sm: 8, xs: 12 }} pr="2rem">
                     <Trim
                         g800
                         large
@@ -72,6 +88,46 @@ const CommunityDetails = ({ community, data }: any) => {
                         pt={0}
                         rows={4}
                     />
+
+                    {/* TODO: 
+                     - Get organization and social data and pass it to the Organization and SocialLink components 
+                     - handle social icons
+                    */}
+
+                    {/* <Box fWrap="wrap" flex margin="1.5rem 0">
+                        <SocialLink
+                            href="www.oliviarhye.com"
+                            icon="edit"
+                            label="oliviarhye.com"
+                        />
+                        <SocialLink
+                            href="www.google.com"
+                            icon="edit"
+                            label="oliviarhye"
+                        />
+                    </Box> */}
+
+                    <Divider />
+
+                    {/* <Organization
+                        created={dateHelpers.compact('01/12/2020')}
+                        description="RIO is an NGO focused on integrating migrants/ refugees into host economies. Using entrepreneurship education workshops and professional mentoring, the NGO aims to increase the quantity and the quality of the entrepreneur coming from the community of migrants/refugees and this impacts not only the individual but the entire local economy. Nowadays working in two refugee camps (Krisan and Ampain) in Ghana and in Rio de Janeiro, Brazil."
+                        image={community?.coverMediaPath}
+                        name="Refugee Integration Organisation (RIO)"
+                    />
+
+                    <Box fWrap="wrap" flex margin="1.5rem 0">
+                        <SocialLink
+                            href="www.oliviarhye.com"
+                            icon="edit"
+                            label="thisistheorganizationdomain.com"
+                        />
+                        <SocialLink
+                            href="www.google.com"
+                            icon="edit"
+                            label="rio_org"
+                        />
+                    </Box> */}
                 </Col>
                 <Col colSize={{ sm: 4, xs: 12 }} pl={0}>
                     <DonateCard
