@@ -845,6 +845,13 @@
         },
         "type": "Text"
       },
+      "string-noNotificationsFound": {
+        "config": {
+          "label": "noNotificationsFound",
+          "placeholder": "No notifications found"
+        },
+        "type": "Text"
+      },
       "string-noRecordsFounds": {
         "config": {
           "label": "noRecordsFounds",
