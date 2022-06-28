@@ -1,0 +1,68 @@
+{
+  "id": "pwa-view-reports",
+  "label": "[PWA] [View] Reports",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "type": "Text",
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        }
+      },
+      "seo-description": {
+        "type": "Text",
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        }
+      },
+      "seo-keywords": {
+        "type": "Text",
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        }
+      },
+      "seo-image": {
+        "type": "Image",
+        "config": {
+          "label": "SEO image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      }
+    },
+    "heading": {
+      "heading-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "heading-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
+    },
+    "messages": {
+      "message-communitiesPerforming": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communitiesPerforming",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+        }
+      }
+    }
+  }
+}

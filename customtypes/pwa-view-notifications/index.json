@@ -98,6 +98,15 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "message-noNotificationsFound": {
+        "type": "StructuredText",
+        "config": {
+          "label": "noNotificationsFound",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
       }
     }
   }
