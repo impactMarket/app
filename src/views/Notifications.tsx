@@ -12,7 +12,7 @@ import useFilters from '../hooks/useFilters';
 
 const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
-    const { view } = usePrismicData();
+    const { view } = usePrismicData({list: true});
     const [getNotifications] = useGetNotificationsMutation();
     const [updataNotifications] = useUpdateNotificationsMutation();
     const [loading, setLoading] = useState(false);
@@ -151,8 +151,9 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
             <Display medium>
                 <String id="notifications" />
             </Display>
-            {/* TODO prismic data */}
-            <Text g500>Here you will get all the notifications sent to you.</Text>
+            <Text g500>
+                <RichText content={view.data.messageAllNotificationsSent}/>
+            </Text>
             <Box pb={2} pt={2} >
                 {notifications?.rows?.length ? (
                     <Card padding={0}>
@@ -176,23 +177,25 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                                 </Box>
                             </>
                         ))}
-                        <Box padding={1} pt={0}>
-                            <Pagination
-                                currentPage={currentPage}
-                                handlePageClick={handlePageClick}
-                                nextIcon="arrowRight"
-                                nextLabel="Next"
-                                pageCount={pageCount}
-                                previousIcon="arrowLeft"
-                                previousLabel="Previous"
-                            />
-                        </Box>
+
+                        {pageCount > 1 && 
+                            <Box padding={1} pt={0}>
+                                <Pagination
+                                    currentPage={currentPage}
+                                    handlePageClick={handlePageClick}
+                                    nextIcon="arrowRight"
+                                    nextLabel="Next"
+                                    pageCount={pageCount}
+                                    previousIcon="arrowLeft"
+                                    previousLabel="Previous"
+                                />
+                            </Box>
+                        }
                     </Card>
                 ) : (
                     <Box mt="25vh">
                         <Row fLayout="center">
-                            {/* TODO prismic data */}
-                            <Text>No notifications found</Text>
+                            <String id="noNotificationsFound" />
                         </Row>
                     </Box>
                 )}
