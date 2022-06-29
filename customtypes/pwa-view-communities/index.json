@@ -51,6 +51,13 @@
           "allowTargetBlank": true,
           "single": "paragraph,strong,em,hyperlink"
         }
+      },
+      "heading-organization": {
+        "type": "Text",
+        "config": {
+          "label": "Organization",
+          "placeholder": ""
+        }
       }
     },
     "messages": {
@@ -85,6 +92,15 @@
         "type": "StructuredText",
         "config": {
           "label": "exploreContract",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityCreated": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityCreated",
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"

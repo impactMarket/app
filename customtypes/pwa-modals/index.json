@@ -349,10 +349,24 @@
           "single": "paragraph,em,hyperlink,strong"
         }
       },
-      "contribut-placeholder": {
+      "contribute-placeholder": {
         "type": "Text",
         "config": {
           "label": "Placeholder",
+          "placeholder": ""
+        }
+      },
+      "contribute-approve": {
+        "type": "Text",
+        "config": {
+          "label": "Approve",
+          "placeholder": ""
+        }
+      },
+      "contribute-connectWallet": {
+        "type": "Text",
+        "config": {
+          "label": "Connect Wallet",
           "placeholder": ""
         }
       }
