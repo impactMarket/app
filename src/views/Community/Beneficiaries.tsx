@@ -46,12 +46,12 @@ const Beneficiaries = ({ data }: any) => {
                     <BeneficiaryCard
                         icon="clock"
                         label="timeIncrement"
-                        text={`${data?.incrementInterval} ${t('minutes')}`}
+                        text={`${data?.incrementInterval / 12} ${t('minutes')}`}
                     />
                 )}
                 {!!data?.minTranche && !!data?.maxTranche && (
                     //  Only show tranche min/max to community's ambassador
-                    user.ambassador.communities.some((x: any) => x === data.id) &&
+                    user?.ambassador?.communities?.some((x: any) => x === data.id) &&
                         <BeneficiaryCard
                             icon="coins"
                             

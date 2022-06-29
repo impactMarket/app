@@ -45,6 +45,7 @@ type User = {
     firstName?: string;
     lastName?: string;
     avatarMediaPath?: string;
+    roles: any;
 }
 
 type MenusState = {
@@ -55,17 +56,17 @@ type MenusState = {
 }
 
 const getUserType = (user: User) => {
-    if (!!user?.manager?.community) {
+    if (user?.roles?.includes('manager')) {
         return 'manager';
     };
-    if (!!user?.beneficiary?.community) {
+    if (user?.roles.includes('beneficiary')) {
         return 'beneficiary';
     };
-    if (!!user?.ambassador?.community) {
+    if (user?.roles.includes('ambassador')) {
         return 'ambassador';
     };
-    if (!!user?.councilMember?.community) {
-        return 'councilMember';
+    if (user?.roles.includes('councilMember')) {
+        return 'councilmember';
     };
 
     return 'donor';
