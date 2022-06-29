@@ -7,8 +7,8 @@ import { gql, useQuery } from '@apollo/client';
 import { useGetCommunityAmbassadorMutation, useGetCommunityContractMutation, useGetCommunityManagersMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
 import CommunityDetails from './CommunityDetails';
 import Header from './Header';
-import Managers from './Managers';
 import Message from '../../libs/Prismic/components/Message';
+import RolesTabs from './RolesTabs';
 
 //  Get community data from thegraph
 const communityQuery = gql`
@@ -79,6 +79,8 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     const functionUpdateReview = async (review: string) => {
         try {
             setLoading(true);
+            
+            setRefreshingPage(true)
 
             await updateReview({
                 body: {
@@ -103,8 +105,12 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
             toast.error(<Message id="errorOcurred"/>);
 
+            setRefreshingPage(false)
+
             return false;
         }
+
+        setRefreshingPage(false)
     };  
 
     return (
@@ -114,7 +120,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 community={community}
                 data={data?.communityEntity ?? contractData.data}
             />
-            <Managers 
+            <RolesTabs 
                 //  If community exists in thegraph (it has contract address) get the data from thegraph. 
                 //  If not, get from API
                 ambassador={ambassador}
