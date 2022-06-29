@@ -152,8 +152,8 @@ export const communityApi = emptySplitApi.injectEndpoints({
             transformResponse: (response: { data?: any }) => response.data
         }),
         //  Get claims locations
-        getClaimsLocations: builder.mutation<claimLocations[], {id: number} >({
-            query: (id: number) => ({
+        getClaimsLocations: builder.mutation<claimLocations[], {id: any} >({
+            query: (id: any) => ({
                 method: 'GET',
                 url: `communities/${id}/claims-location`
             }),
@@ -231,8 +231,8 @@ export const communityApi = emptySplitApi.injectEndpoints({
             transformResponse: (response: { data?: PendingCommunities }) => response.data
         }),
         //  Get claims locations
-        getPromoter: builder.mutation<Promoter, {id: number} >({
-            query: (id: number) => ({
+        getPromoter: builder.mutation<Promoter, {id: any} >({
+            query: (id: any) => ({
                 method: 'GET',
                 url: `communities/${id}/promoter`
             }),

@@ -57,7 +57,7 @@ const Contribute = () => {
     const [approved, setApproved] = useState(0);
     const [contribution, setContribution] = useState(value);
     const { extractFromModals } = usePrismicData();
-    const { placeholder, balance, content, tip, title } = extractFromModals(
+    const { placeholder, balance, content, tip, title, approve: approveCUSD } = extractFromModals(
         'contribute'
     ) as any;
     const { approve, donateToCommunity, donateToTreasury } = useDonationMiner();
@@ -240,7 +240,7 @@ const Contribute = () => {
                         w="100%"
                     >
                         {/* PRISMIC */}
-                        <RichText content="Approve cUSD" />
+                        <RichText content={approveCUSD} />
                     </Button>
                 </Col>
                 <Col colSize={{ sm: 6, xs: 6 }} flex pl={0.25}>

@@ -27,7 +27,7 @@ import { toToken } from '@impact-market/utils/toToken';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { useState } from 'react';
 import BigNumber from 'bignumber.js';
-import RichText from '../../libs/Prismic/components/RichText';
+import Message from '../../libs/Prismic/components/Message';
 import config from '../../../config';
 import useFilters from '../../hooks/useFilters';
 
@@ -58,15 +58,15 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
         try {
             await connect();
         } catch (error) {
-            // ADD error to Prismic
-            console.log('error');
+            toast.error(
+                <Message id="errorOccurred" />
+            );
         }
     };
 
-
     const addProposal = async () => {
         try {
-            const response = await addCommunity({
+            await addCommunity({
                 ambassador: community.ambassadorAddress,
                 baseInterval,
                 claimAmount: new BigNumber(claimAmount).shiftedBy(18).toString(), 
@@ -88,22 +88,17 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                 proposalTitle: `[New Community] ${community.name}`
             });
 
-            console.log(response);
             setHasNoProposal(false);
             
-            // TODO: ADD TO PRISMIC
             toast.success(
-                <RichText content="Your request was generated successfully!" />
+                <Message id="generatedSuccess" />
             );
         } catch (error) {
-            console.log(error);
-            
             toast.error(
-                <RichText content="Your request was not generated!" />
+                <Message id="generatedError" />
             );
         } 
     };
-    
 
     const cardAction = () => {
         const generateProposal = {

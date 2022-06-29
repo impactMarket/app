@@ -44,7 +44,7 @@ const Beneficiaries = ({ data, show }: any) => {
                         text={`${currencyFormat(
                             data?.claimAmount,
                             localeCurrency
-                        )} / Day`}
+                        )} / ${t('day')}`}
                     />
                 )}
                 {maxClaim && (
