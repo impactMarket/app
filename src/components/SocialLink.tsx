@@ -2,14 +2,14 @@ import React from 'react';
 
 import { Box, Icon, TextLink } from '@impact-market/ui';
 
-interface Props {
+interface SocialMedia {
     label: string;
     icon: string;
     href: string;
 }
 
-const SocialLink: React.FC<Props> = (props) => {
-    const { label, icon, href } = props;
+const SocialLink = (social: SocialMedia) => {
+    const { label, icon, href } = social;
 
     return (
         <Box fLayout="center start" flex mr={1.8} mt={0.5}>

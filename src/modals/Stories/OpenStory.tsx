@@ -113,19 +113,10 @@ const OpenStory: React.FC = () => {
         toast.success(<Message id="copiedAddress" />);
     };
 
-    const onContribuite = async (communityId: number) => {
-        try {
-            if (!auth?.user) {
-                clear('id');    
-                handleClose();
-                await connect();
-            } else {
-                handleClose();
-                router.push(`/communities/${communityId}?contribute=0`);
-            }
-        } catch (error) {
-            console.log(error);
-        }
+    const onContribute = (communityId: number) => {
+        clear('id');
+        handleClose();
+        router.push(`/communities/${communityId}?contribute`);
     };
 
     const renderStory = () => {
@@ -247,7 +238,7 @@ const OpenStory: React.FC = () => {
                             <Button
                                 fluid="xs"
                                 icon="coinStack"
-                                onClick={() => onContribuite(story?.community?.id)}
+                                onClick={() => onContribute(story?.community?.id)}
                                 reverse
                             >
                                 <String id="contribute" />

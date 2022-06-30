@@ -1,5 +1,5 @@
 import { useRouter } from 'next/router';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 
 import {
@@ -28,26 +28,30 @@ interface DonateCardProps {
     contractAddress: string;
     beneficiariesNumber: number;
     backers: number;
+    type: string;
+    action: () => void;
 }
 
-const DonateCard: React.FC<DonateCardProps> = (props) => {
+const DonateCard = (props: DonateCardProps) => {
     const {
         raised,
         goal,
         contractAddress,
         beneficiariesNumber,
-        backers
+        backers,
+        type,
+        action
     } = props;
 
+    const [isLoading, setIsLoading] = useState(false);
     const { t } = useTranslations();
     const { view } = usePrismicData();
-    const { update, getByKey } = useFilters();
+    const { getByKey } = useFilters();
     const { asPath } = useRouter();
-
     const quotient = raised / goal || 0;
 
     useEffect(() => {
-        if (getByKey('contribute') !== undefined) {
+        if (getByKey('contribute') !== undefined && type === 'contribute') {
             openModal('contribute', {
                 contractAddress,
                 value: getByKey('contribute')
@@ -55,8 +59,16 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
         }
     }, [asPath]);
 
+    const onClick = async () => {
+        setIsLoading(true);
+
+        await action();
+
+        setIsLoading(false);
+    }
+
     return (
-        <Card padding={1.4} show={{ sm: 'block', xs: 'none' }}>
+        <Card padding={1.4} w="100%">
             <Box fLayout="center" flex>
                 <RichText
                     center
@@ -69,22 +81,16 @@ const DonateCard: React.FC<DonateCardProps> = (props) => {
                 />
             </Box>
             <Box mt={1.5}>
-                <Button
-                    h={3.8}
-                    onClick={() => update('contribute', 0)}
-                    w="100%"
-                >
+                <Button h={3.8} isLoading={isLoading} onClick={onClick} w="100%">
                     <Text large medium>
-                        <String id="contribute" />
+                        <String id={type} />
                     </Text>
                 </Button>
             </Box>
             <Box fLayout="between" flex mt={1}>
                 <Box left>
                     <Text g500 left mt={1} small>
-                        {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t(
-                            'backers'
-                        )}`}
+                        {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t('backers')}`}
                     </Text>
                 </Box>
                 <Box right>

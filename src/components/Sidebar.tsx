@@ -191,7 +191,7 @@ const Sidebar = () => {
             footerMenu,
             menus
         })
-    }, [user, notifications]);
+    }, [asPath, user, notifications]);
 
     const handleLogoClick = () => {
         let route = '/';

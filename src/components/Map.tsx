@@ -1,11 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
 
+import 'mapbox-gl/dist/mapbox-gl.css';
+import { Text } from '@impact-market/ui';
 import { position } from 'polished';
 import mapboxgl from 'mapbox-gl';
 import styled from 'styled-components';
-
-// import { Cookies, withCookies } from 'react-cookie';
-import { Text } from '@impact-market/ui';
 
 import config from '../../config';
 
@@ -21,7 +20,6 @@ interface IClaimLocation {
 
 type MapProps = {
     claims: IClaimLocation[];
-    // cookies: Cookies;
 };
 
 const MapWrapper = styled.div`
@@ -37,10 +35,6 @@ const MapWrapper = styled.div`
         outline: 0;
     }
 `;
-
-//  WIP
-//  TODO:
-//     - Add cookies
 
 const Map = (props: MapProps) => {
     const { claims } = props;

@@ -1,7 +1,9 @@
 import React from 'react';
 
 import { Box, Text } from '@impact-market/ui';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import Image from '../components/Image';
+import RichText from '../libs/Prismic/components/RichText';
 
 interface Props {
     name: string;
@@ -12,14 +14,16 @@ interface Props {
 
 const SocialLink: React.FC<Props> = (props) => {
     const { image, name, created, description } = props;
+    const { view } = usePrismicData();
 
     return (
         <Box mt={1.5}>
-            {/* ADD TRANSLATION */}
-            <Text flex g900 medium>
-                Organization
-            </Text>
-
+            <RichText
+                    content={view.data.headingOrganization}
+                    flex
+                    g900
+                    medium
+                />
             <Box flex margin="1.5rem 0">
                 <Box
                     h="3rem"
@@ -33,10 +37,12 @@ const SocialLink: React.FC<Props> = (props) => {
                     <Text flex g900 medium>
                         {name}
                     </Text>
-                    {/* ADD TRANSLATION */}
-                    <Text flex g500 small>
-                        Created community on {created}
-                    </Text>
+                    <RichText
+                        content={view.data.messageCommunityCreated}
+                        g500
+                        small
+                        variables={{ created }}
+                    />
                 </Box>
             </Box>
 
