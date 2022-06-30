@@ -25,22 +25,6 @@ type BaseContext = BaseState & {
 }
 // #endregion types
 
-// #region UtilsWrapper
-const UtilsWrapper = (props: WithChildrenProps & BaseState) => {
-    const { address, web3, children } = props;
-
-    if (!web3) {
-        return children;
-    }
-
-    return (
-        <ImpactProvider address={address} jsonRpc={config.networkRpcUrl} web3={web3}>
-            {children}
-        </ImpactProvider>
-    )
-}
-// #endregion UtilsWrapper
-
 // #region AppProvider
 export const AppContext = React.createContext<BaseContext>({ setState: () => {} });
 
@@ -68,11 +52,11 @@ const KitWrapper = (props: WithChildrenProps) => {
     const forwardData = { address, connect, disconnect, isReady, network };
     
     return (
-        <UtilsWrapper address={address} web3={kit.connection.web3}>
+        <ImpactProvider address={address} connection={kit.connection} jsonRpc={config.networkRpcUrl}>
             <AppProvider {...forwardData}>
                 {children}
             </AppProvider>
-        </UtilsWrapper>
+        </ImpactProvider>
     )
 }
 // #endregion WrapperProvider

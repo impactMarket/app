@@ -1031,7 +1031,7 @@
   resolved "https://registry.yarnpkg.com/@celo/base/-/base-2.0.0.tgz#2cf054759ac37faea2a7e8bed7868e45adce24a5"
   integrity sha512-uLH0z/aj5vMO7rHuGZO+ZUOcmEu2tVJT90To6kX00csuEmUea50xijoDeDOyh/3aZFzyhUWKeHO4lw3m3K92Cw==
 
-"@celo/connect@2.0.0", "@celo/connect@^2.0.0-beta.1":
+"@celo/connect@2.0.0":
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/@celo/connect/-/connect-2.0.0.tgz#82cafbda0db2f9d16e9384673a05b08dbe618bad"
   integrity sha512-ZgSs0frah42nYVBet2tzyiXXCZ9ZuQ+eylKK13mPnHDR5hlOZuBQ0hol4IjNzxHQlIr/ZSVl2eoNbKCMlWpSJQ==
@@ -1974,12 +1974,12 @@
     styled-gen "^1.4.8"
     styled-reset "^4.3.4"
 
-"@impact-market/utils@2.0.0-beta.29":
-  version "2.0.0-beta.29"
-  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-2.0.0-beta.29.tgz#27ab0726a05d9dca6ec6fb89a85f2dd73104aba9"
-  integrity sha512-Q7d4cF8FnT8MCMDLLk+wcTtFOcLfEOFwUwVaxD/D9PyuxqIH8sPsufj6bx3V5VTi3FsEArOpmJFoTyfmvGlOQQ==
+"@impact-market/utils@3.0.0-beta.3":
+  version "3.0.0-beta.3"
+  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-3.0.0-beta.3.tgz#6ae67d87966315ed4849c7aaee37bc5ec0d97a7a"
+  integrity sha512-x6l/2N/cRtjbz0stv0j3RBjGdElFTd2F2E3xMy3vyWWXe82FLIzLXDUgmmLb7OdVLaDylyx82nNMsKTc6PZSHg==
   dependencies:
-    "@celo/connect" "^2.0.0-beta.1"
+    "@celo/connect" "2.0.0"
     ethers "5.6.0"
 
 "@jridgewell/gen-mapping@^0.1.0":
