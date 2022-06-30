@@ -1,4 +1,4 @@
-import { Alfajores, CeloMainnet } from '@celo-tools/use-contractkit';
+import { Alfajores, Mainnet } from '@celo/react-celo';
 import { AppContext } from '../components/WrapperProvider';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
@@ -9,7 +9,7 @@ import { useDispatch } from 'react-redux';
 import React from 'react';
 import config from '../../config';
 
-const network = config.useTestNet ? Alfajores: CeloMainnet;
+const network = config.useTestNet ? Alfajores : Mainnet;
 
 const useWallet = () => {
     const { address, connect: connectFromHook, disconnect: disconnectFromHook, isReady, network: walletNetwork } = React.useContext(AppContext);
