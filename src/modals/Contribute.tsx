@@ -239,7 +239,6 @@ const Contribute = () => {
                         onClick={handleApprove}
                         w="100%"
                     >
-                        {/* PRISMIC */}
                         <RichText content={approveCUSD} />
                     </Button>
                 </Col>
