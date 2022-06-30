@@ -57,7 +57,7 @@ const Contribute = () => {
     const [approved, setApproved] = useState(0);
     const [contribution, setContribution] = useState(value);
     const { extractFromModals } = usePrismicData();
-    const { placeholder, balance, content, tip, title } = extractFromModals(
+    const { placeholder, balance, content, tip, title, approve: approveCUSD } = extractFromModals(
         'contribute'
     ) as any;
     const { approve, donateToCommunity, donateToTreasury } = useDonationMiner();
@@ -69,16 +69,11 @@ const Contribute = () => {
     });
     const insuficientFunds = contribution <= 0 || contribution > balanceCUSD;
     const isApprovalDisabled = step === 1 || insuficientFunds;
-    const isContributeDisabled =
-        step === 0 || insuficientFunds || contribution !== approved;
+    const isContributeDisabled = step === 0 || insuficientFunds || contribution !== approved;
 
     const handleChange = (e: any) => {
-        if (e.target.value !== approved) {
-            if (step == 1) {
-                setStep(0);
-            }
-        } else if (approved > 0) {
-            setStep(1);
+        if (approved > 0) {
+            e.target.value !== approved ? setStep(0) : setStep(1);
         }
 
         setContribution(e.target.value);
@@ -95,7 +90,7 @@ const Contribute = () => {
             BigNumber.config({ EXPONENTIAL_AT: 29 });
             const amount = new BigNumber(contribution).toString();
 
-            const response = await approve(amount);
+            const response = await approve(amount, contractAddress);
 
             if (!response?.status) {
                 return toast.error('error');
@@ -106,9 +101,9 @@ const Contribute = () => {
             setStep(1);
         } catch (e) {
             toast.error(<Message id="errorOccurred" />);
+        } finally {
+            setLoading(false);
         }
-
-        setLoading(false);
     };
 
     const handleContribute = async () => {
@@ -127,8 +122,6 @@ const Contribute = () => {
                 : await donateToTreasury(amount);
 
             if (!response?.status) {
-                setLoading(false);
-
                 return toast.error(<Message id="errorOccurred" />);
             }
 
@@ -136,8 +129,9 @@ const Contribute = () => {
             closeModal();
         } catch (error) {
             toast.error(<Message id="errorOccurred" />);
+        } finally {
+            setLoading(false);
         }
-        setLoading(false);
     };
 
     const closeModal = () => {
@@ -201,8 +195,8 @@ const Contribute = () => {
                         onKeyPress={handleKeyPress}
                         placeholder={placeholder}
                         rules={{ required: true }}
-                        style={{ 'font-size': '1.5rem' }}
-                        value={contribution > 0 ? contribution : null}
+                        style={{ fontSize: '1.5rem' }}
+                        value={contribution > 0 ? contribution : ''}
                         wrapperProps={{
                             padding: { xs: 0 },
                             style: { boxShadow: 'none', fontSize: '5.5rem' }
@@ -238,17 +232,17 @@ const Contribute = () => {
             </Row>
 
             <Row>
-                <Col colSize={{ sm: 6, xs: 6 }} pr={0.25}>
+                <Col colSize={{ sm: 6, xs: 6 }} flex pr={0.25}>
                     <Button
                         disabled={isApprovalDisabled}
                         isLoading={step === 0 && loading}
                         onClick={handleApprove}
                         w="100%"
                     >
-                        <RichText content="Approve cUSD" />
+                        <RichText content={approveCUSD} />
                     </Button>
                 </Col>
-                <Col colSize={{ sm: 6, xs: 6 }} pl={0.25}>
+                <Col colSize={{ sm: 6, xs: 6 }} flex pl={0.25}>
                     <ButtonWrapper
                         disabled={isContributeDisabled}
                         isLoading={step === 1 && loading}

@@ -115,6 +115,24 @@ interface PreSigned {
     uploadURL?: string;
 }
 
+interface claimLocations {
+    latitude: number;
+    longitude: number;
+}
+
+interface Promoter {
+    category?: string;
+    description?: string;
+    id: number;
+    logoMediaPath?: string;
+    name: string;
+    socialMedia?: [{
+        promoterId: number;
+        mediaType: string;
+        url: string;
+    }]
+}
+
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -132,6 +150,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/beneficiaries`
             }),
             transformResponse: (response: { data?: any }) => response.data
+        }),
+        //  Get claims locations
+        getClaimsLocations: builder.mutation<claimLocations[], {id: any} >({
+            query: (id: any) => ({
+                method: 'GET',
+                url: `communities/${id}/claims-location`
+            }),
+            transformResponse: (response: { data?: claimLocations[] }) => response.data
         }),
         //  Get all communities by country or/and review status
         getCommunities: builder.mutation<Communities, Record<string, any>>({
@@ -204,6 +230,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: PendingCommunities }) => response.data
         }),
+        //  Get claims locations
+        getPromoter: builder.mutation<Promoter, {id: any} >({
+            query: (id: any) => ({
+                method: 'GET',
+                url: `communities/${id}/promoter`
+            }),
+            transformResponse: (response: { data?: Promoter }) => response.data
+        }),
         //  Get reviews by country
         getReviewsByCountry: builder.mutation<ReviewsByCountry, Record<string, any>>({
             query: (filters: Record<string, any>) => ({
@@ -219,7 +253,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/count?groupBy=review`
             }),
             transformResponse: (response: { data?: Reviews[] }) => response.data
-        }),  
+        }),
         //  Update community review status (accepted, claimed, declined, pending)
         updateReview: builder.mutation<Update, { body: any; id: number }>({
             query: ({ body, id }: any) => ({
@@ -228,7 +262,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/review`
             }),
             transformResponse: (response: { data: Update }) => response.data
-        })
+        }),
     })
 });
 
@@ -248,5 +282,7 @@ export const {
     useGetCommunityAmbassadorMutation,
     useGetCommunityManagersMutation,
     useGetCommunityBeneficiariesMutation,
-    useGetCommunityPreSignedMutation
+    useGetCommunityPreSignedMutation,
+    useGetClaimsLocationsMutation,
+    useGetPromoterMutation
 } = communityApi;

@@ -14,7 +14,7 @@ type SelectProps = {
     disabled?: boolean;
     initialValue?: any;
     isMultiple?: boolean;
-    label?: string, 
+    label?: string;
     placeholder?: string;
     name?: string;
     rules?: Object;

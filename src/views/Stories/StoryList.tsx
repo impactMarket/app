@@ -159,18 +159,6 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         }
     };
 
-    const onContribuite = async (communityId: number) => {
-        try {
-            if (!auth?.user) {
-                await connect();
-            } else {
-                router.push(`/communities/${communityId}?contribute=0`);
-            }
-        } catch (error) {
-            console.log(error);
-        }
-    };
-
     const loveStoryById = (id: number) => {
         setStories((currentStory) => ({
             count: currentStory.count,
@@ -268,7 +256,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                     fluid="xs"
                                     icon="coinStack"
                                     mb={{sm: 0, xs: 1}}
-                                    onClick={() => onContribuite(story?.community?.id)}
+                                    onClick={() => router.push(`/communities/${story?.community?.id}?contribute`)}
                                     reverse
                                 >
                                     <String id="contribute" />

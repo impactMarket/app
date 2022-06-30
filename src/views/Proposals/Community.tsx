@@ -67,6 +67,7 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
                 ambassador: community.ambassadorAddress,
                 decreaseStep: toToken(0.01),
                 managers: [community.requestByAddress],
+                maxBeneficiaries: 50,
                 maxTranche: toToken(5, { EXPONENTIAL_AT: 25 }),
                 minTranche: toToken(1),
                 proposalDescription: `## Description:\n${community.description}\n\nUBI Contract Parameters:\nClaim Amount: ${toNumber(

@@ -7,8 +7,12 @@ import { selectCurrentUser } from '../../state/slices/auth';
 import BeneficiaryCard from '../../components/BeneficiaryCard';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Beneficiaries = ({ data }: any) => {
+const Beneficiaries = ({ data, show }: any) => {
+    const { beneficiaries, claimAmount, maxClaim, incrementInterval } = data;
     const auth = useSelector(selectCurrentUser);
+    const user = auth?.user;
+    const showAmbassadorMetrics = !!data?.minTranche && !!data?.maxTranche && user?.ambassador?.communities.some( (x: any) => x === data.id );
+    
     const language = auth?.user?.language || 'en-US';
     const currency = auth?.user?.currency || 'USD';
     const localeCurrency = new Intl.NumberFormat(language, {
@@ -16,50 +20,55 @@ const Beneficiaries = ({ data }: any) => {
         style: 'currency'
     });
     const { t } = useTranslations();
-    const { user } = useSelector(selectCurrentUser);
 
     return (
         !!data && (
-            <Grid colSpan={1} cols={{ sm: 4, xs: 2 }} mt={{ sm: 1.5, xs: 3 }}>
-                {!!data?.beneficiaries && (
+            <Grid
+                colSpan={1}
+                cols={{ sm: 4, xs: 2 }}
+                mt={{ sm: 1.5, xs: 2 }}
+                order={{ xs: 2 }}
+                show={show}
+            >
+                {beneficiaries && (
                     <BeneficiaryCard
                         icon="users"
                         label="beneficiaries"
                         text={data?.beneficiaries}
                     />
                 )}
-                {!!data?.claimAmount && (
+                {claimAmount && (
                     <BeneficiaryCard
                         icon="heart"
                         label="claimPerBeneficiary"
-                        text={`${currencyFormat(data?.claimAmount, localeCurrency)} / Day`}
+                        text={`${currencyFormat(
+                            data?.claimAmount,
+                            localeCurrency
+                        )} / ${t('day')}`}
                     />
                 )}
-                {!!data?.maxClaim && (
+                {maxClaim && (
                     <BeneficiaryCard
                         icon="check"
                         label="maxPerBeneficiary"
                         text={currencyFormat(data?.maxClaim, localeCurrency)}
                     />
                 )}
-                {!!data?.incrementInterval && (
+                {incrementInterval && (
                     <BeneficiaryCard
                         icon="clock"
                         label="timeIncrement"
                         text={`${data?.incrementInterval / 12} ${t('minutes')}`}
                     />
                 )}
-                {!!data?.minTranche && !!data?.maxTranche && (
-                    //  Only show tranche min/max to community's ambassador
-                    user?.ambassador?.communities?.some((x: any) => x === data.id) &&
+                {showAmbassadorMetrics && (
+                        //  Only show tranche min/max to community's ambassador
                         <BeneficiaryCard
                             icon="coins"
-                            
                             label="trancheMinMax"
                             text={`${data?.minTranche}/${data?.maxTranche}`}
                         />
-                    
-                )}
+                    )}
             </Grid>
         )
     );

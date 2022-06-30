@@ -4,7 +4,17 @@ import React, { useEffect, useState } from 'react';
 import { ViewContainer, toast } from '@impact-market/ui';
 import { gql, useQuery } from '@apollo/client';
 
-import { useGetCommunityAmbassadorMutation, useGetCommunityContractMutation, useGetCommunityManagersMutation, useGetCommunityMutation, useUpdateReviewMutation } from '../../api/community';
+import {
+    useGetClaimsLocationsMutation,
+    useGetCommunityAmbassadorMutation,
+    useGetCommunityContractMutation,
+    useGetCommunityManagersMutation,
+    useGetCommunityMutation,
+    useGetPendingCommunitiesMutation,
+    useGetPromoterMutation,
+    useUpdateReviewMutation
+} from '../../api/community';
+
 import CommunityDetails from './CommunityDetails';
 import Header from './Header';
 import Message from '../../libs/Prismic/components/Message';
@@ -27,13 +37,15 @@ query communityQuery($id: String!) {
 
 const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props) => {
     const { communityData, isLoading } = props;
-    const router = useRouter()
+    const router = useRouter();
 
     const [communityId] = useState(communityData.id);
     const [community, setCommunity]= useState(communityData) as any;
     const [managers, setManagers]= useState(null);
     const [contractData, setContractData]= useState({}) as any;
     const [ambassador, setAmbassador]= useState({}) as any;
+    const [claimsLocation, setClaimsLocation]= useState({}) as any;
+    const [promoter, setPromoter]= useState({}) as any;
     
     const { data } = useQuery(communityQuery, {
         variables: { id: communityData?.contractAddress?.toLowerCase() },
@@ -44,8 +56,11 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
-    const [getCommunityContract] = useGetCommunityContractMutation()
-    const [getCommunityManagers] = useGetCommunityManagersMutation()
+    const [getCommunityContract] = useGetCommunityContractMutation();
+    const [getCommunityManagers] = useGetCommunityManagersMutation();
+    const [getClaimsLocation] = useGetClaimsLocationsMutation();
+    const [getPromoter] = useGetPromoterMutation();
+    const [getPendingCommunities] = useGetPendingCommunitiesMutation();
     const [getCommunityAmbassador] = useGetCommunityAmbassadorMutation();
 
     useEffect(() => {
@@ -54,20 +69,38 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 setLoading(true)
                 
                 //  Get managers
-                const managersData = await getCommunityManagers({ community: community?.id }).unwrap()
+                const managersData = await getCommunityManagers({ community: community?.id }).unwrap();
 
                 //  Get community's contract data
-                const contractData = await getCommunityContract(community?.id).unwrap()
+                const contractData = await getCommunityContract(community?.id).unwrap();
+
+                //  Get calims location
+                const claimsLocation = await getClaimsLocation(community?.id).unwrap(); 
+                
+                //  Get community's promoter
+                const promoter = await getPromoter(community?.id).unwrap();
 
                 //  Get community's ambassador
-                const ambassador = await getCommunityAmbassador(community?.id).unwrap()
+                const ambassador = await getCommunityAmbassador(community?.id).unwrap();
 
-                setManagers(managersData)
-                setContractData(contractData)
-                setAmbassador(ambassador)
-                setLoading(false)
+                if (community.status === 'pending') {
+                    const response = await getPendingCommunities({limit: null, offset: 0}).unwrap();
+
+                    const foundResults = response?.rows.filter((row: any) => {
+                        return row.id === community.id
+                    })
+
+                    if (foundResults.length > 0) setCommunity({...community, isPendingProposal: true});
+                }
+                
+                setManagers(managersData);
+                setContractData(contractData);
+                setAmbassador(ambassador);
+                setPromoter(promoter);
+                setClaimsLocation(claimsLocation);
+                setLoading(false);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
         }
 
@@ -117,8 +150,10 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         <ViewContainer isLoading={loading || isLoading || refreshingPage}>
             <Header community={community} updateReview={functionUpdateReview}/>
             <CommunityDetails
+                claimsLocation={claimsLocation}
                 community={community}
                 data={data?.communityEntity ?? contractData.data}
+                promoter={promoter}
             />
             <RolesTabs 
                 //  If community exists in thegraph (it has contract address) get the data from thegraph. 
