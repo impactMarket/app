@@ -1,10 +1,18 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Input as BaseInput, InputProps, Text } from '@impact-market/ui';
+import { Input as BaseInput, InputProps as BaseInputProps, Text } from '@impact-market/ui';
 import { Controller, useWatch } from "react-hook-form";
 import React, { useEffect, useState } from 'react';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-const Input: React.FC<InputProps> = props => {
+type InputProps = {
+    control?: any; 
+    label?: string;
+    limit?: number;
+    name?: string;
+    rules?: any;
+};
+
+const Input: React.FC<InputProps & BaseInputProps> = props => {
     const [count, setCount] = useState(0);
     const { control, label, limit, name, rules, ...forwardProps } = props;
 
