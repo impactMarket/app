@@ -73,6 +73,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                 decreaseStep: toToken(0.01),
                 incrementInterval, 
                 managers: [community.requestByAddress],
+                maxBeneficiaries: 50,
                 maxClaim: new BigNumber(maxClaim).shiftedBy(18).toString(), 
                 maxTranche: toToken(5, { EXPONENTIAL_AT: 25 }),
                 minTranche: toToken(1),
