@@ -1,11 +1,5 @@
-import '@celo-tools/use-contractkit/lib/styles.css';
-import {
-    Alfajores,
-    CeloMainnet,
-    ContractKitProvider,
-    Network,
-    useContractKit
-} from '@celo-tools/use-contractkit';
+import '@celo/react-celo/lib/styles.css';
+import { Alfajores, CeloProvider, Mainnet, Network, useCelo } from '@celo/react-celo';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
 import { provider } from '../helpers';
 import React, { useEffect, useState } from 'react';
@@ -70,12 +64,11 @@ const AppProvider = (props: WithChildrenProps & BaseState) => {
 // #region KitWrapper
 const KitWrapper = (props: WithChildrenProps) => {
     const { children } = props;
-    const { address, connect, destroy: disconnect, initialised: isReady, network, kit } = useContractKit();
-
+    const { address, connect, destroy: disconnect, initialised: isReady, network, kit } = useCelo();
     const forwardData = { address, connect, disconnect, isReady, network };
     
     return (
-        <UtilsWrapper address={address} web3={kit.web3}>
+        <UtilsWrapper address={address} web3={kit.connection.web3}>
             <AppProvider {...forwardData}>
                 {children}
             </AppProvider>
@@ -88,10 +81,10 @@ const WrapperProvider = (props: WithChildrenProps) => {
     const { children } = props;
     const [network, setNetwork] = useState() as any;
 
-    const networks = [CeloMainnet, Alfajores];
+    const networks = [Mainnet, Alfajores];
 
     useEffect(() => {
-        const lastUsedNetworkName = window.localStorage.getItem('use-contractkit/last-used-network');
+        const lastUsedNetworkName = window.localStorage.getItem('react-celo/last-used-network');
         const defaultNetwork = networks.find(({ rpcUrl }: any) => rpcUrl === provider.connection.url);
         const network = networks.find(({ name }: any) => name === lastUsedNetworkName) || defaultNetwork;
 
@@ -103,7 +96,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
     }
 
     return (
-        <ContractKitProvider
+        <CeloProvider
             dapp={{
                 description: 'Decentralized Poverty Alleviation Protocol',
                 icon: 'https://dzrx8kf1cwjv9.cloudfront.net/impactmarket/PACT_Token_Ticker_Blue@2x.png',
@@ -116,7 +109,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
             <KitWrapper>
                 {children}
             </KitWrapper>
-        </ContractKitProvider>
+        </CeloProvider>
     )
 };
 
