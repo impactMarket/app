@@ -1661,13 +1661,13 @@
           "single": "paragraph,hyperlink,strong,em"
         }
       },
-      "message-alreadyHasCommunity": {
+      "message-communityFormAlreadyHasCommunity": {
         "type": "StructuredText",
         "config": {
           "label": "alreadyHasCommunity",
           "placeholder": "",
           "allowTargetBlank": true,
-          "single": "paragraph,em,hyperlink,strong"
+          "single": "paragraph,strong,em,hyperlink"
         }
       },
       "message-generatedSuccess": {
@@ -1686,6 +1686,51 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityFormError": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityFormError",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityFormCommunityNotFound": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityFormCommunityNotFound",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-communityFormNotAllowed": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityFormNotAllowed",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-communityFormUpdateFailed": {
+        "type": "StructuredText",
+        "config": {
+          "label": "alreadyHasCommunity",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-communityFormNotManager": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityFormNotManager",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
         }
       },
       "slices1": {
