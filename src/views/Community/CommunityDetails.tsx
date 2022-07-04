@@ -108,7 +108,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
         };
 
         const contribute = {
-            action: () => update('contribute', 0),
+            action: () => update('contribute', -1),
             type: 'contribute'
         };
 
