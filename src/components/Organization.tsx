@@ -5,25 +5,25 @@ import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import Image from '../components/Image';
 import RichText from '../libs/Prismic/components/RichText';
 
-interface Props {
+interface OrganizationProps {
     name: string;
     image: string;
     created: string;
     description: string;
 }
 
-const SocialLink: React.FC<Props> = (props) => {
+const Organization = (props: OrganizationProps) => {
     const { image, name, created, description } = props;
     const { view } = usePrismicData();
 
     return (
         <Box mt={1.5}>
             <RichText
-                    content={view.data.headingOrganization}
-                    flex
-                    g900
-                    medium
-                />
+                content={view.data.headingOrganization}
+                flex
+                g900
+                medium
+            />
             <Box flex margin="1.5rem 0">
                 <Box
                     h="3rem"
@@ -53,4 +53,4 @@ const SocialLink: React.FC<Props> = (props) => {
     );
 };
 
-export default SocialLink;
+export default Organization;

@@ -8,7 +8,7 @@ import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { userManager } from '../../utils/users';
-import Filters from './Filters';
+import Filters from '../../components/Filters';
 import ManagersList from './ManagersList';
 import NoManagers from './NoManagers';
 import React, { useEffect, useState } from 'react';
@@ -91,7 +91,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                         <FakeTabPanel />
                         <FakeTabPanel />
                     </Tabs>
-                    <Filters />
+                    <Filters property="name" />
                     <ManagersList community={community?.id} />
                 </Box>
                 :

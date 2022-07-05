@@ -4,6 +4,7 @@ import {
     Grid,
     Row,
     colors,
+    openModal,
     toast
 } from '@impact-market/ui';
 import { dateHelpers } from '../../helpers/dateHelpers';
@@ -29,7 +30,6 @@ import { useState } from 'react';
 import BigNumber from 'bignumber.js';
 import Message from '../../libs/Prismic/components/Message';
 import config from '../../../config';
-import useFilters from '../../hooks/useFilters';
 
 const CommunityWrapper = styled(Grid)`
     > .grid-col:nth-child(2) {
@@ -52,7 +52,6 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
     const { addCommunity } = useImpactMarketCouncil();
     const isCouncilMember = user?.roles.includes('councilMember');
     const claims = claimsLocation?.length ? claimsLocation : [gps];
-    const { update } = useFilters();
 
     const handleConnect = async () => {
         try {
@@ -108,7 +107,10 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
         };
 
         const contribute = {
-            action: () => update('contribute', -1),
+            action: () => openModal('contribute', {
+                contractAddress,
+                value: null
+            }),
             type: 'contribute'
         };
 
@@ -217,7 +219,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                     {(status !== 'pending' || (status === 'pending' && hasNoProposal && isCouncilMember)) && (
                         <DonateCard
                             backers={contributors}
-                            beneficiariesNumber={beneficiaries}
+                            beneficiariesNumber={beneficiaries.toString()}
                             contractAddress={contractAddress}
                             goal={maxClaim * beneficiaries}
                             raised={contributed}

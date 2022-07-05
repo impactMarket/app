@@ -30,14 +30,14 @@ const Beneficiaries = ({ data, show }: any) => {
                 order={{ xs: 2 }}
                 show={show}
             >
-                {beneficiaries && (
+                {!!beneficiaries && (
                     <BeneficiaryCard
                         icon="users"
                         label="beneficiaries"
                         text={data?.beneficiaries}
                     />
                 )}
-                {claimAmount && (
+                {!!claimAmount && (
                     <BeneficiaryCard
                         icon="heart"
                         label="claimPerBeneficiary"
@@ -47,21 +47,21 @@ const Beneficiaries = ({ data, show }: any) => {
                         )} / ${t('day')}`}
                     />
                 )}
-                {maxClaim && (
+                {!!maxClaim && (
                     <BeneficiaryCard
                         icon="check"
                         label="maxPerBeneficiary"
                         text={currencyFormat(data?.maxClaim, localeCurrency)}
                     />
                 )}
-                {incrementInterval && (
+                {!!incrementInterval && (
                     <BeneficiaryCard
                         icon="clock"
                         label="timeIncrement"
                         text={`${data?.incrementInterval / 12} ${t('minutes')}`}
                     />
                 )}
-                {showAmbassadorMetrics && (
+                {!!showAmbassadorMetrics && (
                         //  Only show tranche min/max to community's ambassador
                         <BeneficiaryCard
                             icon="coins"

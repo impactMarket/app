@@ -1,4 +1,5 @@
 /* eslint-disable no-nested-ternary */
+import { useRouter } from 'next/router'
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 
@@ -11,8 +12,9 @@ import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation, useGetReviewsByCountryMutation } from '../../api/community';
 
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import CountryTabs from './CountryTabs'
-import ReviewTabs from './ReviewTabs'
+import CountryTabs from './CountryTabs';
+import Filters from '../../components/Filters';
+import ReviewTabs from './ReviewTabs';
 import RichText from '../../libs/Prismic/components/RichText';
 import useFilters from '../../hooks/useFilters';
 
@@ -22,6 +24,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { user } = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
+    const { asPath } = useRouter();
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
@@ -50,16 +53,21 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
 
+    const name = getByKey('name') || null;
+
     //  Communities
     useEffect(() => {
         const communities = async () => {
+            const userCountry = user?.country?.toUpperCase() || 0;
+
             try {
                 setLoadingCommunities(true);
 
                 const communities = await getCommunities({
-                    country: myCountrySelected ? (user?.country === null ? 0 : user?.country.toUpperCase()) : undefined,
-                    excludeCountry: myCountrySelected ? undefined : (user?.country === null ? 0 : user?.country.toUpperCase()),
+                    country: myCountrySelected ? userCountry : undefined,
+                    excludeCountry: myCountrySelected ? undefined : userCountry,
                     limit: itemsPerPage,
+                    name,
                     offset: itemOffset,        
                     review,
                 });
@@ -75,7 +83,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         };
 
         communities();
-    }, [myCountrySelected, review, itemOffset]);
+    }, [myCountrySelected, review, itemOffset, asPath]);
 
     //  Tabs (countries and review) numbers
     useEffect(() => {
@@ -141,7 +149,8 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 setMyCountrySelected={setMyCountrySelected}
                 userCountry={userCountry}
             />
-            <ReviewTabs 
+            <Filters property="name" />
+            <ReviewTabs
                 allCountries={allCountries}
                 communities={communities}
                 currentPage={currentPage}
@@ -152,7 +161,6 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 pageCount={pageCount}
                 setReview={setReview}
                 userCountry={userCountry}
-
             />
         </ViewContainer>
     );

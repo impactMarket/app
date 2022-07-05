@@ -9,7 +9,7 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { userManager } from '../../utils/users';
 import BeneficiariesList from './BeneficiariesList';
-import Filters from './Filters';
+import Filters from '../../components/Filters';
 import NoBeneficiaries from './NoBeneficiaries';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
@@ -106,7 +106,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                         <FakeTabPanel />
                         <FakeTabPanel />
                     </Tabs>
-                    <Filters />
+                    <Filters property="search" />
                     <BeneficiariesList community={community} refresh={refresh} />
                 </Box>
                 :
