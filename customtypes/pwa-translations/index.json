@@ -593,6 +593,13 @@
         },
         "type": "Text"
       },
+      "string-general": {
+        "config": {
+          "label": "general",
+          "placeholder": "General"
+        },
+        "type": "Text"
+      },
       "string-generateProposal": {
         "config": {
           "label": "generateProposal",
@@ -964,6 +971,13 @@
         },
         "type": "Text"
       },
+      "string-potentialFraud": {
+        "config": {
+          "label": "potentialFraud",
+          "placeholder": "Potential Fraud"
+        },
+        "type": "Text"
+      },
       "string-present": {
         "config": {
           "label": "present",
@@ -1129,6 +1143,13 @@
         "config": {
           "label": "seeMore",
           "placeholder": "See more"
+        },
+        "type": "Text"
+      },
+      "string-selectActivityType": {
+        "config": {
+          "label": "selectActivityType",
+          "placeholder": "Select activity type..."
         },
         "type": "Text"
       },

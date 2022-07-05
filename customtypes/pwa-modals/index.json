@@ -451,6 +451,49 @@
           "single": "paragraph,strong,em,hyperlink"
         }
       }
+    },
+    "report-suspicious-activity": {
+      "report-suspicious-activity-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "report-suspicious-activity-something-suspicious": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Something suspicious",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "report-suspicious-activity-potential-ilegal-activity": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Potential ilegal activity",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "report-supicious-activity-submitted": {
+        "type": "Text",
+        "config": {
+          "label": "Anonymous Report Submitted",
+          "placeholder": ""
+        }
+      },
+      "report-suspicious-activity-thanks": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Thanks",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
     }
   }
 }
