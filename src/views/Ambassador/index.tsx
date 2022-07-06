@@ -14,7 +14,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = props => {
     const limit = 1;
     const offset = 0;
     const { view } = usePrismicData();
-    
+
     useEffect(() => {
         const getSuspiciousActivitiesReportsMethod = async () => {
             try {
@@ -24,7 +24,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = props => {
 
                 setReports(reportsRequest?.count);
 
-                setLoading(false);     
+                setLoading(false);
             } catch (error) {
                 console.log(error);
             }
@@ -38,9 +38,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = props => {
         <Display medium>
             <String id="dashboard" />
         </Display>
-        <Text g500>
-            <RichText content={view.data.messageCommunitiesPerforming}/>
-        </Text>
+        <RichText content={view?.data?.messageCommunitiesPerforming} g500 mt={0.25} />
 
         <Grid cols={1} pt={1}>
             <Card padding={0}>
@@ -61,11 +59,11 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = props => {
                         <String id="viewAll" />
                         </TextLink>
                     </Link>
-                    
+
                 </Box>
             </Card>
         </Grid>
-        
+
     </ViewContainer>
   )
 }

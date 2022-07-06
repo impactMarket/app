@@ -22,7 +22,9 @@ const Header = ({ community, updateReview }: any) => {
         <>
 
             <Link href="/communities?type=all" passHref>
-                <Label content={<String id="back" />} icon="arrowLeft" />
+                <a>
+                    <Label content={<String id="back" />} icon="arrowLeft" />
+                </a>
             </Link>
 
             {!!Object.keys(community).length && (
@@ -43,12 +45,12 @@ const Header = ({ community, updateReview }: any) => {
                         </Box>
                     </Box>
                     {(!!user?.ambassador || !!user?.manager) &&
-                        <Review 
+                        <Review
                             community={community}
                             updateReview={updateReview}
                         />
                     }
-                    
+
                 </Grid>
             )}
         </>
