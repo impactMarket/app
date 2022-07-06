@@ -75,7 +75,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 const contractData = await getCommunityContract(community?.id).unwrap();
 
                 //  Get calims location
-                const claimsLocation = await getClaimsLocation(community?.id).unwrap(); 
+                const claimsLocation = await getClaimsLocation(community?.id).unwrap();
                 
                 //  Get community's promoter
                 const promoter = await getPromoter(community?.id).unwrap();

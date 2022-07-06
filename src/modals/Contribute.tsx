@@ -196,7 +196,7 @@ const Contribute = () => {
                         placeholder={placeholder}
                         rules={{ required: true }}
                         style={{ fontSize: '1.5rem' }}
-                        value={contribution > 0 ? contribution : ''}
+                        value={contribution}
                         wrapperProps={{
                             padding: { xs: 0 },
                             style: { boxShadow: 'none', fontSize: '5.5rem' }

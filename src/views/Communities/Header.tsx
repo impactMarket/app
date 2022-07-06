@@ -37,7 +37,7 @@ const Header = ({ activeTab, loading, supportingCommunities, user }: any) => {
                     {title}
                 </Display>  
 
-                <Box fLayout="center start" inlineFlex mt={0.25}>
+                <Box fLayout="center start" flex mt={0.25}>
                     {(user?.roles.includes('ambassador') && activeTab === 'myCommunities') ?
                         !loading && <RichText content={content} g500 mt={0.25} variables = {{ communities: supportingCommunities?.data?.count, countries: supportingCountries() }} /> 
                     :
@@ -45,6 +45,7 @@ const Header = ({ activeTab, loading, supportingCommunities, user }: any) => {
                             g500
                             id="communitiesJoined" 
                             mt={0.25}
+                            w="100%"
                         />
                     } 
                 </Box>
