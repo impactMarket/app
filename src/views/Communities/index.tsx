@@ -10,6 +10,7 @@ import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation } from '../../api/community';
 
 import { useRouter } from 'next/router';
+import Filters from '../../components/Filters';
 import Header from './Header'
 import TabList from './Tabs';
 import useFilters from '../../hooks/useFilters';
@@ -20,6 +21,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { user } = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
+    const { asPath } = useRouter();
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
@@ -41,6 +43,8 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
 
+    const name = getByKey('name') || null;
+
     useEffect(() => {
         if(!getByKey('type')) {
             router.push('/communities?type=all', undefined, { shallow: true });
@@ -57,6 +61,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                 const communities = await getCommunities({
                     ambassadorAddress: activeTab === 'all' ? undefined : user?.address,
                     limit: itemsPerPage,
+                    name,
                     offset: itemOffset,
                     status: activeTab === 'myCommunities' ? statusFilter : 'valid'
                 });
@@ -78,7 +83,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
         };
 
         init();
-    }, [activeTab, statusFilter, itemOffset]);
+    }, [activeTab, statusFilter, itemOffset, asPath]);
     
 
     //  Handle Pagination
@@ -110,7 +115,8 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                 loading={loading}
                 supportingCommunities={supportingCommunities}
                 user={user}
-            />         
+            />    
+            <Filters property="name" />
             <TabList
                 activeTab={activeTab}
                 communities={communities}
