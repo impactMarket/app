@@ -7,12 +7,18 @@ import {
 } from '@impact-market/ui';
 
 import { selectCurrentUser } from '../../state/slices/auth';
-import { useGetCommunitiesMutation } from '../../api/community';
+import { useGetAllClaimsLocationsMutation, useGetCommunitiesMutation, useGetCountryByCommunitiesMutation } from '../../api/community';
 
+import { getCountryNameFromInitials } from '../../utils/countries';
 import { useRouter } from 'next/router';
+import Content from './Content';
 import Header from './Header'
-import TabList from './Tabs';
 import useFilters from '../../hooks/useFilters';
+
+interface CountriesList {
+    label: string;
+    value: string;
+}
 
 const itemsPerPage = 8;
 
@@ -20,11 +26,14 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { user } = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
+    const { asPath } = useRouter();
     const router = useRouter();
 
     const [loading, setLoading] = useState(false);
     const [communities, setCommunities] = useState({}) as any;
     const [supportingCommunities, setSupportingCommunities] = useState({}) as any;
+    const [communitiesCountries, setCommunitiesCountries] = useState<CountriesList[]>([]);
+    const [claimsLocations, setClaimsLocations] = useState([]) as any;
 
     const [activeTab, setActiveTab] = useState(
         getByKey('type') === 'all' ? 'all' :
@@ -35,11 +44,16 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
     const [communitiesTabs] = useState(['all', 'myCommunities']);
 
     const [getCommunities] = useGetCommunitiesMutation();
+    const [getCountryByCommunities] = useGetCountryByCommunitiesMutation();
+    const [getAllClaimsLocations] = useGetAllClaimsLocationsMutation();
 
     // Pagination
     const [itemOffset, setItemOffset] = useState(0);
     const [currentPage, setCurrentPage] = useState(0);
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
+
+    const name = getByKey('name') || null;
+    const countries = getByKey('country') || null;
 
     useEffect(() => {
         if(!getByKey('type')) {
@@ -56,7 +70,9 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
 
                 const communities = await getCommunities({
                     ambassadorAddress: activeTab === 'all' ? undefined : user?.address,
+                    country: countries,
                     limit: itemsPerPage,
+                    name,
                     offset: itemOffset,
                     status: activeTab === 'myCommunities' ? statusFilter : 'valid'
                 });
@@ -66,8 +82,19 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                     status: 'valid'
                 });
 
+                const communitiesCountries = await getCountryByCommunities().unwrap();
+
+                const communitiesCountriesArray = communitiesCountries.map((data) => ({
+                    label: getCountryNameFromInitials(data.country),
+                    value: data.country
+                }));
+
+                const claimsLocations = await getAllClaimsLocations().unwrap()
+
+                mapArray(claimsLocations)
                 setCommunities(communities);
                 setSupportingCommunities(totalValidCommunities)
+                setCommunitiesCountries([...communitiesCountriesArray]);
 
                 setLoading(false);
             } catch (error) {
@@ -78,8 +105,16 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
         };
 
         init();
-    }, [activeTab, statusFilter, itemOffset]);
+    }, [activeTab, statusFilter, itemOffset, asPath]); 
     
+    //  Create an array with all the locations
+    const mapArray = (claimsLocations: any) => {
+        const claimsArray: any[] = [];
+
+        claimsLocations?.map((location: { gps: any; }) => claimsArray.push(location.gps))
+
+        setClaimsLocations(claimsArray)
+    }
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {        
@@ -110,12 +145,14 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                 loading={loading}
                 supportingCommunities={supportingCommunities}
                 user={user}
-            />         
-            <TabList
+            />
+            <Content
                 activeTab={activeTab}
+                claimsLocations={claimsLocations}
                 communities={communities}
                 communitiesTabs={communitiesTabs}
                 currentPage={currentPage}
+                filtersCommunityCountries={communitiesCountries}
                 handlePageClick={handlePageClick}
                 loading={loading}
                 pageCount={pageCount}

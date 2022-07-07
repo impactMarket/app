@@ -149,7 +149,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 setMyCountrySelected={setMyCountrySelected}
                 userCountry={userCountry}
             />
-            <Filters property="name" />
+            <Filters margin="1.5 0 0 0" maxW={20} property="name" />
             <ReviewTabs
                 allCountries={allCountries}
                 communities={communities}

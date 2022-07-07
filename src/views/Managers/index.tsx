@@ -91,7 +91,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                         <FakeTabPanel />
                         <FakeTabPanel />
                     </Tabs>
-                    <Filters property="name" />
+                    <Filters margin="1.5 0 0 0" maxW={20} property="name" />
                     <ManagersList community={community?.id} />
                 </Box>
                 :
