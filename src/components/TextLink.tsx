@@ -10,10 +10,12 @@ const TextLink = (props: TextLinkProps) => {
 
     const wrapperProps = isInternal ? { href, passHref: true } : {};
     const Wrapper = isInternal ? Link : React.Fragment;
+    const additionalProps = isInternal ? {} : { rel: 'noopener noreferrer', target: '_blank' };
+    const forwardProps = { ...additionalProps, ...props };
 
     return (
         <Wrapper {...wrapperProps as any}>
-            <TLink {...props as any} />
+            <TLink {...forwardProps as any} />;
         </Wrapper>
     )
 }

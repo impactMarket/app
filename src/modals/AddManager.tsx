@@ -8,51 +8,93 @@ import {
     toast,
     useModal
 } from '@impact-market/ui';
-import { SubmitHandler, useForm, useFormState } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { gql, useQuery } from '@apollo/client';
 import { useAmbassador } from '@impact-market/utils/useAmbassador';
+import { useYupValidationResolver, yup } from '../helpers/yup';
 import Input from '../components/Input';
 import Message from '../libs/Prismic/components/Message';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
+//  Get managers community from thegraph
+const managersQuery = gql`
+    query managersQuery($id: String!) {
+        managerEntities(where: {id: $id state:0}) {
+            id
+        }
+    }
+`;
 
 const AddManager = () => {
-    const { handleClose, community, setRefreshingPage} = useModal();
+    const schema = yup.object().shape({
+        address: yup.string().max(42),
+    });
+
+    const { handleClose, community } = useModal();
     const { t } = useTranslations();
+    const [managerAddress, setManagerAddress] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+
+    const { data, loading: dataIsLoading }: any = useQuery(managersQuery, {
+        variables: { id: managerAddress?.toLowerCase() },
+    })
 
     const { handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {
             address: ''
-        }
+        },
+        resolver: useYupValidationResolver(schema)
     });
-    const { isSubmitting } = useFormState({ control });
 
     const { addManager } = useAmbassador();
-    
-    const onSubmit: SubmitHandler<any> = async (data) => {
-        try {
-            setRefreshingPage(true)
 
-            const { status } = await addManager(community?.id, data?.address);
+    const onSubmit: SubmitHandler<any> = (submitData: { address?: string }) => setManagerAddress(submitData?.address);
 
-            if(status) {
-                handleClose();
+    useEffect(() => {
+        if (data?.managerEntities?.length === 0) {
+            const addManagerFunc = async () => {
+                try {
+                    setIsLoading(true)
+        
+                    const { status } = await addManager(community?.id, managerAddress);
 
-                toast.success(<Message id="managerAdded" />);
+                    if(status) {
+                        handleClose();
+
+                        setManagerAddress(null)
+
+                        setIsLoading(false)
+
+                        toast.success(<Message id="managerAdded" />);
+                    }
+                    else {
+                        toast.error(<Message id="errorOccurred" />);
+                    }
+
+                    return setIsLoading(false)
+                }
+                catch(e) {
+                    //  Todo: get error name directly from backend to write a specific message (edward or benardo)
+                    console.log(e);
+
+                    toast.error(<Message id="errorOccurred" />);
+
+                    return setIsLoading(false);
+                }
             }
-            else {
-                toast.error(<Message id="errorOccurred" />);
-            }
+
+            addManagerFunc()
         }
-        catch(e) {
-            console.log(e);
 
+        if (!!data?.managerEntities?.length) {
+            //  Todo: delete console.log and change message to "user already in a community"
+            console.log('User already in a community!');
             toast.error(<Message id="errorOccurred" />);
         }
 
-        setRefreshingPage(false)
-    };
+    }, [data, community?.id])
 
 
     return (
@@ -64,8 +106,8 @@ const AddManager = () => {
                 mt={1.25}
                 semibold
             />
-            <Message 
-                g500 
+            <Message
+                g500
                 id="managerNotification"
                 mt={0.5}
                 small
@@ -83,16 +125,16 @@ const AddManager = () => {
                 </Box>
                 <Row mt={1}>
                     <Col colSize={{ sm: 6, xs: 6 }}>
-                        <Button disabled={isSubmitting} gray onClick={handleClose} type="button" w="100%">
+                        <Button disabled={isLoading} gray onClick={handleClose} type="button" w="100%">
                             <RichText
                                 content={t('cancel')}
                             />
                         </Button>
                     </Col>
                     <Col colSize={{ sm: 6, xs: 6 }}>
-                        <Button disabled={isSubmitting} isLoading={isSubmitting} type="submit" w="100%">
+                        <Button disabled={dataIsLoading} isLoading={isLoading} type="submit" w="100%">
                             <RichText
-                                content= {t('addManager')}                     
+                                content= {t('addManager')}
                             />
                         </Button>
                     </Col>

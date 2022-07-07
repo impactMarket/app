@@ -50,7 +50,7 @@ const KitWrapper = (props: WithChildrenProps) => {
     const { children } = props;
     const { address, connect, destroy: disconnect, initialised: isReady, network, kit } = useCelo();
     const forwardData = { address, connect, disconnect, isReady, network };
-    
+
     return (
         <ImpactProvider address={address} connection={kit.connection} jsonRpc={config.networkRpcUrl}>
             <AppProvider {...forwardData}>

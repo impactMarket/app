@@ -133,15 +133,11 @@ const DonateCard = (props: DonateCardProps) => {
             />
             <Box center>
                 <TextLink
+                    href={config.explorerUrl?.replace(
+                        '#USER#',
+                        contractAddress
+                    )}
                     large
-                    onClick={() =>
-                        window.open(
-                            config.explorerUrl?.replace(
-                                '#USER#',
-                                contractAddress
-                            )
-                        )
-                    }
                     p600
                     semibold
                 >
