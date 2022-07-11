@@ -26,7 +26,7 @@ const TEXT_LIMIT = 256;
 
 const CreateStory = () => {
     const [createStory] = useCreateStoryMutation();
-    const [file, setFile] = useState<string>('');
+    const [imageFiles, setImageFiles] = useState([]);
     const inputRef = useRef<any>();
     const { t } = useTranslations();
     const [getPreSigned] = useGetPreSignedMutation();
@@ -51,39 +51,44 @@ const CreateStory = () => {
             };
 
             const emptyDraft = /^\s*$/;
-            
-            if (!emptyDraft.test(data.message)) {
-                if (data?.img?.length > 0) {
-                    const type = data.img[0].type?.split('/')[1] || '';
 
-                    if (type) {
-                        const preSigned = await getPreSigned(type).unwrap();
-
-                        if (preSigned?.uploadURL) {
-                            await fetch(preSigned.uploadURL, {
-                                body: data.img[0],
-                                method: 'PUT'
-                            });
-
-                            payload = {
-                                ...payload,
-                                storyMediaPath: preSigned.filePath
-                            };
-                        }
-                    }
-                }
-
-                const postRequest: any = await createStory(payload);
-
-                if(postRequest?.error) {
-                    toast.error(<RichText content={modals.data.createStoryError}/>);
-                } else {
-                    toast.success(<RichText content={modals.data.createStorySuccess}/>);
-                }
-
-                setRefreshStories((refreshStory: boolean) => !refreshStory);
-                handleClose();
+            if (emptyDraft?.test(data.message)) {
+                // Add error message?????
+                return;
             }
+
+            const images = Array.from(data?.img);
+
+            const uploadedFiles = await Promise.all(images.map(async (file: any) => {
+                const type = file?.type?.split('/')[1] || '';
+                const preSigned = await getPreSigned(type).unwrap();
+
+                if (!preSigned?.uploadURL) {
+                    return null
+                }
+
+                await fetch(preSigned?.uploadURL, { body: file, method: 'PUT' });
+
+                return preSigned.filePath;
+            }));
+
+            const storyMedia = uploadedFiles.reduce((result, item) => item ? [...result, item] : result, []);
+
+            payload = {
+                ...payload,
+                storyMedia
+            };
+
+            const postRequest: any = await createStory(payload);
+
+            if(postRequest?.error) {
+                toast.error(<RichText content={modals.data.createStoryError}/>);
+            } else {
+                toast.success(<RichText content={modals.data.createStorySuccess}/>);
+            }
+
+            setRefreshStories((refreshStory: boolean) => !refreshStory);
+            handleClose();
         } catch (error) {
             toast.error(<RichText content={modals.data.createStoryError}/>);
             console.log(error);
@@ -108,10 +113,17 @@ const CreateStory = () => {
 
     const handleInputChange = (event: any) => {
         const { files } = event?.target || {};
-        const [fileObj] = files;
-        const imgUrl = URL.createObjectURL(fileObj);
+        const imagesArray = []
 
-        return setFile(imgUrl);
+        for (let i = 0; i < files?.length; i++) {
+            imagesArray?.push(files[i])
+        }
+
+        imagesArray?.map(image => {
+            const imgUrl = URL.createObjectURL(image);
+
+            return setImageFiles(imageFiles => [...imageFiles, imgUrl]);
+        })
     };
 
     const handleClick = () => {
@@ -120,9 +132,10 @@ const CreateStory = () => {
         }
     };
 
-    const clearFile = () => {
+    const clearFile = (image: any) => {
         inputRef.current.value = '';
-        setFile('');
+        //  Remove image from array
+        setImageFiles(imageFile => imageFile.filter(imageUrl => imageUrl !== image ))
     };
 
     return (
@@ -171,6 +184,7 @@ const CreateStory = () => {
                     <input
                         accept="image/*"
                         id="img"
+                        multiple
                         name={name}
                         onBlur={onBlur}
                         onChange={(event: any) => {
@@ -185,18 +199,20 @@ const CreateStory = () => {
                         type="file"
                     />
 
-                    {file !== '' && (
+                    {!!imageFiles?.length && (
                         <Row fLayout="center">
-                            <Box mt={1}>
-                                <Thumbnail
-                                    handleClick={(event: any) => {
-                                        preventDefault(event);
-                                        clearFile();
-                                    }}
-                                    icon="trash"
-                                    url={file}
-                                />
-                            </Box>
+                            {imageFiles?.map((image, key) => (
+                                <Box key={key} mt={1}>
+                                    <Thumbnail
+                                        handleClick={(event: any) => {
+                                            preventDefault(event);
+                                            clearFile(image);
+                                        }}
+                                        icon="trash"
+                                        url={image}
+                                    />
+                                </Box>
+                            ))}
                         </Row>
                     )}
                 </>

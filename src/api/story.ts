@@ -4,6 +4,7 @@ export interface Story {
     uploadURL: any;
     readonly id: number;
     storyMediaPath?: string;
+    storyMedia?: any;
     message?: string;
     isDetetable: boolean;
     createdAt?: Date;
@@ -25,6 +26,7 @@ export interface Story {
 interface PostStory {
     readonly communityId: number;
     storyMediaPath?: string;
+    storyMedia?: any;
     message?: string;
 };
 
@@ -49,7 +51,7 @@ interface CountryWithStory {
 export const storyApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
         createStory: builder.mutation<Story, PostStory>({
-            query: body => ({
+            query: (body: any) => ({
                 body,
                 method: 'POST',
                 url: 'stories'
