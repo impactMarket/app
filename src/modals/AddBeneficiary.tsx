@@ -1,32 +1,53 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Box, Button, CircledIcon, Col, ModalWrapper, Row, Text, toast, useModal } from '@impact-market/ui';
-import { SubmitHandler, useForm, useFormState } from "react-hook-form";
-// import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+import { Alert, Box, Button, CircledIcon, Col, ModalWrapper, Row, Text, toast, useModal } from '@impact-market/ui';
+import { SubmitHandler, useForm } from "react-hook-form";
+import { gql, useQuery } from '@apollo/client';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useManager } from '@impact-market/utils/useManager';
 import { useSelector } from 'react-redux';
+import { useYupValidationResolver, yup } from '../helpers/yup';
 import { userManager } from '../utils/users';
 import Input from '../components/Input';
 import Message from '../libs/Prismic/components/Message';
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import String from '../libs/Prismic/components/String';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-const AddBeneficiary = () => {
-    const { handleClose, onAddBeneficiary } = useModal();
+//  Get managers community from thegraph
+const beneficiariesQuery = gql`
+    query beneficiariesQuery($id: String!) {
+        beneficiaryEntities(where: {id: $id state:0}) {
+            id
+        }
+    }
+`;
 
-    // TODO: load information from prismic and use it in the content
-    // const { extractFromModals } = usePrismicData();
-    // const { buttonLabel, content, items, title } = extractFromModals('communityRules') as any;
+const AddBeneficiary = () => {
+    const schema = yup.object().shape({
+        address: yup.string().max(42),
+    });
+    
+    const auth = useSelector(selectCurrentUser);
+    const { handleClose } = useModal();
+    const { t } = useTranslations();
+    const [beneficiaryAddress, setBeneficiaryAddress] = useState(null)
+    const [isLoading, setIsLoading] = useState(false)
+    const [error, setError] = useState({
+        description: '',
+        state: false,
+        title: ''
+    })
+
+    const { data, loading: dataIsLoading }: any = useQuery(beneficiariesQuery, {
+        variables: { id: beneficiaryAddress?.toLowerCase() },
+    })
 
     const { handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {
             address: ''
-        }
+        },
+        resolver: useYupValidationResolver(schema)
     });
-    const { isSubmitting } = useFormState({ control });
-    const auth = useSelector(selectCurrentUser);
-    const { t } = useTranslations();
 
     // Check if current User has access to this page
     if(!auth?.type?.includes(userManager)) {
@@ -35,51 +56,87 @@ const AddBeneficiary = () => {
         return null;
     }
 
-    const { addBeneficiary } = useManager(
-        auth?.user?.manager?.community
-    );
+    const { canUsersBeBeneficiaries } = useManager(auth?.user?.manager?.community);
+    const { addBeneficiary } = useManager(auth?.user?.manager?.community);
 
-    const onSubmit: SubmitHandler<any> = async (data) => {
-        try {
-            /* 
-            * TODO: was if an address was already added as beneficiary? 
-            * Right now it's returning an error:
-                code: -32603
-                data: {code: 3, message: 'execution reverted: Community: NOT_MANAGER', data: '0x08c379a00000000000000000000000000000000000000000…4793a204e4f545f4d414e4147455200000000000000000000'}
-                message: "Internal JSON-RPC error."
+    const onSubmit: SubmitHandler<any> = (submitData: { address?: string }) => setBeneficiaryAddress(submitData?.address);
 
+    useEffect(() => {
+        if (data?.beneficiaryEntities?.length === 0) {
+            const addManagerFunc = async () => {
+                try {
+                    setIsLoading(true)
 
-                code: -32603
-                data:
-                code: 3
-                data: "0x08c379a00000000000000000000000000000000000000000000000000000000000000020000000000000000000000000000000000000000000000000000000000000002d436f6d6d756e6974793a3a61646442656e65666963696172793a2042656e65666963696172792065786973747300000000000000000000000000000000000000"
-                message: "execution reverted: Community::addBeneficiary: Beneficiary exists"
-                [[Prototype]]: Object
-                message: "Internal JSON-RPC error."
+                    //  Todo: prismic texts for error messages
+                    setError({
+                        description: '',
+                        state: false,
+                        title:''
+                    })
 
-                Check if message contains "Beneficiary exists" to show the toaster
-            */
-           
-            const { status } = await addBeneficiary(data?.address);
-            
-            if(status) {
-                handleClose();
-                onAddBeneficiary();
+                    //  Check if user can be Beneficiary
+                    await canUsersBeBeneficiaries([beneficiaryAddress])
+                        .then( async () => {
+                            const { status } = await addBeneficiary(beneficiaryAddress);
 
-                toast.success(<Message id="beneficiaryAdded" />);
+                            if(status) {
+                                handleClose();
+        
+                                setBeneficiaryAddress(null)
+        
+                                setIsLoading(false)
+        
+                                toast.success(<Message id="beneficiaryAdded" />);
+                            }
+                            else {
+                                setError({
+                                    description: 'Please try again later.',
+                                    state: true,
+                                    title:'Oops! Something went wrong'
+                                })
+                            }
+        
+                            return setIsLoading(false)
+
+                        }).catch((e) => {
+                            console.log(e)
+
+                            setError({
+                                description: "Please enter a valid Valora Wallet Address.",
+                                state: true,
+                                title:"User not found."
+                            })
+
+                            return setIsLoading(false)
+                        })
+
+                    return setIsLoading(false)
+                }
+                catch(e) {
+                    console.log(e);
+
+                    setError({
+                        description: 'Please try again later.',
+                        state: true,
+                        title:'Oops! Something went wrong'
+                    })
+
+                    return setIsLoading(false);
+                }
             }
-            else {
-                toast.error(<Message id="errorOccurred" />);
-            }
-        }
-        catch(e) {
-            console.log(e);
 
-            toast.error(<Message id="errorOccurred" />);
+            addManagerFunc()
         }
-    };
 
-    // TODO: missing "Suspicious Activity Detected" alert as per design
+        if (!!data?.beneficiaryEntities?.length) {
+            setError({
+                description: 'This beneficiary is already in a community. You can only add beneficiaries with no communities.',
+                state: true,
+                title:'Beneficiary already in a community'
+            })
+        }
+
+    }, [data])
 
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
@@ -98,17 +155,28 @@ const AddBeneficiary = () => {
                         rules={{ required: true }}
                         withError={!!errors?.address}
                     />
-                    <Row fLayout="between" margin={0} mt={2} w="100%">
+                    {error?.state &&
+                        //  Todo: add alert texts on prismic
+                        <Row margin={0} mt={1} w="100%">
+                            <Alert
+                                error
+                                icon="alertCircle"
+                                message={error?.description}
+                                title={error?.title}
+                            />
+                        </Row>
+                    }                    
+                    <Row fLayout="between" margin={0} mt={1} w="100%">
                         <Col colSize={6} pl={0} pr={0.375}>
                             <Box flex h="100%">
-                                <Button disabled={isSubmitting} gray onClick={handleClose} type="button" w="100%">
+                                <Button disabled={isLoading} gray onClick={handleClose} type="button" w="100%">
                                     <String id="cancel" />
                                 </Button>
                             </Box>
                         </Col>
                         <Col colSize={6} pl={0.375} pr={0}>
                             <Box flex h="100%">
-                                <Button disabled={isSubmitting} isLoading={isSubmitting} type="submit" w="100%">
+                                <Button disabled={dataIsLoading} isLoading={isLoading} type="submit" w="100%">
                                     <String id="addBeneficiary" />
                                 </Button>
                             </Box>
