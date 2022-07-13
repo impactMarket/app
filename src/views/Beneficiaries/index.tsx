@@ -102,6 +102,11 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                                 onClick={() => update('state', 'removed')}
                                 title={t('removed')}
                             />
+                            <Tab
+                                number={communityBeneficiaries?.data?.beneficiaryEntities?.filter((elem: any) => elem.state === 2)?.length}
+                                onClick={() => update('state', 'blocked')}
+                                title={t('blocked')}
+                            />
                         </TabList>
                         <FakeTabPanel />
                         <FakeTabPanel />

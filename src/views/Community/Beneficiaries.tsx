@@ -8,7 +8,7 @@ import BeneficiaryCard from '../../components/BeneficiaryCard';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Beneficiaries = ({ data, show }: any) => {
-    const { beneficiaries, claimAmount, maxClaim, incrementInterval } = data;
+    const { beneficiaries, claimAmount, maxClaim, incrementInterval, baseInterval } = data;
     const auth = useSelector(selectCurrentUser);
     const user = auth?.user;
     const showAmbassadorMetrics = !!data?.minTranche && !!data?.maxTranche && user?.ambassador?.communities.some( (x: any) => x === data.id );
@@ -20,6 +20,7 @@ const Beneficiaries = ({ data, show }: any) => {
         style: 'currency'
     });
     const { t } = useTranslations();
+    const DAILY_BASE_INTERVAL = 17280;
 
     return (
         !!data && (
@@ -44,7 +45,7 @@ const Beneficiaries = ({ data, show }: any) => {
                         text={`${currencyFormat(
                             data?.claimAmount,
                             localeCurrency
-                        )} / ${t('day')}`}
+                        )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('perDay') : t('perWeek')}`}
                     />
                 )}
                 {!!maxClaim && (

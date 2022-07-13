@@ -22,14 +22,11 @@ import { selectCurrentUser } from '../../state/slices/auth';
 import { useSelector } from 'react-redux';
 import useWallet from '../../hooks/useWallet';
 
-import { frequencyToText } from '@impact-market/utils/frequencyToText';
-import { toNumber } from '@impact-market/utils/toNumber';
 import { toToken } from '@impact-market/utils/toToken';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { useState } from 'react';
-import BigNumber from 'bignumber.js';
 import Message from '../../libs/Prismic/components/Message';
-import config from '../../../config';
+import generateCommunityProposal from '../../helpers/generateCommunityProposal';
 
 const CommunityWrapper = styled(Grid)`
     > .grid-col:nth-child(2) {
@@ -43,8 +40,8 @@ const Divider = styled.hr`
 
 const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) => {
     const { gps = {}, contractAddress = null, status = '', state = {}, isPendingProposal = false, communitySocialMedia = [] } = community || {};
-    const { contributed = 0, contributors = 0, beneficiaries = '0' } = state || {};
-    const { maxClaim = 0, claimAmount = 0, incrementInterval = 0, baseInterval = 0 } = data || {};
+    const { contributed = 0, contributors = 0, beneficiaries = '0', baseInterval = 0 } = state || {};
+    const { maxClaim = 0, claimAmount = 0 } = data || {};
     const { description = '', logoMediaPath = '', name = '', socialMedia = [] } = promoter || {};
     const { user } = useSelector(selectCurrentUser);
     const { address, connect } = useWallet();
@@ -66,26 +63,9 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
     const addProposal = async () => {
         try {
             await addCommunity({
-                ambassador: community.ambassadorAddress,
-                baseInterval,
-                claimAmount: new BigNumber(claimAmount).shiftedBy(18).toString(), 
-                decreaseStep: toToken(0.01),
-                incrementInterval, 
-                managers: [community.requestByAddress],
-                maxBeneficiaries: 50,
-                maxClaim: new BigNumber(maxClaim).shiftedBy(18).toString(), 
-                maxTranche: toToken(5, { EXPONENTIAL_AT: 25 }),
-                minTranche: toToken(1),
-                proposalDescription: `
-                    ## Description:\n${ description }\n\n
-                    UBI Contract Parameters:\n
-                    Claim Amount: ${toNumber( new BigNumber(claimAmount).shiftedBy(18).toString() )}\n
-                    Max Claim: ${toNumber( new BigNumber(maxClaim).shiftedBy(18).toString() )}\n
-                    Base Interval: ${frequencyToText( +baseInterval )}\n
-                    Increment Interval: ${ (+incrementInterval * 5) / 60 } minutes\n\n\n
-                    More details: ${ config.baseUrl }/communities/${community.id}
-                `,
-                proposalTitle: `[New Community] ${community.name}`
+                ...generateCommunityProposal(community, data),
+                claimAmount: toToken(claimAmount, { EXPONENTIAL_AT: 25 }),
+                maxClaim: toToken(maxClaim, { EXPONENTIAL_AT: 25 })
             });
 
             setHasNoProposal(false);
@@ -175,7 +155,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                         </Box>
                     </Col>
                 </Row>
-                <Beneficiaries data={data} show={{ sm: 'flex', xs: 'none' }} />
+                <Beneficiaries data={{...data, baseInterval}} show={{ sm: 'flex', xs: 'none' }} />
             </CommunityWrapper>
 
             <Row mt={{sm: 1, xs: 2}}>
@@ -189,11 +169,6 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                         pt={0}
                         rows={4}
                     />
-
-                    {/* TODO: 
-                     - handle social icons
-                    */}
-                     
                      <Box fWrap="wrap" flex margin="1.5rem 0">
                         <SocialLinks socials={communitySocialMedia} />
                     </Box>
@@ -215,7 +190,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                 </Col>
 
                 <Col colSize={{ sm: 4, xs: 12 }} fDirection={{ xs: 'column' }} flex pl={{ sm: 0 }}>
-                    <Beneficiaries data={data} show={{ sm: 'none', xs: 'flex' }} />
+                    <Beneficiaries data={{...data, baseInterval}} show={{ sm: 'none', xs: 'flex' }} />
                     {(status !== 'pending' || (status === 'pending' && hasNoProposal && isCouncilMember)) && (
                         <DonateCard
                             backers={contributors}

@@ -12,10 +12,7 @@ import {
     toast
 } from '@impact-market/ui';
 import { CommunityContract, useGetCommunityContractMutation } from '../../api/community';
-import { frequencyToText } from '@impact-market/utils/frequencyToText';
 import { getCountryNameFromInitials } from '../../utils/countries';
-import { toNumber } from '@impact-market/utils/toNumber';
-import { toToken } from '@impact-market/utils/toToken';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import CanBeRendered from '../../components/CanBeRendered';
@@ -24,7 +21,7 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
-import config from '../../../config';
+import generateCommunityProposal from '../../helpers/generateCommunityProposal';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
@@ -62,25 +59,9 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
         try {
             setIsLoading(true);
 
-            const response = await addCommunity({
-                ...community.contract,
-                ambassador: community.ambassadorAddress,
-                decreaseStep: toToken(0.01),
-                managers: [community.requestByAddress],
-                maxBeneficiaries: 50,
-                maxTranche: toToken(5, { EXPONENTIAL_AT: 25 }),
-                minTranche: toToken(1),
-                proposalDescription: `## Description:\n${community.description}\n\nUBI Contract Parameters:\nClaim Amount: ${toNumber(
-                    community.contract.claimAmount
-                )}\nMax Claim: ${toNumber(
-                    community.contract.maxClaim
-                )}\nBase Interval: ${frequencyToText(
-                    community.contract.baseInterval
-                )}\nIncrement Interval: ${
-                    (community.contract.incrementInterval * 5) / 60
-                } minutes\n\n\nMore details: ${config.baseUrl}/communities/${community.id}`,
-                proposalTitle: `[New Community] ${community.name}`
-            });
+            const response = await addCommunity(
+                generateCommunityProposal(community, community.contract)
+            );
 
             if (typeof response === 'number') {
                 setIsAdded(true);
