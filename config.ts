@@ -69,7 +69,12 @@ const config = {
     /**
      * Google Places Key
      */
-    googlePlacesKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY
+    googlePlacesKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY,
+
+    /**
+     * Absolute path to fetch communities
+     */
+     server: process.env.NODE_ENV === 'production' ? 'https://impactmarket-api-production.herokuapp.com' : 'https://impactmarket-api-staging.herokuapp.com'
 };
 
 export default config;
