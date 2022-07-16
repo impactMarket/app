@@ -52,7 +52,8 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     });
 
     const [loading, setLoading] = useState(true);
-    const [refreshingPage, setRefreshingPage] = useState(false);
+    const [buttonLoading, setButtonLoading] = useState(false);
+    const [refreshingData, setRefreshingData] = useState(false);
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
@@ -105,7 +106,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         }
 
         getData()
-    }, [refreshingPage]);
+    }, [refreshingData]);
 
 
     //  Update community review state and get new data
@@ -113,7 +114,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         try {
             setLoading(true);
 
-            setRefreshingPage(true)
+            setButtonLoading(true);
 
             await updateReview({
                 body: {
@@ -126,7 +127,11 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
             setCommunity(community.data);
 
+            setRefreshingData(true)
+
             setLoading(false);
+
+            setButtonLoading(false);
 
             toast.success(<Message id="communityState" variables={{ review }} />);
 
@@ -138,17 +143,21 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
             toast.error(<Message id="errorOcurred"/>);
 
-            setRefreshingPage(false)
+            setRefreshingData(false)
+
+            setButtonLoading(false)
 
             return false;
         }
 
-        setRefreshingPage(false)
+        setRefreshingData(false)
+
+        setButtonLoading(false)
     };
 
     return (
-        <ViewContainer isLoading={loading || isLoading || refreshingPage}>
-            <Header community={community} updateReview={functionUpdateReview}/>
+        <ViewContainer isLoading={loading || isLoading || refreshingData}>
+            <Header buttonLoading={buttonLoading} community={community} updateReview={functionUpdateReview}/>
             <CommunityDetails
                 claimsLocation={claimsLocation}
                 community={community}
@@ -161,7 +170,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 ambassador={ambassador}
                 community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
                 managers={managers?.rows}
-                setRefreshingPage={setRefreshingPage}
+                setRefreshingPage={setRefreshingData}
                 status={communityData?.status}
             />
         </ViewContainer>

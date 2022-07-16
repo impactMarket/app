@@ -62,30 +62,35 @@ const UserCard = ({ community, data } : any) => {
             </Box>
             {(data?.added || data?.added === 0) &&
                 <Box mb={0.3}>
-                    <Box fLayout="center start">
+                    <Box fLayout="center start" inlineFlex>
                         <Icon
                             g500
                             icon="users"
                             margin="0 0.5 0 0"
                         />
-                        <Message g500 id="onboardedBeneficiaries" small variables={{ 
-                            value: data?.added ? data?.added : '0'
-                        }} />
+                        <Box>
+                            <Message g500 id="onboardedBeneficiaries" small variables={{ 
+                                value: data?.added ? data?.added : '0'
+                            }} />
+                        </Box>
                     </Box>
                 </Box>
             }
             {(data?.since || data?.until) &&
                 <Box>
-                    <Box fLayout="center start">
+                    <Box fLayout="center start" inlineFlex>
                         <Icon
                             g500
                             icon="clock"
                             margin="0 0.5 0 0"
-                        />        
-                        <Message g500 id="managerFrom" small variables={{ 
-                            since: dateHelpers.unix(data?.since), 
-                            until: dateHelpers.unix(data?.until) ? dateHelpers.unix(data?.until) : t('present')
-                        }} />
+                        />  
+                        <Box>
+                            <Message g500 id="managerFrom" small variables={{ 
+                                since: dateHelpers.unix(data?.since), 
+                                until: dateHelpers.unix(data?.until) ? dateHelpers.unix(data?.until) : t('present')
+                            }} />
+                        </Box>      
+                        
                     </Box>
                 </Box>
             }
@@ -102,12 +107,14 @@ const UserCard = ({ community, data } : any) => {
                                     icon="mail"
                                     margin="0 0.5 0 0"
                                 />
-                                <Text g500 small>{data?.email}</Text>
+                                <Box>
+                                    <Text g500 small>{data?.email}</Text>
+                                </Box>
                             </Box>
                         </Box>
                     }
                     {data?.phone &&
-                        // Need phone Icon
+                        //  Todo: Need phone Icon
                         <Box>
                             <Box fLayout="center start" inlineFlex>
                                 <Icon
@@ -115,7 +122,9 @@ const UserCard = ({ community, data } : any) => {
                                     icon="mail"
                                     margin="0 0.5 0 0"
                                 />
-                                <Text g500 small>{data?.phone}</Text>
+                                <Box>
+                                    <Text g500 small>{data?.phone}</Text>
+                                </Box>
                             </Box>
                         </Box>
                     }

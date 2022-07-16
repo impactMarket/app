@@ -282,10 +282,10 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data?: Countries[] }) => response.data
         }),
-        getPendingCommunities: builder.mutation<PendingCommunities, {limit: number, offset: number}>({
-            query: ({limit, offset}) => ({
+        getPendingCommunities: builder.mutation<PendingCommunities, {limit: number, offset: number, orderBy?: string}>({
+            query: ({limit, offset, orderBy}) => ({
                 method: 'GET',
-                url: `communities?status=pending&review=accepted${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
+                url: `communities?status=pending&review=accepted${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}${!!orderBy ? `&orderBy=${orderBy}` : ''}&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
             }),
             transformResponse: (response: { data?: PendingCommunities }) => response.data
         }),
