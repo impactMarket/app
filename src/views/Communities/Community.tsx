@@ -31,7 +31,7 @@ const Communities = ({ community }: any) => (
             >
                 {community.name}
             </Text>
-            <Box fLayout="center start" inlineFlex>
+            <Box fLayout="center start">
                 <Box fLayout="center start" inlineFlex mr={1}>
                     <Icon
                         g500
@@ -55,13 +55,15 @@ const Communities = ({ community }: any) => (
                             height={1}
                         />
                     </Box>
-                    <Text
-                        g500
-                        regular
-                        small
-                    >
-                        {community.city}
-                    </Text>
+                    <Box>
+                        <Text
+                            g500
+                            regular
+                            small
+                        >
+                            {community.city}
+                        </Text>
+                    </Box>
                 </Box>
             </Box>
         </Card>

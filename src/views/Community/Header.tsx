@@ -15,7 +15,7 @@ import Link from 'next/link';
 import Review from './ReviewState'
 import String from '../../libs/Prismic/components/String';
 
-const Header = ({ community, updateReview }: any) => {
+const Header = ({ community, updateReview, buttonLoading }: any) => {
     const { user } = useSelector(selectCurrentUser);
 
     return (
@@ -46,6 +46,7 @@ const Header = ({ community, updateReview }: any) => {
                     </Box>
                     {(!!user?.ambassador || !!user?.manager) &&
                         <Review
+                            buttonLoading={buttonLoading}
                             community={community}
                             updateReview={updateReview}
                         />

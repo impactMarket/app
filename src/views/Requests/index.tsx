@@ -68,8 +68,9 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                     excludeCountry: myCountrySelected ? undefined : userCountry,
                     limit: itemsPerPage,
                     name,
-                    offset: itemOffset,        
-                    review,
+                    offset: itemOffset,
+                    orderBy: 'updated:DESC',
+                    review
                 });
 
                 setCommunities(communities);
