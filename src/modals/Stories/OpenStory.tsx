@@ -4,7 +4,6 @@ import {
     Col,
     CountryFlag,
     DropdownMenu,
-    Img,
     ModalWrapper,
     Row,
     Spinner,
@@ -17,7 +16,6 @@ import {
 import { Story, useLoveStoryMutation } from '../../api/story';
 import { formatAddress } from '../../utils/formatAddress';
 import { getCountryNameFromInitials } from '../../utils/countries';
-import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunityMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -28,6 +26,7 @@ import Image from '../../components/Image';
 import Link from 'next/link';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
+import Slider from '../../components/Slider/Slider'
 import String from '../../libs/Prismic/components/String';
 import Trim from '../../components/Trim';
 import config from '../../../config';
@@ -146,13 +145,8 @@ const OpenStory: React.FC = () => {
         return (
             <>
                 <Row h="100%" margin={0} maxH="100%" pb={0} pr={{sm: 0.5, xs: 0}} w="100%" >
-                    <Col bTopLeftRadius={{sm: 0, xs: 0.5}} bTopRightRadius={{sm: 0, xs: 0.5}} bgColor="g100" colSize={{sm: 7, xs: 12}} fLayout="center" flex  h={{sm: "100%", xs: "50%"}}  padding={0}> 
-                        <Img 
-                            alt=""
-                            maxH="100%"
-                            maxW="100%"
-                            url={getImage({filePath: story?.storyMediaPath, fit: 'cover', height: 0, width: 0})}
-                        />
+                    <Col bTopLeftRadius={{sm: 0, xs: 0.5}} bTopRightRadius={{sm: 0, xs: 0.5}} bgColor="g100" colSize={{sm: 7, xs: 12}} fLayout="center" flex  h={{sm: "100%", xs: "50%"}}  padding={0} style={{overflow: "hidden"}}> 
+                        <Slider slides={story?.storyMedia}/>
                     </Col>
 
                     <Col colSize={{sm: 5, xs: 12}} h={{sm: "100%", xs: "50%"}} overflow="hidden" overflowY="auto" pl={{sm: 2.25, xs: 1}} pt={{sm: 1.5, xs: 1}}>

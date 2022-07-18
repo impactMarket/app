@@ -206,9 +206,9 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
             <Row fLayout="center" key={index}>
                 <Col colSize={{ sm: 10, xs: 11 }} padding={0} pb={1} >
                     <Card mt={1} padding={0}>
-                        {story?.storyMediaPath && (  
+                        {story?.storyMedia && (  
                         <Box onClick={() => update('id', story?.id)} pt="60%" style={{position: 'relative'}} w="100%">
-                            <Image alt="" src={story?.storyMediaPath} style={{borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem'}} />
+                            <Image alt="" src={story?.storyMedia[0]} style={{borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem'}} />
                         </Box>
                         )}
                         <Row fLayout="between" mt={0.625} pl={1} pr={1}>
