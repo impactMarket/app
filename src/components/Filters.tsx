@@ -8,10 +8,12 @@ let timeoutFilter: ReturnType<typeof setTimeout> = null;
 
 interface FilterProps {
     property: string;
+    maxW?: number;
+    margin?: string;
 }
 
 const Filters = (props: FilterProps) => {
-    const { property } = props;
+    const { property, maxW, margin } = props;
     const { t } = useTranslations();
     const { update } = useFilters();
 
@@ -21,7 +23,7 @@ const Filters = (props: FilterProps) => {
     };
 
     return (
-        <Box maxW={25} mt={1.5}>
+        <Box margin={margin} maxW={maxW} w="100%">
             <Input
                 icon="search"
                 onKeyUp={(e: any) =>

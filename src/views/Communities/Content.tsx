@@ -1,7 +1,7 @@
 import React from 'react';
 
 import {
-    DropdownMenu,
+    Box,
     Grid,
     Pagination,
     Row,
@@ -13,12 +13,14 @@ import {
 } from '@impact-market/ui';
 
 import Community from './Community'
+import Filters from './Filters'
+import Map from '../../components/Map';
 import String from '../../libs/Prismic/components/String';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, communities, communitiesTabs, loading, currentPage, handlePageClick, pageCount, user, setItemOffset}: any) => {
+const Content = ({setStatusFilter, setActiveTab, activeTab, statusFilter, communities, communitiesTabs, loading, currentPage, handlePageClick, pageCount, user, setItemOffset, filtersCommunityCountries, claimsLocations}: any) => {
     const { t } = useTranslations();
     const { update, getByKey } = useFilters();
     
@@ -50,7 +52,6 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
         update('type', communityFilter);
         setItemOffset(0)
     }
-    
 
     return (
         <Tabs defaultIndex={
@@ -71,20 +72,24 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
                 }
             </TabList>
 
-            {activeTab === 'myCommunities' &&
-                    <DropdownMenu
-                        asButton
-                        headerProps={{
-                            fLayout: "center between"
-                        }}
-                        icon="chevronDown"
-                        items={dropdownItems}
-                        title={status}
-                        wrapperProps={{
-                            mt:1,
-                            w:15
-                        }}
-                    />
+            <Filters
+                activeTab={activeTab}
+                communitiesCountries={filtersCommunityCountries}
+                filterProperty="name"
+                initialValue={getByKey('country')}
+                myCommunityItems={dropdownItems}
+                myCommunityTitle={status}
+            />
+
+            {!!claimsLocations.length &&
+                <Box
+                    borderRadius={{ sm: '16px 0 0 16px', xs: '0' }}
+                    h={{ sm: 22, xs: 11 }}
+                    mt={1}
+                    overflow="hidden"
+                >
+                    <Map claims={claimsLocations} />
+                </Box>
             }
 
             {!!Object.keys(communities).length &&
@@ -129,4 +134,4 @@ const TabsComponent = ({setStatusFilter, setActiveTab, activeTab, statusFilter, 
     );
 };
 
-export default TabsComponent;
+export default Content;

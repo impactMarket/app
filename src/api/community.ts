@@ -148,6 +148,13 @@ interface claimLocations {
     longitude: number;
 }
 
+interface allClaimsLocations {
+    map: any;
+    gps: Object;
+    latitude: number;
+    longitude: number;
+}
+
 interface Promoter {
     category?: string;
     description?: string;
@@ -187,6 +194,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: 'communities'
             }),
             transformResponse: (response: { data: Community }) => response.data
+        }),
+        //  Get all communities claims locations
+        getAllClaimsLocations: builder.mutation<allClaimsLocations, void>({
+            query: () => ({
+                method: 'GET',
+                url: `claims-location`
+            }),
+            transformResponse: (response: allClaimsLocations) => response
         }),
         getBeneficiaries: builder.mutation<any, void>({
             query: () => ({
@@ -328,6 +343,7 @@ export const {
     useGetCommunityBeneficiariesMutation,
     useGetCommunityPreSignedMutation,
     useGetClaimsLocationsMutation,
+    useGetAllClaimsLocationsMutation,
     useGetPromoterMutation,
     useEditPendingCommunityMutation,
     useEditValidCommunityMutation

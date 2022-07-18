@@ -106,7 +106,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                         <FakeTabPanel />
                         <FakeTabPanel />
                     </Tabs>
-                    <Filters property="search" />
+                    <Filters margin="1.5 0 0 0" maxW={20} property="search"/>
                     <BeneficiariesList community={community} refresh={refresh} />
                 </Box>
                 :
