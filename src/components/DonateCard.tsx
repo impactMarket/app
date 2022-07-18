@@ -8,6 +8,7 @@ import {
     Card,
     Text,
     TextLink,
+    closeModal,
     openModal
 } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currencies';
@@ -49,6 +50,12 @@ const DonateCard = (props: DonateCardProps) => {
     const { getByKey } = useFilters();
     const { asPath } = useRouter();
     const quotient = raised / goal || 0;
+
+    useEffect(() => {
+        return () => {
+            closeModal(() => {});
+        }
+    }, []);
 
     useEffect(() => {
         if (getByKey('contribute') !== undefined && type === 'contribute') {
@@ -126,15 +133,11 @@ const DonateCard = (props: DonateCardProps) => {
             />
             <Box center>
                 <TextLink
+                    href={config.explorerUrl?.replace(
+                        '#USER#',
+                        contractAddress
+                    )}
                     large
-                    onClick={() =>
-                        window.open(
-                            config.explorerUrl?.replace(
-                                '#USER#',
-                                contractAddress
-                            )
-                        )
-                    }
                     p600
                     semibold
                 >

@@ -46,7 +46,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     const [ambassador, setAmbassador]= useState({}) as any;
     const [claimsLocation, setClaimsLocation]= useState({}) as any;
     const [promoter, setPromoter]= useState({}) as any;
-    
+
     const { data } = useQuery(communityQuery, {
         variables: { id: communityData?.contractAddress?.toLowerCase() },
     });
@@ -67,7 +67,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         const getData = async () => {
             try {
                 setLoading(true)
-                
+
                 //  Get managers
                 const managersData = await getCommunityManagers({ community: community?.id }).unwrap();
 
@@ -75,7 +75,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 const contractData = await getCommunityContract(community?.id).unwrap();
 
                 //  Get calims location
-                const claimsLocation = await getClaimsLocation(community?.id).unwrap(); 
+                const claimsLocation = await getClaimsLocation(community?.id).unwrap();
                 
                 //  Get community's promoter
                 const promoter = await getPromoter(community?.id).unwrap();
@@ -92,7 +92,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
                     if (foundResults.length > 0) setCommunity({...community, isPendingProposal: true});
                 }
-                
+
                 setManagers(managersData);
                 setContractData(contractData);
                 setAmbassador(ambassador);
@@ -107,12 +107,12 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         getData()
     }, [refreshingPage]);
 
-    
+
     //  Update community review state and get new data
     const functionUpdateReview = async (review: string) => {
         try {
             setLoading(true);
-            
+
             setRefreshingPage(true)
 
             await updateReview({
@@ -144,7 +144,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         }
 
         setRefreshingPage(false)
-    };  
+    };
 
     return (
         <ViewContainer isLoading={loading || isLoading || refreshingPage}>
@@ -155,15 +155,15 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 data={data?.communityEntity ?? contractData.data}
                 promoter={promoter}
             />
-            <RolesTabs 
-                //  If community exists in thegraph (it has contract address) get the data from thegraph. 
+            <RolesTabs
+                //  If community exists in thegraph (it has contract address) get the data from thegraph.
                 //  If not, get from API
                 ambassador={ambassador}
                 community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
                 managers={managers?.rows}
                 setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}
-            /> 
+            />
         </ViewContainer>
     );
 };

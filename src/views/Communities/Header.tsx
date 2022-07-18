@@ -45,6 +45,7 @@ const Header = ({ activeTab, loading, supportingCommunities, user }: any) => {
                             g500
                             id="communitiesJoined" 
                             mt={0.25}
+                            w="100%"
                         />
                     } 
                 </Box>

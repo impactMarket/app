@@ -2,7 +2,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Alert, Box, Button, Display, ViewContainer, openModal, toast } from '@impact-market/ui';
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
-import { emailRegExp } from '../../helpers/regex';
+import { addCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
@@ -14,7 +14,7 @@ import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useLocalStorage } from '../../hooks/useStorage';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
-import { useYupValidationResolver, yup } from '../../helpers/yup';
+import { useYupValidationResolver } from '../../helpers/yup';
 import CommunityForm from './CommunityForm';
 import ContractForm from './ContractForm';
 import Message from '../../libs/Prismic/components/Message';
@@ -22,21 +22,6 @@ import PersonalForm from './PersonalForm';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
-
-// TODO: once we have a solution for InputUpload form value being filled and not null, un-comment the line below
-const schema = yup.object().shape({
-    baseInterval: yup.string().required(),
-    claimAmount: yup.number().required().positive().min(0),
-    // coverImg: yup.mixed().required(),
-    description: yup.string().required(),
-    email: yup.string().required().matches(emailRegExp).email(),
-    firstName: yup.string().required().max(30),
-    incrementInterval: yup.number().required().positive().integer().min(0),
-    lastName: yup.string().required().max(30),
-    location: yup.mixed().required(),
-    maxClaim: yup.number().required().positive().min(0),
-    name: yup.string().required()
-});
 
 const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const auth = useSelector(selectCurrentUser);
@@ -50,7 +35,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [currency, setCurrency] = useState(auth?.user?.currency || null);
 
     const { extractFromView } = usePrismicData();
-    const { title, content } = extractFromView('heading') as any;
+    const { alert, title, content } = extractFromView('heading') as any;
 
     const router = useRouter();
     const rates = useSelector(selectRates);
@@ -62,7 +47,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [addCommunityInfo, setAddCommunityInfo, removeAddCommunityInfo] = useLocalStorage('add-community-info', undefined);
     const unsavedChanges = addCommunityInfo?.address === auth?.user?.address ? addCommunityInfo : null;
 
-    const { handleSubmit, control, formState: { errors }, getValues, reset, setValue } = useForm({
+    const { handleSubmit, control, formState: { errors, submitCount }, getValues, reset, setValue } = useForm({
         defaultValues: {
             baseInterval: '',
             claimAmount: '',
@@ -75,7 +60,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
             maxClaim: '',
             name: ''
         },
-        resolver: useYupValidationResolver(schema)
+        resolver: useYupValidationResolver(addCommunitySchema)
     });
     const inputWatch = useWatch({ control });
 
@@ -138,7 +123,9 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
 
     // Open confirmModal on form submit
     const openSubmitModal: SubmitHandler<any> = (data) => {
-        openModal('confirmAddCommunity', { data, isSubmitting, language, onSubmit });
+        if(!!communityImage && (!!profileImage || !!auth?.user?.avatarMediaPath)) {
+            openModal('confirmAddCommunity', { data, isSubmitting, language, onSubmit });
+        }
     };
 
     // TODO: check if all of this function is correct
@@ -194,6 +181,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                 },
                 language,
                 name: data.name,
+                placeId: data.location?.value?.place_id,
                 requestByAddress: auth?.user?.address
             };
 
@@ -214,7 +202,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                             coverMediaPath: preSigned.filePath
                         }).unwrap();
 
-                        // TODO: on success, what should we do?
+                        // TODO: on success, what should we do? (perhaps redirect to the /mycommunity page)
                         if (result) {
                             toast.success("Community added successfully!");
 
@@ -236,29 +224,27 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
             console.log(e);
             setSubmitting(false);
 
-            // TODO: add error codes and texts to Prismic (for now we only have ALREADY_HAS_COMMUNITY)
-            toast.error(<Message id={toCamelCase(e.data?.error?.name)} />);
+            toast.error(<Message id={toCamelCase(e.data?.error?.name, 'communityForm')} />);
         }
     }
 
     return (
         <ViewContainer isLoading={isLoading}>
             <form onSubmit={handleSubmit(openSubmitModal)}>
-                { /* TODO: define the final message that will appear here and add it to Prismic */ }
                 <Alert 
                     icon="alertCircle"
-                    title="When creating a Community, all the information will be saved locally in your computer/phone, so you can resume and submit the Community whenever you want." 
+                    title={<RichText content={alert} />}
                     warning
                 />
                 <Box fLayout="start between" fWrap="wrap" flex mt={2}>
-                    <Box column flex pr={{ sm: 2, xs: 0 }} w={{ sm: '80%', xs: '100%' }}>
+                    <Box column flex pr={{ sm: 2, xs: 0 }} w={{ sm: '75%', xs: '100%' }}>
                         <Display g900 medium>
                             {title}
                         </Display>
                         { /* TODO: missing link to "learn how..." */ }
                         <RichText content={content} g500 mt={0.25} />
                     </Box>
-                    <Box mt={{ sm: 0, xs: 1 }} tAlign={{ sm: 'right', xs: 'left' }} w={{ sm: '20%', xs: '100%' }}>
+                    <Box mt={{ sm: 0, xs: 1 }} tAlign={{ sm: 'right', xs: 'left' }} w={{ sm: '25%', xs: '100%' }}>
                         <Button disabled={isSubmitting} icon="send" isLoading={isSubmitting} type="submit" w={{ sm: 'auto', xs: '100%' }}>
                             <String id="submit" />
                         </Button>
@@ -271,6 +257,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         errors={errors} 
                         isLoading={isSubmitting}
                         setCommunityImage={setCommunityImage} 
+                        submitCount={submitCount}
                     />
                 </Box>
                 {
@@ -281,7 +268,8 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                             errors={errors} 
                             isLoading={isSubmitting}
                             profileImage={profileImage} 
-                            setProfileImage={setProfileImage} 
+                            setProfileImage={setProfileImage}
+                            submitCount={submitCount}
                             user={auth?.user}
                         />
                     </Box>

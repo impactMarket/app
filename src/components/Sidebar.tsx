@@ -117,8 +117,8 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
 const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
     const { user } = props;
     const { address, wrongNetwork } = useWallet();
-    
-    useEffect(() => {   
+
+    useEffect(() => {
         if(wrongNetwork) {
             openModal('wrongNetwork');
         }
@@ -204,7 +204,7 @@ const Sidebar = () => {
         }
         else if ((user?.roles).includes('ambassador')) {
             route = '/requests';
-        } 
+        }
         else if ((user?.roles).includes('councilMember')) {
             route = '/proposals';
         }
