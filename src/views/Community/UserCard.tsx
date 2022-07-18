@@ -62,7 +62,7 @@ const UserCard = ({ community, data } : any) => {
             </Box>
             {(data?.added || data?.added === 0) &&
                 <Box mb={0.3}>
-                    <Box fLayout="center start" inlineFlex>
+                    <Box fLayout="center start">
                         <Icon
                             g500
                             icon="users"
@@ -76,7 +76,7 @@ const UserCard = ({ community, data } : any) => {
             }
             {(data?.since || data?.until) &&
                 <Box>
-                    <Box fLayout="center start" inlineFlex>
+                    <Box fLayout="center start">
                         <Icon
                             g500
                             icon="clock"

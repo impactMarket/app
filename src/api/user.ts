@@ -82,6 +82,12 @@ export interface ReportsType {
     }]
 }
 
+export interface AnonymousReport {
+    communityId: number;
+    category: string;
+    message: string;
+}
+
 // Define a service using a base URL and expected endpoints
 export const userApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -94,6 +100,15 @@ export const userApi = emptySplitApi.injectEndpoints({
                 method: 'PATCH',
                 url: 'users'
             })
+        }),
+        // Send anonymous report
+        anonymousReport: builder.mutation<AnonymousReport, void>({
+            query: (body: any) => ({
+                body,
+                method: 'POST',
+                url: 'users/report'
+            }),
+            transformResponse: (response: { data: AnonymousReport }) => response.data
         }),
         // First connect. Either register or login.
         createUser: builder.mutation<User, PutPostUser>({
@@ -181,6 +196,7 @@ export const userApi = emptySplitApi.injectEndpoints({
 // auto-generated based on the defined endpoints
 export const {
     useAcceptRulesMutation,
+    useAnonymousReportMutation,
     useCreateUserMutation,
     useDeleteUserMutation,
     useGetNotificationsMutation,
