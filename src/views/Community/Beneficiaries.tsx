@@ -45,7 +45,8 @@ const Beneficiaries = ({ data, show }: any) => {
                         text={`${currencyFormat(
                             data?.claimAmount,
                             localeCurrency
-                        )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('perDay') : t('perWeek')}`}
+                        )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('day') : 'Week'}`}
+                        // TODO: add above string to translations
                     />
                 )}
                 {!!maxClaim && (
