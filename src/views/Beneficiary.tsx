@@ -173,8 +173,6 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         </Text>
                                         <RichText content={cardMessage} g500 mt={0.5} small variables={{ amount: claimAmountDisplay }}/>
                                     </Box>
-                                    {
-                                        hasFunds &&
                                         <Box margin="0 auto" maxW={22}>
                                             {
                                                 !isClaimable &&
@@ -187,7 +185,6 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                                 </Button>
                                             }
                                         </Box>
-                                    }
                                 </Grid>
                             </Box>
                         </Col>
