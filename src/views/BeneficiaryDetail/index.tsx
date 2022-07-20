@@ -1,5 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Avatar, Box, CircledIcon, Display, DropdownMenu, Icon, Tab, TabList, TabPanel, Tabs, Text, TextLink, ViewContainer, toast } from '@impact-market/ui';
+import { Avatar, Box, CircledIcon, Display, DropdownMenu, Label, Tab, TabList, TabPanel, Tabs, Text, TextLink, ViewContainer, toast } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName, userManager } from '../../utils/users';
@@ -63,9 +63,8 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={isLoading || loadingUser}>
-            <TextLink fLayout="center start" flex onClick={() => router.back()}>
-                <Icon icon="arrowLeft" mr={0.75} p700 />
-                <Text medium p700 small><String id="back" /></Text>
+            <TextLink fLayout="center start"  flex onClick={() => router.back()}>
+                <Label content={<String id="back" />} icon="arrowLeft" ml={0} />
             </TextLink>
             <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout="start between" flex mt={1.5}>
                 <Box fLayout="center start" flex>

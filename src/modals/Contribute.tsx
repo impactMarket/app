@@ -76,7 +76,7 @@ const Contribute = () => {
             e.target.value !== approved ? setStep(0) : setStep(1);
         }
 
-        setContribution(e.target.value);
+        setContribution(e.target.value.replace(/,/g, '.'));
     };
 
     const handleApprove = async () => {
@@ -140,7 +140,7 @@ const Contribute = () => {
     };
 
     const handleKeyPress = (event: any) => {
-        if (!/^\d*[\.{1}\d?]*$/.test(event.key)) {
+        if (!/^\d*(?:[\,\.]\d*)?$/.test(event.target.value + event.key)) {
             event.preventDefault();
         }
     };
