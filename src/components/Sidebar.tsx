@@ -67,7 +67,7 @@ const getUserType = (user: User) => {
         return 'ambassador';
     };
     if (user?.roles.includes('councilMember')) {
-        return 'councilmember';
+        return 'council-member';
     };
 
     return 'donor';
