@@ -13,7 +13,7 @@ import Link from 'next/link';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Review = ({ community, updateReview }: any) => {
+const Review = ({ buttonLoading, community, updateReview }: any) => {
     const { t } = useTranslations();
     const { user } = useSelector(selectCurrentUser);
 
@@ -23,6 +23,7 @@ const Review = ({ community, updateReview }: any) => {
                 <Box fGrow={1} fLayout={{ sm: 'end', xs: 'start'}} flex>
                     {community?.review !== 'declined' && (
                         <Button
+                            isLoading={!!(buttonLoading.state && buttonLoading.button === 'declined')}
                             mr={1}
                             onClick={() => updateReview('declined')}
                             secondary
@@ -30,7 +31,10 @@ const Review = ({ community, updateReview }: any) => {
                             <String id="decline" />
                         </Button>
                     )}
-                    <Button onClick={() => updateReview('claimed')}>
+                    <Button 
+                        isLoading={!!(buttonLoading.state && buttonLoading.button === 'claimed')}
+                        onClick={() => updateReview('claimed')}
+                    >
                         <String id="claim" />
                     </Button>
                 </Box>
@@ -38,7 +42,7 @@ const Review = ({ community, updateReview }: any) => {
 
                 {(((community?.review === 'claimed' || community?.review === 'accepted') && (community?.ambassadorAddress?.toLowerCase() === user?.address?.toLowerCase())) || (!!user?.manager?.community && (user?.manager?.community?.toLowerCase() === community?.contractAddress?.toLowerCase()))) && (
                     <Box fGrow={1} fLayout="end" flex inlineFlex>
-                        <Link href={`manager/communities/${community.id}`} passHref>
+                        <Link href={`/manager/communities/${community.id}`} passHref>
                             <Button>
                                 <Icon icon="edit" margin="0 0.5 0 0" n01 />
                                 <String id="edit" />

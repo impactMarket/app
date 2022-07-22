@@ -106,7 +106,9 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                 router.push(`/stories?id=${contentId}`);
                 break;
             } 
-            case 1: { 
+            case 1: 
+            case 2:
+            case 3: { 
                 router.push(`/communities/${contentId}`);
                 break;
             } 
@@ -125,6 +127,13 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
             case 1: { 
                 return view?.data?.messageType1Title;
             } 
+            //  Todo: get texts from prismic
+            case 2: { 
+                return 'Manager added';
+            } 
+            case 3: { 
+                return 'Community created';
+            }
             default: { 
                break; 
             } 
@@ -140,6 +149,13 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
             case 1: { 
                 return view?.data?.messageType1Description;
             } 
+            //  Todo: get texts from prismic
+            case 2: { 
+                return 'Manager was added to your community.';
+            } 
+            case 3: { 
+                return 'Community has been successfully created.';
+            }
             default: { 
                break; 
             } 
@@ -162,7 +178,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                             <>
                                 <Box bgColor={notification?.read ? "" : "p100"} key={index}>
                                     <Row pl={1} pr={1}>
-                                        <TextLink onClick={() => handelPageRedirect(notification?.type, notification?.params?.contentId)}>
+                                        <TextLink onClick={() => handelPageRedirect(notification?.type, notification?.params?.communityId)}>
                                             <RichText content={handleTitle(notification?.type)} g700 pb={0} semibold/>
                                         </TextLink>
                                     </Row>
