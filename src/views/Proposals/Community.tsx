@@ -1,3 +1,5 @@
+import { useSelector } from 'react-redux';
+
 import {
     Box,
     Button,
@@ -12,7 +14,10 @@ import {
     toast
 } from '@impact-market/ui';
 import { CommunityContract, useGetCommunityContractMutation } from '../../api/community';
+import { currencyFormat } from '../../utils/currencies';
 import { getCountryNameFromInitials } from '../../utils/countries';
+import { selectCurrentUser } from '../../state/slices/auth';
+import { toNumber } from '@impact-market/utils/toNumber';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import CanBeRendered from '../../components/CanBeRendered';
@@ -35,6 +40,14 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
     const [communityContract, setCommunityContract] = useState<CommunityContract>();
     const { view } = usePrismicData();
     const { t } = useTranslations();
+
+    const auth = useSelector(selectCurrentUser);
+    const language = auth?.user?.language || 'en-US';
+    const currency = auth?.user?.currency || 'USD';
+    const localeCurrency = new Intl.NumberFormat(language, {
+        currency,
+        style: 'currency'
+    });
 
     useEffect(() => {
         const getCommunityContractMethod = async () => {
@@ -106,8 +119,8 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
                             </Link>
 
                             <Box pt={1}>    
-                                <RichText content={view.data.messageTotalClaimAmount} variables={{ total: communityContract?.data?.maxClaim }}/>
-                                <RichText content={view.data.messageMinutesIncrement} variables={{ minutes: communityContract?.data?.incrementInterval }}/>
+                                <RichText content={view.data.messageTotalClaimAmount} variables={{ total: (() => currencyFormat(toNumber(community.contract.maxClaim), localeCurrency)) }}/>
+                                <RichText content={view.data.messageMinutesIncrement} variables={{ minutes: (communityContract?.data?.incrementInterval / 12) }}/>
                             </Box>
 
                             <CanBeRendered types={['councilMember']}>

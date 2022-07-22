@@ -11,6 +11,7 @@ import {
 import { formatAddress } from '../utils/formatAddress';
 import { getImage } from '../utils/images';
 import { getNotifications } from '../state/slices/notifications';
+import { getUserMenu } from './UserMenu'
 import { getUserName } from '../utils/users';
 import { selectCurrentUser } from '../state/slices/auth';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -164,6 +165,8 @@ const Sidebar = () => {
 
     const { userConfig, extractFromConfig } = usePrismicData();
 
+    const menu = getUserMenu(user?.roles);
+
     const checkRoute = (route: string | undefined) =>
         typeof route === 'string' ? asPath.split('?')[0] === route : false;
 
@@ -215,6 +218,21 @@ const Sidebar = () => {
         return push(route, undefined, { shallow: true });
     }
 
+    const footerMenu = () => {
+        const userBeneficiary = user?.roles?.includes('beneficiary')
+        const removeReportFromArr = data?.footerMenu?.filter((item: any) => item?.uid !== "reportSuspiciousActivity")
+
+        if (userBeneficiary) {
+            return data?.footerMenu
+        }
+
+        if (!userBeneficiary) {
+            return removeReportFromArr
+        }
+
+        return data?.footerMenu
+    }
+
     return (
         <SidebarBase
             footer={<SidebarFooter isActive={checkRoute('/profile')} user={user} />}
@@ -222,13 +240,13 @@ const Sidebar = () => {
             isLoading={!data}
             mobileActions={<SidebarMobileActions user={user} />}
         >
-            {data?.menus?.map((group, groupIndex) => (
-                <SidebarMenuGroup key={groupIndex}>
-                    {group.map((item, index) => item?.isVisible && (
+            {!!menu?.length && (
+                <SidebarMenuGroup>
+                    {menu?.map((item, index) => item?.isVisible && (
                         <MenuItem {...item} flag={data.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
                     ))}
                 </SidebarMenuGroup>
-            ))}
+            )}             
             {!!data?.commonMenu?.length && (
                 <SidebarMenuGroup isCollapsible={!!data?.menus?.length} title={!!data?.menus?.length ? 'impactMarket' : undefined}>
                     {data?.commonMenu.map((item, index) => item?.isVisible && (
@@ -238,9 +256,9 @@ const Sidebar = () => {
             )}
             {!!data?.footerMenu?.length && (
                 <SidebarMenuGroup mt="auto">
-                    {data?.footerMenu.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} flag={data.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
-                    ))}
+                        {footerMenu()?.map((item, index) => item?.isVisible && (
+                            <MenuItem {...item} flag={data.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
+                        ))}
                 </SidebarMenuGroup>
             )}
         </SidebarBase>

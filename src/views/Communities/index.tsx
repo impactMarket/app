@@ -74,6 +74,7 @@ const Communities: React.FC<{ isLoading?: boolean }> = (props) => {
                     limit: itemsPerPage,
                     name,
                     offset: itemOffset,
+                    orderBy: 'newest:ASC',
                     status: activeTab === 'myCommunities' ? statusFilter : 'valid'
                 });
 

@@ -13,7 +13,7 @@ import Link from 'next/link';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Review = ({ community, updateReview }: any) => {
+const Review = ({ community, updateReview, buttonLoading }: any) => {
     const { t } = useTranslations();
     const { user } = useSelector(selectCurrentUser);
 
@@ -23,6 +23,7 @@ const Review = ({ community, updateReview }: any) => {
                 <Box fGrow={1} fLayout={{ sm: 'end', xs: 'start'}} flex>
                     {community?.review !== 'declined' && (
                         <Button
+                            isLoading={buttonLoading}
                             mr={1}
                             onClick={() => updateReview('declined')}
                             secondary
@@ -30,7 +31,10 @@ const Review = ({ community, updateReview }: any) => {
                             <String id="decline" />
                         </Button>
                     )}
-                    <Button onClick={() => updateReview('claimed')}>
+                    <Button 
+                        isLoading={buttonLoading}
+                        onClick={() => updateReview('claimed')}
+                    >
                         <String id="claim" />
                     </Button>
                 </Box>
