@@ -31,7 +31,7 @@ const Communities = ({ communities } : any) => {
                             <Card as="a">
                                 {!!community?.coverMediaPath &&
                                     <Box h={12.5} radius={0.5} style={{position: 'relative'}} w="100%">
-                                        <Image alt=""  src={community?.coverMediaPath} style={{borderRadius: '8px'}}/>
+                                        <Image alt=""  h={300} src={community?.coverMediaPath} style={{borderRadius: '8px'}} w={300}/>
                                     </Box>
                                     }  
                                 <Text

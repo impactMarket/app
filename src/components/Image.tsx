@@ -15,7 +15,7 @@ const getImageOptions = (forwardProps: any)  => {
 }
 
 const Image = (props: any) => {
-    const { src: filePath, ...forwardProps } = props;
+    const { src: filePath, h: height, w: width, ...forwardProps } = props;
 
     return (
         <Img
@@ -30,8 +30,8 @@ const Image = (props: any) => {
             src={getImage({
                 filePath,
                 fit: 'cover',
-                height: 0,
-                width: 0
+                height: height ? height : 0,
+                width: width ? width : 0
             })}
             {...getImageOptions(forwardProps)}
         />
