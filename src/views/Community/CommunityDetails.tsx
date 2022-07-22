@@ -138,7 +138,9 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                     >
                         <Image
                             alt="Community cover image"
+                            h={400}
                             src={community?.coverMediaPath}
+                            w={400}
                         />
                     </Box>
                     <Col
