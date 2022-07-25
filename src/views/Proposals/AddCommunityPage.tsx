@@ -43,7 +43,8 @@ const AddCommunityPage = ({ setRequestsCount, requestsCount }: any) => {
                 setIsLoading(true);
                 const response = await getPendingCommunities({
                     limit,
-                    offset
+                    offset,
+                    orderBy: 'updated:DESC'
                 }).unwrap();
 
                 setTotalCount(response?.count);
