@@ -19,12 +19,14 @@ import SocialLink from '../../components/SocialLink';
 import Trim from '../../components/Trim';
 
 import { selectCurrentUser } from '../../state/slices/auth';
+import { translate } from '@impact-market/utils/translate';
 import { useSelector } from 'react-redux';
+import config from '../../../config';
 import useWallet from '../../hooks/useWallet';
 
 import { toToken } from '@impact-market/utils/toToken';
+import { useEffect, useState } from 'react';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
-import { useState } from 'react';
 import Message from '../../libs/Prismic/components/Message';
 import generateCommunityProposal from '../../helpers/generateCommunityProposal';
 
@@ -49,6 +51,23 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
     const { addCommunity } = useImpactMarketCouncil();
     const isCouncilMember = user?.roles.includes('councilMember');
     const claims = claimsLocation?.length ? claimsLocation : [gps];
+    const googleApiKey = config.googlePlacesKey;
+    const [translatedText, setTranslatedText] = useState('')
+
+    //  Translate description
+    useEffect(() => {
+        const translateDescription = async () => {
+            try {
+                const translation = await translate(community?.description, user?.language, { googleApiKey })
+                
+                setTranslatedText(translation?.translatedText)
+            } catch (error) {
+                console.log(error)
+            }
+        }
+
+        translateDescription();
+    }, [])
 
     const handleConnect = async () => {
         try {
@@ -166,7 +185,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                         g800
                         large
                         limit={100}
-                        message={community?.description}
+                        message={translatedText}
                         pb={0}
                         pt={0}
                         rows={4}
