@@ -3,7 +3,7 @@ import { Controller } from "react-hook-form";
 import React from 'react';
 
 type InputUploadProps = {
-    control?: any; 
+    control?: any;
     label?: string | React.ReactNode;
 };
 

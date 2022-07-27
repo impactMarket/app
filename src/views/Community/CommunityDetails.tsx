@@ -69,7 +69,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
             });
 
             setHasNoProposal(false);
-            
+
             toast.success(
                 <Message id="generatedSuccess" />
             );
@@ -77,7 +77,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
             toast.error(
                 <Message id="generatedError" />
             );
-        } 
+        }
     };
 
     const cardAction = () => {
@@ -110,7 +110,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
 
     const SocialLinks = ({ socials }: any) => {
         return socials?.map((social: any, index: number) => (
-            <SocialLink 
+            <SocialLink
                 href={social.url}
                 icon={social.mediaType}
                 key={index}
@@ -176,7 +176,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                     </Box>
 
                     <Divider />
-                    
+
                     {!!promoter && (
                         <Organization
                             created={dateHelpers.compact(community.createdAt)}
