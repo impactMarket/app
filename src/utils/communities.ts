@@ -19,7 +19,7 @@ export const getExpectedUBIDuration = (claimAmountWatch: string, maxClaimWatch: 
     const days = Math.floor(((estimatedSeconds % 31536000) % 2628000) / 86400);
     const hours = Math.floor((((estimatedSeconds % 31536000) % 2628000) % 86400) / 3600);
     const minutes = Math.floor((((estimatedSeconds % 31536000) % 86400) % 3600) / 60);
-    
+
     return {
         days,
         hours,
@@ -32,7 +32,7 @@ export const getExpectedUBIDuration = (claimAmountWatch: string, maxClaimWatch: 
 export const addCommunitySchema = yup.object().shape({
     baseInterval: yup.string().required(),
     claimAmount: yup.number().required().positive().min(0),
-    description: yup.string().required(),
+    description: yup.string().min(240).max(2048).required(),
     email: yup.string().required().matches(emailRegExp).email(),
     incrementInterval: yup.number().required().positive().integer().min(0),
     location: yup.mixed().required(),
@@ -41,6 +41,6 @@ export const addCommunitySchema = yup.object().shape({
 });
 
 export const editValidCommunitySchema = yup.object().shape({
-    description: yup.string().required(),
+    description: yup.string().min(240).max(2048).required(),
     name: yup.string().required()
 });

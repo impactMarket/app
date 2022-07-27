@@ -74,7 +74,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     // On start, check if there is any saved info to load (only loads if there's at least one field not empty)
     useEffect(() => {
         if(
-            unsavedChanges && 
+            unsavedChanges &&
             (
                 !!unsavedChanges?.baseInterval ||
                 !!unsavedChanges?.claimAmount ||
@@ -93,7 +93,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
 
         setIsReady(true);
     }, []);
-        
+
     const reloadInfo = () => {
         setValue('baseInterval', unsavedChanges?.baseInterval);
         setValue('claimAmount', unsavedChanges?.claimAmount);
@@ -107,7 +107,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         setValue('name', unsavedChanges?.name);
     }
 
-    // If the user has no Currency selected in the Settings, use the Currency based on the selected Country        
+    // If the user has no Currency selected in the Settings, use the Currency based on the selected Country
     useEffect(() => {
         if(!auth?.user?.currency && inputWatch?.location?.country) {
             setCurrency(getCountryCurrency(inputWatch.location.country) || 'USD');
@@ -231,7 +231,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     return (
         <ViewContainer isLoading={isLoading}>
             <form onSubmit={handleSubmit(openSubmitModal)}>
-                <Alert 
+                <Alert
                     icon="alertCircle"
                     title={<RichText content={alert} />}
                     warning
@@ -251,23 +251,23 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                     </Box>
                 </Box>
                 <Box mt={4}>
-                    <CommunityForm 
-                        communityImage={communityImage} 
-                        control={control} 
-                        errors={errors} 
+                    <CommunityForm
+                        communityImage={communityImage}
+                        control={control}
+                        errors={errors}
                         isLoading={isSubmitting}
-                        setCommunityImage={setCommunityImage} 
+                        setCommunityImage={setCommunityImage}
                         submitCount={submitCount}
                     />
                 </Box>
                 {
                     (!auth?.user?.email || !auth?.user?.avatarMediaPath || !auth?.user?.firstName || !auth?.user?.lastName) &&
                     <Box mt={1.25}>
-                        <PersonalForm 
-                            control={control} 
-                            errors={errors} 
+                        <PersonalForm
+                            control={control}
+                            errors={errors}
                             isLoading={isSubmitting}
-                            profileImage={profileImage} 
+                            profileImage={profileImage}
                             setProfileImage={setProfileImage}
                             submitCount={submitCount}
                             user={auth?.user}

@@ -31,7 +31,7 @@ const Review = ({ community, updateReview, buttonLoading }: any) => {
                             <String id="decline" />
                         </Button>
                     )}
-                    <Button 
+                    <Button
                         isLoading={buttonLoading}
                         onClick={() => updateReview('claimed')}
                     >
@@ -42,7 +42,7 @@ const Review = ({ community, updateReview, buttonLoading }: any) => {
 
                 {(((community?.review === 'claimed' || community?.review === 'accepted') && (community?.ambassadorAddress?.toLowerCase() === user?.address?.toLowerCase())) || (!!user?.manager?.community && (user?.manager?.community?.toLowerCase() === community?.contractAddress?.toLowerCase()))) && (
                     <Box fGrow={1} fLayout="end" flex inlineFlex>
-                        <Link href={`manager/communities/${community.id}`} passHref>
+                        <Link href={`/manager/communities/${community.id}`} passHref>
                             <Button>
                                 <Icon icon="edit" margin="0 0.5 0 0" n01 />
                                 <String id="edit" />

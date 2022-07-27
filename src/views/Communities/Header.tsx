@@ -12,10 +12,13 @@ import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvide
 import Link from 'next/link';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
+import useWallet from '../../hooks/useWallet';
 
 const Header = ({ activeTab, loading, supportingCommunities, user }: any) => {
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
+
+    const { address } = useWallet();
 
     //  Get how many countries the ambassador is suporting
     const supportingCountries = () => {
@@ -35,24 +38,24 @@ const Header = ({ activeTab, loading, supportingCommunities, user }: any) => {
             <Col colSize={{ sm: (!user?.roles.length) ? 6 : 12, xs: 12 }}>
                 <Display g900 medium>
                     {title}
-                </Display>  
+                </Display>
 
                 <Box mt={0.25}>
                     {(user?.roles.includes('ambassador') && activeTab === 'myCommunities') ?
-                        !loading && <RichText content={content} g500 mt={0.25} variables = {{ communities: supportingCommunities?.data?.count, countries: supportingCountries() }} /> 
+                        !loading && <RichText content={content} g500 mt={0.25} variables = {{ communities: supportingCommunities?.data?.count, countries: supportingCountries() }} />
                     :
-                        <Message 
+                        <Message
                             g500
-                            id="communitiesJoined" 
+                            id="communitiesJoined"
                             mt={0.25}
                             w="100%"
                         />
-                    } 
+                    }
                 </Box>
             </Col>
 
             {/* If user role is empty (which means he's a donor), show Add Community button */}
-            {!user?.roles.length &&
+            {!user?.roles.length && !!address &&
                 <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0 }} tAlign={{ sm: 'right', xs: 'left' }}>
                     <Link href="/manager/communities/add" passHref>
                         <Button icon="plus">
