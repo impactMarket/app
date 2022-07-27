@@ -1,4 +1,3 @@
-import { useRouter } from 'next/router';
 import React, { useEffect, useState } from 'react';
 
 import { ViewContainer, toast } from '@impact-market/ui';
@@ -37,7 +36,6 @@ query communityQuery($id: String!) {
 
 const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props) => {
     const { communityData, isLoading } = props;
-    const router = useRouter();
 
     const [communityId] = useState(communityData.id);
     const [community, setCommunity]= useState(communityData) as any;
@@ -52,8 +50,11 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     });
 
     const [loading, setLoading] = useState(true);
-    const [buttonLoading, setButtonLoading] = useState(false);
-    const [refreshingData, setRefreshingData] = useState(false);
+    const [buttonLoading, setButtonLoading] = useState({
+        button: '',
+        state: false
+    });
+    const [refreshingPage, setRefreshingPage] = useState(false);
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
@@ -106,15 +107,16 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         }
 
         getData()
-    }, [refreshingData]);
+    }, [refreshingPage]);
 
 
     //  Update community review state and get new data
     const functionUpdateReview = async (review: string) => {
         try {
-            setLoading(true);
-
-            setButtonLoading(true);
+            setButtonLoading({
+                button:review,
+                state:true
+            })
 
             await updateReview({
                 body: {
@@ -127,37 +129,39 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
             setCommunity(community.data);
 
-            setRefreshingData(true)
-
-            setLoading(false);
-
-            setButtonLoading(false);
+            setButtonLoading({
+                button:'',
+                state:false
+            })
 
             toast.success(<Message id="communityState" variables={{ review }} />);
-
-            //  Send to /requests if community was declined
-            review === 'declined' && router.push('/requests')
 
         } catch (error) {
             console.log(error);
 
             toast.error(<Message id="errorOcurred"/>);
 
-            setRefreshingData(false)
-
-            setButtonLoading(false)
+            setButtonLoading({
+                button:'',
+                state:false
+            })
 
             return false;
         }
 
-        setRefreshingData(false)
-
-        setButtonLoading(false)
+        setButtonLoading({
+            button:'',
+            state:false
+        })
     };
 
     return (
-        <ViewContainer isLoading={loading || isLoading || refreshingData}>
-            <Header buttonLoading={buttonLoading} community={community} updateReview={functionUpdateReview}/>
+        <ViewContainer isLoading={loading || isLoading || refreshingPage}>
+            <Header 
+                buttonLoading={buttonLoading}
+                community={community} 
+                updateReview={functionUpdateReview}
+            />
             <CommunityDetails
                 claimsLocation={claimsLocation}
                 community={community}
@@ -170,7 +174,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 ambassador={ambassador}
                 community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
                 managers={managers?.rows}
-                setRefreshingPage={setRefreshingData}
+                setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}
             />
         </ViewContainer>

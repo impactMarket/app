@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
+import kebabCase from 'lodash/kebabCase';
 
 export const getUserMenu = (roles: string[]) => {
     const { userConfig } = usePrismicData();
@@ -11,8 +12,11 @@ export const getUserMenu = (roles: string[]) => {
         const activeRoles: any[] = []
 
         userConfig?.map((prismicData: { uid: string; data: { asideMenuItems: { items: any; }[]; }; }) => 
-            rolesArr?.map(role => 
-                prismicData?.uid === role && activeRoles?.push(prismicData?.data?.asideMenuItems[0]?.items)
+            rolesArr?.map(role => {
+                    const roleKebabCase = kebabCase(role);
+                    
+                    prismicData?.uid === roleKebabCase && activeRoles?.push(prismicData?.data?.asideMenuItems[0]?.items)
+                }
             )
         )
 

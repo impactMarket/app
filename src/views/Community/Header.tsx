@@ -11,21 +11,19 @@ import {
 } from '@impact-market/ui';
 
 import { selectCurrentUser } from '../../state/slices/auth';
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 import Review from './ReviewState'
 import String from '../../libs/Prismic/components/String';
 
-const Header = ({ community, updateReview, buttonLoading }: any) => {
+const Header = ({ buttonLoading, community, updateReview }: any) => {
     const { user } = useSelector(selectCurrentUser);
+    const router = useRouter();
 
     return (
         <>
-
-            <Link href="/communities?type=all" passHref>
-                <a>
-                    <Label content={<String id="back" />} icon="arrowLeft" />
-                </a>
-            </Link>
+            <Box as="a" onClick={() => router.back()}>
+                <Label content={<String id="back" />} icon="arrowLeft" />
+            </Box>
 
             {!!Object.keys(community).length && (
                 <Grid cols={{ sm: 2, xs: 1 }} mt={1}>
