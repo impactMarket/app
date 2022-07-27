@@ -136,7 +136,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         }, 300);
     };
 
-    const cardType = !hasFunds ? 1 : !isClaimable && !claimAllowed ? 0 : 2;
+    const cardType = isClaimable ? (hasFunds ? 2 : 1) : 0    
     const cardIcon = cardType === 0 ? "clock" : cardType === 1 ? "alertCircle" : "coinStack";
     const cardIconState = cardType === 0 ? { warning: true } : cardType === 1 ? { error: true } : { success: true };
     const cardTitle = view.data.claimCardStates[cardType].title;
@@ -149,6 +149,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
             {
                 fundsRemainingDays <= 3 && fundsRemainingDays > 0 &&
                 <Alert icon="alertTriangle" mb={1.5} message={<Message id="communityFundsWillRunOut" medium small variables={{ count: fundsRemainingDays, timeUnit: t("days").toLowerCase() }} />} warning />
+            }
+            {
+                !hasFunds &&
+                <Alert error icon="alertCircle" mb={1.5} message="Community funds have run out" />
             }
             {
                 !auth?.user?.active &&
@@ -173,21 +177,18 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         </Text>
                                         <RichText content={cardMessage} g500 mt={0.5} small variables={{ amount: claimAmountDisplay }}/>
                                     </Box>
-                                    {
-                                        hasFunds &&
                                         <Box margin="0 auto" maxW={22}>
-                                            {
-                                                !isClaimable &&
+                                            {!isClaimable &&
                                                 <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
                                             }
-                                            {
-                                                (isClaimable || claimAllowed) &&
+                                            {((isClaimable || claimAllowed) && hasFunds) &&
                                                 <Button default disabled={loadingButton} isLoading={loadingButton} large onClick={claimFunds}>
                                                     <String id="claim" /> ~{claimAmountDisplay}
                                                 </Button>
-                                            }
+                                            }                                        
                                         </Box>
-                                    }
+                                    
+
                                 </Grid>
                             </Box>
                         </Col>
