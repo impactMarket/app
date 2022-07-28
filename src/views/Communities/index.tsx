@@ -11,7 +11,7 @@ import Filters from './Filters';
 import Header from './Header';
 import capitalize from 'lodash/capitalize';
 import config from '../../../config';
-import useCommunities from './communties';
+import useCommunities from '../../hooks/useCommunties';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 

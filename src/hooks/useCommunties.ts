@@ -9,13 +9,14 @@ const basefilters = {
     name: '',
     offset: 0,
     orderBy: 'bigger:DESC',
-    page: 0,
     status: 'valid',
-    type: 'all'
 };
 
 export default function useCommunities(incomingFilters: any) {
-    const filters = { ...basefilters, ...incomingFilters };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { type = null, page = null, state = null, ...requestFilters } = incomingFilters;
+ 
+    const filters = { ...basefilters, ...requestFilters };
     const queryString = Object.keys(filters)
         .map((key) => `${ key }=${ filters[key] }`)
         .join('&');

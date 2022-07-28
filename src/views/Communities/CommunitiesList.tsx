@@ -9,7 +9,7 @@ import {
 
 import Community from './Community';
 import String from '../../libs/Prismic/components/String';
-import useCommunities from './communties';
+import useCommunities from '../../hooks/useCommunties';
 import useFilters from '../../hooks/useFilters';
 
 const CommunitiesList = (props: any) => {

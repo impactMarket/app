@@ -7,7 +7,7 @@ import Prismic from "../../libs/Prismic/Prismic"
 import config from '../../../config';
 
 export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-    const res = await fetch(`${config.baseApiUrl}/communities?limit=5`);
+    const res = await fetch(`${config.baseApiUrl}/communities?status=valid&limit=5`);
     const data = await res.json();
 
     //  Create dynamic page for each locale

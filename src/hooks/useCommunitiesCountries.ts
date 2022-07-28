@@ -1,9 +1,9 @@
-import { getCountryNameFromInitials } from '../../utils/countries';
+import { getCountryNameFromInitials } from '../utils/countries';
 import useSWR from 'swr';
 
-export default function useCommunitiesCountries() {
+export default function useCommunitiesCountries(status: string) {
     const { data, mutate, error } = useSWR(
-        '/communities/count?groupBy=country'
+        `/communities/count?groupBy=country&status=${status}`
     );
 
     const communitiesCountries = data?.data.map((row: { country: string }) => ({

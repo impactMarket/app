@@ -2,34 +2,39 @@ import { Box, DropdownMenu } from '@impact-market/ui';
 import NameFilter from '../../components/Filters';
 import React from 'react';
 import Select from '../../components/Select';
-import useCommunitiesCountries from "./communitiesCountries";
+import useCommunitiesCountries from "../../hooks/useCommunitiesCountries";
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Filters = ({myCommunityTitle, activeTab}: any) => { 
     const { t } = useTranslations();
     const { getByKey, update } = useFilters();
-    const { communitiesCountries, loadingCountries } = useCommunitiesCountries();
+    const statusFilter = getByKey('status') || 'valid';
+    const { communitiesCountries, loadingCountries } = useCommunitiesCountries(statusFilter.toString());
+
+    const cleanState = (state: string) => (
+        { country: '', offset: 0, state,  status: state }
+    );
 
     const myCommunityItems = [
         {
             icon: 'check',
             onClick: () => {
-                update({ offset: 0, state: 'valid',  status: 'valid' });
+                update(cleanState('valid'));
             },
             title: t('valid')
         },
         {
             icon: 'loader',
             onClick: () => {
-                update({ offset: 0, state: 'pending', status: 'pending' });
+                update(cleanState('pending'));
             },
             title: t('pending')
         },
         {
             icon: 'trash',
             onClick: () => {
-                update({ offset: 0, state: 'removed', status: 'removed' });
+                update(cleanState('removed'));
             },
             title: t('removed')
         }

@@ -15,17 +15,17 @@ export const getStaticProps: GetStaticProps = async ({
     const clientOptions = previewData as ClientConfig;
 
     const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-communities' });
-    const communities = await fetcher('/communities?ambassadorAddress=&country=&limit=8&name=&page=0&offset=0&orderBy=bigger:DESC&status=valid&type=all&state=valid');
+    const communities = await fetcher('/communities?ambassadorAddress=&country=&limit=8&name=&offset=0&orderBy=bigger:DESC&status=valid');
     const claimsArray = await fetcher(`/claims-location`);
-    const communitiesCountries = await fetcher(`/communities/count?groupBy=country`);
+    const communitiesCountries = await fetcher(`/communities/count?groupBy=country&status=valid`);
 
     return {
         props: {
             data,
             fallback: {
                 '/claims-location': claimsArray,
-                '/communities/count?groupBy=country': communitiesCountries,
-                '/communities?ambassadorAddress=&country=&limit=8&name=&offset=0&orderBy=bigger:DESC&page=0&status=valid&type=all': communities
+                '/communities/count?groupBy=country&status=valid': communitiesCountries,
+                '/communities?ambassadorAddress=&country=&limit=8&name=&offset=0&orderBy=bigger:DESC&status=valid': communities
             },
             view: 'communities'  
         }

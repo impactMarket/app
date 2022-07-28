@@ -4,7 +4,7 @@ import {
     Spinner
 } from '@impact-market/ui';
 import Map from '../../components/Map';
-import useClaimsLocation from "./claimsLocation";
+import useClaimsLocation from "../../hooks/useClaimsLocation";
 
 const ClaimsMap = () => {
     const { claimsLocations, loadingClaims } = useClaimsLocation();
