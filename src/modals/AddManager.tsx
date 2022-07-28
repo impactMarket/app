@@ -9,12 +9,12 @@ import {
     useModal
 } from '@impact-market/ui';
 import { SubmitHandler, useForm } from "react-hook-form";
-import { gql, useQuery } from '@apollo/client';
+import { gql, useLazyQuery } from '@apollo/client';
 import { useAmbassador } from '@impact-market/utils/useAmbassador';
 import { useYupValidationResolver, yup } from '../helpers/yup';
 import Input from '../components/Input';
 import Message from '../libs/Prismic/components/Message';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
@@ -34,12 +34,9 @@ const AddManager = () => {
 
     const { handleClose, community } = useModal();
     const { t } = useTranslations();
-    const [managerAddress, setManagerAddress] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
 
-    const { data, loading: dataIsLoading }: any = useQuery(managersQuery, {
-        variables: { id: managerAddress?.toLowerCase() },
-    })
+    const [managerIsValid, { loading: dataIsLoading }]: any = useLazyQuery(managersQuery)
 
     const { handleSubmit, control, formState: { errors } } = useForm({
         defaultValues: {
@@ -50,20 +47,18 @@ const AddManager = () => {
 
     const { addManager } = useAmbassador();
 
-    const onSubmit: SubmitHandler<any> = (submitData: { address?: string }) => setManagerAddress(submitData?.address);
+    const onSubmit: SubmitHandler<any> = async (submitData: { address?: string }) => {
+        const response = await managerIsValid({ variables: { id: submitData?.address } })
 
-    useEffect(() => {
-        if (data?.managerEntities?.length === 0) {
+        if (response?.data?.managerEntities.length === 0) {
             const addManagerFunc = async () => {
                 try {
                     setIsLoading(true)
         
-                    const { status } = await addManager(community?.id, managerAddress);
+                    const { status } = await addManager(community?.id, submitData?.address);
 
                     if(status) {
                         handleClose();
-
-                        setManagerAddress(null)
 
                         setIsLoading(false)
 
@@ -88,14 +83,12 @@ const AddManager = () => {
             addManagerFunc()
         }
 
-        if (!!data?.managerEntities?.length) {
+        if (!!response?.data?.managerEntities.length) {
             //  Todo: delete console.log and change message to "user already in a community"
             console.log('User already in a community!');
             toast.error(<Message id="errorOccurred" />);
         }
-
-    }, [data, community?.id])
-
+    };
 
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
