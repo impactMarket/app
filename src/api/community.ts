@@ -42,11 +42,6 @@ export interface SelectCommunity {
     name: string;
 }
 
-export interface Countries {
-    count: number;
-    country: string;
-}
-
 export interface Reviews {
     count: number;
     review: string;
@@ -148,13 +143,6 @@ interface claimLocations {
     longitude: number;
 }
 
-interface allClaimsLocations {
-    map: any;
-    gps: Object;
-    latitude: number;
-    longitude: number;
-}
-
 interface Promoter {
     category?: string;
     description?: string;
@@ -194,14 +182,6 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: 'communities'
             }),
             transformResponse: (response: { data: Community }) => response.data
-        }),
-        //  Get all communities claims locations
-        getAllClaimsLocations: builder.mutation<allClaimsLocations, void>({
-            query: () => ({
-                method: 'GET',
-                url: `claims-location`
-            }),
-            transformResponse: (response: allClaimsLocations) => response
         }),
         getBeneficiaries: builder.mutation<any, void>({
             query: () => ({
@@ -275,13 +255,6 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: PreSigned }) => response.data
         }),
-        getCountryByCommunities: builder.mutation<Countries[], void>({
-            query: () => ({
-                method: 'GET',
-                url: `communities/count?groupBy=country`
-            }),
-            transformResponse: (response: { data?: Countries[] }) => response.data
-        }),
         getPendingCommunities: builder.mutation<PendingCommunities, {limit: number, offset: number, orderBy?: string}>({
             query: ({limit, offset, orderBy}) => ({
                 method: 'GET',
@@ -331,9 +304,9 @@ export const {
     useCreateCommunityMutation,
     useGetBeneficiariesMutation,
     useGetCommunityMutation,
+    // Replace this in request by the swr getter
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
-    useGetCountryByCommunitiesMutation,
     useGetReviewsCountMutation,
     useGetReviewsByCountryMutation,
     useGetCommunityContractMutation,
@@ -343,7 +316,6 @@ export const {
     useGetCommunityBeneficiariesMutation,
     useGetCommunityPreSignedMutation,
     useGetClaimsLocationsMutation,
-    useGetAllClaimsLocationsMutation,
     useGetPromoterMutation,
     useEditPendingCommunityMutation,
     useEditValidCommunityMutation

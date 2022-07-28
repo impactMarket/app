@@ -14,24 +14,10 @@ import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
 import useWallet from '../../hooks/useWallet';
 
-const Header = ({ activeTab, loading, supportingCommunities, user }: any) => {
+const Header = ({ activeTab, supportingCountries, supportingCommunities, user }: any) => {
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
-
     const { address } = useWallet();
-
-    //  Get how many countries the ambassador is suporting
-    const supportingCountries = () => {
-        const supportingCountries = [] as any
-
-        supportingCommunities?.data?.rows.map((community: any) => {
-            supportingCountries.push(community?.country)
-        })
-
-        const deleteDuplicatedCountries = [...new Set(supportingCountries)];
-
-        return deleteDuplicatedCountries.length
-    }
 
     return (
         <Row>
@@ -42,7 +28,15 @@ const Header = ({ activeTab, loading, supportingCommunities, user }: any) => {
 
                 <Box mt={0.25}>
                     {(user?.roles.includes('ambassador') && activeTab === 'myCommunities') ?
-                        !loading && <RichText content={content} g500 mt={0.25} variables = {{ communities: supportingCommunities?.data?.count, countries: supportingCountries() }} />
+                        <RichText 
+                            content={content} 
+                            g500 
+                            mt={0.25} 
+                            variables = {{ 
+                                communities: supportingCommunities || '0',
+                                countries: supportingCountries?.toString() || '0'
+                            }} 
+                        /> 
                     :
                         <Message
                             g500
