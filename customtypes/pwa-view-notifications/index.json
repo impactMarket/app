@@ -107,6 +107,42 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "message-type2Title": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type2Title",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-type2Description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type2Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-type3Title": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type3Title",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-type3Description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "type3Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
       }
     }
   }

@@ -206,6 +206,22 @@
           "single": "paragraph,strong,em,hyperlink"
         }
       },
+      "form-sections-manager-details": {
+        "type": "Text",
+        "config": {
+          "label": "Manager Details",
+          "placeholder": ""
+        }
+      },
+      "form-sections-basic-profile-data": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Basic Profile Data",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
       "slices2": {
         "type": "Slices",
         "fieldset": "Slice Zone",

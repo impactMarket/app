@@ -971,6 +971,13 @@
         },
         "type": "Text"
       },
+      "string-pleaseTryAgainLater": {
+        "config": {
+          "label": "pleaseTryAgainLater",
+          "placeholder": "Please try again later."
+        },
+        "type": "Text"
+      },
       "string-potentialFraud": {
         "config": {
           "label": "potentialFraud",
@@ -1230,6 +1237,13 @@
         },
         "type": "Text"
       },
+      "string-somethingWentWrong": {
+        "config": {
+          "label": "somethingWentWrong",
+          "placeholder": "Oops! Something went wrong"
+        },
+        "type": "Text"
+      },
       "string-sort": {
         "config": {
           "label": "sort",
@@ -1374,6 +1388,13 @@
         "config": {
           "label": "wallet",
           "placeholder": "Wallet"
+        },
+        "type": "Text"
+      },
+      "string-week": {
+        "config": {
+          "label": "week",
+          "placeholder": "Week"
         },
         "type": "Text"
       },

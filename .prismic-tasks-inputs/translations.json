@@ -137,6 +137,7 @@
   "perDay": "per day",
   "perWeek": "per week",
   "phoneNumber": "Phone number",
+  "pleaseTryAgainLater": "Please try again later.",
   "potentialFraud": "Potential Fraud",
   "present": "Present",
   "previous": "Previous",
@@ -174,6 +175,7 @@
   "sendToReview": "Send to Review",
   "settings": "Settings",
   "share": "Share",
+  "somethingWentWrong": "Oops! Something went wrong",
   "sort": "Sort",
   "stories": "Stories",
   "storyPostText": "Story post text",
@@ -195,12 +197,11 @@
   "votedNo": "Voted No",
   "votedYes": "Voted Yes",
   "wallet": "Wallet",
+  "week": "Week",
   "weekly": "Weekly",
   "writeSomethingHere": "Write something here",
   "years": "years",
   "you": "You",
   "yourBalance": "Your balance",
-  "yourProfilePhoto": "Your profile photo",
-  "somethingWentWrong": "Oops! Something went wrong",
-  "pleaseTryAgainLater": "Please try again later."
+  "yourProfilePhoto": "Your profile photo"
 }

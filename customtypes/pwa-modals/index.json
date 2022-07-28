@@ -526,7 +526,7 @@
           "placeholder": ""
         }
       },
-      "add-beneficiary-valora-error-descri": {
+      "add-beneficiary-valora-error-description": {
         "type": "StructuredText",
         "config": {
           "label": "Valora Error Description",
@@ -535,14 +535,14 @@
           "single": "paragraph,strong,em,hyperlink"
         }
       },
-      "add-beneficiary-community-error-tit": {
+      "add-beneficiary-community-error-title": {
         "type": "Text",
         "config": {
           "label": "Community Error Title",
           "placeholder": ""
         }
       },
-      "add-beneficiary-community-error-des": {
+      "add-beneficiary-community-error-description": {
         "type": "StructuredText",
         "config": {
           "label": "Community Error Description",
