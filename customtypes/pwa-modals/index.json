@@ -494,6 +494,95 @@
           "single": "paragraph,em,hyperlink,strong"
         }
       }
+    },
+    "add-beneficiary": {
+      "add-beneficiary-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "add-beneficiary-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Beneficiary Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "add-beneficiary-label": {
+        "type": "Text",
+        "config": {
+          "label": "Beneficiary Label",
+          "placeholder": ""
+        }
+      },
+      "add-beneficiary-valora-error-title": {
+        "type": "Text",
+        "config": {
+          "label": "Valoar Error Title",
+          "placeholder": ""
+        }
+      },
+      "add-beneficiary-valora-error-descri": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Valora Error Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "add-beneficiary-community-error-tit": {
+        "type": "Text",
+        "config": {
+          "label": "Community Error Title",
+          "placeholder": ""
+        }
+      },
+      "add-beneficiary-community-error-des": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Community Error Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
+    },
+    "add-manager": {
+      "add-manager-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "add-manager-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "add-manager-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": ""
+        }
+      },
+      "add-manager-error-community": {
+        "type": "Text",
+        "config": {
+          "label": "Error Community",
+          "placeholder": ""
+        }
+      }
     }
   }
 }

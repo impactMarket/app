@@ -1754,6 +1754,15 @@
           "single": "paragraph,strong,em,hyperlink"
         }
       },
+      "message-communityFundsHaveRunOut": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityFundsHaveRunOut",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
       "slices1": {
         "type": "Slices",
         "fieldset": "Slice Zone",

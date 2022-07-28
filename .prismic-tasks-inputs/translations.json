@@ -200,5 +200,7 @@
   "years": "years",
   "you": "You",
   "yourBalance": "Your balance",
-  "yourProfilePhoto": "Your profile photo"
+  "yourProfilePhoto": "Your profile photo",
+  "somethingWentWrong": "Oops! Something went wrong",
+  "pleaseTryAgainLater": "Please try again later."
 }
