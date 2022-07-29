@@ -48,8 +48,7 @@ const useFilters = () => {
 
     /**
      * Return all values from a given key
-     * @param {string} key Name of the field
-     * @returns {string | string[] | number | number[]} Returns single or multiple selected values
+     * @returns {string[]} Returns multiple selected values
      */
      const getAllQueryParams = () => query;
 

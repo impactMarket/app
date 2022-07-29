@@ -9,34 +9,24 @@ import {
 
 import Community from './Community';
 import String from '../../libs/Prismic/components/String';
-import useCommunities from '../../hooks/useCommunties';
+import useCommunities from '../../hooks/useCommunities';
 import useFilters from '../../hooks/useFilters';
 
 const CommunitiesList = (props: any) => {
     const { communitiesTabs, filters } = props;
     const { update, getByKey } = useFilters();
-    const { communities, loadingCommunities, pageCount, itemsPerPage } = useCommunities(filters);
-    const evaluateOffset = (page: number) =>
-        (page * itemsPerPage) % communities?.data?.count;
+    const { communities, loadingCommunities, pageCount } = useCommunities(filters);
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
         const currentPage = getByKey('page') ? parseInt(getByKey('page')[0], 10) : 0;
-        let newOffset, newPage;
-
+ 
         if (event.selected >= 0) {
-            newOffset = evaluateOffset(event.selected);
-            newPage = event.selected;
+            update({ page: event.selected });
         } else if (direction === 1 && currentPage > 0) {
-            newPage = currentPage - 1;
-            newOffset = evaluateOffset(newPage);
+            update({ page: currentPage - 1 });
         } else if (direction === 2 && currentPage < pageCount - 1) {
-            newPage = currentPage + 1;
-            newOffset = evaluateOffset(newPage);
-        }
-
-        if (newOffset !== undefined) {
-            update({ offset: newOffset, page: newPage });
+            update({ page: currentPage + 1 });
         }
     };
 

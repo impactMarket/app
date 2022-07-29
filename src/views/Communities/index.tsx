@@ -11,7 +11,7 @@ import Filters from './Filters';
 import Header from './Header';
 import capitalize from 'lodash/capitalize';
 import config from '../../../config';
-import useCommunities from '../../hooks/useCommunties';
+import useCommunities from '../../hooks/useCommunities';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -27,10 +27,7 @@ const Communities = (props: any) => {
     const router = useRouter();
     const { asPath } = router;
     const status = capitalize(statusFilter.toString());
-    const [filters, setFilters] = useState({});
-    const [activeTab, setActiveTab] = useState(
-        getByKey('type') === 'myCommunities' ? 'myCommunities' : 'all'
-    );
+    const [filters, setFilters] = useState({} as any);
     const { communities, supportingCountries } = useCommunities(filters);
 
     if (
@@ -51,26 +48,24 @@ const Communities = (props: any) => {
     }, [asPath]);
 
     const handleClickOnCommunityFilter = (communityFilter: any) => {
+        const resetFilters = {
+            country: '',
+            page: 0,
+            state: 'valid'
+        };
+
         if (communityFilter === 'myCommunities') {
             update({
                 ambassadorAddress: user?.address,
-                offset: 0,
-                page: 0,
-                state: 'valid',
-                status: 'valid',
+                ...resetFilters,
                 type: 'myCommunities'
             });
-            setActiveTab('myCommunities');
         } else {
             update({
                 ambassadorAddress: null,
-                offset: 0,
-                page: 0,
-                state: 'valid',
-                status: 'valid',
+                ...resetFilters,
                 type: 'all'
             });
-            setActiveTab('all');
         }
     };
 
@@ -78,7 +73,7 @@ const Communities = (props: any) => {
         <ViewContainer>
             <SWRConfig value={{ fallback, fetcher }}>
                 <Header
-                    activeTab={activeTab}
+                    activeTab={filters.type}
                     supportingCommunities={communities?.data?.count?.toString()}
                     supportingCountries={supportingCountries}
                     user={user}
@@ -106,8 +101,8 @@ const Communities = (props: any) => {
                     </TabList>
 
                     <Filters
-                        activeTab={activeTab}
                         filterProperty="name"
+                        filters={filters}
                         myCommunityTitle={status}
                     />
 

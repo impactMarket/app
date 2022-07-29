@@ -1,19 +1,21 @@
-import { Box, DropdownMenu } from '@impact-market/ui';
+import { Box, DropdownMenu, Row, Spinner } from '@impact-market/ui';
+import { useState } from 'react';
 import NameFilter from '../../components/Filters';
-import React from 'react';
 import Select from '../../components/Select';
 import useCommunitiesCountries from "../../hooks/useCommunitiesCountries";
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Filters = ({myCommunityTitle, activeTab}: any) => { 
+const Filters = ({myCommunityTitle, filters}: any) => { 
     const { t } = useTranslations();
     const { getByKey, update } = useFilters();
-    const statusFilter = getByKey('status') || 'valid';
-    const { communitiesCountries, loadingCountries } = useCommunitiesCountries(statusFilter.toString());
+    const statusFilter = filters.state || 'valid';
+    const { communitiesCountries, loadingCountries } = useCommunitiesCountries(statusFilter);
+    const countries = getByKey('country') ? (getByKey('country') as string).split(';') : [];
+    const [selectedCountries, setSelectedCountries] = useState(countries);
 
     const cleanState = (state: string) => (
-        { country: '', offset: 0, state,  status: state }
+        { country: '', page: 0, state }
     );
 
     const myCommunityItems = [
@@ -21,6 +23,7 @@ const Filters = ({myCommunityTitle, activeTab}: any) => {
             icon: 'check',
             onClick: () => {
                 update(cleanState('valid'));
+                setSelectedCountries([]);
             },
             title: t('valid')
         },
@@ -28,6 +31,7 @@ const Filters = ({myCommunityTitle, activeTab}: any) => {
             icon: 'loader',
             onClick: () => {
                 update(cleanState('pending'));
+                setSelectedCountries([]);
             },
             title: t('pending')
         },
@@ -35,6 +39,7 @@ const Filters = ({myCommunityTitle, activeTab}: any) => {
             icon: 'trash',
             onClick: () => {
                 update(cleanState('removed'));
+                setSelectedCountries([]);
             },
             title: t('removed')
         }
@@ -42,7 +47,7 @@ const Filters = ({myCommunityTitle, activeTab}: any) => {
 
     return ( 
         <Box fLayout="center start" inlineFlex mt={0.8} w="100%">
-            {activeTab === 'myCommunities' &&
+            {filters.type === 'myCommunities' &&
                 <DropdownMenu
                     asButton
                     headerProps={{
@@ -59,18 +64,28 @@ const Filters = ({myCommunityTitle, activeTab}: any) => {
             }
             <NameFilter margin="0 1 0 0" property="name" />
 
-            {!loadingCountries && <Select
-                callback={
-                    (value: any) => update('country', value?.join(';'))
-                }
-                initialValue={getByKey('country')}
-                isClearable
-                isMultiple
-                options={communitiesCountries}
-                placeholder={`${t('allCountries')} (${communitiesCountries.length})` }
-                showFlag
-                withOptionsSearch
-            />}
+            {!loadingCountries ? (
+                <Select
+                    callback={
+                        (value: any) => {
+                            setSelectedCountries(value);
+                            update('country', value.join(';'));
+                        }
+                    }
+                    initialValue={getByKey('country')}
+                    isClearable
+                    isMultiple
+                    options={communitiesCountries}
+                    placeholder={`${t('allCountries')} (${communitiesCountries.length})` }
+                    showFlag
+                    value={selectedCountries}
+                    withOptionsSearch
+                />
+            ) : ( 
+                <Row fLayout="center" h="0.1" minW="160px">
+                    <Spinner isActive />
+                </Row>
+            )}
         </Box>
     );
 };
