@@ -1,6 +1,4 @@
 import { frequencyToText } from '@impact-market/utils/frequencyToText';
-import { toNumber } from '@impact-market/utils/toNumber';
-import { toToken } from '@impact-market/utils/toToken';
 import config from '../../config';
 
 interface Community {
@@ -19,6 +17,7 @@ interface Contract {
 }
 
 const PROPOSAL_CONSTANTS = {
+    decreaseStep: 0.01,
     dev: {
         maxTranche: 5,
         minTranche: 1
@@ -49,26 +48,26 @@ const generateCommunityProposal = ( community: Community, contract: Contract ) =
     const { ambassadorAddress, requestByAddress, id, name, description } = community;
     const { claimAmount, maxClaim, baseInterval, incrementInterval } = contract;
     const { minTranche, maxTranche } = getTranches();
-    const { maxBeneficiaries, exponential } = PROPOSAL_CONSTANTS;
+    const { maxBeneficiaries, decreaseStep } = PROPOSAL_CONSTANTS;
 
     return {
         ambassador: ambassadorAddress,
         baseInterval,
-        claimAmount,
-        decreaseStep: toToken(0.01),
+        claimAmount: claimAmount.toString(),
+        decreaseStep: (decreaseStep).toString(),
         incrementInterval,
         managers: [requestByAddress],
         maxBeneficiaries,
-        maxClaim,
-        maxTranche: toToken(maxTranche, { EXPONENTIAL_AT: exponential }),
-        minTranche: toToken(minTranche),
+        maxClaim: maxClaim.toString(),
+        maxTranche: maxTranche.toString(),
+        minTranche: minTranche.toString(),
         proposalDescription: `
         ## Description:
         ${description}
 
         UBI Contract Parameters:
-        Claim Amount: ${toNumber(claimAmount)}
-        Max Claim: ${toNumber(maxClaim)}
+        Claim Amount: ${claimAmount}
+        Max Claim: ${maxClaim}
         Base Interval: ${frequencyToText(+baseInterval)}
         Increment Interval: ${incrementInterval} minutes
 

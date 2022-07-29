@@ -17,7 +17,6 @@ import { CommunityContract, useGetCommunityContractMutation } from '../../api/co
 import { currencyFormat } from '../../utils/currencies';
 import { getCountryNameFromInitials } from '../../utils/countries';
 import { selectCurrentUser } from '../../state/slices/auth';
-import { toNumber } from '@impact-market/utils/toNumber';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import CanBeRendered from '../../components/CanBeRendered';
@@ -119,7 +118,7 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
                             </Link>
 
                             <Box pt={1}>    
-                                <RichText content={view.data.messageTotalClaimAmount} variables={{ total: (() => currencyFormat(toNumber(community.contract.maxClaim), localeCurrency)) }}/>
+                                <RichText content={view.data.messageTotalClaimAmount} variables={{ total: (() => currencyFormat(community.contract.maxClaim, localeCurrency)) }}/>
                                 <RichText content={view.data.messageMinutesIncrement} variables={{ minutes: (communityContract?.data?.incrementInterval / 12) }}/>
                             </Box>
 
