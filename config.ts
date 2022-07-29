@@ -69,7 +69,12 @@ const config = {
     /**
      * Google Places Key
      */
-    googlePlacesKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY
+    googlePlacesKey: process.env.NEXT_PUBLIC_GOOGLE_PLACES_KEY,
+
+    /**
+     * Sentry DSN
+     */
+    sentryDSN: process.env.NEXT_PUBLIC_SENTRY_DSN
 };
 
 export default config;

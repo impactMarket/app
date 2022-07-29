@@ -2,6 +2,7 @@
 const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 const localesConfig = require('./locales.config');
+const { withSentryConfig } = require('@sentry/nextjs');
 
 const i18n = {
     defaultLocale:
@@ -39,20 +40,36 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
     enabled: false
 });
 
+const sentryWebpackPluginOptions = {
+    // Additional config options for the Sentry Webpack plugin. Keep in mind that
+    // the following options are set automatically, and overriding them is not
+    // recommended:
+    //   release, url, org, project, authToken, configFile, stripPrefix,
+    //   urlPrefix, include, ignore
+
+    // Suppresses all logs
+    silent: true,
+    // For all available options, see:
+    // https://github.com/getsentry/sentry-webpack-plugin#options.
+};
+
 // https://github.com/GoogleChrome/workbox/issues/1790
 module.exports = withBundleAnalyzer(
-    withPWA({
-        i18n,
-        images,
-        pwa: {
-            dest: 'public',
-            // disabled for better dev experience
-            // eslint-disable-next-line no-process-env
-            disable: process.env.NODE_ENV === 'development',
-            runtimeCaching
-        },
-        redirects,
-        styledComponents: true,
-        webpack
-    })
+    withSentryConfig(
+        withPWA({
+            i18n,
+            images,
+            pwa: {
+                dest: 'public',
+                // disabled for better dev experience
+                // eslint-disable-next-line no-process-env
+                disable: process.env.NODE_ENV === 'development',
+                runtimeCaching
+            },
+            redirects,
+            styledComponents: true,
+            webpack
+        }),
+        sentryWebpackPluginOptions
+    )
 );
