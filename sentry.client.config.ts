@@ -10,8 +10,7 @@ Sentry.init({
   debug: process.env.NODE_ENV === 'development',
   dsn: config.sentryDSN,
   // eslint-disable-next-line no-process-env
-  // process.env.NODE_ENV !== 'development' && config.NEXT_PUBLIC_TESTNET !== 'true',
-  enabled: true,
+  enabled: process.env.NODE_ENV !== 'development' && config.useTestNet !== true,
   // Adjust this value in production, or use tracesSampler for greater control
   tracesSampleRate: 1.0,
 });
