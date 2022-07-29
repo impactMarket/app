@@ -1,3 +1,4 @@
+import * as Sentry from "@sentry/nextjs";
 import {
     Box,
     Button,
@@ -55,7 +56,9 @@ const AddManager = () => {
                 try {
                     setIsLoading(true)
         
+                    Sentry.captureMessage(`addManager ${community?.id} ${submitData?.address}`);
                     const { status } = await addManager(community?.id, submitData?.address);
+
 
                     if(status) {
                         handleClose();
@@ -73,6 +76,8 @@ const AddManager = () => {
                 catch(e) {
                     //  Todo: get error name directly from backend to write a specific message (edward or benardo)
                     console.log(e);
+                    console.log(community?.id, submitData?.address);
+                    Sentry.captureException(e);
 
                     toast.error(<Message id="errorOccurred" />);
 

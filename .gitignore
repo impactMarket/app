@@ -43,3 +43,6 @@ tsconfig.tsbuildinfo
 
 # prismic
 .slicemachine/
+
+# Sentry
+.sentryclirc
