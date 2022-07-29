@@ -39,7 +39,7 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
     const data = await Prismic.getByTypes({
         clientOptions,
         lang,
-        types: 'pwa-view-communities'
+        types: 'pwa-view-community'
     });
 
     //  Dynamic pages
@@ -51,7 +51,7 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
         props: {
             communityData: community?.data,
             data,
-            view: 'communities'
+            view: 'community'
         },
         revalidate: 10
     };
