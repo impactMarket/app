@@ -105,6 +105,13 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "message-communityEdited": {
+        "type": "Text",
+        "config": {
+          "label": "communityEdited",
+          "placeholder": ""
+        }
       }
     }
   }
