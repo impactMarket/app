@@ -3,11 +3,13 @@ import { Box, Button, Card, Col, Display, Divider, DropdownMenu, Row, Text, View
 import { SubmitHandler } from "react-hook-form";
 import { formatAddress } from '../../utils/formatAddress';
 import { getUserName } from '../../utils/users';
+import { registerSignature } from "../../helpers/registerSignature";
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { useDeleteUserMutation, useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
+import { useSignatures } from '@impact-market/utils/useSignatures';
 import AditionalForm from './AditionalForm';
 import ContactForm from './ContactForm';
 import DeleteForm from './DeleteForm';
@@ -49,6 +51,9 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { t } = useTranslations();
+    const { signature } = useSelector(selectCurrentUser);
+    const { signMessage } = useSignatures();
+    const timestamp = new Date().getTime().toString();
 
     const handleDisconnectClick = async () => {
         await disconnect();
@@ -56,7 +61,22 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         return router.push('/');
     }
 
-    const onSubmit: SubmitHandler<any> = async (data) => {
+    const signAndUpdate = async (data: any) => {
+        try {
+            await signMessage(`${config.signatureSecret}_${timestamp}`)
+                .then((signature) => {
+                    registerSignature(signature, timestamp);
+            })
+            update(data);
+
+        } catch (error) {
+            console.log(error);
+            toast.error(<Message id="errorOccurred" />);
+        }
+
+    }
+
+    const update = async (data: any) => {
         try {
             // Replace empty strings with undefined to prevent errors in API
             const payload = _.mapValues(data, v => v === '' ? null : v);
@@ -73,12 +93,25 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             }
         }
         catch(e: any) {
-            console.log(e);
-
-            // TODO: instead of showing the error message directly, use codes in API and translate content in Prismic perhaps
-            if(e?.data?.error) {
-                toast.error(e?.data?.error);
+            if (e?.data?.error?.name === 'EXPIRED_SIGNATURE') {
+                signAndUpdate(data);
+            } else {
+                console.log(e);
+                toast.error(<Message id="errorOccurred" />);
             }
+        }
+    }
+
+    const onSubmit: SubmitHandler<any> = async (data) => {
+        try {
+            if (!signature) {
+                await signAndUpdate(data);
+            } else {
+                update(data);
+            }
+        } catch (error) {
+            console.log(error);
+            toast.error(<Message id="errorOccurred" />);
         }
     };
 

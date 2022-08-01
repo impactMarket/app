@@ -74,7 +74,17 @@ const config = {
     /**
      * Sentry DSN
      */
-    sentryDSN: process.env.NEXT_PUBLIC_SENTRY_DSN
+    sentryDSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
+
+    /**
+     * Number of days until a signature is expired
+     */
+    signatureExpires: process.env.NEXT_PUBLIC_SIGNATURE_EXPIRES,
+
+    /**
+     * Signature hash to confirm signature (has to be in sync with backend)
+     */
+     signatureSecret: process.env.NEXT_PUBLIC_SIGNATURE_SECRET
 };
 
 export default config;
