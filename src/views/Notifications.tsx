@@ -129,10 +129,10 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
             } 
             //  Todo: get texts from prismic
             case 2: { 
-                return 'Manager added';
+                return view?.data?.messageType2Title;
             } 
             case 3: { 
-                return 'Community created';
+                return view?.data?.messageType3Title;
             }
             default: { 
                break; 
@@ -151,10 +151,10 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
             } 
             //  Todo: get texts from prismic
             case 2: { 
-                return 'Manager was added to your community.';
+                return view?.data?.messageType2Description;
             } 
             case 3: { 
-                return 'Community has been successfully created.';
+                return view?.data?.messageType3Description;
             }
             default: { 
                break; 

@@ -14,7 +14,7 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
     const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
-    const { communityImageDescription, communityImageUpload } = extractFromView('formSections') as any;
+    const { communityImageDescription, communityImageUpload, managerDetails, basicProfileData } = extractFromView('formSections') as any;
     
     const handleProfileImage = (event: any) => {
         if(event?.length > 0) {
@@ -23,14 +23,13 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
     };
 
     // TODO: check what link to add and how to add the links in "Learn to choose a photo" text
-    // TODO: add texts to view in Prismic
 
     return (
         <Row>
             <Col colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
                 <Divider margin="1.25 0" show={{ sm: 'none', xs: 'block' }} />
-                <Text g700 medium small>Manager Details</Text>
-                <Text g500 regular small>Complete your basic profile data.</Text>
+                <Text g700 medium small>{managerDetails}</Text>
+                <RichText content={basicProfileData} g700 medium small />
             </Col>
             <Col colSize={{ sm: 8, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
                 <Card padding={1.5}>

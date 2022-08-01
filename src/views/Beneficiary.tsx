@@ -152,7 +152,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
             }
             {
                 !hasFunds &&
-                <Alert error icon="alertCircle" mb={1.5} message="Community funds have run out" />
+                <Alert error icon="alertCircle" mb={1.5} message="communityFundsHaveRunOut"/>
             }
             {
                 !auth?.user?.active &&

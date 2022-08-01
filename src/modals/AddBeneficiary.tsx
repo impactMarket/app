@@ -4,6 +4,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { gql, useQuery } from '@apollo/client';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useManager } from '@impact-market/utils/useManager';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import { useYupValidationResolver, yup } from '../helpers/yup';
 import { userManager } from '../utils/users';
@@ -23,6 +24,14 @@ const beneficiariesQuery = gql`
 `;
 
 const AddBeneficiary = () => {
+    const { modals } = usePrismicData();
+    const { 
+        addBeneficiaryCommunityErrorTitle, 
+        addBeneficiaryCommunityErrorDescription, 
+        addBeneficiaryValoraErrorDescription, 
+        addBeneficiaryValoraErrorTitle
+    } = modals?.data
+
     const schema = yup.object().shape({
         address: yup.string().max(42),
     });
@@ -67,7 +76,6 @@ const AddBeneficiary = () => {
                 try {
                     setIsLoading(true)
 
-                    //  Todo: prismic texts for error messages
                     setError({
                         description: '',
                         state: false,
@@ -90,9 +98,9 @@ const AddBeneficiary = () => {
                             }
                             else {
                                 setError({
-                                    description: 'Please try again later.',
+                                    description: t('pleaseTryAgainLater'),
                                     state: true,
-                                    title:'Oops! Something went wrong'
+                                    title: t('somethingWentWrong')
                                 })
                             }
         
@@ -102,9 +110,9 @@ const AddBeneficiary = () => {
                             console.log(e)
 
                             setError({
-                                description: "Please enter a valid Valora Wallet Address.",
+                                description: addBeneficiaryValoraErrorTitle,
                                 state: true,
-                                title:"User not found."
+                                title: addBeneficiaryValoraErrorDescription
                             })
 
                             return setIsLoading(false)
@@ -116,9 +124,9 @@ const AddBeneficiary = () => {
                     console.log(e);
 
                     setError({
-                        description: 'Please try again later.',
+                        description: t('pleaseTryAgainLater'),
                         state: true,
-                        title:'Oops! Something went wrong'
+                        title: t('somethingWentWrong')
                     })
 
                     return setIsLoading(false);
@@ -130,9 +138,9 @@ const AddBeneficiary = () => {
 
         if (!!data?.beneficiaryEntities?.length) {
             setError({
-                description: 'This beneficiary is already in a community. You can only add beneficiaries with no communities.',
+                description: addBeneficiaryCommunityErrorDescription,
                 state: true,
-                title:'Beneficiary already in a community'
+                title: addBeneficiaryCommunityErrorTitle
             })
         }
 

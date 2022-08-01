@@ -1,4 +1,3 @@
-import * as Sentry from "@sentry/nextjs";
 import {
     Box,
     Button,
@@ -12,6 +11,7 @@ import {
 import { SubmitHandler, useForm } from "react-hook-form";
 import { gql, useLazyQuery } from '@apollo/client';
 import { useAmbassador } from '@impact-market/utils/useAmbassador';
+import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useYupValidationResolver, yup } from '../helpers/yup';
 import Input from '../components/Input';
 import Message from '../libs/Prismic/components/Message';
@@ -29,6 +29,11 @@ const managersQuery = gql`
 `;
 
 const AddManager = () => {
+    const { modals } = usePrismicData();
+    const { addManagerErrorCommunity } = modals.data
+
+    console.log(modals)
+
     const schema = yup.object().shape({
         address: yup.string().max(42),
     });
@@ -56,7 +61,6 @@ const AddManager = () => {
                 try {
                     setIsLoading(true)
         
-                    Sentry.captureMessage(`addManager ${community?.id} ${submitData?.address}`);
                     const { status } = await addManager(community?.id, submitData?.address);
 
 
@@ -77,7 +81,6 @@ const AddManager = () => {
                     //  Todo: get error name directly from backend to write a specific message (edward or benardo)
                     console.log(e);
                     console.log(community?.id, submitData?.address);
-                    Sentry.captureException(e);
 
                     toast.error(<Message id="errorOccurred" />);
 
@@ -89,9 +92,7 @@ const AddManager = () => {
         }
 
         if (!!response?.data?.managerEntities.length) {
-            //  Todo: delete console.log and change message to "user already in a community"
-            console.log('User already in a community!');
-            toast.error(<Message id="errorOccurred" />);
+            toast.error(addManagerErrorCommunity);
         }
     };
 
