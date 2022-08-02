@@ -20,6 +20,7 @@ import Message from '../../libs/Prismic/components/Message';
 import RolesTabs from './RolesTabs';
 
 //  Get community data from thegraph
+//  Temporarily removing non existent fields from the query
 const communityQuery = gql`
 query communityQuery($id: String!) {
     communityEntity(id: $id) {
@@ -27,8 +28,6 @@ query communityQuery($id: String!) {
         beneficiaries
         claimAmount
         maxClaim
-        minTranche
-        maxTranche
         incrementInterval
     }
 }
