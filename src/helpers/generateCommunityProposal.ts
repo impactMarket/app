@@ -1,4 +1,5 @@
 import { frequencyToText } from '@impact-market/utils/frequencyToText';
+import { toToken } from '@impact-market/utils/toToken';
 import config from '../../config';
 
 interface Community {
@@ -48,19 +49,19 @@ const generateCommunityProposal = ( community: Community, contract: Contract ) =
     const { ambassadorAddress, requestByAddress, id, name, description } = community;
     const { claimAmount, maxClaim, baseInterval, incrementInterval } = contract;
     const { minTranche, maxTranche } = getTranches();
-    const { maxBeneficiaries, decreaseStep } = PROPOSAL_CONSTANTS;
+    const { maxBeneficiaries, decreaseStep, exponential } = PROPOSAL_CONSTANTS;
 
     return {
         ambassador: ambassadorAddress,
         baseInterval,
-        claimAmount: claimAmount.toString(),
-        decreaseStep: (decreaseStep).toString(),
+        claimAmount: toToken(claimAmount),
+        decreaseStep: toToken(decreaseStep),
         incrementInterval,
         managers: [requestByAddress],
         maxBeneficiaries,
-        maxClaim: maxClaim.toString(),
-        maxTranche: maxTranche.toString(),
-        minTranche: minTranche.toString(),
+        maxClaim: toToken(maxClaim),
+        maxTranche: toToken(maxTranche , { EXPONENTIAL_AT: exponential }),
+        minTranche: toToken(minTranche),
         proposalDescription: `
         ## Description:
         ${description}
@@ -69,7 +70,7 @@ const generateCommunityProposal = ( community: Community, contract: Contract ) =
         Claim Amount: ${claimAmount}
         Max Claim: ${maxClaim}
         Base Interval: ${frequencyToText(+baseInterval)}
-        Increment Interval: ${incrementInterval} minutes
+        Increment Interval: ${parseInt(incrementInterval, 10) / 12} minutes
 
 
         More details: ${config.baseUrl}/communities/${id}`,
