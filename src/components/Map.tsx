@@ -26,6 +26,7 @@ const MapWrapper = styled.div`
     height: 100%;
     position: relative;
     width: 100%;
+    z-index: 0;
 
     .map-container {
         ${position('absolute')};

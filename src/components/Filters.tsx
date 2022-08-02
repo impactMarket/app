@@ -27,7 +27,7 @@ const Filters = (props: FilterProps) => {
             <Input
                 icon="search"
                 onKeyUp={(e: any) =>
-                    onInputChange(property, e.target.value, 1000)
+                    onInputChange(property, e.target.value, 500)
                 }
                 placeholder={t('searchForName')}
             />

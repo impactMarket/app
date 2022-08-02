@@ -45,6 +45,13 @@ const useFilters = () => {
      */
     const getByKey = (key: string) => query?.[key];
 
+
+    /**
+     * Return all values from a given key
+     * @returns {string[]} Returns multiple selected values
+     */
+     const getAllQueryParams = () => query;
+
     /**
      * Updates the url parameters
      * @param {string | Object} nameOrObject A string as key or an object to append to the query
@@ -70,7 +77,7 @@ const useFilters = () => {
         return callback(queryExtra);
     };
 
-    return { clear, getByKey, isSelected, update };
+    return { clear, getAllQueryParams, getByKey, isSelected, update };
 };
 
 export default useFilters;
