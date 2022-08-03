@@ -90,9 +90,9 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
                     city: data.location?.label?.substring(0, data.location?.label?.lastIndexOf(','))?.trim() || '',
                     contractParams: {
                         baseInterval: frequencyToNumber(data.baseInterval),
-                        claimAmount: (data.claimAmount * 1000000000000000000).toString(),
+                        claimAmount: data.claimAmount.toString(),
                         incrementInterval: data.incrementInterval * 12,
-                        maxClaim: (data.maxClaim * 1000000000000000000).toString()
+                        maxClaim: data.maxClaim.toString()
                     },
                     country: data.location?.country,
                     coverMediaPath: community?.coverMediaPath,
