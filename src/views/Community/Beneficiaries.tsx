@@ -8,10 +8,18 @@ import BeneficiaryCard from '../../components/BeneficiaryCard';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Beneficiaries = ({ data, show }: any) => {
-    const { beneficiaries, claimAmount, maxClaim, incrementInterval, baseInterval } = data;
+    const {
+        beneficiaries = 0,
+        claimAmount = 0,
+        maxClaim = 0,
+        incrementInterval = 0,
+        baseInterval = 0,
+        maxTranche = 0,
+        minTranche= 0 
+    } = data;
     const auth = useSelector(selectCurrentUser);
     const user = auth?.user;
-    const showAmbassadorMetrics = !!data?.minTranche && !!data?.maxTranche && user?.ambassador?.communities.some( (x: any) => x === data.id );
+    const showAmbassadorMetrics = !!minTranche && !!maxTranche && user?.ambassador?.communities.some( (x: any) => x === data.id );
     
     const language = auth?.user?.language || 'en-US';
     const currency = auth?.user?.currency || 'USD';
@@ -35,7 +43,7 @@ const Beneficiaries = ({ data, show }: any) => {
                     <BeneficiaryCard
                         icon="users"
                         label="beneficiaries"
-                        text={data?.beneficiaries}
+                        text={beneficiaries}
                     />
                 )}
                 {!!claimAmount && (
@@ -43,7 +51,7 @@ const Beneficiaries = ({ data, show }: any) => {
                         icon="heart"
                         label="claimPerBeneficiary"
                         text={`${currencyFormat(
-                            data?.claimAmount,
+                            claimAmount,
                             localeCurrency
                         )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('day') : 'Week'}`}
                         // TODO: add above string to translations
@@ -53,14 +61,14 @@ const Beneficiaries = ({ data, show }: any) => {
                     <BeneficiaryCard
                         icon="check"
                         label="maxPerBeneficiary"
-                        text={currencyFormat(data?.maxClaim, localeCurrency)}
+                        text={currencyFormat(maxClaim, localeCurrency)}
                     />
                 )}
                 {!!incrementInterval && (
                     <BeneficiaryCard
                         icon="clock"
                         label="timeIncrement"
-                        text={`${data?.incrementInterval / 12} ${t('minutes')}`}
+                        text={`${incrementInterval / 12} ${t('minutes')}`}
                     />
                 )}
                 {!!showAmbassadorMetrics && (
@@ -68,7 +76,7 @@ const Beneficiaries = ({ data, show }: any) => {
                         <BeneficiaryCard
                             icon="coins"
                             label="trancheMinMax"
-                            text={`${data?.minTranche}/${data?.maxTranche}`}
+                            text={`${minTranche}/${maxTranche}`}
                         />
                     )}
             </Grid>
