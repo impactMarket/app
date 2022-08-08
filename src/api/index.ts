@@ -10,11 +10,16 @@ const baseQuery = retry(
         await fetchBaseQuery({ 
             baseUrl: config.baseApiUrl,
             prepareHeaders: (headers, { getState }) => {
-                const { token } = (getState() as RootState).auth;
+                const { token, signature, message } = (getState() as RootState).auth;
     
                 // If we have a token set in state, let's assume that we should be passing it.
                 if(token) {
                     headers.set('authorization', `Bearer ${token}`);
+                }
+
+                if (signature) {
+                    headers.set('signature', signature);
+                    headers.set('message', message);
                 }
     
                 return headers;

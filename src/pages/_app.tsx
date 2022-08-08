@@ -6,7 +6,7 @@ import { addNotification } from '../state/slices/notifications';
 import { checkCookies, getCookie } from 'cookies-next';
 import { getLocation } from '../utils/position';
 import { setRates } from '../state/slices/rates';
-import { setToken } from '../state/slices/auth';
+import { setSignature, setToken } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useGetExchangeRatesMutation } from '../api/generic';
 import { useGetUnreadNotificationsMutation } from '../api/user';
@@ -107,6 +107,15 @@ const App = (props: AppProps) => {
     if(checkCookies('AUTH_TOKEN')) {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
+
+    if (checkCookies('SIGNATURE')) {
+        store.dispatch(
+            setSignature({
+                message: getCookie('MESSAGE').toString(),
+                signature: getCookie('SIGNATURE').toString(),
+            })
+        );
+    };
 
     return (
         <PrismicDataProvider data={data} url={url} view={view}>
