@@ -94,7 +94,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
                                 mac: 'https://bitkeep.com/download?type=2',
                                 windows: 'https://bitkeep.com/download?type=2',
                             },
-                            chains: ['eip:4220'],
+                            chains: ['eip:42220'],
                             description: 'BitKeep is a decentralized multi-chain digital wallet.',
                             desktop: {
                                 native: 'bitkeep://',
@@ -129,14 +129,58 @@ const WrapperProvider = (props: WithChildrenProps) => {
                             // This is the version of WC. We only support version 1 at the moment.
                             versions: ['1'],
                         },
+                        {
+                            app: {
+                                android: '',
+                                browser: '',
+                                ios: '',
+                                linux: '',
+                                mac: '',
+                                windows: '',
+                            },
+                            chains: ['eip:42220'],
+                            description: 'Your future unlocked.',
+                            desktop: {
+                                native: 'libera://',
+                                universal: 'libera://',
+                            },
+                            homepage: 'https://impactmarket.com/',
+                            id: 'libera-wallet',
+                            logos: {
+                                lg: 'https://dxdwf61ltxjyn.cloudfront.net/eyJidWNrZXQiOiJpbXBhY3RtYXJrZXQtYXBwIiwia2V5Ijoid2FsbGV0LWxvZ28ucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo1MDAsImhlaWdodCI6NTAwLCJmaXQiOiJpbnNpZGUifX0sIm91dHB1dEZvcm1hdCI6ImpwZyJ9',
+                                md: 'https://dxdwf61ltxjyn.cloudfront.net/eyJidWNrZXQiOiJpbXBhY3RtYXJrZXQtYXBwIiwia2V5Ijoid2FsbGV0LWxvZ28ucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo1MDAsImhlaWdodCI6NTAwLCJmaXQiOiJpbnNpZGUifX0sIm91dHB1dEZvcm1hdCI6ImpwZyJ9',
+                                sm: 'https://dxdwf61ltxjyn.cloudfront.net/eyJidWNrZXQiOiJpbXBhY3RtYXJrZXQtYXBwIiwia2V5Ijoid2FsbGV0LWxvZ28ucG5nIiwiZWRpdHMiOnsicmVzaXplIjp7IndpZHRoIjo1MDAsImhlaWdodCI6NTAwLCJmaXQiOiJpbnNpZGUifX0sIm91dHB1dEZvcm1hdCI6ImpwZyJ9',
+                            },
+                            metadata: {
+                                colors: {
+                                    primary: '#fff',
+                                    secondary: '#2E6AFF',
+                                },
+                                shortName: 'Libera',
+                            },
+                            mobile: {
+                                native: 'libera://',
+                                universal: 'libera://'
+                            },
+                            name: 'Libera',
+                            responsive: {
+                                browserFriendly: false,
+                                browserOnly: false,
+                                mobileFriendly: true,
+                                mobileOnly: true,
+                            },
+                            // IMPORTANT
+                            // This is the version of WC. We only support version 1 at the moment.
+                            versions: ['1'],
+                        },
                     ],
                 },
             }}
             dapp={{
                 description: 'Decentralized Poverty Alleviation Protocol',
-                icon: 'https://dzrx8kf1cwjv9.cloudfront.net/impactmarket/PACT_Token_Ticker_Blue@2x.png',
+                icon: 'https://app.impactmarket.com/icon.png',
                 name: 'impactMarket',
-                url: 'https://impactmarket.com'
+                url: 'https://app.impactmarket.com',
             }}
             network={network}
             networks={networks}
