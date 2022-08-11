@@ -1,0 +1,67 @@
+{
+  "id": "pwa-view-community",
+  "label": "[PWA] [View] Community",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "type": "Text",
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        }
+      },
+      "seo-description": {
+        "type": "Text",
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        }
+      },
+      "seo-keywords": {
+        "type": "Text",
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        }
+      },
+      "seo-image": {
+        "type": "Text",
+        "config": {
+          "label": "SEO image",
+          "placeholder": ""
+        }
+      }
+    },
+    "dashboard": {
+      "dashboard-heading": {
+        "type": "Text",
+        "config": {
+          "label": "Dashboard Heading",
+          "placeholder": ""
+        }
+      },
+      "dashboard-text": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Dashboard Text",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "multi": "paragraph,preformatted,strong,em,hyperlink,embed,list-item,o-list-item"
+        }
+      },
+      "dashboardRows": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "chart_row": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}
