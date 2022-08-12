@@ -145,7 +145,7 @@ const OpenStory: React.FC = () => {
         return (
             <>
                 <Row h="100%" margin={0} maxH="100%" pb={0} pr={{sm: 0.5, xs: 0}} w="100%" >
-                    <Col bTopLeftRadius={{sm: 0, xs: 0.5}} bTopRightRadius={{sm: 0, xs: 0.5}} bgColor="g100" colSize={{sm: 7, xs: 12}} fLayout="center" flex  h={{sm: "100%", xs: "50%"}}  padding={0} style={{overflow: "hidden"}}> 
+                    <Col bTopLeftRadius={{sm: 0, xs: 0.5}} bTopRightRadius={{sm: 0, xs: 0.5}} bgColor="g100" colSize={{sm: 7, xs: 12}} fLayout="center" flex  h={{sm: "100%", xs: "50%"}}  padding={0} style={{overflow: "hidden", position:'relative'}}> 
                         <Slider slides={story?.storyMedia}/>
                     </Col>
 
