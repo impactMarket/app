@@ -5,14 +5,17 @@ import React, { useEffect, useRef, useState } from 'react';
 import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
+import useBeneficiaries from '../hooks/useBeneficiaries';
+
 type Partial<BaseTableProps> = {
     [P in keyof BaseTableProps]?: BaseTableProps[P];
 };
 
 type TableProps = {
-    callback: Function;
+    callback?: Function;
     callbackProps?: Object;
     itemsPerPage: number;
+    prefix: string;
     refresh?: Date;
 };
 
@@ -24,107 +27,52 @@ const sortToString = (sort: any) => {
     return '';
 }
 
-const sortToObject = (sort: string) => {
-    if(!!sort && sort.includes(':')) {
-        const parts = sort.split(':');
-
-        return {
-            key: parts[0],
-            sortDesc: parts[1] === 'desc'
-        };
-    }
-
-    return {};
-}
-
 const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
-    const { columns, callback, callbackProps, itemsPerPage, refresh, ...forwardProps } = props; 
+    const { columns, callback, callbackProps, itemsPerPage, prefix, refresh, ...forwardProps } = props; 
 
     const tableRef = useRef<null | HTMLDivElement>(null);
     const [sortKey, setSortKey] = useState({}) as any;
-    const [currentPage, setCurrentPage] = useState(0);
-    const [rows, setRows] = useState([]) as any;
-    const [totalItems, setTotalItems] = useState(0);
-    const [pageCount, setPageCount] = useState(0);
-    const [itemOffset, setItemOffset] = useState(0);
-    const [changed, setChanged] = useState<Date>(new Date());
-    const [loading, setLoading] = useState(true);
-    const [isReady, setReady] = useState(false);
     
     const { t } = useTranslations();
     const { clear, update, getByKey } = useFilters();
+    const page = getByKey('page') ? parseInt(getByKey('page').toString(), 10) : 0;
+    const actualPage = page - 1 >= 0 ? page - 1 : 0;
+    const [itemOffset, setItemOffset] = useState(actualPage * itemsPerPage || 0);
+    const [currentPage, setCurrentPage] = useState(actualPage);
     const router = useRouter();
-    const { asPath, query: { search, state } } = router;
+    const { asPath, query: { search, state } } = router;  
+    
+    const { data, loading } = useBeneficiaries(prefix, {
+        limit: itemsPerPage,
+        offset: itemOffset,
+        orderBy: getByKey('orderBy') ? getByKey('orderBy').toString() : 'since:desc', 
+        state: getByKey('state'),
+        ...callbackProps
+    });
 
-    // On page load, check if there's a page or orderBy in the url and save it to state
     useEffect(() => {
-        if(!!getByKey('page')) {
-            const page = getByKey('page') as any;
+        const page = getByKey('page') ? parseInt(getByKey('page').toString(), 10) : 0;
+        const actualPage = page - 1 >= 0 ? page - 1 : 0;
 
-            setItemOffset((page - 1) * itemsPerPage);
-            setChanged(new Date());
-            setCurrentPage(page - 1);
-        }
-
-        if(!!getByKey('orderBy')) {
-            const orderBy = getByKey('orderBy') as any;
-
-            setSortKey(sortToObject(orderBy));
-        }
-
-        setReady(true);
-    }, []);
+        setItemOffset(actualPage * itemsPerPage || 0);
+    }, [asPath]);
 
     // When filtering the results, the page must reset to the first one
     // Refresh is a variable passed down to force the refresh of the results (If we add a new record for example)
     useEffect(() => {
-        if(isReady && (!!search || !!state)) {
+        if(!!search || !!state) {
             clear('page');
 
             setCurrentPage(0);
             setItemOffset(0);
-            setChanged(new Date());
         }
     }, [search, state, refresh]);
-
-    // Load results
-    useEffect(() => {
-        const init = async () => {
-            try {
-                setLoading(true);
-
-                const filters = asPath.split('?')?.[1];
-                
-                const data = await callback({
-                    filters,
-                    limit: itemsPerPage,
-                    offset: itemOffset,
-                    ...callbackProps
-                }).unwrap();
-
-                setRows(data?.rows || []);
-                setTotalItems(data?.count || 0);
-                setPageCount(Math.ceil(data?.count / itemsPerPage) || 0);
-
-                setLoading(false);
-            }
-            catch (error) {
-                console.log(error);
-
-                setLoading(false);
-            }
-        };
-
-        if(isReady) {
-            init();
-        }
-    }, [itemOffset, changed, asPath, isReady]);    
 
     const handlePageClick = (event: any, direction?: number) => {
         let pageChanged = false;
 
         if (event.selected >= 0) {
-            const newOffset = (event.selected * itemsPerPage) % totalItems;
+            const newOffset = (event.selected * itemsPerPage) % (data?.count || 0);
 
             pageChanged = true;
 
@@ -133,16 +81,16 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
             update('page', event.selected + 1);
         } else if (direction === 1 && currentPage > 0) {
             const newPage = currentPage - 1;
-            const newOffset = (newPage * itemsPerPage) % totalItems;
+            const newOffset = (newPage * itemsPerPage) % (data?.count || 0);
 
             pageChanged = true;
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
             update('page', newPage + 1);
-        } else if (direction === 2 && currentPage < pageCount - 1) {
+        } else if (direction === 2 && currentPage < (data?.count / itemsPerPage) - 1 || 0) {
             const newPage = currentPage + 1;
-            const newOffset = (newPage * itemsPerPage) % totalItems;
+            const newOffset = (newPage * itemsPerPage) % (data?.count || 0);
 
             pageChanged = true;
 
@@ -169,21 +117,21 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
             <BaseTable 
                 columns={columns}
                 handleSort={handleSort}
-                isLoading={loading}
+                isLoading={loading || !data}
                 noResults={t('noResults')}
                 pagination={
                     <Pagination
                         currentPage={currentPage}
-                        disabled={loading}
+                        disabled={false}
                         handlePageClick={handlePageClick}
                         nextIcon="arrowRight"
                         nextLabel={t('next')}
-                        pageCount={pageCount}
+                        pageCount={(data?.count / itemsPerPage) || 0}
                         previousIcon="arrowLeft"
                         previousLabel={t('previous')}
                     />
                 }
-                rows={rows}
+                rows={data?.rows}
                 sortKey={sortKey}
             />
         </Box>

@@ -2,6 +2,7 @@
 import { Alert, Box, Button, CircledIcon, Col, ModalWrapper, Row, Text, toast, useModal } from '@impact-market/ui';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { gql, useQuery } from '@apollo/client';
+import { mutate } from 'swr';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useManager } from '@impact-market/utils/useManager';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -22,6 +23,8 @@ const beneficiariesQuery = gql`
         }
     }
 `;
+
+import { getCommunityBeneficiaries } from '../graph/user';
 
 const AddBeneficiary = () => {
     const { modals } = usePrismicData();
@@ -89,7 +92,10 @@ const AddBeneficiary = () => {
 
                             if(status) {
                                 handleClose();
-        
+
+                                mutate('/communities/beneficiaries?limit=7&offset=0&orderBy=since:desc&state=active');
+                                mutate([getCommunityBeneficiaries, {address: auth?.user?.manager?.community}]);
+
                                 setBeneficiaryAddress(null)
         
                                 setIsLoading(false)
