@@ -62,6 +62,42 @@
           }
         }
       }
+    },
+    "messages": {
+      "message-beneficiariesHelped": {
+        "type": "StructuredText",
+        "config": {
+          "label": "beneficiariesHelped",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-exploreContract": {
+        "type": "StructuredText",
+        "config": {
+          "label": "exploreContract",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityCreated": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityCreated",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-communityEdited": {
+        "type": "Text",
+        "config": {
+          "label": "communityEdited",
+          "placeholder": ""
+        }
+      }
     }
   }
 }

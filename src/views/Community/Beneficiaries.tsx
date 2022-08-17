@@ -39,39 +39,39 @@ const Beneficiaries = ({ data, show }: any) => {
                 order={{ xs: 2 }}
                 show={show}
             >
-                {!!beneficiaries && (
+                {(!!beneficiaries || beneficiaries === 0) && (
                     <BeneficiaryCard
                         icon="users"
                         label="beneficiaries"
                         text={beneficiaries}
                     />
                 )}
-                {!!claimAmount && (
+                {(!!claimAmount || claimAmount === 0) && (
                     <BeneficiaryCard
                         icon="heart"
                         label="claimPerBeneficiary"
                         text={`${currencyFormat(
                             claimAmount,
                             localeCurrency
-                        )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('day') : 'Week'}`}
+                        )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('day') : t('week')}`}
                         // TODO: add above string to translations
                     />
                 )}
-                {!!maxClaim && (
+                {(!!maxClaim || maxClaim === 0) && (
                     <BeneficiaryCard
                         icon="check"
                         label="maxPerBeneficiary"
                         text={currencyFormat(maxClaim, localeCurrency)}
                     />
                 )}
-                {!!incrementInterval && (
+                {(!!incrementInterval || incrementInterval === 0) && (
                     <BeneficiaryCard
                         icon="clock"
                         label="timeIncrement"
-                        text={`${incrementInterval / 12} ${t('minutes')}`}
+                        text={`${(parseFloat((incrementInterval / 12).toFixed(2)))} ${t('minutes')}`}
                     />
                 )}
-                {!!showAmbassadorMetrics && (
+                {(!!showAmbassadorMetrics || showAmbassadorMetrics === 0) && (
                         //  Only show tranche min/max to community's ambassador
                         <BeneficiaryCard
                             icon="coins"

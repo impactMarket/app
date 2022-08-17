@@ -1,5 +1,6 @@
 import {
     Avatar,
+    Box,
     CircledIcon,
     Sidebar as SidebarBase,
     SidebarMenuGroup,
@@ -74,6 +75,7 @@ const getUserType = (user: User) => {
 }
 
 const ConnectButton = (props: any) => {
+    const { push } = useRouter()
     const [isConnecting, setIsConnecting] = useState(false);
 
     const { connect } = useWallet();
@@ -82,9 +84,11 @@ const ConnectButton = (props: any) => {
         setIsConnecting(true);
 
         await connect();
-
+        
         setIsConnecting(false);
-    }
+
+        push('/')
+    }    
 
     return (
         <Button {...props} icon="coins" isLoading={isConnecting} onClick={handleConnectClick} secondary>
@@ -126,7 +130,11 @@ const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
     }, [wrongNetwork]);
 
     if (!address) {
-        return <ConnectButton fluid />
+        return (
+            <Box show={{ md: 'flex', xs: 'none' }}>
+                <ConnectButton fluid />
+            </Box>
+        )
     }
 
     return (
@@ -199,19 +207,22 @@ const Sidebar = () => {
     const handleLogoClick = () => {
         let route = '/';
 
-        if ((user?.roles).includes('beneficiary')) {
+        if ((user?.roles)?.includes('beneficiary')) {
             route = '/beneficiary';
         }
-        else if ((user?.roles).includes('manager')) {
+        else if ((user?.roles)?.includes('manager')) {
             route = '/';
         }
-        else if ((user?.roles).includes('ambassador')) {
+        else if ((user?.roles)?.includes('ambassador')) {
             route = '/requests';
         }
-        else if ((user?.roles).includes('councilMember')) {
+        else if ((user?.roles)?.includes('councilMember')) {
             route = '/proposals';
         }
-        else if ((user?.roles).includes('ambassador')) {
+        else if ((user?.roles)?.includes('ambassador')) {
+            route = '/communities';
+        }
+        else {
             route = '/communities';
         }
 

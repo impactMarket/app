@@ -119,7 +119,7 @@ const UserCard = ({ community, data } : any) => {
                             <Box fLayout="center start" inlineFlex>
                                 <Icon
                                     g500
-                                    icon="mail"
+                                    icon="phone"
                                     margin="0 0.5 0 0"
                                 />
                                 <Box>

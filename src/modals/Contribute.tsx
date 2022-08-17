@@ -96,7 +96,7 @@ const Contribute = () => {
                 return toast.error('error');
             }
 
-            toast.success('success');
+            toast.success('Thanks for your contribution.');
             setApproved(contribution);
             setStep(1);
         } catch (e) {
