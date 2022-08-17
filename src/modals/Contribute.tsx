@@ -188,6 +188,7 @@ const Contribute = () => {
                         </Box>
                     </Box>
                     <Input
+                        // type="numeric"   ADD support for numeric keyboard on UI
                         label="Contribute"
                         mt={0.5}
                         name="value"

@@ -1,7 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Avatar, Box, CircledIcon, Text, TextLink } from '@impact-market/ui';
-import { Community, useGetCommunityBeneficiariesMutation } from '../../api/community';
-import { currencyFormat } from '../../utils/currencies';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
@@ -13,7 +11,7 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
 
-const getColumns = (currency: any) => {
+const getColumns = () => {
     const { t } = useTranslations();
     const router = useRouter();
 
@@ -58,11 +56,13 @@ const getColumns = (currency: any) => {
         },
         {
             minWidth: 8,
-            render: (data: any) => (
-                <Text g500 small>
-                    {currencyFormat(data.claimed, currency)}
-                </Text>
-            ),
+            render: (data: any) => {
+                return (
+                    <Text g500 small>
+                        {data?.claimedFormatted}
+                    </Text>
+                )
+            },
             sortable: true,
             title: t('claimed'),
             value: 'claimed',
@@ -80,24 +80,14 @@ const getColumns = (currency: any) => {
     ];
 };
 
-const BeneficiariesList: React.FC<{ community: Community, refresh: Date }> = props => {
-    const { community, refresh } = props;
-
-    const [getBeneficiaries] = useGetCommunityBeneficiariesMutation();
-
-    // TODO: check if we should use the Currency and Language of the Community here
-    const localeCurrency = new Intl.NumberFormat(community?.language || 'en-US', { 
-        currency: community?.currency || 'USD', 
-        style: 'currency' 
-    });
-
+const BeneficiariesList: React.FC = () => {
     return (
         <Table
-            callback={getBeneficiaries}
-            columns={getColumns(localeCurrency)}
-            itemsPerPage={itemsPerPage}    
+            columns={getColumns()}
+            itemsPerPage={itemsPerPage}
             mt={1.25}
-            refresh={refresh}
+            pb={2}
+            prefix="beneficiaries"
         />
     );
 };
