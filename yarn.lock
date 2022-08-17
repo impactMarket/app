@@ -1969,10 +1969,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.4.9":
-  version "1.4.9"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.4.9.tgz#7cc88626e36576a5fca4a06ecdb6fc76309f4d70"
-  integrity sha512-AJyWEwyKtr/oOxGu0qHkOCGEF1HUQQL0j8oNmY9pwgwip0rOVTzyiguE7MhMnuv5IpFjBAQQxxvTfAO0Wm0Dag==
+"@impact-market/ui@1.5.0":
+  version "1.5.0"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.0.tgz#4b6433fc521637e1362f0a616d6496584a238f18"
+  integrity sha512-g2FAjYaRjtMl8YqbAZJYFT6RumIqG2N3jRFrpeMOG9+M+L6EYM1mQxWvaRWL/2iEH/PBt/ZuMQUABoTfP0m7Qw==
   dependencies:
     polished "^4.1.4"
     react-circle-flags "^0.0.17"
@@ -5454,17 +5454,17 @@ eslint-config-impact-market@impactMarket/eslint-config-impact-market:
   version "2.0.2"
   resolved "https://codeload.github.com/impactMarket/eslint-config-impact-market/tar.gz/b758ccd068ac2e67e81679b80380bb11a7112c20"
   dependencies:
-    "@babel/eslint-parser" "^7.17.0"
-    "@babel/eslint-plugin" "^7.17.7"
-    "@typescript-eslint/eslint-plugin" "^5.20.0"
-    "@typescript-eslint/parser" "^5.20.0"
-    eslint-config-prettier "^8.5.0"
-    eslint-plugin-import "^2.26.0"
+    "@babel/eslint-parser" "^7.12.17"
+    "@babel/eslint-plugin" "^7.12.13"
+    "@typescript-eslint/eslint-plugin" "^5.12.0"
+    "@typescript-eslint/parser" "^5.12.0"
+    eslint-config-prettier "^8.3.0"
+    eslint-plugin-import "^2.23.4"
     eslint-plugin-prettier "^4.0.0"
-    eslint-plugin-react "^7.29.4"
-    eslint-plugin-react-hooks "^4.4.0"
-    eslint-plugin-sort-class-members "^1.14.1"
-    eslint-plugin-sort-imports-es6-autofix "^0.6.0"
+    eslint-plugin-react "^7.24.0"
+    eslint-plugin-react-hooks "^4.2.0"
+    eslint-plugin-sort-class-members "^1.9.0"
+    eslint-plugin-sort-imports-es6-autofix "^0.5.0"
 
 eslint-config-next@12.0.10:
   version "12.0.10"
