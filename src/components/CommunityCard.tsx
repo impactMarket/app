@@ -8,8 +8,8 @@ import {
     Text,
 } from '@impact-market/ui';
 
-import { getCountryNameFromInitials } from '../../utils/countries';
-import Image from '../../components/Image'
+import { getCountryNameFromInitials } from '../utils/countries';
+import Image from './Image'
 import styled from 'styled-components';
 
 const TextWrapper = styled.div`
@@ -25,8 +25,7 @@ const TextWrapper = styled.div`
     } 
 `;
 
-
-const Communities = ({ community }: any) => (
+const CommunityCard = ({ community }: any) => (
         <Link
             href={`/communities/${community.id}`}
             passHref
@@ -77,4 +76,4 @@ const Communities = ({ community }: any) => (
         </Link>
 );
 
-export default Communities;
+export default CommunityCard;

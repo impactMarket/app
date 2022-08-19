@@ -7,7 +7,7 @@ import {
     Tabs
 } from '@impact-market/ui';
 
-import Community from './Community';
+import CommunityCard from '../../components/CommunityCard';
 import String from '../../libs/Prismic/components/String';
 import useCommunities from '../../hooks/useCommunities';
 import useFilters from '../../hooks/useFilters';
@@ -46,7 +46,7 @@ const CommunitiesList = (props: any) => {
                                 ) : (
                                     communities?.data?.rows?.map(
                                         (community: any, key: number) => (
-                                            <Community
+                                            <CommunityCard
                                                 community={community}
                                                 key={key}
                                             />

@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import React, { useState } from 'react';
 
 import {
@@ -14,63 +15,65 @@ import Communities from './Communities'
 import String from '../../libs/Prismic/components/String';
 import useFilters from '../../hooks/useFilters';
 
-const ReviewTabs = ({ communities, loading, allCountries, otherCountries, myCountrySelected, userCountry, setReview, currentPage, handlePageClick, pageCount } : any) => {  
+const ReviewTabs = ({ communities, loading, setReview, currentPage, handlePageClick, pageCount, reviewsCount } : any) => {  
     const { update, getByKey } = useFilters();
     
-    //  Review has 4 states: 'pending', 'accepted', 'claimed', 'declined'
-    const [reviews] = useState(['pending', 'claimed', 'declined']);
-
-    //  Get how many communties there are in each review - My Country
-    const myCountryCommunities = (review: any) => {
-        let myCountryNumberOfReviews = {} as any
-
-        !!Object.keys(allCountries).length && (
-            allCountries.filter((countryName: any) => 
-                userCountry === countryName?.country).map((quantity: any) => (
-                    myCountryNumberOfReviews = quantity
-                )) 
-        )
-        
-        return isNaN(parseInt(myCountryNumberOfReviews[review], 10)) ? 0 : parseInt(myCountryNumberOfReviews[review], 10)
-    }
-
-    //  Get how many communties there are in each review (pending, claimed, declined) - Other Countries
-    const otherCountriesCommunities = (review: any) => {
-        const otherCountriesNumberOfReviews = [] as any
-        
-        !!Object.keys(otherCountries).length && (
-            otherCountries.map((country: any) => (
-                    otherCountriesNumberOfReviews.push(parseInt(country?.[review], 10))
-                )) 
-        )
-        
-        return otherCountriesNumberOfReviews.reduce((a: any, b: any) => a + b, 0)
-    }
+    const [reviews] = useState(['pending', 'claimed', 'declined', 'all']);
 
     const handleClickOnReviewFilter = (review: any) => {
         setReview(review); 
         update('review', review)
     }
 
+    const country = getByKey('country') || null as any;
+    const countries = country?.split(';');
+
+    const countriesStateSum = {
+        all: 0,
+        claimed: 0,
+        declined: 0,
+        pending: 0
+    } as any;
+
+    const countryFilterTabsNumbers = () => {
+        const selectedCountries = [] as any[];
+
+        !!Object.keys(reviewsCount).length && (
+            !!countries?.length ?
+                reviewsCount?.map((countryReview: any) => 
+                    countries?.map((country: any) => countryReview?.country === country && selectedCountries?.push(countryReview))
+                )
+            :
+                reviewsCount?.map((data: any) => selectedCountries?.push(data))
+        )
+
+        selectedCountries?.map((country: any) => {
+            countriesStateSum["claimed"] = countriesStateSum?.claimed + parseInt(country?.claimed, 10)
+            countriesStateSum["declined"] = countriesStateSum?.declined + parseInt(country?.declined, 10)
+            countriesStateSum["pending"] = countriesStateSum?.pending + parseInt(country?.pending, 10)
+            countriesStateSum["all"] = countriesStateSum?.claimed + countriesStateSum?.declined + countriesStateSum?.pending
+        })
+    };
+
+    countryFilterTabsNumbers();
 
     return (
             <Tabs 
                 defaultIndex={
-                    // eslint-disable-next-line no-nested-ternary
                     getByKey('review') === 'pending' ? 0 : 
                     getByKey('review') === 'claimed' ? 1 : 
-                    getByKey('review') === 'declined' && 2
+                    getByKey('review') === 'declined' ? 2 : 
+                    getByKey('review') === 'all' && 3
             }>
                 <TabList>
                     {reviews.map((review, key) => (
                         <Tab
                             key={key}
                             number={
-                                !!myCountrySelected ?
-                                    myCountryCommunities(review)
-                                :
-                                    otherCountriesCommunities(review)
-                                }
+                                !!Object.keys(countriesStateSum).length && (
+                                    countriesStateSum[review]   
+                                )
+                            }
                             onClick={() => handleClickOnReviewFilter(review)}
                             title={<String id={review} />}
                         />
