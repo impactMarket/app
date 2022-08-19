@@ -12,6 +12,7 @@ import {
     TextLink,
     openModal
 } from '@impact-market/ui';
+import { Pagination } from "../../components/Slider/SliderButtons";
 import {
     Story,
     useGetStoriesMutation,
@@ -207,9 +208,15 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                 <Col colSize={{ sm: 10, xs: 11 }} padding={0} pb={1} >
                     <Card mt={1} padding={0}>
                         {story?.storyMedia && (  
-                        <Box onClick={() => update('id', story?.id)} pt="60%" style={{position: 'relative'}} w="100%">
-                            <Image alt="" src={story?.storyMedia[0]} style={{borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem'}} />
-                        </Box>
+                            <Box onClick={() => update('id', story?.id)} pt="60%" style={{position: 'relative'}} w="100%">
+                                <Image alt="" src={story?.storyMedia[0]} style={{borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem'}} />
+                                {story?.storyMedia?.length > 1 &&
+                                    <Pagination
+                                        currentSlide={1}
+                                        slidesLength={story?.storyMedia?.length}
+                                    />
+                                }             
+                            </Box>
                         )}
                         <Row fLayout="between" mt={0.625} pl={1} pr={1}>
                             <Col colSize={{ sm: 6, xs: 12 }} ml={0.625}>

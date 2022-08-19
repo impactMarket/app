@@ -130,10 +130,10 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
     const SocialLinks = ({ socials }: any) => {
         return socials?.map((social: any, index: number) => (
             <SocialLink
-                href={social.url}
-                icon={social.mediaType}
+                href={social?.url}
+                icon={social?.mediaType}
                 key={index}
-                label={social.url}
+                label={social?.url}
             />
         ));
     };

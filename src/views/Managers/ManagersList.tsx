@@ -3,7 +3,6 @@ import { Avatar, Box, CircledIcon, Text, TextLink } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
-import { useGetCommunityManagersMutation } from '../../api/community';
 import React from 'react';
 import String from '../../libs/Prismic/components/String';
 import Table from '../../components/Table';
@@ -68,15 +67,14 @@ const getColumns = () => {
 
 const ManagersList: React.FC<{ community: string }> = props => {
     const { community } = props;
-    const [getManagers] = useGetCommunityManagersMutation();
 
     return (
         <Table
-            callback={getManagers}
             callbackProps={{ community }}
-            columns={getColumns()}    
+            columns={getColumns()}
             itemsPerPage={itemsPerPage}
             mt={1.25}
+            prefix={`${community}/managers`}
         />
     );
 };

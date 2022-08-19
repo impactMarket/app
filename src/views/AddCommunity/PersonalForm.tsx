@@ -14,7 +14,7 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
     const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
-    const { communityImageDescription, communityImageUpload } = extractFromView('formSections') as any;
+    const { communityImageDescription, communityImageUpload, managerDetails, basicProfileData } = extractFromView('formSections') as any;
     
     const handleProfileImage = (event: any) => {
         if(event?.length > 0) {
@@ -29,8 +29,8 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
         <Row>
             <Col colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
                 <Divider margin="1.25 0" show={{ sm: 'none', xs: 'block' }} />
-                <Text g700 medium small>Manager Details</Text>
-                <Text g500 regular small>Complete your basic profile data.</Text>
+                <Text g700 medium small>{managerDetails}</Text>
+                <RichText content={basicProfileData} g700 medium small />
             </Col>
             <Col colSize={{ sm: 8, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
                 <Card padding={1.5}>
@@ -39,7 +39,7 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
                         <Box>
                             <Text g700 mb={0.25} medium small><String id="yourProfilePhoto" /></Text>
                             <RichText content={communityImageDescription} g500 mb={0.5} small />
-                            <InputUpload 
+                            <InputUpload
                                 accept={['image/png', 'image/jpeg']}
                                 control={control}
                                 disabled={isLoading}
@@ -73,14 +73,14 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
                             {
                                 !user?.firstName &&
                                 <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 0, xs: 0.75 }} pt={0}>
-                                    <Input 
+                                    <Input
                                         control={control}
                                         disabled={isLoading}
                                         hint={
-                                            errors?.firstName?.message?.key ? 
-                                            t(errors?.firstName?.message?.key)?.replace('{{ value }}', errors?.firstName?.message?.value) : 
-                                            errors?.firstName ? 
-                                            t('fieldRequired') : 
+                                            errors?.firstName?.message?.key ?
+                                            t(errors?.firstName?.message?.key)?.replace('{{ value }}', errors?.firstName?.message?.value) :
+                                            errors?.firstName ?
+                                            t('fieldRequired') :
                                             ''
                                         }
                                         label={t('firstName')}
@@ -92,14 +92,14 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
                             {
                                 !user?.lastName &&
                                 <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 0, xs: 0.75 }}>
-                                    <Input 
+                                    <Input
                                         control={control}
                                         disabled={isLoading}
                                         hint={
-                                            errors?.lastName?.message?.key ? 
-                                            t(errors?.lastName?.message?.key)?.replace('{{ value }}', errors?.lastName?.message?.value) : 
-                                            errors?.lastName ? 
-                                            t('fieldRequired') : 
+                                            errors?.lastName?.message?.key ?
+                                            t(errors?.lastName?.message?.key)?.replace('{{ value }}', errors?.lastName?.message?.value) :
+                                            errors?.lastName ?
+                                            t('fieldRequired') :
                                             ''
                                         }
                                         label={t('lastName')}
@@ -113,7 +113,7 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
                     {
                         !user?.email &&
                         <Box mt={!user?.avatarMediaPath || !user?.firstName || !user?.lastName ? 1.5 : 0}>
-                            <Input 
+                            <Input
                                 control={control}
                                 disabled={isLoading}
                                 hint={errors?.email ? t('errorEmail') : ''}

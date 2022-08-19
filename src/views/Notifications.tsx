@@ -100,16 +100,24 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     // Redirects
-    const handelPageRedirect = (type: number, contentId: number) => {
+    const handelPageRedirect = (type: number, params: any) => {
+        const data = params?.contentId ? params?.contentId : params?.communityId && params?.communityId
+
         switch(type) { 
             case 0: { 
-                router.push(`/stories?id=${contentId}`);
+                router.push(`/stories?id=${data}`);
                 break;
             } 
-            case 1: 
-            case 2:
+            case 1: { 
+                router.push(`/communities/${data}`);
+                break;
+            }
+            case 2: { 
+                router.push(`/communities/${data}`);
+                break;
+            }
             case 3: { 
-                router.push(`/communities/${contentId}`);
+                router.push(`/communities/${data}`);
                 break;
             } 
             default: { 
@@ -127,12 +135,11 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
             case 1: { 
                 return view?.data?.messageType1Title;
             } 
-            //  Todo: get texts from prismic
             case 2: { 
-                return 'Manager added';
+                return view?.data?.messageType2Title;
             } 
             case 3: { 
-                return 'Community created';
+                return view?.data?.messageType3Title;
             }
             default: { 
                break; 
@@ -149,12 +156,11 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
             case 1: { 
                 return view?.data?.messageType1Description;
             } 
-            //  Todo: get texts from prismic
             case 2: { 
-                return 'Manager was added to your community.';
+                return view?.data?.messageType2Description;;
             } 
             case 3: { 
-                return 'Community has been successfully created.';
+                return view?.data?.messageType3Description;
             }
             default: { 
                break; 
@@ -178,7 +184,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                             <>
                                 <Box bgColor={notification?.read ? "" : "p100"} key={index}>
                                     <Row pl={1} pr={1}>
-                                        <TextLink onClick={() => handelPageRedirect(notification?.type, notification?.params?.communityId)}>
+                                        <TextLink onClick={() => handelPageRedirect(notification?.type, notification?.params)}>
                                             <RichText content={handleTitle(notification?.type)} g700 pb={0} semibold/>
                                         </TextLink>
                                     </Row>

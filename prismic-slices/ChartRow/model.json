@@ -1,0 +1,97 @@
+{
+  "id": "chart_row",
+  "type": "SharedSlice",
+  "name": "ChartRow",
+  "description": "ChartRow",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "ChartRow",
+      "primary": {
+        "heading": {
+          "type": "Text",
+          "config": {
+            "label": "Heading",
+            "placeholder": ""
+          }
+        },
+        "text": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Text",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,em,strong,hyperlink,list-item,o-list-item"
+          }
+        }
+      },
+      "items": {
+        "chart-label": {
+          "type": "Text",
+          "config": {
+            "label": "Chart Label",
+            "placeholder": ""
+          }
+        },
+        "chart-helper": {
+          "type": "Select",
+          "config": {
+            "label": "Chart Helper",
+            "placeholder": "",
+            "options": [
+              "claimed",
+              "claims",
+              "beneficiaries",
+              "contributed",
+              "contributors",
+              "fundingRate",
+              "volume",
+              "transactions",
+              "reach"
+            ]
+          }
+        },
+        "chart-tooltip": {
+          "type": "Text",
+          "config": {
+            "label": "Chart Tooltip",
+            "placeholder": ""
+          }
+        },
+        "chart-type": {
+          "type": "Select",
+          "config": {
+            "label": "Chart Type",
+            "placeholder": "",
+            "options": [
+              "line",
+              "bar"
+            ]
+          }
+        },
+        "currency": {
+          "type": "Boolean",
+          "config": {
+            "label": "Currency",
+            "default_value": false,
+            "placeholder_true": "true",
+            "placeholder_false": "false"
+          }
+        },
+        "percentage": {
+          "type": "Boolean",
+          "config": {
+            "label": "Percentage",
+            "default_value": false,
+            "placeholder_true": "true",
+            "placeholder_false": "false"
+          }
+        }
+      },
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+    }
+  ]
+}

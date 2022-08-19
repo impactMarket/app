@@ -15,6 +15,7 @@ import {
 } from '../../api/community';
 
 import CommunityDetails from './CommunityDetails';
+import Dashboard from './Dashboard';
 import Header from './Header';
 import Message from '../../libs/Prismic/components/Message';
 import RolesTabs from './RolesTabs';
@@ -22,7 +23,7 @@ import RolesTabs from './RolesTabs';
 //  Get community data from thegraph
 //  Temporarily removing non existent fields from the query
 const communityQuery = gql`
-query communityQuery($id: String!) {
+query communityQuery($id: String!, $todayDayId: Int, $daysBefore: Int) {
     communityEntity(id: $id) {
         id
         beneficiaries
@@ -30,8 +31,22 @@ query communityQuery($id: String!) {
         maxClaim
         incrementInterval
     }
+    communityDailyEntities(where: {community: $id, dayId_lte: $todayDayId, dayId_gte: $daysBefore} orderBy: dayId, orderDirection: asc) {
+        beneficiaries
+        claimed
+        claims
+        contributed
+        contributors
+        volume
+        transactions
+        reach
+        fundingRate
+        dayId
+    }
 }
 `;
+
+const daysInterval = 30;
 
 const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props) => {
     const { communityData, isLoading } = props;
@@ -45,8 +60,12 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     const [promoter, setPromoter]= useState({}) as any;
 
     const { data } = useQuery(communityQuery, {
-        variables: { id: communityData?.contractAddress?.toLowerCase() },
-    });
+        variables: { 
+            daysBefore: Math.floor(new Date().getTime()/1000/86400) - daysInterval,
+            id: communityData?.contractAddress?.toLowerCase(), 
+            todayDayId: Math.floor(new Date().getTime()/1000/86400)
+        },
+    });    
 
     const [loading, setLoading] = useState(true);
     const [buttonLoading, setButtonLoading] = useState({
@@ -77,7 +96,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
                 //  Get calims location
                 const claimsLocation = await getClaimsLocation(community?.id).unwrap();
-                
+
                 //  Get community's promoter
                 const promoter = await getPromoter(community?.id).unwrap();
 
@@ -156,9 +175,9 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
     return (
         <ViewContainer isLoading={loading || isLoading || refreshingPage}>
-            <Header 
+            <Header
                 buttonLoading={buttonLoading}
-                community={community} 
+                community={community}
                 updateReview={functionUpdateReview}
             />
             <CommunityDetails
@@ -175,6 +194,10 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 managers={managers?.rows}
                 setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}
+            />
+            <Dashboard 
+                data={data?.communityDailyEntities}
+                daysInterval={daysInterval}
             />
         </ViewContainer>
     );

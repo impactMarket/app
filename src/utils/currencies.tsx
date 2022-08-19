@@ -35,8 +35,8 @@ const defaultCurrency = () => {
     );
 };
 
-export const currencyFormat = (number: number, customCurrency: Intl.NumberFormat = null) => {
-    const rates = useSelector(selectRates);
+export const currencyFormat = (number: number, customCurrency: Intl.NumberFormat = null, rate: any = null) => {
+    const rates = rate || useSelector(selectRates);
     const localeCurrency = customCurrency || defaultCurrency();
     const { currency } = localeCurrency.resolvedOptions();
     

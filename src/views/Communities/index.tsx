@@ -15,7 +15,7 @@ import useCommunities from '../../hooks/useCommunities';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const fetcher = (url: string) => fetch(config.baseApiUrl + url).then((res) => res.json());
+const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
 const Communities = (props: any) => {
     const { fallback } = props;

@@ -96,7 +96,7 @@ const Contribute = () => {
                 return toast.error('error');
             }
 
-            toast.success('success');
+            toast.success('Thanks for your contribution.');
             setApproved(contribution);
             setStep(1);
         } catch (e) {
@@ -188,6 +188,7 @@ const Contribute = () => {
                         </Box>
                     </Box>
                     <Input
+                        // type="numeric"   ADD support for numeric keyboard on UI
                         label="Contribute"
                         mt={0.5}
                         name="value"
