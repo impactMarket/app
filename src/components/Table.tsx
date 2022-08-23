@@ -45,7 +45,8 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
     const { data, loading } = useBeneficiaries(prefix, {
         limit: itemsPerPage,
         offset: itemOffset,
-        orderBy: getByKey('orderBy') ? getByKey('orderBy').toString() : 'since:desc', 
+        orderBy: getByKey('orderBy') ? getByKey('orderBy').toString() : 'since:desc',
+        search: getByKey('search') ? getByKey('search') : '',
         state: getByKey('state'),
         ...callbackProps
     });

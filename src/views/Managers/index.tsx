@@ -31,6 +31,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { update, getByKey } = useFilters();
     const [getCommunity] = useGetCommunityMutation();
 
+
     // Check if current User has access to this page
     if(!auth?.type?.includes(userManager)) {
         router.push('/');
@@ -42,7 +43,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
 
     useEffect(() => {
         if(!getByKey('state')) {
-            router.push('/manager/managers?state=active', undefined, { shallow: true });
+            router.push('/manager/managers?state=0', undefined, { shallow: true });
         }
 
         const init = async () => {
@@ -74,17 +75,17 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
             {
                 communityManagers?.data?.managerEntities?.length > 0 ?
                 <Box mt={0.5}>
-                    <Tabs defaultIndex={getByKey('state') === 'removed' ? 1 : 0}>
+                    <Tabs defaultIndex={getByKey('state') === '1' ? 1 : 0}>
                         <TabList>
                             { /* TODO: check if the "number" calculation is correct */ }
                             <Tab
                                 number={communityManagers?.data?.managerEntities?.filter((elem: any) => elem.state === 0)?.length}
-                                onClick={() => update('state', 'active')}
+                                onClick={() => update('state', '0')}
                                 title={t('added')}
                             />
                             <Tab
                                 number={communityManagers?.data?.managerEntities?.filter((elem: any) => elem.state === 1)?.length}
-                                onClick={() => update('state', 'removed')}
+                                onClick={() => update('state', '1')}
                                 title={t('removed')}
                             />
                         </TabList>
