@@ -20,7 +20,7 @@ import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const UserCard = ({ community, data } : any) => {
+const UserCard = ({ community, data, requestedCommunity } : any) => {
     const { t } = useTranslations();
     const { user } = useSelector(selectCurrentUser);
 
@@ -76,7 +76,7 @@ const UserCard = ({ community, data } : any) => {
                     </Box>
                 </Box>
             }
-            {(data?.since || data?.until) &&
+            {(data?.since || data?.until) ?
                 <Box>
                     <Box fLayout="center start" inlineFlex>
                         <Icon
@@ -89,14 +89,15 @@ const UserCard = ({ community, data } : any) => {
                                 since: dateHelpers.unix(data?.since), 
                                 until: dateHelpers.unix(data?.until) ? dateHelpers.unix(data?.until) : t('present')
                             }} />
-                        </Box>      
-                        
+                        </Box>          
                     </Box>
                 </Box>
+            :
+                ''
             }
             
-            {/* If user is ambassador or manager from this community, show email + phone */}
-            {(!!user?.ambassador?.communities.includes(community?.id) || !!user?.data?.community === community?.id) && (
+            {/* If user is ambassador or manager from this community or this community is in request state, show email + phone */}
+            {(!!user?.ambassador?.communities.includes(community?.id) || user?.manager?.community === community?.id) || requestedCommunity && (
                 <>
                     <Divider/>
                     {data?.email && 

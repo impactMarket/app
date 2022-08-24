@@ -18,10 +18,10 @@ const Communities = ({ communities } : any) => {
 
     return (
         <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }}>
-            {communities.data.count === 0 ?
+            {communities?.data?.count === 0 ?
                 <String id="noCommunities" />
             :
-                communities.data.rows.map(
+                communities?.data?.rows?.map(
                     (community: any, key: number) => (
                         <Link
                             href={`/communities/${community.id}`}

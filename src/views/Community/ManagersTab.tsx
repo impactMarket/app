@@ -19,7 +19,7 @@ import String from '../../libs/Prismic/components/String';
 import UserCard from './UserCard'
 
 
-const Managers = ({ ambassador, community, managers, status, setRefreshingPage } : any) => {
+const Managers = ({ ambassador, community, managers, status, setRefreshingPage, requestedCommunity } : any) => {
     const { removeManager } = useAmbassador();
     const { user } = useSelector(selectCurrentUser);
 
@@ -70,12 +70,11 @@ const Managers = ({ ambassador, community, managers, status, setRefreshingPage }
             :
                 <Grid cols={{ sm: 3, xs: 1 }}>
                     {managers?.map((manager: any, key: number) => (
-                        //  Only show active managers
-                        (manager?.state === 0 || manager?.state === 'active') &&
                             <Card key={key}>
                                 <UserCard
                                     community={community}
                                     data={manager}
+                                    requestedCommunity={requestedCommunity}
                                 />
                                 <CanBeRendered types={['ambassador']}>
                                     {user?.address?.toLowerCase() === ambassador?.address?.toLowerCase() && (

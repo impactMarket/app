@@ -53,7 +53,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const [currentPage, setCurrentPage] = useState(0);
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
 
-    const name = getByKey('name') || null;
+    const search = getByKey('search') || null;
 
     //  Communities
     useEffect(() => {
@@ -67,10 +67,10 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                     country: myCountrySelected ? userCountry : undefined,
                     excludeCountry: myCountrySelected ? undefined : userCountry,
                     limit: itemsPerPage,
-                    name,
                     offset: itemOffset,
                     orderBy: 'updated:DESC',
-                    review
+                    review,
+                    search
                 });
 
                 setCommunities(communities);
@@ -150,7 +150,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 setMyCountrySelected={setMyCountrySelected}
                 userCountry={userCountry}
             />
-            <Filters margin="1.5 0 0 0" maxW={20} property="name" />
+            <Filters margin="1.5 0 0 0" maxW={20} property="search" />
             <ReviewTabs
                 allCountries={allCountries}
                 communities={communities}

@@ -15,7 +15,7 @@ import UserCard from './UserCard'
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const RolesTabs = ({ ambassador, community, managers, status, setRefreshingPage } : any) => {
+const RolesTabs = ({ ambassador, community, managers, status, setRefreshingPage, requestedCommunity } : any) => {
     const { t } = useTranslations();
 
     return (
@@ -40,6 +40,7 @@ const RolesTabs = ({ ambassador, community, managers, status, setRefreshingPage 
                             ambassador={ambassador}
                             community={community}
                             managers={managers}
+                            requestedCommunity={requestedCommunity}
                             setRefreshingPage={setRefreshingPage}
                             status={status}
                         />  
