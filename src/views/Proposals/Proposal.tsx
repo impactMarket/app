@@ -110,9 +110,11 @@ const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
                         <Text g500 pb={0} pr={0} pt={0}>
                             <String id="createdBy" />:
                         </Text>
-                        <Text g500 p600 pl={1} pt={0}>
-                            {proposals.proposer}
-                        </Text>
+                        <Box style={{padding: 0}}>
+                            <Text g500 p600 pl={1} pt={0}>
+                                {proposals.proposer}
+                            </Text>
+                        </Box>
                     </Row>
                 </Col>
 

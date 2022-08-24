@@ -50,7 +50,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
 
     useEffect(() => {
         if(!getByKey('state')) {
-            router.push('/manager/beneficiaries?state=0&orderBy=since%3Adesc', undefined, { shallow: true });
+            router.push('/manager/beneficiaries?state=0&orderBy=since:desc', undefined, { shallow: true });
         }
     }, []);
 

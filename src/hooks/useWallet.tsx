@@ -58,6 +58,8 @@ const useWallet = () => {
 
             dispatch(removeCredentials());
             removeCookies('AUTH_TOKEN', { path: '/' });
+            removeCookies('SIGNATURE', { path: '/' });
+            removeCookies('MESSAGE', { path: '/' });
 
             if (!!callback) {
                 await callback();

@@ -42,7 +42,7 @@ const Dashboard = ({ data: thegraphData, daysInterval }: any) => {
         for (let index = 0; index < daysInterval; index++) {
             const dayId = (Math.floor(new Date().getTime()/1000/86400) - daysInterval) + index
 
-            if (dayArray.includes(dayId)) {
+            if (dayArray?.includes(dayId)) {
                 emptyDays.push(thegraphData[i])
                 i++
                 x++
