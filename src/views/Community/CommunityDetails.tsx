@@ -216,6 +216,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                         <DonateCard
                             backers={contributors}
                             beneficiariesNumber={beneficiaries.toString()}
+                            community={community?.id?.toString()}
                             contractAddress={contractAddress}
                             goal={maxClaim * beneficiaries}
                             raised={contributed}

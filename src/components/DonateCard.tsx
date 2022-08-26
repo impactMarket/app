@@ -14,6 +14,7 @@ import {
 import { currencyFormat } from '../utils/currencies';
 import { formatAddress } from '../utils/formatAddress';
 import { formatPercentage } from '../utils/percentages';
+import { useGetCommunityCampaignMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 
 import ProgressBar from './ProgressBar';
@@ -24,11 +25,12 @@ import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 interface DonateCardProps {
-    raised: number;
-    goal: number;
-    contractAddress: string;
-    beneficiariesNumber: number;
     backers: number;
+    beneficiariesNumber: number;
+    community: string;
+    contractAddress: string;
+    goal: number;
+    raised: number;
     type: string;
     action: () => void;
 }
@@ -41,6 +43,7 @@ const DonateCard = (props: DonateCardProps) => {
         beneficiariesNumber,
         backers,
         type,
+        community,
         action
     } = props;
 
@@ -50,6 +53,31 @@ const DonateCard = (props: DonateCardProps) => {
     const { getByKey } = useFilters();
     const { asPath } = useRouter();
     const quotient = raised / goal || 0;
+    const [campaignUrl, setCampaignUrl] = useState('');
+    const [getCommunityCampaign] = useGetCommunityCampaignMutation();
+
+    useEffect(() => {
+        const getData = async () => {
+            try {
+                //  Get community's campaign URL
+                const communityCampaign = await getCommunityCampaign(community).unwrap() as any;
+
+                setCampaignUrl(communityCampaign?.data?.campaignUrl);
+            } catch (error) {
+                console.log(error);
+            }
+        }
+
+        getData()
+    }, []);
+
+    const handleMiscDonationClick = () => {
+        if (!window) {
+            return;
+        }
+
+        window.open(campaignUrl, '_blank');
+    };
 
     useEffect(() => {
         return () => {
@@ -94,6 +122,33 @@ const DonateCard = (props: DonateCardProps) => {
                     </Text>
                 </Button>
             </Box>
+            {/* Add texts on Prismic  */}
+            {!!campaignUrl &&
+                <Box tAlign="center">
+                    <Text g500 mt={0.5} small>
+                        <String id="or" />
+                    </Text>
+                    <Button
+                        fluid
+                        gray
+                        mt={0.5}
+                        onClick={handleMiscDonationClick}
+                    >
+                        <Text medium w="100%">
+                            <String id="creditCard" />
+                        </Text>
+                    </Button>
+                    <Box fLayout="center" inlineFlex mt={0.5}>
+                        <Text extrasmall g500 mr={0.25}>
+                            <String id="poweredBy" />
+                        </Text>
+                        <a href="https://esolidar.com" rel="noreferrer noopener" target="_blank">
+                            {/* eslint-disable-next-line @next/next/no-img-element */}
+                            <img alt="e-solidar logo" height="14px" src="/img/partners/esolidar.svg" width="65px" />
+                        </a>
+                    </Box>
+                </Box>
+            }
             <Box fLayout="between" flex mt={1}>
                 <Box left>
                     <Text g500 left mt={1} small>
