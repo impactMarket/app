@@ -127,7 +127,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         getData()
     }, [refreshingPage]);
 
-
+    
     //  Update community review state and get new data
     const functionUpdateReview = async (review: string) => {
         try {
@@ -192,6 +192,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 ambassador={ambassador}
                 community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
                 managers={managers?.rows}
+                requestedCommunity={!(!!data?.communityEntity)}
                 setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}
             />
