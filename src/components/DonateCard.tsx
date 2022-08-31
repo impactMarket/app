@@ -109,7 +109,7 @@ const DonateCard = (props: DonateCardProps) => {
             <Box fLayout="between" flex>
                 <Box left>
                     <Text g900 semibold small>
-                        {currencyFormat(raised)} ({formatPercentage(quotient)})
+                        {currencyFormat(raised)} ({formatPercentage(Number.isFinite(quotient) ? quotient : 0)})
                     </Text>
                 </Box>
                 <Box right>
@@ -133,11 +133,11 @@ const DonateCard = (props: DonateCardProps) => {
             />
             <Box center>
                 <TextLink
-                    href={config.explorerUrl?.replace(
+                    large
+                    onClick={() => window.open(config.explorerUrl?.replace(
                         '#USER#',
                         contractAddress
-                    )}
-                    large
+                    ))}
                     p600
                     semibold
                 >

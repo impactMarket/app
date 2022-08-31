@@ -127,7 +127,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
                         handlePageClick={handlePageClick}
                         nextIcon="arrowRight"
                         nextLabel={t('next')}
-                        pageCount={(data?.count / itemsPerPage) || 0}
+                        pageCount={Math.ceil(data?.count / itemsPerPage) || 0}
                         previousIcon="arrowLeft"
                         previousLabel={t('previous')}
                     />

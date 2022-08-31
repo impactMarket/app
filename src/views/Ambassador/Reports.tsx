@@ -97,7 +97,7 @@ const Reports: React.FC<{ isLoading?: boolean }> = props => {
 
   return (
     <ViewContainer isLoading={isLoading || loading}> 
-        <Box as="a" onClick={() => router.back()}>
+        <Box as="a" onClick={() => router.push('/ambassador')}>
             <Label content={<String id="back" />} icon="arrowLeft" />
         </Box>
         <RichText content={view.data.headingTitle} extralarge medium pt={2}/>

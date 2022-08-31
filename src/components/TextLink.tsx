@@ -15,7 +15,7 @@ const TextLink = (props: TextLinkProps) => {
 
     return (
         <Wrapper {...wrapperProps as any}>
-            <TLink {...forwardProps as any} />;
+            <TLink {...forwardProps as any} />
         </Wrapper>
     )
 }

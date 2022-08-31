@@ -10,9 +10,9 @@ import {
 import { dateHelpers } from '../../helpers/dateHelpers';
 import styled from 'styled-components';
 
-import Beneficiaries from './Beneficiaries';
 import DonateCard from '../../components/DonateCard';
 import Image from '../../components/Image';
+import InfoCards from './InfoCards';
 import Map from '../../components/Map';
 import Organization from '../../components/Organization';
 import SocialLink from '../../components/SocialLink';
@@ -176,7 +176,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                         </Box>
                     </Col>
                 </Row>
-                <Beneficiaries data={{...data, baseInterval}} show={{ sm: 'flex', xs: 'none' }} />
+                <InfoCards data={{...data, baseInterval}} show={{ sm: 'flex', xs: 'none' }} />
             </CommunityWrapper>
 
             <Row mt={{sm: 1, xs: 2}}>
@@ -211,7 +211,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                 </Col>
 
                 <Col colSize={{ sm: 4, xs: 12 }} fDirection={{ xs: 'column' }} flex pl={{ sm: 0 }}>
-                    <Beneficiaries data={{...data, baseInterval}} show={{ sm: 'none', xs: 'flex' }} />
+                    <InfoCards data={{...data, baseInterval}} show={{ sm: 'none', xs: 'flex' }} />
                     {(status !== 'pending' || (status === 'pending' && hasNoProposal && isCouncilMember)) && (
                         <DonateCard
                             backers={contributors}

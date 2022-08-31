@@ -4,10 +4,10 @@ import { Grid } from '@impact-market/ui';
 import { currencyFormat } from '../../utils/currencies';
 import { selectCurrentUser } from '../../state/slices/auth';
 
-import BeneficiaryCard from '../../components/BeneficiaryCard';
+import InfoCard from '../../components/InfoCard';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Beneficiaries = ({ data, show }: any) => {
+const InfoCards = ({ data, show }: any) => {
     const {
         beneficiaries = 0,
         claimAmount = 0,
@@ -40,14 +40,14 @@ const Beneficiaries = ({ data, show }: any) => {
                 show={show}
             >
                 {(!!beneficiaries || beneficiaries === 0) && (
-                    <BeneficiaryCard
+                    <InfoCard
                         icon="users"
                         label="beneficiaries"
                         text={beneficiaries}
                     />
                 )}
                 {(!!claimAmount || claimAmount === 0) && (
-                    <BeneficiaryCard
+                    <InfoCard
                         icon="heart"
                         label="claimPerBeneficiary"
                         text={`${currencyFormat(
@@ -58,14 +58,14 @@ const Beneficiaries = ({ data, show }: any) => {
                     />
                 )}
                 {(!!maxClaim || maxClaim === 0) && (
-                    <BeneficiaryCard
+                    <InfoCard
                         icon="check"
                         label="maxPerBeneficiary"
                         text={currencyFormat(maxClaim, localeCurrency)}
                     />
                 )}
                 {(!!incrementInterval || incrementInterval === 0) && (
-                    <BeneficiaryCard
+                    <InfoCard
                         icon="clock"
                         label="timeIncrement"
                         text={`${(parseFloat((incrementInterval / 12).toFixed(2)))} ${t('minutes')}`}
@@ -73,7 +73,7 @@ const Beneficiaries = ({ data, show }: any) => {
                 )}
                 {(!!showAmbassadorMetrics || showAmbassadorMetrics === 0) && (
                         //  Only show tranche min/max to community's ambassador
-                        <BeneficiaryCard
+                        <InfoCard
                             icon="coins"
                             label="trancheMinMax"
                             text={`${minTranche}/${maxTranche}`}
@@ -84,4 +84,4 @@ const Beneficiaries = ({ data, show }: any) => {
     );
 };
 
-export default Beneficiaries;
+export default InfoCards;
