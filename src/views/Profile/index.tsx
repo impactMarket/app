@@ -63,9 +63,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
     const signAndUpdate = async (data: any) => {
         try {
-            await signMessage(`${config.signatureSecret}_${timestamp}`)
+            const messageToSign = `I prove my identity by signing this. Current timestamp is ${timestamp}`;
+
+            await signMessage(messageToSign)
                 .then((signature) => {
-                    registerSignature(signature, timestamp);
+                    registerSignature(signature, messageToSign);
             })
             update(data);
 
