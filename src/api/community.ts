@@ -156,6 +156,12 @@ interface Promoter {
     }]
 }
 
+export interface CommunityCampaign {
+    id: number;
+    communityId: number;
+    campaignUrl: string;  
+};
+
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -231,6 +237,10 @@ export const communityApi = emptySplitApi.injectEndpoints({
         }),
         getCommunityById: builder.query<CommunityContract, string>({
             query: id => `communities/${id}`
+        }),
+        //  Get community campaign URL
+        getCommunityCampaign: builder.mutation<CommunityCampaign, string>({
+            query: (id: string) =>  `communities/${id}/campaign`
         }),
         //  Get single community contract
         getCommunityContract: builder.mutation<CommunityContract, { id: any }>({
@@ -318,5 +328,6 @@ export const {
     useGetClaimsLocationsMutation,
     useGetPromoterMutation,
     useEditPendingCommunityMutation,
-    useEditValidCommunityMutation
+    useEditValidCommunityMutation,
+    useGetCommunityCampaignMutation
 } = communityApi;

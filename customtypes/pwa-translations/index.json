@@ -5,6 +5,13 @@
   "status": true,
   "json": {
     "strings": {
+      "string-Or": {
+        "config": {
+          "label": "Or",
+          "placeholder": "Or"
+        },
+        "type": "Text"
+      },
       "string-accept": {
         "config": {
           "label": "accept",
@@ -394,6 +401,13 @@
         "config": {
           "label": "createdBy",
           "placeholder": "Created by"
+        },
+        "type": "Text"
+      },
+      "string-creditCard": {
+        "config": {
+          "label": "creditCard",
+          "placeholder": "Credit Card · Paypal · BTC · ETH"
         },
         "type": "Text"
       },
@@ -982,6 +996,13 @@
         "config": {
           "label": "potentialFraud",
           "placeholder": "Potential Fraud"
+        },
+        "type": "Text"
+      },
+      "string-poweredBy": {
+        "config": {
+          "label": "poweredBy",
+          "placeholder": "Powered by"
         },
         "type": "Text"
       },
