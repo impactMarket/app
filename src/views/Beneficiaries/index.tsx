@@ -73,7 +73,12 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
             {
                 data?.beneficiaryEntities?.length > 0 && !loadingCommunity ?
                 <Box mt={0.5}>
-                    <Tabs defaultIndex={getByKey('state') === 'removed' ? 1 : 0}>
+                    <Tabs defaultIndex={
+                        // eslint-disable-next-line no-nested-ternary
+                        getByKey('state') === '0' ? 0 : 
+                        getByKey('state') === '1' ? 1 : 
+                        getByKey('state') === '2' && 2
+                    }>
                         <TabList>
                             { /* TODO: check if the "number" calculation is correct */ }
                             <Tab

@@ -10,7 +10,7 @@ interface Props {
     icon: string;
 }
 
-const BeneficiaryCard: React.FC<Props> = (props) => {
+const InfoCard: React.FC<Props> = (props) => {
     const { label, icon, text } = props;
 
     return (
@@ -20,9 +20,11 @@ const BeneficiaryCard: React.FC<Props> = (props) => {
                     <String id={label} />
                 </Text>
                 <Box fLayout="end between" flex>
-                    <Text g900 medium semibold>
-                        {text}
-                    </Text>
+                    <Box>
+                        <Text g900 medium semibold>
+                            {text}
+                        </Text>
+                    </Box>
                     <Box right>
                         <PulseIcon
                             bgS100
@@ -38,4 +40,4 @@ const BeneficiaryCard: React.FC<Props> = (props) => {
     );
 };
 
-export default BeneficiaryCard;
+export default InfoCard;

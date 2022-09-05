@@ -100,7 +100,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     // Redirects
-    const handelPageRedirect = (type: number, params: any) => {
+    const handlePageRedirect = (type: number, params: any) => {
         const data = params?.contentId ? params?.contentId : params?.communityId && params?.communityId
 
         switch(type) { 
@@ -184,7 +184,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                             <>
                                 <Box bgColor={notification?.read ? "" : "p100"} key={index}>
                                     <Row pl={1} pr={1}>
-                                        <TextLink onClick={() => handelPageRedirect(notification?.type, notification?.params)}>
+                                        <TextLink onClick={() => handlePageRedirect(notification?.type, notification?.params)}>
                                             <RichText content={handleTitle(notification?.type)} g700 pb={0} semibold/>
                                         </TextLink>
                                     </Row>

@@ -161,8 +161,17 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
             <Display g900 medium>
                 {title}
             </Display>
-            { /* TODO: add TextLink for the CommunityLink component, once we have the Community page working */ }
-            <RichText components={{ OpenRulesModal: ({ children }: any) => <TextLink onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</TextLink> }} content={content} g500 mt={0.25} variables={{ community: community?.name }} />
+            <RichText 
+                components={{ 
+                    CommunityLink: ({ children }: any) => <TextLink onClick={() => router.push(`/communities/${community?.id}`)}>{children}</TextLink>,
+                    OpenRulesModal: ({ children }: any) =>
+                        <TextLink onClick={() => openModal('communityRules', { communityName: community?.name })}>{children}</TextLink>
+                }} 
+                content={content} 
+                g500 
+                mt={0.25} 
+                variables={{ community: community?.name }} 
+            />
              {
                 auth?.user?.active &&
                 <Card mt={2}>
