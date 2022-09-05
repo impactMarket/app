@@ -22,6 +22,11 @@ const config = {
     networkRpcUrl: process.env.NEXT_PUBLIC_NETWORK_JSON_RPC!,
 
     /*
+     * Network Id
+     */
+    chainId: parseInt(process.env.NEXT_PUBLIC_NETWORK_ID!, 10),
+
+    /*
      * Network jSON RPC
      */
     useTestNet: process.env.NEXT_PUBLIC_TESTNET === "true",

@@ -1,7 +1,6 @@
 import '@celo/react-celo/lib/styles.css';
 import { Alfajores, CeloProvider, Mainnet, Network, useCelo } from '@celo/react-celo';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
-import { provider } from '../helpers';
 import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
 import config from '../../config';
@@ -63,16 +62,15 @@ const KitWrapper = (props: WithChildrenProps) => {
 
 const WrapperProvider = (props: WithChildrenProps) => {
     const { children } = props;
-    const [network, setNetwork] = useState() as any;
+    const [network, setNetwork] = useState<Network | undefined>();
 
-    const networks = [Mainnet, Alfajores];
+    const networks = [
+        { ...Mainnet, rpcUrl: config.networkRpcUrl },
+        { ...Alfajores, rpcUrl: config.networkRpcUrl }
+    ];
 
     useEffect(() => {
-        const lastUsedNetworkName = window.localStorage.getItem('react-celo/last-used-network');
-        const defaultNetwork = networks.find(({ rpcUrl }: any) => rpcUrl === provider.connection.url);
-        const network = networks.find(({ name }: any) => name === lastUsedNetworkName) || defaultNetwork;
-
-        setNetwork(network);
+        setNetwork(networks.find((n) => n.chainId === config.chainId));
     }, []);
 
     if (!network) {
