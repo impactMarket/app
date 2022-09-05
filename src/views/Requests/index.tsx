@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import { useRouter } from 'next/router'
-import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 
 import {
@@ -8,45 +7,38 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 
-import { selectCurrentUser } from '../../state/slices/auth';
-import { useGetCommunitiesMutation, useGetReviewsByCountryMutation } from '../../api/community';
+import { useGetCommunitiesMutation } from '../../api/community';
 
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import CountryTabs from './CountryTabs';
-import Filters from '../../components/Filters';
+import Filters from './Filters';
 import ReviewTabs from './ReviewTabs';
 import RichText from '../../libs/Prismic/components/RichText';
+import config from '../../../config';
+import useCommunitiesReviewsByCountry from "../../hooks/useCommunitiesReviewsByCountry";
 import useFilters from '../../hooks/useFilters';
 
 const itemsPerPage = 8;
 
+const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
+
 const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
-    const { user } = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
     const { asPath } = useRouter();
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
 
+    const [reviews] = useState(['pending', 'claimed', 'declined']);
+
     const [loadingCommunities, setLoadingCommunities] = useState(false);
-    const [numbersLoading, setNumbersLoading] = useState(false);
 
     const [communities, setCommunities] = useState({}) as any;
-    const [myCountrySelected, setMyCountrySelected] = useState(
-        getByKey('country') === 'mycountry' ? true :
-        getByKey('country') !== 'othercountries'
-    );
     const [review, setReview] = useState(
         getByKey('review') || 'pending'
     );
-    
-    const [userCountry] = useState(user?.country) as any
-    const [allCountries, setAllCountries] = useState({}) as any
-    const [otherCountries, setOtherCountries] = useState({}) as any
 
     const [getCommunities] = useGetCommunitiesMutation();
-    const [getReviewsByCountry] = useGetReviewsByCountryMutation()
 
     // Pagination
     const [itemOffset, setItemOffset] = useState(0);
@@ -54,22 +46,20 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const pageCount = Math.ceil(communities?.data?.count / itemsPerPage);
 
     const search = getByKey('search') || null;
+    const country = getByKey('country') || null as any;
 
     //  Communities
     useEffect(() => {
         const communities = async () => {
-            const userCountry = user?.country?.toUpperCase() || 0;
-
             try {
                 setLoadingCommunities(true);
 
                 const communities = await getCommunities({
-                    country: myCountrySelected ? userCountry : undefined,
-                    excludeCountry: myCountrySelected ? undefined : userCountry,
+                    country,
                     limit: itemsPerPage,
                     offset: itemOffset,
                     orderBy: 'updated:DESC',
-                    review,
+                    review: review === 'all' ? reviews.map(review => review) : review,
                     search
                 });
 
@@ -84,36 +74,10 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
         };
 
         communities();
-    }, [myCountrySelected, review, itemOffset, asPath]);
+    }, [review, itemOffset, asPath]);
 
-    //  Tabs (countries and review) numbers
-    useEffect(() => {
-        const tabsNumber = async () => {
-            try {
-                setNumbersLoading(true)
-                
-                //  Number for tabs
-                const allCountries = await getReviewsByCountry({
-                    status: "pending",
-                }).unwrap()
-                const otherCountries = await getReviewsByCountry({
-                    excludeCountry: userCountry,
-                    status: "pending"
-                }).unwrap()
-
-                setAllCountries(allCountries)
-                setOtherCountries(otherCountries)
-
-                setNumbersLoading(false)
-            } catch (error) {
-                console.log(error);
-
-                return false;
-            }
-        };
-
-        tabsNumber();
-    }, []);
+    //  Filter countries and tabs numbers
+    const { data: reviewsByCountryCount, loadingCountries: numbersLoading } = useCommunitiesReviewsByCountry('pending', fetcher);
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {        
@@ -136,32 +100,22 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
             setCurrentPage(newPage);
         }
     };
-
         
     return (
-        <ViewContainer isLoading={isLoading|| numbersLoading}>
+        <ViewContainer isLoading={isLoading || numbersLoading}>
             <Display g900 medium>
                 {title}
             </Display>
             <RichText content={content} g500 mt={0.25} />
-            <CountryTabs 
-                allCountries={allCountries}
-                otherCountries={otherCountries}
-                setMyCountrySelected={setMyCountrySelected}
-                userCountry={userCountry}
-            />
-            <Filters margin="1.5 0 0 0" maxW={20} property="search" />
+            <Filters status="pending" />
             <ReviewTabs
-                allCountries={allCountries}
                 communities={communities}
                 currentPage={currentPage}
                 handlePageClick={handlePageClick}
                 loading={loadingCommunities}
-                myCountrySelected={myCountrySelected}
-                otherCountries={otherCountries}
                 pageCount={pageCount}
+                reviewsCount={reviewsByCountryCount}
                 setReview={setReview}
-                userCountry={userCountry}
             />
         </ViewContainer>
     );

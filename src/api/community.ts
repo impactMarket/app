@@ -292,7 +292,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
         getReviewsCount: builder.mutation<Reviews[], void>({
             query: () => ({
                 method: 'GET',
-                url: `communities/count?groupBy=review`
+                url: `communities/count?groupBy=review&status=pending`
             }),
             transformResponse: (response: { data?: Reviews[] }) => response.data
         }),
