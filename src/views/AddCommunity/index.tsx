@@ -5,6 +5,7 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { addCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
+import { registerSignature } from "../../helpers/registerSignature";
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { toCamelCase } from '../../helpers/toCamelCase';
@@ -14,6 +15,7 @@ import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useLocalStorage } from '../../hooks/useStorage';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
+import { useSignatures } from '@impact-market/utils/useSignatures';
 import { useYupValidationResolver } from '../../helpers/yup';
 import CommunityForm from './CommunityForm';
 import ContractForm from './ContractForm';
@@ -22,6 +24,7 @@ import PersonalForm from './PersonalForm';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import config from "../../../config";
 
 const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const auth = useSelector(selectCurrentUser);
@@ -44,6 +47,8 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [getUserPreSigned] = useGetPreSignedMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
+    const { signature } = useSelector(selectCurrentUser);
+    const { signMessage } = useSignatures();
     const [addCommunityInfo, setAddCommunityInfo, removeAddCommunityInfo] = useLocalStorage('add-community-info', undefined);
     const unsavedChanges = addCommunityInfo?.address === auth?.user?.address ? addCommunityInfo : null;
 
@@ -128,6 +133,15 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         }
     };
 
+    const updateUserDetails = async (data: any, preSigned: any) => {
+        return await updateUser({
+            avatarMediaPath: preSigned.filePath,
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName
+        }).unwrap();
+    }
+
     // TODO: check if all of this function is correct
     const onSubmit = async (data: any) => {
         try {
@@ -147,15 +161,31 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         });
 
                         if (result?.status === 200) {
-                            const userResult = await updateUser({
-                                avatarMediaPath: preSigned.filePath,
-                                email: data.email,
-                                firstName: data.firstName,
-                                lastName: data.lastName
-                            }).unwrap();
+                            let userResult;
 
-                            if (userResult) {
-                                dispatch(setUser({ user: { ...userResult }}));
+                            try {
+
+                                if (!signature) {
+                                    const timestamp = new Date().getTime().toString();
+                                    
+                                    const messageToSign = `${config.signatureMessage} ${timestamp}`;
+                        
+                                    await signMessage(messageToSign)
+                                        .then((signature) => {
+                                            registerSignature(signature, messageToSign);
+                                    })
+
+                                    userResult =  await updateUserDetails(data, preSigned);
+                                } else {
+                                    userResult = await updateUserDetails(data, preSigned)
+                                }
+
+                                if (userResult) {
+                                    dispatch(setUser({ user: { ...userResult }}));
+                                }
+                            } catch (error) {
+                                console.log(error);
+                                toast.error(<Message id="errorOccurred" />);
                             }
                         }
                     }
