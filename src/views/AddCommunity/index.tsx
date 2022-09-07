@@ -5,7 +5,7 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { addCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
-import { registerSignature } from "../../helpers/registerSignature";
+import { handleSignature } from "../../helpers/handleSignature";
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { toCamelCase } from '../../helpers/toCamelCase';
@@ -24,7 +24,6 @@ import PersonalForm from './PersonalForm';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
-import config from "../../../config";
 
 const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const auth = useSelector(selectCurrentUser);
@@ -161,31 +160,25 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         });
 
                         if (result?.status === 200) {
-                            let userResult;
-
                             try {
-
                                 if (!signature) {
-                                    const timestamp = new Date().getTime().toString();
+                                    await handleSignature(signMessage);
+                                } 
                                     
-                                    const messageToSign = `${config.signatureMessage} ${timestamp}`;
-                        
-                                    await signMessage(messageToSign)
-                                        .then((signature) => {
-                                            registerSignature(signature, messageToSign);
-                                    })
-
-                                    userResult =  await updateUserDetails(data, preSigned);
-                                } else {
-                                    userResult = await updateUserDetails(data, preSigned)
-                                }
-
+                                const userResult = await updateUserDetails(data, preSigned)
+                                
                                 if (userResult) {
                                     dispatch(setUser({ user: { ...userResult }}));
                                 }
-                            } catch (error) {
-                                console.log(error);
-                                toast.error(<Message id="errorOccurred" />);
+                            } catch (error: any) {
+                                if (error?.data?.error?.name === 'EXPIRED_SIGNATURE') {
+                                    const { success } = await handleSignature(signMessage);
+                                    
+                                    if (success) onSubmit(data);
+                                } else {
+                                    console.log(error);
+                                    toast.error(<Message id="errorOccurred" />);
+                                }
                             }
                         }
                     }

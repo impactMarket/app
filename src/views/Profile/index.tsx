@@ -3,7 +3,7 @@ import { Box, Button, Card, Col, Display, Divider, DropdownMenu, Row, Text, View
 import { SubmitHandler } from "react-hook-form";
 import { formatAddress } from '../../utils/formatAddress';
 import { getUserName } from '../../utils/users';
-import { registerSignature } from "../../helpers/registerSignature";
+import { handleSignature } from "../../helpers/handleSignature";
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { useDeleteUserMutation, useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useDispatch, useSelector } from 'react-redux';
@@ -53,29 +53,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const { t } = useTranslations();
     const { signature } = useSelector(selectCurrentUser);
     const { signMessage } = useSignatures();
-    const timestamp = new Date().getTime().toString();
 
     const handleDisconnectClick = async () => {
         await disconnect();
 
         return router.push('/');
-    }
-
-    const signAndUpdate = async (data: any) => {
-        try {
-            const messageToSign = `${config.signatureMessage} ${timestamp}`;
-
-            await signMessage(messageToSign)
-                .then((signature: string) => {
-                    registerSignature(signature, messageToSign);
-            })
-            update(data);
-
-        } catch (error) {
-            console.log(error);
-            toast.error(<Message id="errorOccurred" />);
-        }
-
     }
 
     const update = async (data: any) => {
@@ -96,7 +78,9 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
         }
         catch(e: any) {
             if (e?.data?.error?.name === 'EXPIRED_SIGNATURE') {
-                signAndUpdate(data);
+                const { success } = await handleSignature(signMessage);
+
+                if (success) update(data);
             } else {
                 console.log(e);
                 toast.error(<Message id="errorOccurred" />);
@@ -107,10 +91,11 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
             if (!signature) {
-                await signAndUpdate(data);
-            } else {
-                update(data);
+                await handleSignature(signMessage);
             }
+
+            update(data);
+
         } catch (error) {
             console.log(error);
             toast.error(<Message id="errorOccurred" />);
