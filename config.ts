@@ -87,9 +87,9 @@ const config = {
     signatureExpires: process.env.NEXT_PUBLIC_SIGNATURE_EXPIRES,
 
     /**
-     * Signature hash to confirm signature (has to be in sync with backend)
+     * Signature message to confirm signature
      */
-     signatureSecret: process.env.NEXT_PUBLIC_SIGNATURE_SECRET
+     signatureMessage: process.env.NEXT_PUBLIC_SIGNATURE_MESSAGE
 };
 
 export default config;

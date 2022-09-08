@@ -188,7 +188,6 @@ const Contribute = () => {
                         </Box>
                     </Box>
                     <Input
-                        // type="numeric"   ADD support for numeric keyboard on UI
                         label="Contribute"
                         mt={0.5}
                         name="value"
@@ -197,6 +196,7 @@ const Contribute = () => {
                         placeholder={placeholder}
                         rules={{ required: true }}
                         style={{ fontSize: '1.5rem' }}
+                        type="number"
                         value={contribution}
                         wrapperProps={{
                             padding: { xs: 0 },

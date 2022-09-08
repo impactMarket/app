@@ -5,6 +5,7 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { addCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
+import { handleSignature } from "../../helpers/handleSignature";
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { toCamelCase } from '../../helpers/toCamelCase';
@@ -14,6 +15,7 @@ import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useLocalStorage } from '../../hooks/useStorage';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
+import { useSignatures } from '@impact-market/utils/useSignatures';
 import { useYupValidationResolver } from '../../helpers/yup';
 import CommunityForm from './CommunityForm';
 import ContractForm from './ContractForm';
@@ -44,6 +46,8 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [getUserPreSigned] = useGetPreSignedMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
+    const { signature } = useSelector(selectCurrentUser);
+    const { signMessage } = useSignatures();
     const [addCommunityInfo, setAddCommunityInfo, removeAddCommunityInfo] = useLocalStorage('add-community-info', undefined);
     const unsavedChanges = addCommunityInfo?.address === auth?.user?.address ? addCommunityInfo : null;
 
@@ -128,6 +132,15 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         }
     };
 
+    const updateUserDetails = async (data: any, preSigned: any) => {
+        return await updateUser({
+            avatarMediaPath: preSigned.filePath,
+            email: data.email,
+            firstName: data.firstName,
+            lastName: data.lastName
+        }).unwrap();
+    }
+
     // TODO: check if all of this function is correct
     const onSubmit = async (data: any) => {
         try {
@@ -147,15 +160,25 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         });
 
                         if (result?.status === 200) {
-                            const userResult = await updateUser({
-                                avatarMediaPath: preSigned.filePath,
-                                email: data.email,
-                                firstName: data.firstName,
-                                lastName: data.lastName
-                            }).unwrap();
-
-                            if (userResult) {
-                                dispatch(setUser({ user: { ...userResult }}));
+                            try {
+                                if (!signature) {
+                                    await handleSignature(signMessage);
+                                } 
+                                    
+                                const userResult = await updateUserDetails(data, preSigned)
+                                
+                                if (userResult) {
+                                    dispatch(setUser({ user: { ...userResult }}));
+                                }
+                            } catch (error: any) {
+                                if (error?.data?.error?.name === 'EXPIRED_SIGNATURE') {
+                                    const { success } = await handleSignature(signMessage);
+                                    
+                                    if (success) onSubmit(data);
+                                } else {
+                                    console.log(error);
+                                    toast.error(<Message id="errorOccurred" />);
+                                }
                             }
                         }
                     }

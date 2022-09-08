@@ -101,7 +101,7 @@ const Communities = (props: any) => {
                     </TabList>
 
                     <Filters
-                        filterProperty="name"
+                        filterProperty="search"
                         filters={filters}
                         myCommunityTitle={status}
                     />

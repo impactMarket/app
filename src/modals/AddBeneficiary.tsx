@@ -116,9 +116,9 @@ const AddBeneficiary = () => {
                             console.log(e)
 
                             setError({
-                                description: addBeneficiaryValoraErrorTitle,
+                                description: addBeneficiaryValoraErrorDescription[0].text,
                                 state: true,
-                                title: addBeneficiaryValoraErrorDescription
+                                title: addBeneficiaryValoraErrorTitle
                             })
 
                             return setIsLoading(false)
@@ -144,7 +144,7 @@ const AddBeneficiary = () => {
 
         if (!!data?.beneficiaryEntities?.length) {
             setError({
-                description: addBeneficiaryCommunityErrorDescription,
+                description: addBeneficiaryCommunityErrorDescription[0].text,
                 state: true,
                 title: addBeneficiaryCommunityErrorTitle
             })

@@ -6,7 +6,7 @@ import useCommunitiesCountries from "../../hooks/useCommunitiesCountries";
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Filters = ({myCommunityTitle, filters}: any) => { 
+const Filters = ({myCommunityTitle, filters, filterProperty}: any) => { 
     const { t } = useTranslations();
     const { getByKey, update } = useFilters();
     const statusFilter = filters.state || 'valid';
@@ -62,7 +62,7 @@ const Filters = ({myCommunityTitle, filters}: any) => {
                     }}
                 />
             }
-            <NameFilter margin="0 1 0 0" property="name" />
+            <NameFilter margin="0 1 0 0" property={filterProperty} />
 
             {!loadingCountries ? (
                 <Select
