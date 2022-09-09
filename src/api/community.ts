@@ -100,24 +100,24 @@ interface PostCommunity {
     name: string;
     contractAddress?: string;
     description: string;
-    language: string;
-    currency: string;
-    city: string;
-    country: string;
+    language?: string;
+    currency?: string;
+    city?: string;
+    country?: string;
     gps: {
         latitude: number;
         longitude: number;
     };
-    email: string;
+    email?: string;
     coverMediaPath: string;
     txReceipt?: Object;
-    contractParams: {
+    contractParams?: {
         claimAmount: string;
         maxClaim: string;
         baseInterval: number;
         incrementInterval: number;
     };
-    placeId: string;
+    placeId?: string;
 };
 
 interface PostValidCommunity {
@@ -181,11 +181,11 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: Community }) => response.data
         }),
-        editValidCommunity: builder.mutation<Community, PostValidCommunity>({
-            query: body => ({
+        editValidCommunity: builder.mutation<Community, { id: string, body: PostValidCommunity}>({
+            query: ({id, body}) => ({
                 body,
                 method: 'PUT',
-                url: 'communities'
+                url: `communities/${id}`
             }),
             transformResponse: (response: { data: Community }) => response.data
         }),

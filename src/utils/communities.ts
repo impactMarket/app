@@ -38,6 +38,7 @@ export const addCommunitySchema = yup.object().shape({
     incrementInterval: yup.number().required().positive().integer().min(0),
     lastName: yup.string().required(),
     location: yup.mixed().required(),
+    maxBeneficiaries: yup.number().positive().integer().min(0).max(100000).nullable(true),
     maxClaim: yup.number().moreThan(yup.ref('claimAmount'), 'Max claim must be bigger than claim amount.').required(),
     name: yup.string().required()
 });

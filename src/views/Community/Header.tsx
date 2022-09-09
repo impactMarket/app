@@ -42,7 +42,7 @@ const Header = ({ buttonLoading, community, updateReview }: any) => {
                             </Text>
                         </Box>
                     </Box>
-                    {(!!user?.ambassador || !!user?.manager) &&
+                    {(!!user?.ambassador || !!user?.councilMember) &&
                         <Review
                             buttonLoading={buttonLoading}
                             community={community}

@@ -67,7 +67,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             
             const result = await updateUser(payload).unwrap();
 
-            if(result) {
+            if (result) {
                 dispatch(setUser({ user: { ...result }}));
 
                 toast.success(<Message id="successfullyChangedData" />);

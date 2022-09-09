@@ -1,5 +1,5 @@
-import { ambassadorRoutes, beneficiaryRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
-import { getUserTypes, userAmbassador, userBeneficiary, userManager } from '../utils/users';
+import { ambassadorRoutes, beneficiaryRoutes, councilMemberRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
+import { getUserTypes, userAmbassador, userBeneficiary, userCouncilMember, userManager } from '../utils/users';
 import { pageview } from '../helpers/gtag';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
@@ -61,6 +61,10 @@ const useGuard = () => {
                     // Ambassador type - include the respective Paths
                     if(type?.includes(userAmbassador)) {
                         userPaths = userPaths.concat(ambassadorRoutes);
+                    }
+
+                    if(type?.includes(userCouncilMember)) {
+                        userPaths = userPaths.concat(councilMemberRoutes);
                     }
                 }
     

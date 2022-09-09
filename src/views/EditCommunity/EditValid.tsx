@@ -75,7 +75,10 @@ const EditCommunity: React.FC<{ community: Community }> = props => {
                     }
                 }
 
-                const result = await editValidCommunity(body).unwrap();
+                const result = await editValidCommunity({
+                    body,
+                    id: community.id
+                }).unwrap();
 
                 // TODO: on success, what should we do?
                 if (result) {
