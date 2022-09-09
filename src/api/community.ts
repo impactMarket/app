@@ -47,21 +47,12 @@ export interface Reviews {
     review: string;
 }
 
-export interface ReviewsByCountry {
-    country: string;
-    excludeCountry: string;
-}
-
 export interface Contract {
     communityId: number;
     claimAmount: string;
     maxClaim: string;
     baseInterval: number;
     incrementInterval: number;
-}
-
-export interface CommunityManagers {
-    address: string;
 }
 export interface PendingCommunities {
     count: number;
@@ -249,14 +240,6 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/contract`
             })
         }),
-        //  Get community managers
-        getCommunityManagers: builder.mutation<CommunityManagers, {community: string, filters?: string, limit?: number, offset?: number}>({
-            query: ({community, filters, limit, offset}) => ({
-                method: 'GET',
-                url: `communities/${community}/managers?${!!filters ? `${filters}` : ''}${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
-            }),
-            transformResponse: (response: { data?: CommunityManagers }) => response.data
-        }),
         // Get preSigned URL for image upload
         getCommunityPreSigned: builder.mutation<PreSigned, void>({
             query: type => ({
@@ -279,14 +262,6 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/promoter`
             }),
             transformResponse: (response: { data?: Promoter }) => response.data
-        }),
-        //  Get reviews by country
-        getReviewsByCountry: builder.mutation<ReviewsByCountry, Record<string, any>>({
-            query: (filters: Record<string, any>) => ({
-                method: 'GET',
-                url: qs.stringifyUrl({query:{limit:999, ...filters}, url:'communities/count?groupBy=reviewByCountry'})
-            }),
-            transformResponse: (response: { data?: ReviewsByCountry }) => response.data
         }),
         //  Get reviews count
         getReviewsCount: builder.mutation<Reviews[], void>({
@@ -318,11 +293,9 @@ export const {
     useGetCommunitiesMutation,
     useUpdateReviewMutation,
     useGetReviewsCountMutation,
-    useGetReviewsByCountryMutation,
     useGetCommunityContractMutation,
     useGetPendingCommunitiesMutation,
     useGetCommunityAmbassadorMutation,
-    useGetCommunityManagersMutation,
     useGetCommunityBeneficiariesMutation,
     useGetCommunityPreSignedMutation,
     useGetClaimsLocationsMutation,

@@ -225,9 +225,9 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                             coverMediaPath: preSigned.filePath
                         }).unwrap();
 
-                        // TODO: on success, what should we do? (perhaps redirect to the /mycommunity page)
                         if (result) {
                             toast.success("Community added successfully!");
+                            router.push('/');
 
                             reset();
                             setCommunityImage(null);
