@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import React, { useEffect } from "react";
 import Select from '../../components/Select';
 import String from '../../libs/Prismic/components/String';
+import langConfig from '../../../locales.config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Form = ({ onSubmit }: any) => {
@@ -16,7 +17,7 @@ const Form = ({ onSubmit }: any) => {
     const { handleSubmit, reset, control, getValues } = useForm({
         defaultValues: {
             currency: auth?.user?.currency,
-            language: auth?.user?.language
+            language: langConfig.find(({ code, shortCode }) => auth?.user?.language === code || auth?.user?.language === shortCode)?.shortCode
         }
     });
     const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
@@ -31,22 +32,22 @@ const Form = ({ onSubmit }: any) => {
         e.preventDefault();
         reset();
     }
-    
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={1.5}>
                 { /* TODO: missing country flags in Currencies select */ }
-                <Select 
+                <Select
                     control={control}
                     isMultiple={false}
                     label={t('currency')}
-                    name="currency" 
+                    name="currency"
                     options={currenciesOptions}
                     withOptionsSearch
                 />
             </Box>
             <Box>
-                <Select 
+                <Select
                     control={control}
                     isMultiple={false}
                     label={t('language')}

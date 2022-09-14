@@ -7,7 +7,7 @@ const langConfig = [
         shortCode: 'en',
         dateFnsCode: 'enUS'
     },
-    { code: 'pt-BR', label: 'Português', shortCode: 'br', dateFnsCode: 'ptBR' },
+    { code: 'pt-BR', label: 'Português', shortCode: 'pt', dateFnsCode: 'ptBR' },
     { code: 'fr-FR', label: 'Français', shortCode: 'fr', dateFnsCode: 'fr' },
     { code: 'es-ES', label: 'Español', shortCode: 'es', dateFnsCode: 'es' }
 ];
