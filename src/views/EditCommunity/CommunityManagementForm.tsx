@@ -9,18 +9,19 @@ import {
     Toggle,
     toast
 } from '@impact-market/ui';
+import { Controller, useForm } from 'react-hook-form';
 import { useAmbassador } from '@impact-market/utils/useAmbassador';
-import { useForm, useFormState } from 'react-hook-form';
 // import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useYupValidationResolver, yup } from '../../helpers/yup';
 import FormActions from '../Profile/FormActions';
 import Input from '../../components/Input';
 import Message from '../../libs/Prismic/components/Message';
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const schema = yup.object().shape({
+    lock: yup.boolean(),
     maxBeneficiaries: yup
         .number()
         .positive()
@@ -30,56 +31,24 @@ const schema = yup.object().shape({
         .nullable(true)
 });
 
-const CommunityManagementForm = ({
-    isLoading,
-    onSubmit,
-    communityAddress,
-    maxBeneficiaries,
-    isLocked
-}: any) => {
-    const [lock, setLock] = useState(isLocked);
+const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries, isLocked }: any) => {
     const { t } = useTranslations();
     // TODO: Add form title and description to Prismic
     // const { extractFromView } = usePrismicData();
     // const { contractDescription, contractTitle } = extractFromView('formSections') as any;
-    const { lockCommunity, unlockCommunity } = useAmbassador();
-
-    const toggleLock = async () => {
-        try {
-            let res;
-
-            if (lock) {
-                res = await unlockCommunity(communityAddress);
-                
-            } else {
-                res = await lockCommunity(communityAddress);
-            }
-
-            if (res) {
-                setLock(!lock);
-                toast.success(<Message id="successfullyChangedData" />);
-            }
-        } catch (e) {
-            console.log(e);
-            toast.error(<Message id="errorOccurred" />);
-        }
-    };
-
+    const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } = useAmbassador();
     const {
         handleSubmit,
         reset,
         control,
         getValues,
-        formState: { errors }
+        formState: { errors, isDirty, isSubmitting, dirtyFields }
     } = useForm({
         defaultValues: {
+            lock: isLocked,
             maxBeneficiaries: maxBeneficiaries || ''
         },
         resolver: useYupValidationResolver(schema)
-    });
-
-    const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({
-        control
     });
 
     const handleCancel = (e: any) => {
@@ -87,11 +56,76 @@ const CommunityManagementForm = ({
         reset();
     };
 
-    useEffect(() => {
-        if (isSubmitSuccessful) {
-            reset(getValues());
+    const onSubmit = async (data: any) => {
+        try {
+            const transactionChain: any = [];
+            let transactionFailed = false;
+
+            if (dirtyFields.maxBeneficiaries) {
+                transactionChain.push(
+                    updateMaxBeneficiaries(
+                        communityAddress,
+                        data.maxBeneficiaries
+                    )
+                        .then(() => {
+                            toast.success('Maximum beneficiaries updated');
+                        })
+                        .catch(() => {
+                            toast.error(
+                                'Failed to update maximum number of benefeciaries'
+                            );
+                            transactionFailed = true;
+                        })
+                );
+            }
+
+            if (dirtyFields.lock) {
+                const lockAction = [];
+
+                if (data.lock) {
+                    lockAction.push(
+                        await lockCommunity(communityAddress)
+                            .then(() => {
+                                toast.success(
+                                    'Successfully locked the community'
+                                );
+                            })
+                            .catch(() => {
+                                toast.error('Failed to lock the community');
+                                transactionFailed = true;
+                            })
+                    );
+                } else {
+                    lockAction.push(
+                        await unlockCommunity(communityAddress)
+                            .then(() => {
+                                toast.success(
+                                    'Successfully unlocked the community'
+                                );
+                            })
+                            .catch(() => {
+                                transactionFailed = true;
+                                toast.error('Failed to unlock the community');
+                            })
+                    );
+                }
+
+                transactionChain.push(lockAction);
+            }
+
+            await Promise.all(transactionChain)
+                .then(() => {
+                    if (!transactionFailed) {
+                        reset(getValues());
+                    }
+                })
+                .catch(() => {
+                    toast.error(<Message id="errorOccurred" />);
+                });
+        } catch (error) {
+            toast.error(<Message id="errorOccurred" />);
         }
-    }, [isSubmitSuccessful]);
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -150,10 +184,18 @@ const CommunityManagementForm = ({
                             </Box>
                             <Box flex pt="1.5rem">
                                 <Box pr={0.5}>
-                                    <Toggle
-                                        disabled={isLoading}
-                                        isActive={lock}
-                                        onChange={toggleLock}
+                                    <Controller
+                                        control={control}
+                                        name="lock"
+                                        render={({
+                                            field: { onChange, value }
+                                        }) => (
+                                            <Toggle
+                                                disabled={isLoading}
+                                                isActive={value}
+                                                onChange={onChange}
+                                            />
+                                        )}
                                     />
                                 </Box>
                                 <Box w="100%">
@@ -168,7 +210,7 @@ const CommunityManagementForm = ({
                                 </Box>
                             </Box>
                         </Box>
-                        {isDirty && !isSubmitSuccessful && (
+                        {(isDirty || isSubmitting) && (
                             <FormActions
                                 handleCancel={handleCancel}
                                 isSubmitting={isSubmitting}

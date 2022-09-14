@@ -1,4 +1,4 @@
-import { Box, Display, ViewContainer, toast } from '@impact-market/ui';
+import { Box, Display, ViewContainer } from '@impact-market/ui';
 import { addCommunitySchema } from '../../utils/communities';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
@@ -13,7 +13,6 @@ import { useYupValidationResolver } from '../../helpers/yup';
 import CommunityDetailsForm from './CommunityDetailsForm';
 import CommunityManagementForm from './CommunityManagementForm';
 import ContractDetailsForm from './ContractDetailsForm';
-import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -31,12 +30,7 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
     const [getCommunity] = useGetCommunityMutation();
     const [getCommunityContract] = useGetCommunityContractMutation();
     const { t } = useTranslations();
-
-    const {
-        isCommunityLocked,
-        getMaxBeneficiaries,
-        updateMaxBeneficiaries
-    } = useAmbassador();
+    const { isCommunityLocked, getMaxBeneficiaries } = useAmbassador();
 
     const [communityImage, setCommunityImage] = useState() as any;
 
@@ -132,22 +126,6 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
         ) as any;
     }, [community, contract, maxBeneficiaries]);
 
-    const onSubmitCommunityManagement = async (data: any) => {
-        try {
-            const res = await updateMaxBeneficiaries(
-                community?.contractAddress,
-                data.maxBeneficiaries
-            );
-
-            if (res) {
-                toast.success(<Message id="successfullyChangedData" />);
-            }
-        } catch (error) {
-            console.log(error);
-            toast.error(<Message id="errorOccurred" />);
-        }
-    };
-
     return (
         <ViewContainer isLoading={isLoading || loadingCommunity}>
             <Box fLayout="start between" fWrap="wrap" flex>
@@ -205,7 +183,6 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
                             errors={errors}
                             isLocked={isLocked}
                             maxBeneficiaries={maxBeneficiaries}
-                            onSubmit={onSubmitCommunityManagement}
                             reset={() => reset(formFields)}
                         />
                     )}
