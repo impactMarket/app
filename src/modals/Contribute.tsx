@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Button,
     CircledIcon,
@@ -50,6 +51,12 @@ const ButtonWrapper = styled(Button)`
     }
 `;
 
+const AlertWrapper = styled(Box)`
+    a{
+        font-size:0.875rem;
+    }
+`;
+
 const Contribute = () => {
     const { handleClose, contractAddress, value } = useModal();
     const [step, setStep] = useState(0);
@@ -57,7 +64,7 @@ const Contribute = () => {
     const [approved, setApproved] = useState(0);
     const [contribution, setContribution] = useState(value);
     const { extractFromModals } = usePrismicData();
-    const { placeholder, balance, content, tip, title, approve: approveCUSD } = extractFromModals(
+    const { placeholder, balance, content, tip, tipTitle, title, approve: approveCUSD } = extractFromModals(
         'contribute'
     ) as any;
     const { approve, donateToCommunity, donateToTreasury } = useDonationMiner();
@@ -255,7 +262,16 @@ const Contribute = () => {
                 </Col>
             </Row>
 
-            {loading && <RichText content={tip} g500 mt={0.5} small />}
+            {loading && 
+                <AlertWrapper>
+                    <Alert
+                        icon="alertCircle"
+                        message={<RichText content={tip} g500 mt={0.5} small />}
+                        mt={1}
+                        title={tipTitle}
+                    />
+                </AlertWrapper>   
+            }
         </ModalWrapper>
     );
 };
