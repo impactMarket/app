@@ -51,7 +51,8 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
         props: {
             communityData: community?.data,
             data,
-            view: 'community'
+            view: 'community',
+            withPreview: !!previewData
         },
         revalidate: 10
     };

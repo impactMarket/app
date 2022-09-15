@@ -27,7 +27,8 @@ export const getStaticProps: GetStaticProps = async ({
                 '/communities/count?groupBy=country&status=valid': communitiesCountries,
                 '/communities?ambassadorAddress=&country=&limit=8&name=&offset=0&orderBy=bigger:DESC&status=valid': communities
             },
-            view: 'communities'  
+            view: 'communities',
+            withPreview: !!previewData
         }
     };
 };

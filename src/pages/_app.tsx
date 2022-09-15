@@ -32,7 +32,8 @@ const apolloClient = new ApolloClient({
 const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
 
-    const { authorized, isLoading } = useGuard();
+    const { withPreview } = pageProps;
+    const { authorized, isLoading } = useGuard({ withPreview });
 
     const [getRates] = useGetExchangeRatesMutation();
 
@@ -68,7 +69,7 @@ const InnerApp = (props: AppProps) => {
                         value: numberOfUnreadNotifications?.data || 0
                     }
                 }))
-                
+
             } catch (error) {
                 console.log(error);
             }

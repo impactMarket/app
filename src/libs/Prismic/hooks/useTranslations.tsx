@@ -9,8 +9,10 @@ const useTranslations = () => {
   const { locale } = useRouter();
   const { translations } = usePrismicData();
 
+  const localeCode = localesConfig.find(({ shortCode }) => shortCode === locale)?.code;
+
   const t = (id: string, variables = {} as { [key: string]: string | number }) => {
-    const string = translations?.[locale.toLowerCase()]?.strings?.[id] || translations?.[defaultLocale]?.strings?.[id];
+    const string = translations?.[localeCode.toLowerCase()]?.strings?.[id] || translations?.[defaultLocale]?.strings?.[id];
 
     if (!string) {
       console.log(`No translation find for the key "${id}"!`);
