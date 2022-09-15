@@ -13,7 +13,8 @@ export const getStaticProps: GetStaticProps = async ({
     return {
         props: {
             data,
-            view: 'managerAddCommunity'
+            view: 'managerAddCommunity',
+            withPreview: !!previewData
         }
     };
 };

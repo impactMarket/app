@@ -14,7 +14,8 @@ export const getStaticProps: GetStaticProps = async ({
     return {
         props: {
             data,
-            view: 'profile'
+            view: 'profile',
+            withPreview: !!previewData
         }
     };
 };

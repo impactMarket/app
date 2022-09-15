@@ -9,7 +9,13 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import langConfig from '../../locales.config';
 
-const useGuard = () => {
+type UseGuardType = {
+    withPreview?: boolean;
+}
+
+const useGuard = (options: UseGuardType) => {
+    const { withPreview } = options || {};
+
     const [authorized, setAuthorized] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [getUser] = useGetUserMutation();
@@ -36,7 +42,7 @@ const useGuard = () => {
     useEffect(() => {
         const userLang = langConfig.find(({ code, shortCode }) => auth?.user?.language === code || auth?.user?.language === shortCode)?.shortCode;
 
-        if (locale !== userLang) {
+        if (locale !== userLang && !withPreview) {
             push(asPath, asPath, { locale: userLang })
         }
     }, [auth?.user?.language, locale]);
