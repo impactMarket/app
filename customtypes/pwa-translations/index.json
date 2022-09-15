@@ -782,6 +782,13 @@
         },
         "type": "Text"
       },
+      "string-merchants": {
+        "config": {
+          "label": "merchants",
+          "placeholder": "Merchants"
+        },
+        "type": "Text"
+      },
       "string-minutes": {
         "config": {
           "label": "minutes",
@@ -870,6 +877,13 @@
         "config": {
           "label": "noManagersFound",
           "placeholder": "No managers found."
+        },
+        "type": "Text"
+      },
+      "string-noMerchants": {
+        "config": {
+          "label": "noMerchants",
+          "placeholder": "No Merchants"
         },
         "type": "Text"
       },

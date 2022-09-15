@@ -14,6 +14,7 @@ import {
     useUpdateReviewMutation
 } from '../../api/community';
 import useCommunitiesManagers from "../../hooks/useCommunitiesManagers";
+import useMerchants from "../../hooks/useMerchants";
 
 import CommunityDetails from './CommunityDetails';
 import Dashboard from './Dashboard';
@@ -83,6 +84,9 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
             'state=0'
         ], 
         fetcher);
+
+    //  Get Merchants
+    const { merchants, loadingMerchants } = useMerchants(community?.id, fetcher);
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
@@ -178,7 +182,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     };
 
     return (
-        <ViewContainer isLoading={loading || isLoading || refreshingPage || loadingManagers}>
+        <ViewContainer isLoading={loading || isLoading || refreshingPage || loadingManagers || loadingMerchants}>
             <Header
                 buttonLoading={buttonLoading}
                 community={community}
@@ -196,6 +200,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 ambassador={ambassador}
                 community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
                 managers={managers?.rows}
+                merchants={merchants}
                 requestedCommunity={!(!!data?.communityEntity)}
                 setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}
