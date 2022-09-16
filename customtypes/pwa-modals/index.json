@@ -369,6 +369,13 @@
           "label": "Connect Wallet",
           "placeholder": ""
         }
+      },
+      "contribute-tip-title": {
+        "type": "Text",
+        "config": {
+          "label": "Tip Title",
+          "placeholder": ""
+        }
       }
     },
     "wrong-network": {
