@@ -61,6 +61,9 @@ const getUserType = (user: User) => {
     if (user?.roles?.includes('manager')) {
         return 'manager';
     };
+    if (user?.roles?.includes('pendingManager')) {
+        return 'pending-manager';
+    };
     if (user?.roles.includes('beneficiary')) {
         return 'beneficiary';
     };
@@ -210,7 +213,7 @@ const Sidebar = () => {
         if ((user?.roles)?.includes('beneficiary')) {
             route = '/beneficiary';
         }
-        else if ((user?.roles)?.includes('manager')) {
+        else if ((user?.roles)?.includes('manager') || (user?.roles)?.includes('pendingManager')) {
             route = '/';
         }
         else if ((user?.roles)?.includes('ambassador')) {
@@ -243,7 +246,7 @@ const Sidebar = () => {
 
         return data?.footerMenu
     }
-
+    
     return (
         <SidebarBase
             footer={<SidebarFooter isActive={checkRoute('/profile')} user={user} />}

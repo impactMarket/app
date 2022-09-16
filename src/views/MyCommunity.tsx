@@ -1,47 +1,52 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
 import { ViewContainer } from '@impact-market/ui';
 import { selectCurrentUser } from '../state/slices/auth';
-import { useGetCommunityMutation } from '../api/community'
+import config from '../../config';
+import useCommunities from '../hooks/useCommunities';
+import useCommunity from '../hooks/useCommunity';
 
+const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
 const MyCommunity: React.FC<{ isLoading?: boolean; }> = (props) => {
     const { isLoading } = props;
-    const [loading, setLoading] = useState(true);
     const router = useRouter()    
     const { user } = useSelector(selectCurrentUser);
-    const [getCommunity] = useGetCommunityMutation();
+
+    const filters = {
+        limit: 999,
+        review: "pending"
+    }
+
+    //  Pending Manager / Community
+    const { communities, loadingCommunities } = useCommunities(filters, fetcher);
+    const pendingCommunity = communities?.data?.rows?.filter((community: { requestByAddress: string; }) => community?.requestByAddress === user?.address)
+
+    //  Community already accepted
+    const { community, loadingCommunity } = useCommunity(user?.manager ? user?.manager?.community : user?.beneficiary && user?.beneficiary?.community, fetcher);
 
     useEffect(() => {
-        const getCommunityFunc = async () => {
-            try {
-                setLoading(true);
-
-                const community: any = await getCommunity(
-                    user?.manager ? 
-                        user?.manager?.community : 
-                    user?.beneficiary &&
-                        user?.beneficiary?.community
-                )
-
-                const path = community?.data?.id ? `/communities/${community?.data?.id}` : '/communities';
+        if (!user?.roles?.includes('pendingManager')){
+            if (community){
+                const path = community?.id ? `/communities/${community?.id}` : '/communities';
 
                 router.push(path)
-
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
             }
-        };
+        }  
+        if (user?.roles?.includes('pendingManager')){
+            if (pendingCommunity?.length > 0){
+                const path = pendingCommunity[0]?.id ? `/communities/${pendingCommunity[0]?.id}` : '/communities';
 
-        getCommunityFunc();
-    }, []);
+                router.push(path)
+            }  
+        }           
+    }, [loadingCommunities, loadingCommunity])
     
     return (
-        <ViewContainer isLoading={isLoading || loading}/>
+        <ViewContainer isLoading={isLoading || loadingCommunities || loadingCommunity}/>
     );
 };
 
