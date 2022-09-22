@@ -104,7 +104,7 @@ interface PostCommunity {
     currency?: string;
     city?: string;
     country?: string;
-    gps: {
+    gps?: {
         latitude: number;
         longitude: number;
     };

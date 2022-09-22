@@ -58,10 +58,6 @@ const CommunityDetailsForm = ({
             let body = {
                 coverMediaPath: community?.coverMediaPath,
                 description: data?.description || '',
-                gps: {
-                    latitude: data?.location?.gps?.lat || 0,
-                    longitude: data?.location?.gps?.lng || 0
-                },
                 name: data.name || ''
             };
 
@@ -97,16 +93,26 @@ const CommunityDetailsForm = ({
                     id: community.id
                 });
             } else {
+                const pendingCommunityBody = {
+                    ...body,
+                    gps: {
+                        latitude: data?.location?.gps?.lat || 0,
+                        longitude: data?.location?.gps?.lng || 0,
+                    }
+                };
+
                 res = await editPendingCommunity({
-                    body,
+                    body: pendingCommunityBody,
                     id: community.id
-                }).unwrap();
+                }).unwrap() as any;
             }
 
-            if (res) {
+            if (!!res.error) {
+                toast.error(<Message id="errorOccurred" />);
+            } else {
                 toast.success(<Message id="successfullyChangedData" />);
             }
-        } catch (error) {
+        } catch (error: any) {
             console.log(error);
             if (
                 error?.data?.error?.name === 'EXPIRED_SIGNATURE' ||
