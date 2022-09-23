@@ -1,10 +1,8 @@
 import {
     Grid,
     Pagination,
-    Row,
-    Spinner,
     TabPanel,
-    Tabs
+    Tabs,
 } from '@impact-market/ui';
 
 import CommunityCard from '../../components/CommunityCard';
@@ -15,7 +13,7 @@ import useFilters from '../../hooks/useFilters';
 const CommunitiesList = (props: any) => {
     const { communitiesTabs, filters } = props;
     const { update, getByKey } = useFilters();
-    const { communities, loadingCommunities, pageCount } = useCommunities(filters);
+    const { communities, loadingCommunities, pageCount, itemsPerPage } = useCommunities(filters);
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
@@ -33,9 +31,15 @@ const CommunitiesList = (props: any) => {
     return (
         <Tabs defaultIndex={getByKey('type') === 'myCommunities' ? 1 : 0}>
             {loadingCommunities ? (
-                <Row fLayout="center" h="50vh" mt={2}>
-                    <Spinner isActive />
-                </Row>
+                <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }} mt="1.3rem">
+                    {[...Array(itemsPerPage)].map((key: number) => (
+                        <CommunityCard
+                            community={{}}
+                            isLoading
+                            key={key}
+                        />
+                    ))}
+                </Grid>
             ) : (
                 communitiesTabs.map((key: number) => (
                     <TabPanel key={key}>

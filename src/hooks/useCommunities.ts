@@ -45,6 +45,7 @@ export default function useCommunities(incomingFilters: any, fetcher?: any) {
     return {
         communities: data || { data: [] },
         communitiesCountries,
+        itemsPerPage: ITEMS_PER_PAGE,
         loadingCommunities,
         mutate,
         pageCount,

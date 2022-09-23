@@ -40,7 +40,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
     const [itemOffset, setItemOffset] = useState(actualPage * itemsPerPage || 0);
     const [currentPage, setCurrentPage] = useState(actualPage);
     const router = useRouter();
-    const { asPath, query: { search, state } } = router;  
+    const { asPath, query: { search, state } } = router;
     
     const { data, loading } = useBeneficiaries(prefix, {
         limit: itemsPerPage,
