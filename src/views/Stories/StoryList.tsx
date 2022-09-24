@@ -208,7 +208,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                 <Col colSize={{ sm: 10, xs: 11 }} padding={0} pb={1} >
                     <Card mt={1} padding={0}>
                         {story?.storyMedia && (  
-                            <Box onClick={() => update('id', story?.id)} pt="60%" style={{position: 'relative'}} w="100%">
+                            <Box onClick={() => update('id', story?.id)} pt="60%" style={{cursor: 'pointer', position: 'relative'}} w="100%">
                                 <Image alt="" src={story?.storyMedia[0]} style={{borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem'}} />
                                 {story?.storyMedia?.length > 1 &&
                                     <Pagination

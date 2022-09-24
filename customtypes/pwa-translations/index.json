@@ -698,6 +698,13 @@
         },
         "type": "Text"
       },
+      "string-loadSession": {
+        "config": {
+          "label": "loadSession",
+          "placeholder": "Load Session"
+        },
+        "type": "Text"
+      },
       "string-love": {
         "config": {
           "label": "love",

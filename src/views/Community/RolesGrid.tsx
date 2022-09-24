@@ -80,7 +80,7 @@ const Managers = ({ ambassador, community, status, setRefreshingPage, requestedC
                                     requestedCommunity={requestedCommunity}
                                 />
                                 {/* Remove Manager  */}
-                                {Object.keys(role)?.includes('managers') &&
+                                {(Object.keys(role)?.includes('managers') && status !== "pending") &&
                                     <CanBeRendered types={['ambassador']}>
                                         {user?.address?.toLowerCase() === ambassador?.address?.toLowerCase() && (
                                             <Box center mt={1}>
@@ -96,7 +96,6 @@ const Managers = ({ ambassador, community, status, setRefreshingPage, requestedC
                                         )}
                                     </CanBeRendered>
                                 }
-                                
                             </Card>
                     ))}
                 </Grid> 
