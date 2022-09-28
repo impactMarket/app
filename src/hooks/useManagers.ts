@@ -1,6 +1,6 @@
 import useSWR from 'swr';
 
-export default function useCommunitiesManagers(communityId: number, filters?: any[], fetcher?: any) {
+export default function useManagers(communityId: number, filters?: any[], fetcher?: any) {
     const { data, mutate, error } = useSWR(
         `/communities/${communityId}/managers?${!!filters.length ? filters.map((filter: any) => filter).join('&') : ''}`,
         fetcher

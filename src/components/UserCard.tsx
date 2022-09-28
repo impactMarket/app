@@ -7,6 +7,7 @@ import {
     Divider,
     DropdownMenu,
     Icon,
+    Label,
     Text,
     toast
 } from '@impact-market/ui';
@@ -62,6 +63,11 @@ const UserCard = ({ community, data, requestedCommunity } : any) => {
                     }
                 </Box>
             </Box>
+            {data.state === 1 &&
+                <Box mb={1}>
+                    <Label content={t('removed')}/>
+                </Box>
+            }
             {(data?.added || data?.added === 0) &&
                 <Box mb={0.3}>
                     <Box fLayout="center start" inlineFlex>
