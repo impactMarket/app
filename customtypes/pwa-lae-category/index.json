@@ -1,0 +1,45 @@
+{
+  "id": "pwa-lae-category",
+  "label": "[PWA] [L&E] Category",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "image": {
+        "type": "Image",
+        "config": {
+          "label": "Image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      }
+    },
+    "levels": {
+      "levels": {
+        "type": "Group",
+        "config": {
+          "label": "Levels",
+          "fields": {
+            "level": {
+              "type": "Link",
+              "config": {
+                "label": "Level",
+                "select": "document",
+                "customtypes": [
+                  "pwa-lae-level"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

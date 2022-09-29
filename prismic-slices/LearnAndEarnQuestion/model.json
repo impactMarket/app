@@ -1,0 +1,47 @@
+{
+  "id": "learn_and_earn_question",
+  "type": "SharedSlice",
+  "name": "LearnAndEarnQuestion",
+  "description": "LearnAndEarnQuestion",
+  "variations": [
+    {
+      "id": "default",
+      "name": "Default",
+      "docURL": "...",
+      "version": "sktwi1xtmkfgx8626",
+      "description": "LearnAndEarnQuestion",
+      "primary": {
+        "question": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Question",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,strong,em,hyperlink,image,embed,list-item,o-list-item"
+          }
+        }
+      },
+      "items": {
+        "answer": {
+          "type": "StructuredText",
+          "config": {
+            "label": "Answer",
+            "placeholder": "",
+            "allowTargetBlank": true,
+            "multi": "paragraph,preformatted,em,hyperlink,image,embed,o-list-item,list-item,strong"
+          }
+        },
+        "is-correct": {
+          "type": "Boolean",
+          "config": {
+            "label": "Is Correct",
+            "placeholder_false": "false",
+            "placeholder_true": "true",
+            "default_value": false
+          }
+        }
+      },
+      "imageUrl": "https://images.prismic.io/slice-machine/621a5ec4-0387-4bc5-9860-2dd46cbc07cd_default_ss.png?auto=compress,format"
+    }
+  ]
+}
