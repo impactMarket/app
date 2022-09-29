@@ -34,6 +34,7 @@ query communityQuery($id: String!, $todayDayId: Int, $daysBefore: Int) {
         claimAmount
         maxClaim
         incrementInterval
+        decreaseStep
     }
     communityDailyEntities(where: {community: $id, dayId_lte: $todayDayId, dayId_gte: $daysBefore} orderBy: dayId, orderDirection: asc) {
         beneficiaries
