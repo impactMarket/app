@@ -97,6 +97,15 @@
           "label": "communityEdited",
           "placeholder": ""
         }
+      },
+      "message-decreaseStep": {
+        "type": "StructuredText",
+        "config": {
+          "label": "decreaseStep",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
       }
     }
   }
