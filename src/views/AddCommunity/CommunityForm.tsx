@@ -1,5 +1,5 @@
-import { useFormState } from "react-hook-form";
 import { Alert, Box, Card, Col, ImgClick, Row, Text } from '@impact-market/ui';
+import { useFormState } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import FormActions from '../Profile/FormActions';
 import GooglePlaces from '../../components/GooglePlaces';
