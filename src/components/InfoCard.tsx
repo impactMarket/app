@@ -55,7 +55,7 @@ const InfoCard: React.FC<Props> = (props) => {
                         <Box ml={0.5} onMouseEnter={() => setTooltipOpen(true)} onMouseLeave={() => setTooltipOpen(false)} style={{cursor:'pointer', position:'relative'}}>
                             <Icon
                                 g500
-                                icon="alertCircle"
+                                icon="infoCircle"
                             />
                             {tooltipOpen &&
                                 <Tooltip>
