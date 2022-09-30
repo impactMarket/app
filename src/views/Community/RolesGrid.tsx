@@ -100,10 +100,8 @@ const Managers = ({ ambassador, community, status, setRefreshingPage, requestedC
                     ))}
                 </Grid> 
             : 
-                Object.keys(role)?.includes('managers') ? 
-                    <String id="noManagers"/> : 
-                Object.keys(role)?.includes('merchants') && 
-                    <String id="noMerchants"/>
+                Object.keys(role)?.includes('managers') && 
+                    <String id="noManagers"/>
             }   
         </>
 )}

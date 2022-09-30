@@ -31,9 +31,11 @@ const RolesTabs = ({ ambassador, community, managers, merchants, status, setRefr
                                 title={t('ambassadors')}
                             />
                         }  
-                        <Tab
-                            title={t('merchants')}
-                        />  
+                        {!!merchants?.length &&
+                            <Tab
+                                title={t('merchants')}
+                            /> 
+                        }
                     </TabList>
                 
                     {/* Managers */}
@@ -63,13 +65,15 @@ const RolesTabs = ({ ambassador, community, managers, merchants, status, setRefr
                     }
 
                     {/* Merchants */}
-                    <TabPanel>
-                        <RolesGrid
-                            community={community}
-                            requestedCommunity={requestedCommunity}
-                            role={{merchants}}
-                        />  
-                    </TabPanel>
+                    {!!merchants?.length &&
+                        <TabPanel>
+                            <RolesGrid
+                                community={community}
+                                requestedCommunity={requestedCommunity}
+                                role={{merchants}}
+                            />  
+                        </TabPanel>
+                    }
                 </Tabs>
             </Box>
         )
