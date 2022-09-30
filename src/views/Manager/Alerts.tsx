@@ -1,4 +1,8 @@
 import { Alert, Button, toast } from '@impact-market/ui';
+import { currencyFormat } from '../../utils/currencies';
+import { selectCurrentUser } from '../../state/slices/auth';
+import { toNumber } from '@impact-market/utils/toNumber';
+import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -7,7 +11,15 @@ const Alerts: React.FC<{ canRequestFunds: boolean; fundsRemainingDays: number; h
     const { canRequestFunds, fundsRemainingDays, hasFunds, requestFunds } = props;
     const [loading, setLoading] = useState(false);
     const [requestSuccess, setRequestSuccess] = useState(false);
-    const [fundsReceived] = useState(0);
+    const [fundsReceived, setFundsReceived] = useState("0");
+
+    const auth = useSelector(selectCurrentUser);
+    const language = auth?.user?.language || 'en-US';
+    const currency = auth?.user?.currency || 'USD';
+    const localeCurrency = new Intl.NumberFormat(language, {
+        currency,
+        style: 'currency'
+    });
     
     const { t } = useTranslations();
 
@@ -15,7 +27,9 @@ const Alerts: React.FC<{ canRequestFunds: boolean; fundsRemainingDays: number; h
         try {
             setLoading(true);
 
-            await requestFunds();
+            const response = await requestFunds();
+
+            setFundsReceived(currencyFormat(toNumber(response), localeCurrency));
 
             setLoading(false);
 
