@@ -186,7 +186,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                     </Box>
                                         <Box margin="0 auto" maxW={22}>
                                             {!isClaimable &&
-                                                <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
+                                                <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} withDays />
                                             }
                                             {((isClaimable || claimAllowed) && hasFunds) &&
                                                 <Button default disabled={loadingButton} isLoading={loadingButton} large onClick={claimFunds}>
