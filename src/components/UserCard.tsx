@@ -11,13 +11,13 @@ import {
     toast
 } from '@impact-market/ui';
 
-import { dateHelpers } from '../../helpers/dateHelpers'
-import { formatAddress } from '../../utils/formatAddress';
-import { getImage } from '../../utils/images';
-import { selectCurrentUser } from '../../state/slices/auth';
-import Message from '../../libs/Prismic/components/Message';
-import config from '../../../config';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import { dateHelpers } from '../helpers/dateHelpers'
+import { formatAddress } from '../utils/formatAddress';
+import { getImage } from '../utils/images';
+import { selectCurrentUser } from '../state/slices/auth';
+import Message from '../libs/Prismic/components/Message';
+import config from '../../config';
+import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 
 const UserCard = ({ community, data, requestedCommunity } : any) => {
@@ -34,30 +34,32 @@ const UserCard = ({ community, data, requestedCommunity } : any) => {
         <>
             <Box fLayout="center start" inlineFlex mb={1}>
                 <Box mr={1}>
-                    <Avatar url={getImage({ filePath: data?.avatarMediaPath })} />
+                    <Avatar url={getImage({ filePath: data?.avatarMediaPath, fit: 'cover', height: 40, width: 40 })} />
                 </Box>
                 <Box>
-                    {(data?.firstName && data?.lastName) && (
-                        <Text g900 medium>{data?.firstName} {data?.lastName}</Text>
+                    {(data?.name || data?.firstName || data?.lastName) && (
+                        <Text g900 medium>{data?.name}{data?.firstName} {data?.lastName}</Text>
                     )}
-                    <Box fLayout="center start" inlineFlex>
-                        <DropdownMenu
-                            icon="chevronDown"
-                            items={[
-                                {
-                                    icon: 'open',
-                                    onClick: () => window.open(config.explorerUrl?.replace('#USER#', data?.address)),
-                                    title: t('openInExplorer')
-                                },
-                                {
-                                    icon: 'copy',
-                                    onClick: () => copyToClipboard(data?.address),
-                                    title: t('copyAddress')
-                                }
-                            ]}
-                            title={formatAddress(data?.address, [6, 5])}
-                        />
-                    </Box>
+                    {data?.address &&
+                        <Box fLayout="center start" inlineFlex>
+                            <DropdownMenu
+                                icon="chevronDown"
+                                items={[
+                                    {
+                                        icon: 'open',
+                                        onClick: () => window.open(config.explorerUrl?.replace('#USER#', data?.address)),
+                                        title: t('openInExplorer')
+                                    },
+                                    {
+                                        icon: 'copy',
+                                        onClick: () => copyToClipboard(data?.address),
+                                        title: t('copyAddress')
+                                    }
+                                ]}
+                                title={formatAddress(data?.address, [6, 5])}
+                            />
+                        </Box>
+                    }
                 </Box>
             </Box>
             {(data?.added || data?.added === 0) &&
@@ -115,7 +117,6 @@ const UserCard = ({ community, data, requestedCommunity } : any) => {
                         </Box>
                     }
                     {data?.phone &&
-                        //  Todo: Need phone Icon
                         <Box>
                             <Box fLayout="center start" inlineFlex>
                                 <Icon

@@ -19,7 +19,8 @@ export const getStaticProps: GetStaticProps = async ({
     return {
         props: {
             data,
-            view: 'messages'
+            view: 'messages',
+            withPreview: !!previewData
         }
     };
 };

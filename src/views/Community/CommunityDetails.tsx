@@ -184,7 +184,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                     <Trim
                         g800
                         large
-                        limit={100}
+                        limit={450}
                         message={translatedText}
                         pb={0}
                         pt={0}

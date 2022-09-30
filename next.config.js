@@ -6,16 +6,19 @@ const { withSentryConfig } = require('@sentry/nextjs');
 
 const i18n = {
     defaultLocale:
-        localesConfig.find(({ isDefault }) => isDefault)?.code || 'en-US',
+        localesConfig.find(({ isDefault }) => isDefault)?.shortCode || 'en',
     localeDetection: false,
-    locales: localesConfig.map(({ code }) => code)
+    locales: localesConfig.map(({ shortCode }) => shortCode)
 };
 
 const languageRedirects = [
     { source: '/en/:path*', destination: '/:path*' },
-    { source: '/fr/:path*', destination: '/fr-FR/:path*' },
-    { source: '/es/:path*', destination: '/es-ES/:path*' },
-    { source: '/pt-br/:path*', destination: '/pt-BR/:path*' }
+    { source: '/es-ES/:path*', destination: '/es/:path*' },
+    { source: '/es-es/:path*', destination: '/es/:path*' },
+    { source: '/fr-FR/:path*', destination: '/fr/:path*' },
+    { source: '/fr-fr/:path*', destination: '/fr/:path*' },
+    { source: '/pt-br/:path*', destination: '/pt/:path*' },
+    { source: '/pt-BR/:path*', destination: '/pt/:path*' }
 ].map(redirect => ({ ...redirect, permanent: true }));
 
 const redirects = () => languageRedirects;

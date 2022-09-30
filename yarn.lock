@@ -1968,10 +1968,10 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.5.0":
-  version "1.5.0"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.0.tgz#4b6433fc521637e1362f0a616d6496584a238f18"
-  integrity sha512-g2FAjYaRjtMl8YqbAZJYFT6RumIqG2N3jRFrpeMOG9+M+L6EYM1mQxWvaRWL/2iEH/PBt/ZuMQUABoTfP0m7Qw==
+"@impact-market/ui@1.5.1":
+  version "1.5.1"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.1.tgz#4ba1bb32dab2d9c0671ca894f305e504011d5c85"
+  integrity sha512-f+JDMKT57rR8mvSLa6pGzShSom6zYHGYS6rF8Z5dd7jiByVE3L6vd33NU3Pp+/4YeOEXkRRaxjp7fXGvY897MA==
   dependencies:
     polished "^4.1.4"
     react-circle-flags "^0.0.17"

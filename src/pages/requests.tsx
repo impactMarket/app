@@ -16,7 +16,8 @@ export const getStaticProps: GetStaticProps = async ({
     return {
         props: {
             data,
-            view: 'communityRequests'  
+            view: 'communityRequests',
+            withPreview: !!previewData
         }
     };
 };

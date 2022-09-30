@@ -110,6 +110,10 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 let success = false;
                 const type = data[0].type?.split('/')[1] || '';
 
+                if (!signature) {
+                    await handleSignature(signMessage);
+                }
+
                 if(type) {
                     const preSigned = await getPreSigned(type).unwrap();
 

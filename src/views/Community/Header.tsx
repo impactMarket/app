@@ -10,6 +10,7 @@ import {
     Text
 } from '@impact-market/ui';
 
+import { getCountryNameFromInitials } from '../../utils/countries';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useRouter } from 'next/router';
 import Review from './ReviewState'
@@ -21,9 +22,11 @@ const Header = ({ buttonLoading, community, updateReview }: any) => {
 
     return (
         <>
-            <Box as="a" onClick={() => router.back()}>
-                <Label content={<String id="back" />} icon="arrowLeft" />
-            </Box>
+            {community?.requestByAddress !== user?.address &&
+                <Box as="a" onClick={() => router.back()}>
+                    <Label content={<String id="back" />} icon="arrowLeft" />
+                </Box>
+            } 
 
             {!!Object.keys(community).length && (
                 <Grid cols={{ sm: 2, xs: 1 }} mt={1}>
@@ -38,7 +41,7 @@ const Header = ({ buttonLoading, community, updateReview }: any) => {
                             )}
 
                             <Text g700 medium>
-                                {community?.city}
+                                {community?.city}, {getCountryNameFromInitials(community?.country)}
                             </Text>
                         </Box>
                     </Box>

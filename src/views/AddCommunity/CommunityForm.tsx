@@ -1,5 +1,5 @@
-import { Alert, Box, Card, Col, Row, Text, Thumbnail } from '@impact-market/ui';
 import { useFormState } from "react-hook-form";
+import { Alert, Box, Card, Col, ImgClick, Row, Text } from '@impact-market/ui';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import FormActions from '../Profile/FormActions';
 import GooglePlaces from '../../components/GooglePlaces';
@@ -58,7 +58,6 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             disabled={isLoading}
                             hint={errors?.description ? t('fieldRequired') : ''}
                             label={t('communityDescription')}
-                            limit={2048}
                             min={240}
                             name="description"
                             placeholder={communityDescriptionPlaceholder?.length > 0 ? communityDescriptionPlaceholder[0]?.text : ''}
@@ -92,17 +91,14 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             withError={submitCount > 0 && !communityImage}
                         />
                         {!!communityImage && (
-                            <Box mt={0.75}>
-                                <Thumbnail
-                                    disabled={isLoading}
-                                    h={10}
+                            <Box mt={0.75} style={{ maxWidth:'25rem' }}>
+                                <ImgClick 
                                     handleClick={(event: any) => {
                                         event.preventDefault();
                                         setCommunityImage(null);
                                     }}
                                     icon="trash"
                                     url={typeof communityImage === 'string' ? communityImage : URL.createObjectURL(communityImage)}
-                                    w={10}
                                 />
                             </Box>
                         )}

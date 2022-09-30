@@ -2,23 +2,27 @@ import React, { useEffect, useState } from 'react';
 
 import { ViewContainer, toast } from '@impact-market/ui';
 import { gql, useQuery } from '@apollo/client';
+import config from '../../../config';
 
 import {
     useGetClaimsLocationsMutation,
     useGetCommunityAmbassadorMutation,
     useGetCommunityContractMutation,
-    useGetCommunityManagersMutation,
     useGetCommunityMutation,
     useGetPendingCommunitiesMutation,
     useGetPromoterMutation,
     useUpdateReviewMutation
 } from '../../api/community';
+import useCommunitiesManagers from "../../hooks/useCommunitiesManagers";
+import useMerchants from "../../hooks/useMerchants";
 
 import CommunityDetails from './CommunityDetails';
 import Dashboard from './Dashboard';
 import Header from './Header';
 import Message from '../../libs/Prismic/components/Message';
 import RolesTabs from './RolesTabs';
+
+const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
 //  Get community data from thegraph
 //  Temporarily removing non existent fields from the query
@@ -30,6 +34,7 @@ query communityQuery($id: String!, $todayDayId: Int, $daysBefore: Int) {
         claimAmount
         maxClaim
         incrementInterval
+        decreaseStep
     }
     communityDailyEntities(where: {community: $id, dayId_lte: $todayDayId, dayId_gte: $daysBefore} orderBy: dayId, orderDirection: asc) {
         beneficiaries
@@ -53,7 +58,6 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
     const [communityId] = useState(communityData.id);
     const [community, setCommunity]= useState(communityData) as any;
-    const [managers, setManagers]= useState(null);
     const [contractData, setContractData]= useState({}) as any;
     const [ambassador, setAmbassador]= useState({}) as any;
     const [claimsLocation, setClaimsLocation]= useState({}) as any;
@@ -74,10 +78,20 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     });
     const [refreshingPage, setRefreshingPage] = useState(false);
 
+    //  Get Managers
+    const { managers, loadingManagers } = useCommunitiesManagers(community?.id, 
+        [
+            'limit=999',
+            'state=0'
+        ], 
+        fetcher);
+
+    //  Get Merchants
+    const { merchants, loadingMerchants } = useMerchants(community?.id, fetcher);
+
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
     const [getCommunityContract] = useGetCommunityContractMutation();
-    const [getCommunityManagers] = useGetCommunityManagersMutation();
     const [getClaimsLocation] = useGetClaimsLocationsMutation();
     const [getPromoter] = useGetPromoterMutation();
     const [getPendingCommunities] = useGetPendingCommunitiesMutation();
@@ -87,9 +101,6 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         const getData = async () => {
             try {
                 setLoading(true)
-
-                //  Get managers
-                const managersData = await getCommunityManagers({ community: community?.id }).unwrap();
 
                 //  Get community's contract data
                 const contractData = await getCommunityContract(community?.id).unwrap();
@@ -113,7 +124,6 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                     if (foundResults.length > 0) setCommunity({...community, isPendingProposal: true});
                 }
 
-                setManagers(managersData);
                 setContractData(contractData);
                 setAmbassador(ambassador);
                 setPromoter(promoter);
@@ -126,7 +136,6 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
         getData()
     }, [refreshingPage]);
-
     
     //  Update community review state and get new data
     const functionUpdateReview = async (review: string) => {
@@ -174,7 +183,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     };
 
     return (
-        <ViewContainer isLoading={loading || isLoading || refreshingPage}>
+        <ViewContainer isLoading={loading || isLoading || refreshingPage || loadingManagers || loadingMerchants}>
             <Header
                 buttonLoading={buttonLoading}
                 community={community}
@@ -192,6 +201,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 ambassador={ambassador}
                 community={ !!data?.communityEntity ? data?.communityEntity : contractData.data }
                 managers={managers?.rows}
+                merchants={merchants}
                 requestedCommunity={!(!!data?.communityEntity)}
                 setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}

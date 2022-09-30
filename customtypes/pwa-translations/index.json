@@ -698,6 +698,13 @@
         },
         "type": "Text"
       },
+      "string-loadSession": {
+        "config": {
+          "label": "loadSession",
+          "placeholder": "Load Session"
+        },
+        "type": "Text"
+      },
       "string-love": {
         "config": {
           "label": "love",
@@ -779,6 +786,13 @@
         "config": {
           "label": "merchands",
           "placeholder": "Merchands"
+        },
+        "type": "Text"
+      },
+      "string-merchants": {
+        "config": {
+          "label": "merchants",
+          "placeholder": "Merchants"
         },
         "type": "Text"
       },
@@ -870,6 +884,13 @@
         "config": {
           "label": "noManagersFound",
           "placeholder": "No managers found."
+        },
+        "type": "Text"
+      },
+      "string-noMerchants": {
+        "config": {
+          "label": "noMerchants",
+          "placeholder": "No Merchants"
         },
         "type": "Text"
       },

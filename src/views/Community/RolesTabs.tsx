@@ -10,12 +10,12 @@ import {
     Tabs
 } from '@impact-market/ui';
 
-import ManagersTab from './ManagersTab'
-import UserCard from './UserCard'
+import RolesGrid from './RolesGrid'
+import UserCard from '../../components/UserCard'
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const RolesTabs = ({ ambassador, community, managers, status, setRefreshingPage, requestedCommunity } : any) => {
+const RolesTabs = ({ ambassador, community, managers, merchants, status, setRefreshingPage, requestedCommunity } : any) => {
     const { t } = useTranslations();
 
     return (
@@ -23,7 +23,6 @@ const RolesTabs = ({ ambassador, community, managers, status, setRefreshingPage,
             <Box mb={2} mt={3}>
                 <Tabs>
                     <TabList>
-                        {/* Todo: Add Merchands tabs*/}
                         <Tab
                             title={t('managers')}
                         />
@@ -31,16 +30,19 @@ const RolesTabs = ({ ambassador, community, managers, status, setRefreshingPage,
                             <Tab
                                 title={t('ambassadors')}
                             />
-                        }    
+                        }  
+                        <Tab
+                            title={t('merchants')}
+                        />  
                     </TabList>
                 
                     {/* Managers */}
                     <TabPanel>
-                        <ManagersTab
+                        <RolesGrid
                             ambassador={ambassador}
                             community={community}
-                            managers={managers}
                             requestedCommunity={requestedCommunity}
+                            role={{managers}}
                             setRefreshingPage={setRefreshingPage}
                             status={status}
                         />  
@@ -59,6 +61,15 @@ const RolesTabs = ({ ambassador, community, managers, status, setRefreshingPage,
                             </Grid> 
                         </TabPanel>
                     }
+
+                    {/* Merchants */}
+                    <TabPanel>
+                        <RolesGrid
+                            community={community}
+                            requestedCommunity={requestedCommunity}
+                            role={{merchants}}
+                        />  
+                    </TabPanel>
                 </Tabs>
             </Box>
         )

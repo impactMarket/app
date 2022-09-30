@@ -23,7 +23,7 @@ const ReloadInfo = () => {
                 </Box>
                 <Box pl={0.375} w="50%">
                     <Button onClick={() => { reloadInfo(); handleClose(); }} w="100%">
-                        <String id="confirm" />
+                        <String id="loadSession" />
                     </Button>
                 </Box>
             </Box>

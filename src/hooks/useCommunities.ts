@@ -13,7 +13,7 @@ const basefilters = {
     status: 'valid',
 };
 
-export default function useCommunities(incomingFilters: any) {
+export default function useCommunities(incomingFilters: any, fetcher?: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { type = null, page, state, ...requestFilters } = incomingFilters;
     const status = state ?? basefilters.status
@@ -26,7 +26,7 @@ export default function useCommunities(incomingFilters: any) {
 
     const supportingCountries = [] as any;
 
-    const { data, mutate, error } = useSWR(`/communities?${queryString}`);
+    const { data, mutate, error } = useSWR(`/communities?${queryString}`, fetcher);
     
     const loadingCommunities = !data && !error;
     const pageCount = Math.ceil(data?.data?.count / ITEMS_PER_PAGE);

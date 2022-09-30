@@ -5,9 +5,9 @@ import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, C
 import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
+import { gql, useQuery } from '@apollo/client';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
-import { useGetCommunityMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSaveClaimLocationMutation } from '../api/claim';
@@ -19,14 +19,25 @@ import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 import TextLink from '../components/TextLink';
+import config from '../../config';
+import useCommunity from '../hooks/useCommunity';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
+
+const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
+
+//  Get increment interval from thegraph
+const communityQuery = gql`
+query communityQuery($id: String!) {
+    communityEntity(id: $id) {
+        incrementInterval
+    }
+}
+`;
 
 const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loadingButton, toggleLoadingButton] = useState(false);
-    const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [claimAllowed, toggleClaim] = useState(false);
-    const [community, setCommunity] = useState({}) as any;
 
     const { view, extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
@@ -48,42 +59,29 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         return null;
     }
 
-    const [getCommunity] = useGetCommunityMutation();
     const [saveClaimLocation] = useSaveClaimLocationMutation();
+
+    const { data: queryInterval } = useQuery(communityQuery, {
+        variables: { 
+            id: auth?.user?.beneficiary?.community?.toLowerCase(), 
+        },
+    });
 
     const { isReady, claimCooldown, claim, isClaimable, beneficiary: { claimedAmount }, community: { claimAmount, hasFunds, maxClaim }, fundsRemainingDays } = useBeneficiary(
         auth?.user?.beneficiary?.community
     );
 
-    // Check if there's a Community with the address associated with the User. If not, return to Homepage
+    const { community, loadingCommunity } = useCommunity(auth?.user?.beneficiary?.community, fetcher);
+
+    // If the User hasn't already accepted the Community Rules, show the modal
     useEffect(() => {
-        const init = async () => {
-            try {
-                const data = await getCommunity(auth?.user?.beneficiary?.community).unwrap();
-
-                setCommunity(data);
-
-                toggleLoadingCommunity(false);
-
-                // If the User hasn't already accepted the Community Rules, show the modal
-                if(!auth?.user?.beneficiaryRules) {
-                    openModal('welcomeBeneficiary', {
-                        communityImage: data.coverImage,
-                        communityName: data.name
-                    });
-                }
-            }
-            catch (error) {
-                console.log(error);
-
-                router.push('/');
-
-                return false;
-            }
-        };
-
-        init();
-    }, []);
+        if(!auth?.user?.beneficiaryRules) {
+            openModal('welcomeBeneficiary', {
+                communityImage: community.coverImage,
+                communityName: community.name
+            });
+        }
+    }, [])
 
     const claimFunds = async () => {
         try {
@@ -184,11 +182,11 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         <Text g900 large medium>
                                             {cardTitle}
                                         </Text>
-                                        <RichText content={cardMessage} g500 mt={0.5} small variables={{ amount: claimAmountDisplay }}/>
+                                        <RichText content={cardMessage} g500 mt={0.5} small variables={{ time: queryInterval?.communityEntity?.incrementInterval / 12 }}/>
                                     </Box>
                                         <Box margin="0 auto" maxW={22}>
                                             {!isClaimable &&
-                                                <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} />
+                                                <Countdown date={new Date(claimCooldown)} onEnd={allowClaim} withDays />
                                             }
                                             {((isClaimable || claimAllowed) && hasFunds) &&
                                                 <Button default disabled={loadingButton} isLoading={loadingButton} large onClick={claimFunds}>
