@@ -8,7 +8,7 @@ import keysToCamel from './helpers/keysToCamel';
 import langConfig from '../../../locales.config';
 import toArray from './helpers/toArray';
 
-const defaultLang = langConfig.find(({ isDefault }) => isDefault)?.code;
+const defaultLang = langConfig.find(({ isDefault }) => isDefault)?.shortCode;
 
 const exceptions = ['pwa-translations'];
 
@@ -21,9 +21,11 @@ type GetByTypesProps = {
 const Prismic = {
     getByTypes: async ({
         clientOptions = {},
-        lang = defaultLang,
+        lang: langCode = defaultLang,
         types
     }: GetByTypesProps) => {
+        const lang = langConfig.find(({ shortCode }) => shortCode === langCode)?.code;
+
         try {
             const api = await client(clientOptions);
 

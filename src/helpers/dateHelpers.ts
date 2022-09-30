@@ -13,7 +13,7 @@ const dateLocales: { [key: string]: any } = { es, fr, ptBR };
 const getLocale = () => {
     try {
         // eslint-disable-next-line no-underscore-dangle
-        const dateFnsCode = langConfig.find(({ code }) => code === window?.__localeId__)?.dateFnsCode;
+        const dateFnsCode = langConfig.find(({ shortCode }) => shortCode === window?.__localeId__)?.dateFnsCode;
 
         return dateLocales?.[dateFnsCode];
     } catch (error) {

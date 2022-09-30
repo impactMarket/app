@@ -5,7 +5,7 @@ import RichText, { RichTextProps } from './RichText';
 import isEmpty from 'lodash/isEmpty';
 import localesConfig from '../../../../locales.config';
 
-const defaultLocale = localesConfig.find(({ isDefault }) => isDefault)?.code?.toLowerCase() || 'en-us';
+const defaultLocale = localesConfig.find(({ isDefault }) => isDefault)?.shortCode || 'en';
 
 type Props = { id: string } & RichTextProps;
 
@@ -15,7 +15,7 @@ const Message = (props: Props) => {
 
     const { translations } = usePrismicData();
 
-    const content = (translations?.[locale.toLowerCase()]?.messages?.[id] || translations?.[defaultLocale]?.messages?.[id]) as any;
+    const content = translations?.[locale]?.messages?.[id]?.length ? translations?.[locale]?.messages?.[id] : translations?.[defaultLocale]?.messages?.[id] as any;
 
     if (isEmpty(content)) {
         console.log(`No message rich text found with the key "${id}"!`);
