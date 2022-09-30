@@ -54,7 +54,6 @@ const InfoCards = ({ data, show }: any) => {
                             claimAmount,
                             localeCurrency
                         )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('day') : t('week')}`}
-                        // TODO: add above string to translations
                     />
                 )}
                 {(!!maxClaim || maxClaim === 0) && (
@@ -62,6 +61,7 @@ const InfoCards = ({ data, show }: any) => {
                         icon="check"
                         label="maxPerBeneficiary"
                         text={currencyFormat(maxClaim, localeCurrency)}
+                        tooltip={currencyFormat(data?.decreaseStep, localeCurrency)}
                     />
                 )}
                 {(!!incrementInterval || incrementInterval === 0) && (
