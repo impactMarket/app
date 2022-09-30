@@ -2,7 +2,7 @@ import { Box, Button, Col, Divider, Row } from '@impact-market/ui';
 import React from "react";
 import String from '../../libs/Prismic/components/String';
 
-const FormActions = ({ handleCancel, isSubmitting }: any) => {    
+const FormActions = ({ handleCancel, isSubmitting }: any) => {
     return (
         <>
             <Divider/>

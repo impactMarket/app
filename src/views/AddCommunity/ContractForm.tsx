@@ -1,17 +1,18 @@
 /* eslint-disable no-nested-ternary */
-import { Box, Card, Col, Divider, Row, Text } from '@impact-market/ui';
 // import { getExpectedUBIDuration } from '../../utils/communities';
+import { Box, Card, Col, Divider, Row, Text} from '@impact-market/ui';
 import { convertCurrency, getCurrencySymbol } from '../../utils/currencies';
+import { useFormState, useWatch } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import { useWatch } from "react-hook-form";
+import FormActions from '../Profile/FormActions';
 import Input from '../../components/Input';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import Select from '../../components/Select';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLoading: boolean, rates: any }> = props => {
-    const { control, currency, errors, isLoading, rates } = props;
+const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLoading: boolean, rates: any, save?: boolean, reset?: () => void }> = props => {
+    const { control, currency, errors, isLoading, rates, save = false, reset = () => {} } = props;
     const [claimAmountSuffix, setClaimAmountSuffix] = useState('');
     const [maxClaimSuffix, setMaxClaimSuffix] = useState('');
     // const [privateCommunity, setPrivateCommunity] = useState(false);
@@ -35,6 +36,8 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
     //         setPrivateCommunity(true);
     //     }
     // }
+
+    const { isDirty } = useFormState({ control });
 
     // TODO: Expected UBI duration - commented by Bernado request for now (until we have a way to calculate this without errors)
     const claimAmountWatch = useWatch({ control, name: 'claimAmount' });
@@ -98,8 +101,13 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
         setMaxClaimSuffix(maxClaimText);
     }, [maxClaimWatch, currency]);
 
+    const handleCancel = (e: any) => {
+        e.preventDefault();
+        reset();
+    }
+
     return (
-        <Row>
+        <Row pb="3rem">
             <Col colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
                 <Divider margin="1.25 0" show={{ sm: 'none', xs: 'block' }} />
                 <Text g700 medium small>{contractTitle}</Text>
@@ -209,6 +217,10 @@ const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLo
                             <RichText content={contractPrivateDescription} g500 small />
                         </Box>
                     </Box> */}
+
+                    {
+                        isDirty && save && <FormActions handleCancel={handleCancel} isSubmitting={isLoading} />
+                    }
                 </Card>
             </Col>
         </Row>

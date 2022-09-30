@@ -67,7 +67,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
             
             const result = await updateUser(payload).unwrap();
 
-            if(result) {
+            if (result) {
                 dispatch(setUser({ user: { ...result }}));
 
                 toast.success(<Message id="successfullyChangedData" />);
@@ -109,6 +109,10 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
                 
                 let success = false;
                 const type = data[0].type?.split('/')[1] || '';
+
+                if (!signature) {
+                    await handleSignature(signMessage);
+                }
 
                 if(type) {
                     const preSigned = await getPreSigned(type).unwrap();

@@ -1,26 +1,32 @@
-import { Alert, Box, Card, Col, Row, Text, Thumbnail } from '@impact-market/ui';
+import { Alert, Box, Card, Col, ImgClick, Row, Text } from '@impact-market/ui';
+import { useFormState } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import FormActions from '../Profile/FormActions';
 import GooglePlaces from '../../components/GooglePlaces';
 import Input from '../../components/Input';
 import InputUpload from '../../components/InputUpload';
-import React from 'react';
+import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, communityImage: any, setCommunityImage: Function, communityStatus?: string, submitCount: number }> = props => {
-    const { communityImage, communityStatus, control, errors, isLoading, setCommunityImage, submitCount } = props;
+
+const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, communityImage: any, setCommunityImage: Function, communityStatus?: string, submitCount: number, save?: boolean, reset?: () => void  }> = props => {
+    const { communityImage, communityStatus, control, errors, isLoading, setCommunityImage, submitCount, save = false, reset = () => {} } = props;
     const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
     const { communityAlert, communityDescription, communityDescriptionPlaceholder, communityImageUpload, communityTitle } = extractFromView('formSections') as any;
+    const [imageUploaded, setImageUploaded] = useState(false);
 
     const handleCommunityImage = (event: any) => {
         if(event?.length > 0) {
+            setImageUploaded(true);
             setCommunityImage(event[0]);
         }
     };
 
+    const { isDirty } = useFormState({ control });
     // TODO: check what links to add and how to add the links in "Learn to write description" and "Learn to choose a photo" texts
 
     return (
@@ -52,7 +58,6 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             disabled={isLoading}
                             hint={errors?.description ? t('fieldRequired') : ''}
                             label={t('communityDescription')}
-                            limit={2048}
                             min={240}
                             name="description"
                             placeholder={communityDescriptionPlaceholder?.length > 0 ? communityDescriptionPlaceholder[0]?.text : ''}
@@ -86,21 +91,21 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             withError={submitCount > 0 && !communityImage}
                         />
                         {!!communityImage && (
-                            <Box mt={0.75}>
-                                <Thumbnail
-                                    disabled={isLoading}
-                                    h={10}
+                            <Box mt={0.75} style={{ maxWidth:'25rem' }}>
+                                <ImgClick 
                                     handleClick={(event: any) => {
                                         event.preventDefault();
                                         setCommunityImage(null);
                                     }}
                                     icon="trash"
                                     url={typeof communityImage === 'string' ? communityImage : URL.createObjectURL(communityImage)}
-                                    w={10}
                                 />
                             </Box>
                         )}
                     </Box>
+                    {
+                        (isDirty || imageUploaded) && save && <FormActions handleCancel={reset} isSubmitting={isLoading} />
+                    }
                 </Card>
             </Col>
         </Row>

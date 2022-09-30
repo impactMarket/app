@@ -96,7 +96,6 @@ const Managers = ({ ambassador, community, status, setRefreshingPage, requestedC
                                         )}
                                     </CanBeRendered>
                                 }
-                                
                             </Card>
                     ))}
                 </Grid> 

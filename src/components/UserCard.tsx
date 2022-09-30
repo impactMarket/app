@@ -35,7 +35,7 @@ const UserCard = ({ community, data, requestedCommunity } : any) => {
         <>
             <Box fLayout="center start" inlineFlex mb={1}>
                 <Box mr={1}>
-                    <Avatar url={getImage({ filePath: data?.avatarMediaPath })} />
+                    <Avatar url={getImage({ filePath: data?.avatarMediaPath, fit: 'cover', height: 40, width: 40 })} />
                 </Box>
                 <Box>
                     {(data?.name || data?.firstName || data?.lastName) && (
