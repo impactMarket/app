@@ -156,7 +156,7 @@ const Contribute = () => {
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
             <Box fLayout="between" flex w="100%">
                 <Col>
-                    <CircledIcon icon="alertCircle" large />
+                    <CircledIcon icon="creditCard" large />
                 </Col>
                 <Col fDirection="column" fLayout="center" flex>
                     <CloseButton

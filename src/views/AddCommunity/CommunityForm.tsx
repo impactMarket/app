@@ -1,4 +1,4 @@
-import { Alert, Box, Card, Col, Row, Text, Thumbnail } from '@impact-market/ui';
+import { Alert, Box, Card, Col, ImgClick, Row, Text } from '@impact-market/ui';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import GooglePlaces from '../../components/GooglePlaces';
 import Input from '../../components/Input';
@@ -21,7 +21,7 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
         }
     };
 
-    // TODO: check what links to add and how to add the links in "Learn to write description" and "Learn to choose a photo" texts
+    // TODO: check what links to add and how to add the links in "Learn to write description" and "Learn to choose a photo" texts 
 
     return (
         <Row>
@@ -52,7 +52,6 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             disabled={isLoading}
                             hint={errors?.description ? t('fieldRequired') : ''}
                             label={t('communityDescription')}
-                            limit={2048}
                             min={240}
                             name="description"
                             placeholder={communityDescriptionPlaceholder?.length > 0 ? communityDescriptionPlaceholder[0]?.text : ''}
@@ -86,17 +85,14 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             withError={submitCount > 0 && !communityImage}
                         />
                         {!!communityImage && (
-                            <Box mt={0.75}>
-                                <Thumbnail
-                                    disabled={isLoading}
-                                    h={10}
+                            <Box mt={0.75} style={{ maxWidth:'25rem' }}>
+                                <ImgClick 
                                     handleClick={(event: any) => {
                                         event.preventDefault();
                                         setCommunityImage(null);
                                     }}
                                     icon="trash"
                                     url={typeof communityImage === 'string' ? communityImage : URL.createObjectURL(communityImage)}
-                                    w={10}
                                 />
                             </Box>
                         )}

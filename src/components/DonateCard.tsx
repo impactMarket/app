@@ -6,10 +6,11 @@ import {
     Box,
     Button,
     Card,
+    DropdownMenu,
     Text,
-    TextLink,
     closeModal,
-    openModal
+    openModal,
+    toast
 } from '@impact-market/ui';
 import { currencyFormat } from '../utils/currencies';
 import { formatAddress } from '../utils/formatAddress';
@@ -17,6 +18,7 @@ import { formatPercentage } from '../utils/percentages';
 import { useGetCommunityCampaignMutation } from '../api/community';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 
+import Message from '../libs/Prismic/components/Message';
 import ProgressBar from './ProgressBar';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
@@ -102,6 +104,12 @@ const DonateCard = (props: DonateCardProps) => {
         setIsLoading(false);
     }
 
+    const copyToClipboard = (address: any) => {
+        navigator.clipboard.writeText(address);
+
+        toast.success(<Message id="copiedAddress" />);
+    }
+
     return (
         <Card padding={1.4} w="100%">
             <Box fLayout="center" flex>
@@ -122,7 +130,6 @@ const DonateCard = (props: DonateCardProps) => {
                     </Text>
                 </Button>
             </Box>
-            {/* Add texts on Prismic  */}
             {!!campaignUrl &&
                 <Box tAlign="center">
                     <Text g500 mt={0.5} small>
@@ -187,17 +194,22 @@ const DonateCard = (props: DonateCardProps) => {
                 small
             />
             <Box center>
-                <TextLink
-                    large
-                    onClick={() => window.open(config.explorerUrl?.replace(
-                        '#USER#',
-                        contractAddress
-                    ))}
-                    p600
-                    semibold
-                >
-                    {formatAddress(contractAddress, [6, 5])}
-                </TextLink>
+                <DropdownMenu
+                    icon="chevronDown"
+                    items={[
+                        {
+                            icon: 'open',
+                            onClick: () => window.open(config.explorerUrl?.replace('#USER#', contractAddress)),
+                            title: t('openInExplorer')
+                        },
+                        {
+                            icon: 'copy',
+                            onClick: () => copyToClipboard(contractAddress),
+                            title: t('copyAddress')
+                        }
+                    ]}
+                    title={formatAddress(contractAddress, [6, 5])}
+                />
             </Box>
         </Card>
     );

@@ -23,7 +23,6 @@ const RolesTabs = ({ ambassador, community, managers, merchants, status, setRefr
             <Box mb={2} mt={3}>
                 <Tabs>
                     <TabList>
-                        {/* Todo: Add Merchands tabs*/}
                         <Tab
                             title={t('managers')}
                         />

@@ -200,9 +200,9 @@ const CreateStory = () => {
                     />
 
                     {!!imageFiles?.length && (
-                        <Row fLayout="center">
+                        <Row mt={1}>
                             {imageFiles?.map((image, key) => (
-                                <Box key={key} mt={1}>
+                                <Box key={key}>
                                     <Thumbnail
                                         handleClick={(event: any) => {
                                             preventDefault(event);
