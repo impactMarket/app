@@ -28,7 +28,7 @@ const Slider = styled.div`
 
 const EmblaCarousel = (props: PropType) => {
     const { slides } = props
-
+    
     const [viewportRef, embla] = useEmblaCarousel({ skipSnaps: false });
     const [prevBtnEnabled, setPrevBtnEnabled] = useState(false);
     const [nextBtnEnabled, setNextBtnEnabled] = useState(false);
@@ -54,7 +54,7 @@ const EmblaCarousel = (props: PropType) => {
         <Slider className="embla">
             <div className="embla__viewport" ref={viewportRef}>
                 <div className="embla__container">
-                    {slides.map((slide: string, key: number) => (
+                    {slides?.map((slide: string, key: number) => (
                         <div className="embla__slide" key={key}>
                             <Img 
                                 alt=""

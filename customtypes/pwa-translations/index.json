@@ -292,6 +292,13 @@
         },
         "type": "Text"
       },
+      "string-commentAdded": {
+        "config": {
+          "label": "commentAdded",
+          "placeholder": "Comment added"
+        },
+        "type": "Text"
+      },
       "string-comments": {
         "config": {
           "label": "comments",
@@ -513,6 +520,13 @@
         "config": {
           "label": "email",
           "placeholder": "Email"
+        },
+        "type": "Text"
+      },
+      "string-error": {
+        "config": {
+          "label": "error",
+          "placeholder": "Error"
         },
         "type": "Text"
       },
@@ -772,6 +786,13 @@
         "config": {
           "label": "maxPerBeneficiary",
           "placeholder": "Max. per beneficiary"
+        },
+        "type": "Text"
+      },
+      "string-maximumCharactersExceeded": {
+        "config": {
+          "label": "maximumCharactersExceeded",
+          "placeholder": "Maximum characters exceeded"
         },
         "type": "Text"
       },
@@ -1321,6 +1342,13 @@
         },
         "type": "Text"
       },
+      "string-success": {
+        "config": {
+          "label": "success",
+          "placeholder": "Success"
+        },
+        "type": "Text"
+      },
       "string-suspiciousActivity": {
         "config": {
           "label": "suspiciousActivity",
@@ -1447,10 +1475,24 @@
         },
         "type": "Text"
       },
+      "string-writeComment": {
+        "config": {
+          "label": "writeComment",
+          "placeholder": "Write a comment..."
+        },
+        "type": "Text"
+      },
       "string-writeSomethingHere": {
         "config": {
           "label": "writeSomethingHere",
           "placeholder": "Write something here"
+        },
+        "type": "Text"
+      },
+      "string-writeValidComment": {
+        "config": {
+          "label": "writeValidComment",
+          "placeholder": "Write a valid comment"
         },
         "type": "Text"
       },
