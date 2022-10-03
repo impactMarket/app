@@ -6,14 +6,15 @@ import {
     Divider,
     Grid,
     Text,
-    TextLink,
     ViewContainer
 } from '@impact-market/ui';
 import { ReportsType, useGetAmbassadorReportsMutation } from '../../api/user';
+import { getCommunityBeneficiaries } from '../../graph/community';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
+import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import Select from '../../components/Select';
@@ -21,11 +22,7 @@ import ShimmerEffect from '../../components/ShimmerEffect';
 import String from '../../libs/Prismic/components/String';
 import useBeneficiariesCount from '../../hooks/useBeneficiariesCount';
 import useFilters from '../../hooks/useFilters';
-
-import {
-    getBeneficiaries,
-    getCommunityBeneficiaries
-} from '../../graph/community';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 type Cards = {
     number: any;
@@ -44,46 +41,20 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     const { view } = usePrismicData();
     const auth = useSelector(selectCurrentUser);
     const { update, getByKey } = useFilters();
-    const isNotViewAll = !(getByKey('view') === 'viewAll' || !getByKey('view'));
-
+    const isNotViewAll = !(getByKey('view') === 'myCommunities' || !getByKey('view'));
     let query;
 
-    if (getByKey('view') === 'myCommunities') {
+    const { t } = useTranslations();
+    const [beneficiariesUrl, setBeneficiariesUrl] = useState('');
+
+    if (getByKey('view') === 'myCommunities' || !getByKey('view')) {
         query = [getCommunityBeneficiaries, { ids: auth?.user?.ambassador?.communities }];
-    } else if (isNotViewAll) {
-        query = [getCommunityBeneficiaries, { ids: [getByKey('view').toString().toLowerCase()] }];
     } else {
-        query = [getBeneficiaries];
-    }
+        query = [getCommunityBeneficiaries, { ids: [getByKey('view').toString().toLowerCase()] }];
+    };
 
-    const { beneficiariesCount, loading: load } = useBeneficiariesCount(query);
-
-    const cards = [
-        {
-            loading: false,
-            number: '--',
-            title: 'Suspicious Transactions',
-            url: '',
-        },
-        {
-            loading: false,
-            number: reports || '--',
-            title: <String id="reportedSuspiciousActivity" />,
-            url: '',
-        },
-        {
-            loading: load,
-            number: beneficiariesCount,
-            title: 'Beneficiaries',
-            url: '/manager/beneficiaries',
-        },
-        {
-            loading: false,
-            number: '--',
-            title: 'Inactive beneficiaries',
-            url: '',
-        }
-    ];
+    const { beneficiariesCount, loading: beneficiariesLoading } = useBeneficiariesCount(query);
+    
 
     useEffect(() => {
         const getSuspiciousActivitiesReportsMethod = async () => {
@@ -101,9 +72,17 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
 
                 const myCommunities = communities?.data?.rows?.map(
                     (el: any) => {
-                        return { label: el.name, value: el.contractAddress };
+                        return { 
+                            id: el.id,
+                            label: el.name,
+                            value: el.contractAddress 
+                        };
                     }
                 );
+
+                const currentCommunity = myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view'));
+
+                setBeneficiariesUrl(`/manager/beneficiaries?community=${currentCommunity ? currentCommunity.id : ''}&state=0`);
 
                 setMyCommunities(myCommunities);
 
@@ -117,6 +96,21 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
 
         getSuspiciousActivitiesReportsMethod();
     }, []);
+
+    const cards = [
+        {
+            loading,
+            number: reports || '--',
+            title: <String id="reportedSuspiciousActivity" />,
+            url: ''
+        },
+        {
+            loading: beneficiariesLoading,
+            number: beneficiariesCount,
+            title: 'Beneficiaries',
+            url: beneficiariesUrl
+        }
+    ];
 
     const renderCard = (card: Cards) => {
         return (
@@ -141,7 +135,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                             small
                             style={{ alignItems: 'center' }}
                         >
-                            <ShimmerEffect isLoading={card.loading}>
+                            <ShimmerEffect isLoading={card.loading} style={{height: '2rem', width: '20%'}}>
                                 {card.number}
                             </ShimmerEffect>
                         </Display>
@@ -149,9 +143,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                     {isNotViewAll && <Box w="100%">
                         <Divider />
                         <Box fLayout="end" flex pl={1.5} pr={1.5}>
-                            <TextLink href={card.url} medium p700 small>
-                                <String id="viewAll" />
-                            </TextLink>
+                            <Link href={card.url}>{t('viewAll')}</Link>
                         </Box>
                     </Box>}
                 </Card>
@@ -174,15 +166,17 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                 <Box pr={{ sm: 0.75, xs: 0 }} w={{ sm: '50%', xs: '100%' }}>
                     <Select
                         callback={(value: any) => {
+                            const gotoCommunity =  myCommunities.find((el: any) => el.value === value);
+
+                            setBeneficiariesUrl(`/manager/beneficiaries?community=${gotoCommunity ? gotoCommunity.id : ''}&state=0`);
                             update({ view: value });
                         }}
                         disabled={isLoading}
-                        initialValue={getByKey('view') || 'viewAll'}
+                        initialValue={getByKey('view') || 'myCommunities'}
                         isMultiple={false}
                         maxW="13rem"
                         name="view"
                         options={[
-                            { label: 'View all', value: 'viewAll' },
                             { label: 'My Communities', value: 'myCommunities' },
                             ...myCommunities
                         ]}

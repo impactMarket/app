@@ -20,6 +20,7 @@ interface IClaimLocation {
 
 type MapProps = {
     claims: IClaimLocation[];
+    onLoad?: any;
 };
 
 const MapWrapper = styled.div`
@@ -38,7 +39,7 @@ const MapWrapper = styled.div`
 `;
 
 const Map = (props: MapProps) => {
-    const { claims } = props;
+    const { claims, onLoad = null } = props;
     const [map, setMap] = useState<mapboxgl.Map>(undefined as any);
     const mapContainer = useRef<any>();
 
@@ -166,6 +167,10 @@ const Map = (props: MapProps) => {
                     'waterway-label'
                 );
                 /* eslint-enable sort-keys */
+            });
+
+            map.on('idle', () => {
+                if (onLoad) onLoad(false);
             });
         }
 

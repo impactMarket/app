@@ -80,14 +80,16 @@ const getColumns = () => {
     ];
 };
 
-const BeneficiariesList: React.FC = () => {
+const BeneficiariesList: React.FC<{ community: string }> = props => {
+    const { community } = props;
+
     return (
         <Table
             columns={getColumns()}
             itemsPerPage={itemsPerPage}
             mt={1.25}
             pb={2}
-            prefix="beneficiaries"
+            prefix={`${community}/beneficiaries`}
         />
     );
 };

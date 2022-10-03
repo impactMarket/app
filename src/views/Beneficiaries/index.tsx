@@ -6,17 +6,19 @@ import { selectCurrentUser } from '../../state/slices/auth';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { userManager } from '../../utils/users';
+import { userAmbassador, userManager } from '../../utils/users';
 import BeneficiariesList from './BeneficiariesList';
 import Filters from '../../components/Filters';
 import NoBeneficiaries from './NoBeneficiaries';
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
 import useFilters from '../../hooks/useFilters';
 import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+
+import { useGetCommunityMutation } from '../../api/community';
 
 const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
@@ -30,8 +32,13 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { t } = useTranslations();
     const { update, getByKey } = useFilters();
 
+
+    const [getCommunity] = useGetCommunityMutation();
+    const [community, setCommunity] = useState({}) as any;
+    
+
     // Check if current User has access to this page
-    if(!auth?.type?.includes(userManager)) {
+    if(!auth?.type?.includes(userManager) && !auth?.type?.includes(userAmbassador)) {
         router.push('/');
 
         return null;
@@ -39,7 +46,17 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
 
     const fetcher = (query: string) => request(config.graphUrl, query, variables);
 
-    const variables = {address: auth?.user?.manager?.community};
+    const variables = {address: ''};
+
+    if (auth?.type?.includes(userAmbassador) && getByKey('community')) {
+        variables.address = community.contractAddress !== undefined ? community.contractAddress.toLowerCase() : '';
+    } else if (auth?.type?.includes(userManager)) {
+        variables.address = auth?.user?.manager?.community;
+
+        // const communities: any = await getCommunities({
+        //     ambassadorAddress: auth?.user?.address
+        // });
+    }
 
     const { data, error, mutate } = useSWR([
         getCommunityBeneficiaries,
@@ -49,9 +66,23 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const loadingCommunity = !data && !error;
 
     useEffect(() => {
+        const init = async () => {
+            try {
+                const communityAddress = getByKey('community') || auth?.user?.manager?.community;
+                const data = await getCommunity(communityAddress).unwrap();
+
+                setCommunity(data);
+            }
+            catch (error) {
+                console.log(error);
+            }
+        };
+
         if(!getByKey('state')) {
             router.push('/manager/beneficiaries?state=0&orderBy=since:desc', undefined, { shallow: true });
         }
+
+        init();
     }, []);
 
     return (
@@ -101,7 +132,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                         <FakeTabPanel />
                     </Tabs>
                     <Filters margin="1.5 0 0 0" maxW={20} property="search"/>
-                    <BeneficiariesList />
+                    <BeneficiariesList community={community?.id} />
                 </Box>
                 :
                 <NoBeneficiaries />
