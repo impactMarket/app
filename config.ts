@@ -89,7 +89,7 @@ const config = {
     /**
      * Signature message to confirm signature
      */
-     signatureMessage: process.env.NEXT_PUBLIC_SIGNATURE_MESSAGE
+    signatureMessage: process.env.NEXT_PUBLIC_SIGNATURE_MESSAGE
 };
 
 export default config;

@@ -9,6 +9,7 @@ import {
     DropdownMenu,
     Text,
     closeModal,
+    colors,
     openModal,
     toast
 } from '@impact-market/ui';
@@ -26,6 +27,10 @@ import config from '../../config';
 import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
+import { RampInstantSDK } from "@ramp-network/ramp-instant-sdk";
+
+import styled from 'styled-components';
+
 interface DonateCardProps {
     backers: number;
     beneficiariesNumber: number;
@@ -36,6 +41,20 @@ interface DonateCardProps {
     type: string;
     action: () => void;
 }
+
+const BoxWrapper = styled.div`
+    Button {
+        background: white;
+        border: 1px solid ${colors.p500};
+        color: ${colors.p500};
+        width: 100%;
+
+        p {
+            display: flex;
+            align-items: center;
+        }
+    } 
+`;
 
 const DonateCard = (props: DonateCardProps) => {
     const {
@@ -79,6 +98,16 @@ const DonateCard = (props: DonateCardProps) => {
         }
 
         window.open(campaignUrl, '_blank');
+    };
+
+    const triggerRamp = () => {
+        new RampInstantSDK({
+            hostAppName: 'impactMarket',
+            hostLogoUrl: 'https://www.gitbook.com/cdn-cgi/image/height=40,fit=contain,dpr=2,format=auto/https%3A%2F%2F2074548608-files.gitbook.io%2F~%2Ffiles%2Fv0%2Fb%2Fgitbook-x-prod.appspot.com%2Fo%2Fspaces%252FCYFjCZsJmtFWjyXZmVH8%252Flogo%252FrnP1xUXSL3jJHhxKkA82%252Flogo_blue_on_transparent_background.png%3Falt%3Dmedia%26token%3D42e89872-c292-4ccc-b8c5-771b055c4581',
+            swapAmount: '',
+            swapAsset: "CELO_CUSD",
+            userAddress: contractAddress,
+        }).show();
     };
 
     useEffect(() => {
@@ -130,6 +159,21 @@ const DonateCard = (props: DonateCardProps) => {
                     </Text>
                 </Button>
             </Box>
+            <BoxWrapper>
+                <Text flex g500 mt={0.5} small style={{justifyContent: 'center'}}>
+                    <String id="or" />
+                </Text>
+                <Button
+                    mt={0.5}
+                    onClick={triggerRamp}
+                    p50
+                    secondary
+                >
+                    <Text medium w="100%">
+                        Fiat · Revolut · Apple Pay
+                    </Text>
+                </Button>
+            </BoxWrapper>      
             {!!campaignUrl &&
                 <Box tAlign="center">
                     <Text g500 mt={0.5} small>
