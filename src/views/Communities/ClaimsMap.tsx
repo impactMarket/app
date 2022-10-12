@@ -7,23 +7,23 @@ import styled from 'styled-components';
 import useClaimsLocation from "../../hooks/useClaimsLocation";
 
 const LoadingWrapper = styled.div`
-    background: white;
-    height: 100%; 
-    width: 100%;
-    display: flex;
-    justify-content: center;
     align-items: center;
+    background: white;
+    display: flex;
+    height: 100%; 
+    justify-content: center;
+    width: 100%;
 
     path {
-	 	fill:white;
         animation: dash 1s alternate infinite;
-       }
-       
-       @keyframes dash {
-         to {
+        fill:white;
+    }
+    
+    @keyframes dash {
+        to {
             stroke: white;
-         }
-       }
+        }
+    }
 `;
 
 const ClaimsMap = () => {

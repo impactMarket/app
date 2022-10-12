@@ -52,10 +52,6 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
         variables.address = community.contractAddress !== undefined ? community.contractAddress.toLowerCase() : '';
     } else if (auth?.type?.includes(userManager)) {
         variables.address = auth?.user?.manager?.community;
-
-        // const communities: any = await getCommunities({
-        //     ambassadorAddress: auth?.user?.address
-        // });
     }
 
     const { data, error, mutate } = useSWR([

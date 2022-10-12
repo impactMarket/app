@@ -3,11 +3,6 @@ import React from 'react';
 import styled from 'styled-components';
 
 const ShimmerWrapper = styled.div`
-    height: 100%;
-    width: 100%;
-    margin-top: 3px;
-    margin-bottom: 3px;
-    border-radius: 10px;
     background: ${colors.p25};
     background-image: linear-gradient(
         to right,
@@ -18,8 +13,13 @@ const ShimmerWrapper = styled.div`
     );
     background-repeat: no-repeat;
     background-size: 800px 500px;
+    border-radius: 10px;
     display: inline-block;
+    height: 100%;
+    margin-bottom: 3px;
+    margin-top: 3px;
     position: relative;
+    width: 100%;
 
     animation-duration: 1s;
     animation-fill-mode: forwards;

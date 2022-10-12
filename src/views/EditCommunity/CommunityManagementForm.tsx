@@ -35,7 +35,7 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
     const { t } = useTranslations();
     // TODO: Add form title and description to Prismic
     // const { extractFromView } = usePrismicData();
-    // const { contractDescription, contractTitle } = extractFromView('formSections') as any;
+    // const { contractDescription, contractTitle } = extractFromView('community') as any;
     const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } = useAmbassador();
     const {
         handleSubmit,
