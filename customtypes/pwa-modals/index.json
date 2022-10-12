@@ -376,6 +376,24 @@
           "label": "Tip Title",
           "placeholder": ""
         }
+      },
+      "message-approvedSuccessfully": {
+        "type": "StructuredText",
+        "config": {
+          "label": "approvedSuccessfully",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-thanksForContribute": {
+        "type": "StructuredText",
+        "config": {
+          "label": "thanksForContribute",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
       }
     },
     "wrong-network": {
