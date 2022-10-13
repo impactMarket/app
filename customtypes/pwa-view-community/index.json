@@ -106,6 +106,114 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "message-cashinButtonText": {
+        "type": "StructuredText",
+        "config": {
+          "label": "cashinButtonText",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-maxBeneficiariesUpdated": {
+        "type": "StructuredText",
+        "config": {
+          "label": "maxBeneficiariesUpdated",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-maxBeneficiariesUpdateError": {
+        "type": "StructuredText",
+        "config": {
+          "label": "maxBeneficiariesUpdateError",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-lockedCommunitySuccess": {
+        "type": "StructuredText",
+        "config": {
+          "label": "lockedCommunitySuccess",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-lockedCommunityError": {
+        "type": "StructuredText",
+        "config": {
+          "label": "lockedCommunityError",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-unlockCommunitySuccess": {
+        "type": "StructuredText",
+        "config": {
+          "label": "unlockCommunitySuccess",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-unlockCommunityError": {
+        "type": "StructuredText",
+        "config": {
+          "label": "unlockCommunityError",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-communityManagement": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityManagement",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-communityParameters": {
+        "type": "StructuredText",
+        "config": {
+          "label": "communityParameters",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-maxNumberBeneficiaries": {
+        "type": "StructuredText",
+        "config": {
+          "label": "maxNumberBeneficiaries",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-lockCommunity": {
+        "type": "StructuredText",
+        "config": {
+          "label": "lockCommunity",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      },
+      "message-lockedCommunityHint": {
+        "type": "StructuredText",
+        "config": {
+          "label": "lockedCommunityHint",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
       }
     }
   }
