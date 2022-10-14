@@ -64,24 +64,6 @@ export interface UnreadNotifications {
     data: number;
 }
 
-export interface ReportsType {
-    count: number;
-    rows: [{
-        id: number;
-        communityId: number;
-        message: string;
-        category: string;
-        review: string;
-        createdAt: Date,
-        community: {
-            id: number;
-            contractAddress: string;
-            name: string;
-            coverMediaPath: string;
-        }
-    }]
-}
-
 export interface AnonymousReport {
     communityId: number;
     category: string;
@@ -125,14 +107,6 @@ export const userApi = emptySplitApi.injectEndpoints({
                 method: 'DELETE',
                 url: 'users'
             })
-        }),
-        // Get suspicious activities reported 
-        getAmbassadorReports: builder.mutation<ReportsType, {limit: number, offset: number}>({
-            query: ({limit, offset}) => ({
-                method: 'GET',
-                url: `users/report?${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
-            }),
-            transformResponse: (response: { data: ReportsType }) => response.data
         }),
         // Get notifications
         getNotifications: builder.mutation<Notification[], {limit: number, offset: number}>({
@@ -201,7 +175,6 @@ export const {
     useDeleteUserMutation,
     useGetNotificationsMutation,
     useGetUnreadNotificationsMutation,
-    useGetAmbassadorReportsMutation,
     useGetUserMutation,
     useGetUserByIdMutation,
     useUpdateNotificationsMutation,

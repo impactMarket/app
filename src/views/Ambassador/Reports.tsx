@@ -1,5 +1,4 @@
 import { Avatar, Box, Card, Divider, DropdownMenu, Label, Pagination, Text, TextLink, ViewContainer, toast } from '@impact-market/ui';
-import { ReportsType, useGetAmbassadorReportsMutation } from '../../api/user';
 import { dateHelpers } from '../../helpers/dateHelpers';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
@@ -12,44 +11,43 @@ import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
 import useFilters from '../../hooks/useFilters';
+import useSuspiciousReports from '../../hooks/useSuspiciousReports';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Reports: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const router = useRouter();
     const { update, getByKey } = useFilters();
-    const [reports, setReports] = useState<ReportsType>();
-    const [getReports] = useGetAmbassadorReportsMutation();
-    const [loading, setLoading] = useState(false);
     const { t } = useTranslations();
     const { view } = usePrismicData();
+    const communityId = getByKey('community') ? getByKey('community').toString() : null;
     
-     // Pagination
-     const limit = 10;
-     const [offset, setItemOffset] = useState(0);
-     const [currentPage, setCurrentPage] = useState(0);
-     const [reportsCount, setReportsCount] = useState<number>();
-     const pageCount = Math.ceil(reportsCount / limit);
-     const [changed, setChanged] = useState<Date>(new Date());
-     const [ready, setReady] = useState(false);
+    // Pagination
+    const limit = 10;
+    const [offset, setItemOffset] = useState(0);
+    const [currentPage, setCurrentPage] = useState(0);
+
+    const { data, loadingReports } = useSuspiciousReports(communityId, limit, offset);
+    const pageCount = Math.ceil(data?.count / limit);
+
 
     const handlePageClick = (event: any, direction?: number) => {
         if (event.selected >= 0) {
-            const newOffset = (event.selected * limit) % reportsCount;
+            const newOffset = (event.selected * limit) % data?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(event.selected);
             update('page', event.selected + 1);
         } else if (direction === 1 && currentPage > 0) {
             const newPage = currentPage - 1;
-            const newOffset = (newPage * limit) % reportsCount;
+            const newOffset = (newPage * limit) % data?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
             update('page', newPage + 1);
         } else if (direction === 2 && currentPage < pageCount - 1) {
             const newPage = currentPage + 1;
-            const newOffset = (newPage * limit) % reportsCount;
+            const newOffset = (newPage * limit) % data?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
@@ -63,32 +61,9 @@ const Reports: React.FC<{ isLoading?: boolean }> = props => {
             const page = getByKey('page') as any;
 
             setItemOffset((page - 1) * limit);
-            setChanged(new Date());
             setCurrentPage(page - 1);
         }
-
-        setReady(true);
     }, []);
-
-    useEffect(() => {
-        const getSuspiciousActivitiesReportsMethod = async () => {
-            try {
-                setLoading(true);
-
-                const reportsRequest = await getReports({ limit, offset }).unwrap() as any;
-
-                setReportsCount(reportsRequest?.count);
-
-                setReports(reportsRequest);
-
-                setLoading(false);     
-            } catch (error) {
-                console.log(error);
-            }
-        }
-
-        getSuspiciousActivitiesReportsMethod();
-    }, [offset, ready, changed]);
 
     const copyToClipboard = (content: string) => {
         navigator.clipboard.writeText(content);
@@ -96,7 +71,7 @@ const Reports: React.FC<{ isLoading?: boolean }> = props => {
     };
 
   return (
-    <ViewContainer isLoading={isLoading || loading}> 
+    <ViewContainer isLoading={isLoading || loadingReports}> 
         <Box as="a" onClick={() => router.push('/ambassador')}>
             <Label content={<String id="back" />} icon="arrowLeft" />
         </Box>
@@ -106,7 +81,7 @@ const Reports: React.FC<{ isLoading?: boolean }> = props => {
         </Text>
         <Box pt={2}>
             <Card padding={0}>
-                {reports?.rows.map((report: any) =>
+                {data?.rows.map((report: any) =>
                     <>
                         <Box padding={1}>
                             <Box fLayout="between" flex >

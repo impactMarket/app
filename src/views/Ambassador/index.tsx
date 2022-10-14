@@ -8,7 +8,6 @@ import {
     Text,
     ViewContainer
 } from '@impact-market/ui';
-import { ReportsType, useGetAmbassadorReportsMutation } from '../../api/user';
 import { getCommunityBeneficiaries } from '../../graph/community';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation } from '../../api/community';
@@ -22,11 +21,13 @@ import ShimmerEffect from '../../components/ShimmerEffect';
 import String from '../../libs/Prismic/components/String';
 import useBeneficiariesCount from '../../hooks/useBeneficiariesCount';
 import useFilters from '../../hooks/useFilters';
+import useSuspiciousReports from '../../hooks/useSuspiciousReports';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 type Cards = {
-    number: any;
+    number: number;
     title: any;
+    type: string;
     url: string;
     loading: boolean;
 };
@@ -35,17 +36,14 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const [loading, setLoading] = useState(false);
     const [myCommunities, setMyCommunities] = useState([]);
-    const [reports, setReports] = useState<ReportsType>();
-    const [getReports] = useGetAmbassadorReportsMutation();
+    const [currentCommunity, setCurrentCommunity] = useState(null);
     const [getCommunities] = useGetCommunitiesMutation();
     const { view } = usePrismicData();
     const auth = useSelector(selectCurrentUser);
     const { update, getByKey } = useFilters();
     const isNotViewAll = !(getByKey('view') === 'myCommunities' || !getByKey('view'));
-    let query;
-
     const { t } = useTranslations();
-    const [beneficiariesUrl, setBeneficiariesUrl] = useState('');
+    let query;
 
     if (getByKey('view') === 'myCommunities' || !getByKey('view')) {
         query = [getCommunityBeneficiaries, { ids: auth?.user?.ambassador?.communities }];
@@ -54,17 +52,15 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     const { beneficiariesCount, loading: beneficiariesLoading } = useBeneficiariesCount(query);
-    
+
+    const community = myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view'));
+
+    const { data, loadingReports } = useSuspiciousReports(community ? community.id : null);
 
     useEffect(() => {
         const getSuspiciousActivitiesReportsMethod = async () => {
             try {
                 setLoading(true);
-
-                const reportsRequest = (await getReports({
-                    limit: 1,
-                    offset: 0
-                }).unwrap()) as any;
 
                 const communities: any = await getCommunities({
                     ambassadorAddress: auth?.user?.address
@@ -80,13 +76,9 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                     }
                 );
 
-                const currentCommunity = myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view'));
-
-                setBeneficiariesUrl(`/manager/beneficiaries?community=${currentCommunity ? currentCommunity.id : ''}&state=0`);
+                setCurrentCommunity(myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view')));
 
                 setMyCommunities(myCommunities);
-
-                setReports(reportsRequest?.count);
 
                 setLoading(false);
             } catch (error) {
@@ -99,16 +91,18 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
 
     const cards = [
         {
-            loading,
-            number: reports || '--',
+            loading: loadingReports,
+            number: data?.count || '--',
             title: <String id="reportedSuspiciousActivity" />,
-            url: ''
+            type: 'SuspiciousReports',
+            url: `/ambassador/reports?community=${currentCommunity ? currentCommunity.id : ''}`
         },
         {
             loading: beneficiariesLoading,
             number: beneficiariesCount,
             title: 'Beneficiaries',
-            url: beneficiariesUrl
+            type: 'Beneficiaries',
+            url: `/manager/beneficiaries?community=${currentCommunity ? currentCommunity.id : ''}&state=0`
         }
     ];
 
@@ -140,12 +134,15 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                             </ShimmerEffect>
                         </Display>
                     </Box>
-                    {isNotViewAll && <Box w="100%">
-                        <Divider />
-                        <Box fLayout="end" flex pl={1.5} pr={1.5}>
-                            <Link href={card.url}>{t('viewAll')}</Link>
-                        </Box>
-                    </Box>}
+                    {
+                        (isNotViewAll || !isNotViewAll && card.type === 'SuspiciousReports') && 
+                            <Box w="100%">
+                                <Divider />
+                                <Box fLayout="end" flex pl={1.5} pr={1.5}>
+                                    <Link href={card.url}>{t('viewAll')}</Link>
+                                </Box>
+                            </Box>
+                    }
                 </Card>
             </Box>
         );
@@ -168,7 +165,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                         callback={(value: any) => {
                             const gotoCommunity =  myCommunities.find((el: any) => el.value === value);
 
-                            setBeneficiariesUrl(`/manager/beneficiaries?community=${gotoCommunity ? gotoCommunity.id : ''}&state=0`);
+                            setCurrentCommunity(gotoCommunity);
                             update({ view: value });
                         }}
                         disabled={isLoading}
