@@ -88,6 +88,10 @@ export interface AnonymousReport {
     message: string;
 }
 
+export interface RecoverUser {
+    recover: boolean;
+}
+
 // Define a service using a base URL and expected endpoints
 export const userApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -172,6 +176,15 @@ export const userApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
+        // Recover account
+        recoverAccount: builder.mutation<RecoverUser, void>({
+            query: body => ({
+                body,
+                method: 'POST',
+                url: 'users'
+            }),
+            transformResponse: (response: { data: RecoverUser }) => response.data
+        }),
         // Mark notifications as read
         updateNotifications: builder.mutation<Notification[], {body: any}>({
             query: ({body}) => ({
@@ -204,6 +217,7 @@ export const {
     useGetAmbassadorReportsMutation,
     useGetUserMutation,
     useGetUserByIdMutation,
+    useRecoverAccountMutation,
     useUpdateNotificationsMutation,
     useUpdateUserMutation,
     useGetPreSignedMutation

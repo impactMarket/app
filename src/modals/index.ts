@@ -10,6 +10,7 @@ const modals = {
     createStory: dynamic(() => import('./Stories/CreateStory'), { ssr: false }),
     deleteStory: dynamic(() => import('./Stories/DeleteStory'), { ssr: false }),
     openStory: dynamic(() => import('./Stories/OpenStory'), { ssr: false }),
+    recoverAccount: dynamic(() => import('./RecoverAccount'), { ssr: false }),
     reloadInfoAddCommunity: dynamic(() => import('./AddCommunity/ReloadInfo'), { ssr: false }),
     reportStory: dynamic(() => import('./Stories/ReportStory'), { ssr: false }),
     reportSuspiciousActivity: dynamic(() => import('./ReportSuspiciousActivity'), { ssr: false }),
