@@ -199,10 +199,12 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}
             />
-            <Dashboard 
-                data={data?.communityDailyEntities}
-                daysInterval={daysInterval}
-            />
+            {community?.status !== 'pending' &&
+                <Dashboard 
+                    data={data?.communityDailyEntities}
+                    daysInterval={daysInterval}
+                />
+            }    
         </ViewContainer>
     );
 };
