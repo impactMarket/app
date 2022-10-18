@@ -54,7 +54,7 @@ class MyDocument extends Document {
                         rel="stylesheet"
                     />
                     <link href="/manifest.json" rel="manifest" />
-                    <link href="/icon.png" rel="apple-touch-icon" />
+                    <link href="/img/app-icon.png" rel="apple-touch-icon" />
                     <meta content="#fff" name="theme-color" />
                 </HeadContent>
                 <body>

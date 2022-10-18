@@ -175,8 +175,8 @@ const WrapperProvider = (props: WithChildrenProps) => {
                 },
             }}
             dapp={{
-                description: 'Decentralized Poverty Alleviation Protocol',
-                icon: 'https://app.impactmarket.com/icon.png',
+                description: 'Human Empowerment Protocol',
+                icon: 'https://app.impactmarket.com/img/app-icon.png',
                 name: 'impactMarket',
                 url: 'https://app.impactmarket.com',
             }}
