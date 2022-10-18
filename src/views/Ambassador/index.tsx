@@ -1,71 +1,192 @@
-import { Box, Card, Display, Divider, Grid, Text, TextLink, ViewContainer } from '@impact-market/ui';
-import { ReportsType, useGetAmbassadorReportsMutation } from '../../api/user';
+import {
+    Box,
+    Card,
+    Col,
+    Display,
+    Divider,
+    Grid,
+    Text,
+    ViewContainer
+} from '@impact-market/ui';
+import { getCommunityBeneficiaries } from '../../graph/community';
+import { selectCurrentUser } from '../../state/slices/auth';
+import { useGetCommunitiesMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { useSelector } from 'react-redux';
 import Link from 'next/link';
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
+import Select from '../../components/Select';
+import ShimmerEffect from '../../components/ShimmerEffect';
 import String from '../../libs/Prismic/components/String';
+import useBeneficiariesCount from '../../hooks/useBeneficiariesCount';
+import useFilters from '../../hooks/useFilters';
+import useSuspiciousReports from '../../hooks/useSuspiciousReports';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Ambassador: React.FC<{ isLoading?: boolean }> = props => {
+type Cards = {
+    number: number;
+    title: any;
+    type: string;
+    url: string;
+    loading: boolean;
+};
+
+const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const [loading, setLoading] = useState(false);
-    const [reports, setReports] = useState<ReportsType>();
-    const [getReports] = useGetAmbassadorReportsMutation();
-    const limit = 1;
-    const offset = 0;
+    const [myCommunities, setMyCommunities] = useState([]);
+    const [currentCommunity, setCurrentCommunity] = useState(null);
+    const [getCommunities] = useGetCommunitiesMutation();
     const { view } = usePrismicData();
+    const auth = useSelector(selectCurrentUser);
+    const { update, getByKey } = useFilters();
+    const isNotViewAll = !(getByKey('view') === 'myCommunities' || !getByKey('view'));
+    const { t } = useTranslations();
+    let query;
+
+    if (getByKey('view') === 'myCommunities' || !getByKey('view')) {
+        query = [getCommunityBeneficiaries, { ids: auth?.user?.ambassador?.communities }];
+    } else {
+        query = [getCommunityBeneficiaries, { ids: [getByKey('view').toString().toLowerCase()] }];
+    };
+
+    const { beneficiariesCount, loading: beneficiariesLoading } = useBeneficiariesCount(query);
+
+    const community = myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view'));
+
+    const { data, loadingReports } = useSuspiciousReports(community ? community.id : null);
 
     useEffect(() => {
         const getSuspiciousActivitiesReportsMethod = async () => {
             try {
                 setLoading(true);
 
-                const reportsRequest = await getReports({ limit, offset }).unwrap() as any;
+                const communities: any = await getCommunities({
+                    ambassadorAddress: auth?.user?.address
+                });
 
-                setReports(reportsRequest?.count);
+                const myCommunities = communities?.data?.rows?.map(
+                    (el: any) => {
+                        return { 
+                            id: el.id,
+                            label: el.name,
+                            value: el.contractAddress 
+                        };
+                    }
+                );
+
+                setCurrentCommunity(myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view')));
+
+                setMyCommunities(myCommunities);
 
                 setLoading(false);
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
 
         getSuspiciousActivitiesReportsMethod();
     }, []);
 
-  return (
-    <ViewContainer isLoading={isLoading || loading}>
-        <Display medium>
-            <String id="dashboard" />
-        </Display>
-        <RichText content={view?.data?.messageCommunitiesPerforming} g500 mt={0.25} />
+    const cards = [
+        {
+            loading: loadingReports,
+            number: data?.count || '--',
+            title: <String id="reportedSuspiciousActivity" />,
+            type: 'SuspiciousReports',
+            url: `/ambassador/reports?community=${currentCommunity ? currentCommunity.id : ''}`
+        },
+        {
+            loading: beneficiariesLoading,
+            number: beneficiariesCount,
+            title: 'Beneficiaries',
+            type: 'Beneficiaries',
+            url: `/manager/beneficiaries?community=${currentCommunity ? currentCommunity.id : ''}&state=0`
+        }
+    ];
 
-        <Grid cols={1} pt={1}>
-            <Card padding={0}>
-                <Box padding={1}>
-                    <Text g500 medium>
-                        <String id="reportedSuspiciousActivity" />
-                    </Text>
-                    <Display bold pt={0.5}>
-                        {reports}
-                    </Display>
+    const renderCard = (card: Cards) => {
+        return (
+            <Box h="100%">
+                <Card
+                    column
+                    fLayout="start between"
+                    flex
+                    pl={0}
+                    pr={0}
+                    pt={1.5}
+                >
+                    <Box h="100%" pl={1.5} pr={1.5} w="100%">
+                        <Text g500 medium small>
+                            {card.title}
+                        </Text>
+                        <Display
+                            flex
+                            g900
+                            mt="0.5"
+                            semibold
+                            small
+                            style={{ alignItems: 'center' }}
+                        >
+                            <ShimmerEffect isLoading={card.loading} style={{height: '2rem', width: '20%'}}>
+                                {card.number}
+                            </ShimmerEffect>
+                        </Display>
+                    </Box>
+                    {
+                        (isNotViewAll || !isNotViewAll && card.type === 'SuspiciousReports') && 
+                            <Box w="100%">
+                                <Divider />
+                                <Box fLayout="end" flex pl={1.5} pr={1.5}>
+                                    <Link href={card.url}>{t('viewAll')}</Link>
+                                </Box>
+                            </Box>
+                    }
+                </Card>
+            </Box>
+        );
+    };
+
+    return (
+        <ViewContainer isLoading={isLoading || loading}>
+            <Display medium>
+                <String id="dashboard" />
+            </Display>
+            <RichText
+                content={view?.data?.messageCommunitiesPerforming}
+                g500
+                mt={0.25}
+            />
+
+            <Grid cols={1} pt={1}>
+                <Box pr={{ sm: 0.75, xs: 0 }} w={{ sm: '50%', xs: '100%' }}>
+                    <Select
+                        callback={(value: any) => {
+                            const gotoCommunity =  myCommunities.find((el: any) => el.value === value);
+
+                            setCurrentCommunity(gotoCommunity);
+                            update({ view: value });
+                        }}
+                        disabled={isLoading}
+                        initialValue={getByKey('view') || 'myCommunities'}
+                        isMultiple={false}
+                        maxW="13rem"
+                        name="view"
+                        options={[
+                            { label: 'My Communities', value: 'myCommunities' },
+                            ...myCommunities
+                        ]}
+                    />
                 </Box>
+                <Grid cols={{md: 4, sm: 2, xs: 1}} fWrap="wrap" flex pt={1}>
+                    {cards.map((el, key) => (
+                        <Col key={key}>{renderCard(el)}</Col>
+                    ))}
+                </Grid>
+            </Grid>
+        </ViewContainer>
+    );
+};
 
-                <Divider margin={0}/>
-
-                <Box fLayout="end" flex padding={1}>
-                    <Link href="/ambassador/reports" passHref>
-                        <TextLink medium>
-                        <String id="viewAll" />
-                        </TextLink>
-                    </Link>
-
-                </Box>
-            </Card>
-        </Grid>
-
-    </ViewContainer>
-  )
-}
-
-export default Ambassador
+export default Ambassador;

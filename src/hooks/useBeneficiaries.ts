@@ -25,9 +25,11 @@ export default function useBeneficiaries(entity: string , incomingFilters: any) 
 
     const { data, mutate, error } = useSWR(`/communities/${entity}?${queryString}`, fetcher);
 
-    data?.data?.rows.map((row: any) => {
-        row.claimedFormatted = currencyFormat(row?.claimed, localeCurrency, rates);
-    });
+    if (data?.success) {
+        data?.data?.rows.map((row: any) => {
+            row.claimedFormatted = currencyFormat(row?.claimed, localeCurrency, rates);
+        });
+    } 
 
     const loading = !data && !error;
     

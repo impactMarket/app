@@ -12,3 +12,19 @@ export const getCommunityEntity = gql`
         }
     }
 `;
+
+export const getBeneficiaries = gql`
+    query getBeneficiaries {
+        communityEntities {
+            beneficiaries
+        }
+    }
+`;
+
+export const getCommunityBeneficiaries = gql`
+    query getBeneficiaries($ids: [String]) {
+        communityEntities(where: {id_in: $ids}) {
+            beneficiaries
+        }
+    }
+`;

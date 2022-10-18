@@ -18,13 +18,13 @@ export const getStaticProps: GetStaticProps = async ({
     const data = await Prismic.getByTypes({
         clientOptions,
         lang,
-        types: 'pwa-view-manager-add-community'
+        types: 'pwa-view-community'
     });
 
     return {
         props: {
             data,
-            view: 'managerAddCommunity'
+            view: 'community'
         }
     };
 };
