@@ -2370,6 +2370,13 @@
   resolved "https://registry.yarnpkg.com/@prismicio/types/-/types-0.1.29.tgz#52914a5ba304c8b75fdcf398e5014ac4364fdffb"
   integrity sha512-wp7DHqMK0FDMcFQfJbqTAzWNBkM6/rRq71jMw6x9m07nWCUqytJQQKg6/15uduIeSqPXmyfJW21drsmChGaxsQ==
 
+"@ramp-network/ramp-instant-sdk@3.2.0":
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/@ramp-network/ramp-instant-sdk/-/ramp-instant-sdk-3.2.0.tgz#7d146319bde7ed9ca52bbf7efba377a755628f15"
+  integrity sha512-WXpUCic3oduFbAivRxhjSyAZOz2vK5yiuHYqFTooLCXBZIKRS4ff7X5M2MZQDkruTKwWcbyIvGLEYm991XgDpA==
+  dependencies:
+    body-scroll-lock "^3.1.5"
+
 "@reduxjs/toolkit@1.7.1":
   version "1.7.1"
   resolved "https://registry.yarnpkg.com/@reduxjs/toolkit/-/toolkit-1.7.1.tgz#994962aeb7df3c77be343dd2ad1aa48221dbaa0c"
@@ -3023,9 +3030,9 @@
   resolved "https://registry.yarnpkg.com/@typescript-eslint/eslint-plugin/-/eslint-plugin-5.33.1.tgz#c0a480d05211660221eda963cc844732fe9b1714"
   integrity sha512-S1iZIxrTvKkU3+m63YUOxYPKaP+yWDQrdhxTglVDVEVBf+aCSw85+BmJnyUaQQsk5TXFG/LpBu9fa+LrAQ91fQ==
   dependencies:
-    "@typescript-eslint/scope-manager" "5.36.1"
-    "@typescript-eslint/type-utils" "5.36.1"
-    "@typescript-eslint/utils" "5.36.1"
+    "@typescript-eslint/scope-manager" "5.33.1"
+    "@typescript-eslint/type-utils" "5.33.1"
+    "@typescript-eslint/utils" "5.33.1"
     debug "^4.3.4"
     functional-red-black-tree "^1.0.1"
     ignore "^5.2.0"
@@ -3048,9 +3055,9 @@
   resolved "https://registry.yarnpkg.com/@typescript-eslint/parser/-/parser-5.33.1.tgz#e4b253105b4d2a4362cfaa4e184e2d226c440ff3"
   integrity sha512-IgLLtW7FOzoDlmaMoXdxG8HOCByTBXrB1V2ZQYSEV1ggMmJfAkMWTwUjjzagS6OkfpySyhKFkBw7A9jYmcHpZA==
   dependencies:
-    "@typescript-eslint/scope-manager" "5.36.1"
-    "@typescript-eslint/types" "5.36.1"
-    "@typescript-eslint/typescript-estree" "5.36.1"
+    "@typescript-eslint/scope-manager" "5.33.1"
+    "@typescript-eslint/types" "5.33.1"
+    "@typescript-eslint/typescript-estree" "5.33.1"
     debug "^4.3.4"
 
 "@typescript-eslint/scope-manager@5.30.0":
@@ -3867,6 +3874,11 @@ body-parser@1.20.0, body-parser@^1.16.0, body-parser@^1.19.0:
     raw-body "2.5.1"
     type-is "~1.6.18"
     unpipe "1.0.0"
+
+body-scroll-lock@^3.1.5:
+  version "3.1.5"
+  resolved "https://registry.yarnpkg.com/body-scroll-lock/-/body-scroll-lock-3.1.5.tgz#c1392d9217ed2c3e237fee1e910f6cdd80b7aaec"
+  integrity sha512-Yi1Xaml0EvNA0OYWxXiYNqY24AfWkbA6w5vxE7GWxtKfzIbZM+Qw+aSmkgsbWzbHiy/RCSkUZBplVxTA+E4jJg==
 
 boolbase@^1.0.0, boolbase@~1.0.0:
   version "1.0.0"
