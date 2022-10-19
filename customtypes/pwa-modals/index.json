@@ -608,6 +608,38 @@
           "placeholder": ""
         }
       }
+    },
+    "recover-account": {
+      "recover-account-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "recover-account-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "recover-account-recover": {
+        "type": "Text",
+        "config": {
+          "label": "Recover",
+          "placeholder": ""
+        }
+      },
+      "recover-account-recovered": {
+        "type": "Text",
+        "config": {
+          "label": "Account Recovered",
+          "placeholder": ""
+        }
+      }
     }
   }
 }

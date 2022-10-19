@@ -23,13 +23,13 @@ const Header = ({ activeTab, supportingCountries, supportingCommunities, user }:
 
     return (
         <Row>
-            <Col colSize={{ sm: (!user?.roles.length) ? 6 : 12, xs: 12 }}>
+            <Col colSize={{ sm: (!user?.roles?.length) ? 6 : 12, xs: 12 }}>
                 <Display g900 medium>
                     {title}
                 </Display>
 
                 <Box mt={0.25}>
-                    {(user?.roles.includes('ambassador') && activeTab === 'myCommunities') ?
+                    {(user?.roles?.includes('ambassador') && activeTab === 'myCommunities') ?
                         <RichText 
                             content={content} 
                             g500 
@@ -51,7 +51,7 @@ const Header = ({ activeTab, supportingCountries, supportingCommunities, user }:
             </Col>
 
             {/* If user role is empty (which means he's a donor), show Add Community button */}
-            {!user?.roles.length && !!address &&
+            {!user?.roles?.length && !!address &&
                 <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0 }} tAlign={{ sm: 'right', xs: 'left' }}>
                     <Link href="/manager/communities/add" passHref>
                         <Button icon="plus">

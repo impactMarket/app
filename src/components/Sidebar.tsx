@@ -27,15 +27,12 @@ import useWallet from '../hooks/useWallet';
 
 type User = {
     address?: string;
-    beneficiary?: {
-        community?: string;
-        state: number;
-    },
-    manager?: {
-        community?: string;
-        state: number;
-    },
     ambassador?: {
+        community?: string;
+        state: number;
+    },
+    avatarMediaPath?: string;
+    beneficiary?: {
         community?: string;
         state: number;
     },
@@ -44,17 +41,21 @@ type User = {
         state: number;
     },
     currency?: string;
+    deleteProcess: boolean;
     firstName?: string;
     lastName?: string;
-    avatarMediaPath?: string;
+    manager?: {
+        community?: string;
+        state: number;
+    },
     roles: any;
 }
 
 type MenusState = {
     commonMenu?: SidebarMenuItemProps[],
+    flags?: any
     footerMenu?: SidebarMenuItemProps[],
     menus?: SidebarMenuItemProps[][],
-    flags?: any
 }
 
 const getUserType = (user: User) => {
@@ -64,13 +65,13 @@ const getUserType = (user: User) => {
     if (user?.roles?.includes('pendingManager')) {
         return 'pending-manager';
     };
-    if (user?.roles.includes('beneficiary')) {
+    if (user?.roles?.includes('beneficiary')) {
         return 'beneficiary';
     };
-    if (user?.roles.includes('ambassador')) {
+    if (user?.roles?.includes('ambassador')) {
         return 'ambassador';
     };
-    if (user?.roles.includes('councilMember')) {
+    if (user?.roles?.includes('councilMember')) {
         return 'council-member';
     };
 
@@ -132,7 +133,17 @@ const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
         }
     }, [wrongNetwork]);
 
-    if (!address) {
+    if (user?.deleteProcess) {
+        openModal('recoverAccount');
+
+        return(
+            <Box show={{ md: 'flex', xs: 'none' }}>
+                <ConnectButton fluid />
+            </Box>
+        )
+    }
+
+    if (!address || !user) {
         return (
             <Box show={{ md: 'flex', xs: 'none' }}>
                 <ConnectButton fluid />

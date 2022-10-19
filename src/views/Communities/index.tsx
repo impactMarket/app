@@ -32,12 +32,12 @@ const Communities = (props: any) => {
 
     if (
         !getByKey('type') ||
-        (getByKey('type') === 'myCommunities' && !user?.roles.includes('ambassador'))
+        (getByKey('type') === 'myCommunities' && !user?.roles?.includes('ambassador'))
     ) {
         router.push('/communities?type=all', undefined, { shallow: true });
     } else if (
         getByKey('type') === 'myCommunities' &&
-        user?.roles.includes('ambassador') &&
+        user?.roles?.includes('ambassador') &&
         !getByKey('ambassadorAddress')
     ) {
         update({ ambassadorAddress: user?.address });
@@ -88,7 +88,7 @@ const Communities = (props: any) => {
                             }}
                             title={t('all')}
                         />
-                        {user?.roles.includes('ambassador') && (
+                        {user?.roles?.includes('ambassador') && (
                             <Tab
                                 onClick={() =>
                                     handleClickOnCommunityFilter(

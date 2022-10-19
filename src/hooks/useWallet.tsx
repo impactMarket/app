@@ -45,8 +45,23 @@ const useWallet = () => {
             }
 
             return true;
-        } catch (error) {
+        } catch (error: any) {
             console.log('Error connecting to wallet!', error);
+
+            if (error?.data?.error?.name === 'DELETION_PROCESS') {
+                const connector = await connectFromHook();
+
+                dispatch(setCredentials({
+                    token: '',
+                    type: [],
+                    user: {
+                        deleteProcess: true,
+                        recoverAddress: getAddress(connector.kit.connection.config.from)
+                    },
+                }));
+
+                return true
+            }
 
             return false;
         }
