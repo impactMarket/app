@@ -47,6 +47,12 @@ interface CountryWithStory {
     count?: number;
 }
 
+interface PostComment {
+    body: any;
+    id: any;
+    token: any;
+};
+
 // Define a service using a base URL and expected endpoints
 export const storyApi = emptySplitApi.injectEndpoints({
     endpoints: builder => ({
@@ -97,6 +103,15 @@ export const storyApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: Story }) => response.data
         }),
+        postComment: builder.mutation<PostComment, { body: any, id: any, token: any}>({
+            query: ({body, id, token}) => ({
+                body,
+                headers: { Authorization: `Bearer ${token}` },
+                method: 'POST',
+                url: `/stories/${id}/comments`
+            }),
+            transformResponse: (response: { data: PostComment }) => response.data
+        }),
         reportStory: builder.mutation<Story, {body:any, id: number}>({
             query: ({body, id}) => ({
                 body,
@@ -110,4 +125,14 @@ export const storyApi = emptySplitApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetStoryByIdMutation, useGetCountriesWithStoriesMutation, useGetPreSignedMutation, useGetStoriesMutation, useCreateStoryMutation, useLoveStoryMutation, useReportStoryMutation, useDeleteStoryMutation } = storyApi;
+export const { 
+    useGetStoryByIdMutation,
+    useGetCountriesWithStoriesMutation,
+    useGetPreSignedMutation,
+    useGetStoriesMutation,
+    useCreateStoryMutation,
+    useLoveStoryMutation,
+    useReportStoryMutation,
+    useDeleteStoryMutation,
+    usePostCommentMutation 
+} = storyApi;
