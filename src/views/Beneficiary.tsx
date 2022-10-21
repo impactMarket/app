@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable jsx-a11y/alt-text */
 /* eslint-disable no-nested-ternary */
+import * as Sentry from "@sentry/nextjs";
 import { Accordion, AccordionItem, Alert, Box, Button, Card, CircledIcon, Col, Countdown, Display, Grid, Row, Text, ViewContainer, openModal, toast } from '@impact-market/ui';
 import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
@@ -113,6 +114,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
         }
         catch(error) {
             console.log(error);
+            Sentry.captureException(error);
 
             toggleLoadingButton(false);
             toggleClaim(false);
