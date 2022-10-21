@@ -12,7 +12,6 @@ import {
 } from '../../api/community';
 import useAmbassador from "../../hooks/useAmbassador";
 import useContract from "../../hooks/useContract";
-import useManagers from "../../hooks/useManagers";
 import useMerchants from "../../hooks/useMerchants";
 import usePromoter from "../../hooks/usePromoter";
 
@@ -73,7 +72,6 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         button: '',
         state: false
     });
-    const [refreshingPage, setRefreshingPage] = useState(false);
 
     //  Get Ambassador
     const { ambassador, loadingAmbassador } = useAmbassador(community?.id, fetcher);
@@ -86,14 +84,6 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
 
     //  Get Merchants
     const { merchants, loadingMerchants } = useMerchants(community?.id, fetcher);
-
-    //  Get Managers
-    const { managers, loadingManagers } = useManagers(community?.id, 
-        [
-            'limit=999',
-            'orderBy=state',
-        ], 
-        fetcher);
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
@@ -126,7 +116,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         }
 
         getData()
-    }, [refreshingPage]);
+    }, []);
     
     //  Update community review state and get new data
     const functionUpdateReview = async (review: string) => {
@@ -173,7 +163,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
         })
     };
 
-    const loadingData = loading || isLoading || refreshingPage || loadingManagers || loadingMerchants || loadingAmbassador || loadingPromoter || loadingContract;
+    const loadingData = loading || isLoading || loadingMerchants || loadingAmbassador || loadingPromoter || loadingContract;
 
     return (
         <ViewContainer isLoading={loadingData}>
@@ -193,10 +183,9 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 //  If not, get from API
                 ambassador={ambassador}
                 community={ !!data?.communityEntity ? data?.communityEntity : contract }
-                managers={managers?.rows}
+                communityId={community.id}
                 merchants={merchants}
                 requestedCommunity={!(!!data?.communityEntity)}
-                setRefreshingPage={setRefreshingPage}
                 status={communityData?.status}
             />
             {community?.status !== 'pending' &&

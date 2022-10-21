@@ -15,7 +15,7 @@ import UserCard from '../../components/UserCard'
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const RolesTabs = ({ ambassador, community, managers, merchants, status, setRefreshingPage, requestedCommunity } : any) => {
+const RolesTabs = ({ ambassador, community, merchants, status, communityId, requestedCommunity } : any) => {
     const { t } = useTranslations();
 
     return (
@@ -43,9 +43,8 @@ const RolesTabs = ({ ambassador, community, managers, merchants, status, setRefr
                         <RolesGrid
                             ambassador={ambassador}
                             community={community}
+                            communityId={communityId}
                             requestedCommunity={requestedCommunity}
-                            role={{managers}}
-                            setRefreshingPage={setRefreshingPage}
                             status={status}
                         />  
                     </TabPanel>

@@ -37,7 +37,7 @@ const AddManager = () => {
         address: yup.string().max(42),
     });
 
-    const { handleClose, community } = useModal();
+    const { handleClose, community, mutate } = useModal();
     const { t } = useTranslations();
     const [isLoading, setIsLoading] = useState(false)
 
@@ -65,6 +65,7 @@ const AddManager = () => {
 
 
                     if(status) {
+                        mutate();
                         handleClose();
 
                         setIsLoading(false)
