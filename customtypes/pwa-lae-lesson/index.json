@@ -1,0 +1,34 @@
+{
+  "id": "pwa-lae-lesson",
+  "label": "[PWA] [L&E] Lesson",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Tutorial": {
+      "tutorial": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "learn_and_earn_tutorial_slide": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    },
+    "Questions": {
+      "questions": {
+        "type": "Slices",
+        "fieldset": "Slice Zone",
+        "config": {
+          "choices": {
+            "learn_and_earn_question": {
+              "type": "SharedSlice"
+            }
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "id": "pwa-lae-level",
+  "label": "[PWA] [L&E] Level",
+  "repeatable": true,
+  "status": true,
+  "json": {
+    "Main": {
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "reward": {
+        "type": "Number",
+        "config": {
+          "label": "Reward",
+          "placeholder": ""
+        }
+      },
+      "lessons": {
+        "type": "Group",
+        "config": {
+          "label": "Lessons",
+          "fields": {
+            "lesson": {
+              "type": "Link",
+              "config": {
+                "label": "Lesson",
+                "select": "document",
+                "customtypes": [
+                  "pwa-lae-lesson"
+                ]
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
