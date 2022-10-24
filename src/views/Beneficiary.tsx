@@ -78,8 +78,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
     useEffect(() => {
         if(!auth?.user?.beneficiaryRules) {
             openModal('welcomeBeneficiary', {
-                communityImage: community.coverImage,
-                communityName: community.name
+                communityImage: community?.coverImage,
+                communityName: community?.name
             });
         }
     }, [])
@@ -94,23 +94,25 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
 
             // If the Claim was successfully, get the user coordinates and save them in another request
             if(status) {
-                const position = await getLocation() as any;
+                try {
+                    const position = await getLocation() as any;
 
-                if(position?.coords?.latitude && position?.coords?.longitude) {
-                    await saveClaimLocation({
-                        communityId: community?.id,
-                        gps: {
-                            latitude: position.coords.latitude,
-                            longitude: position.coords.longitude
-                        }
-                    });
+                    if(position?.coords?.latitude && position?.coords?.longitude) {
+                        await saveClaimLocation({
+                            communityId: community?.id,
+                            gps: {
+                                latitude: position.coords.latitude,
+                                longitude: position.coords.longitude
+                            }
+                        });
+                    }
                 }
-
+                catch(error) {
+                    console.log(error);
+                }
+                
                 toast.success(<Message id="successfullyClaimedUbi" />);
             }
-            else {
-                toast.error(<Message id="errorUbi" />);
-            }       
         }
         catch(error) {
             console.log(error);
@@ -184,7 +186,12 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = props => {
                                         <Text g900 large medium>
                                             {cardTitle}
                                         </Text>
-                                        <RichText content={cardMessage} g500 mt={0.5} small variables={{ time: queryInterval?.communityEntity?.incrementInterval / 12 }}/>
+                                        {!isClaimable &&
+                                            <RichText content={cardMessage} g500 mt={0.5} small variables={{ amount: claimAmountDisplay }}/>
+                                        }
+                                        {((isClaimable || claimAllowed) && hasFunds) &&
+                                            <RichText content={cardMessage} g500 mt={0.5} small variables={{ time: queryInterval?.communityEntity?.incrementInterval / 12 }}/>
+                                        }            
                                     </Box>
                                         <Box margin="0 auto" maxW={22}>
                                             {!isClaimable &&
