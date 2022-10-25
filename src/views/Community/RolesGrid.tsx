@@ -49,7 +49,7 @@ const Managers = ({
 
             if (status) {
                 toast.success(<Message id="managerRemoved" />);
-                mutate('/communities/7085/managers?limit=999&orderBy=state');
+                mutate(`/communities/${communityId}/managers?limit=999&orderBy=state`);
             } else {
                 toast.error(<Message id="errorOccurred" />);
             }
@@ -80,7 +80,7 @@ const Managers = ({
                                         community,
                                         mutate: () =>
                                             mutate(
-                                                '/communities/7085/managers?limit=999&orderBy=state'
+                                                `/communities/${communityId}/managers?limit=999&orderBy=state`
                                             )
                                     })
                                 }
