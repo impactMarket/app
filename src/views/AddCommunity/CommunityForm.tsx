@@ -58,6 +58,7 @@ const CommunityForm: React.FC<{ control: any, errors: any, isLoading: boolean, c
                             disabled={isLoading}
                             hint={errors?.description ? t('fieldRequired') : ''}
                             label={t('communityDescription')}
+                            limit={1024}
                             min={240}
                             name="description"
                             placeholder={communityDescriptionPlaceholder?.length > 0 ? communityDescriptionPlaceholder[0]?.text : ''}
