@@ -58,7 +58,7 @@ export function getCurrencySymbol(currency: string) {
                 symbol_native: string;
             };
         }
-    )[currency.toUpperCase()].symbol;
+    )[currency?.toUpperCase()]?.symbol;
 }
 
 export const convertCurrency = (number: number, rates: Rate[], from: string, to: string) => {

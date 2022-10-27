@@ -3,7 +3,7 @@ import { AppContext } from '../components/WrapperProvider';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
 import { removeCookies, setCookies } from 'cookies-next';
-import { removeCredentials, setCredentials } from '../state/slices/auth';
+import { removeCredentials, setCredentials, setSignature } from '../state/slices/auth';
 import { useCreateUserMutation } from '../api/user';
 import { useDispatch } from 'react-redux';
 import React from 'react';
@@ -75,6 +75,12 @@ const useWallet = () => {
             removeCookies('AUTH_TOKEN', { path: '/' });
             removeCookies('SIGNATURE', { path: '/' });
             removeCookies('MESSAGE', { path: '/' });
+
+            dispatch(setSignature({
+                    message: null,
+                    signature: null
+                })
+            )
 
             if (!!callback) {
                 await callback();

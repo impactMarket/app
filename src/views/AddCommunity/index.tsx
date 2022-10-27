@@ -5,7 +5,6 @@ import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { addCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
-import { handleSignature } from "../../helpers/handleSignature";
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { toCamelCase } from '../../helpers/toCamelCase';
@@ -15,25 +14,24 @@ import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useLocalStorage } from '../../hooks/useStorage';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
-import { useSignatures } from '@impact-market/utils/useSignatures';
 import { useYupValidationResolver } from '../../helpers/yup';
 import CommunityForm from './CommunityForm';
 import ContractForm from './ContractForm';
 import Message from '../../libs/Prismic/components/Message';
-import PersonalForm from './PersonalForm';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import useWallet from '../../hooks/useWallet';
 
 const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const auth = useSelector(selectCurrentUser);
     const language = auth?.user?.language || 'en-US';
+    const { connect } = useWallet();
 
     const { isLoading } = props;
     const [isReady, setIsReady] = useState(false);
     const [isSubmitting, setSubmitting] = useState(false);
     const [communityImage, setCommunityImage] = useState(null);
-    const [profileImage, setProfileImage] = useState(null);
     const [currency, setCurrency] = useState(auth?.user?.currency || null);
 
     const { extractFromView } = usePrismicData();
@@ -46,8 +44,6 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [getUserPreSigned] = useGetPreSignedMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
-    const { signature } = useSelector(selectCurrentUser);
-    const { signMessage } = useSignatures();
     const [addCommunityInfo, setAddCommunityInfo, removeAddCommunityInfo] = useLocalStorage('add-community-info', undefined);
     const unsavedChanges = addCommunityInfo?.address === auth?.user?.address ? addCommunityInfo : null;
 
@@ -56,10 +52,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
             baseInterval: '',
             claimAmount: '',
             description: '',
-            email: auth?.user?.email || '',
-            firstName: auth?.user?.firstName || '',
             incrementInterval: '',
-            lastName: auth?.user?.lastName || '',
             location: null,
             maxClaim: '',
             name: ''
@@ -67,13 +60,6 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         resolver: useYupValidationResolver(addCommunitySchema)
     });
     const inputWatch = useWatch({ control });
-
-    // Must have a login (and address) to create a Community
-    if(!auth?.user?.address) {
-        router.push('/');
-
-        return null;
-    }
 
     // On start, check if there is any saved info to load (only loads if there's at least one field not empty)
     useEffect(() => {
@@ -83,10 +69,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                 !!unsavedChanges?.baseInterval ||
                 !!unsavedChanges?.claimAmount ||
                 !!unsavedChanges?.description ||
-                (!!unsavedChanges?.email && !auth?.user?.email) ||
-                (!!unsavedChanges?.firstName && !auth?.user?.firstName) ||
                 !!unsavedChanges?.incrementInterval ||
-                (!!unsavedChanges?.lastName && !auth?.user?.lastName) ||
                 !!unsavedChanges?.location ||
                 !!unsavedChanges?.maxClaim ||
                 !!unsavedChanges?.name
@@ -102,10 +85,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         setValue('baseInterval', unsavedChanges?.baseInterval);
         setValue('claimAmount', unsavedChanges?.claimAmount);
         setValue('description', unsavedChanges?.description);
-        setValue('email', unsavedChanges?.email);
-        setValue('firstName', unsavedChanges?.firstName);
         setValue('incrementInterval', unsavedChanges?.incrementInterval);
-        setValue('lastName', unsavedChanges?.lastName);
         setValue('location', unsavedChanges?.location);
         setValue('maxClaim', unsavedChanges?.maxClaim);
         setValue('name', unsavedChanges?.name);
@@ -126,67 +106,80 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     }, [inputWatch]);
 
     // Open confirmModal on form submit
-    const openSubmitModal: SubmitHandler<any> = (data) => {
-        if(!!communityImage && (!!profileImage || !!auth?.user?.avatarMediaPath)) {
-            openModal('confirmAddCommunity', { data, isSubmitting, language, onSubmit });
+    const openSubmitModal: SubmitHandler<any> = async (data) => {
+        if (!!communityImage) {
+            if (!auth?.user) {
+                try {
+                    await connect()
+                } catch (error) { 
+                    console.log(error)
+                }
+            } 
+
+            if (auth?.user) {
+                openModal('confirmAddCommunity', { data, isSubmitting, language, onSubmit });
+            }
         }
     };
 
-    const updateUserDetails = async (data: any, preSigned: any) => {
+    const updateUserDetails = async (data: any, updatedProfilePicture: any) => {
         return await updateUser({
-            avatarMediaPath: preSigned.filePath,
-            email: data.email,
-            firstName: data.firstName,
-            lastName: data.lastName
+            avatarMediaPath: updatedProfilePicture?.filePath ? updatedProfilePicture?.filePath : auth?.user?.avatarMediaPath,
+            email: data.email ? data.email : auth?.user?.email,
+            firstName: data.firstName ? data.firstName : auth?.user?.firstName,
+            lastName: data.lastName ? data.lastName : auth?.user?.lastName
         }).unwrap();
     }
 
-    // TODO: check if all of this function is correct
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: any, submitAuth: any, profilePicture: any) => {
         try {
             setSubmitting(true);
 
-            // User filled his Personal info
-            if (profileImage) {
-                const type = profileImage.type?.split('/')[1] || '';
+            // Add user (If User filled his Personal info)
+            if (data?.firstName || data?.lastName || data?.email || profilePicture) {
+                const image = profilePicture?.type?.split('/')[1] || '';
+                let updatedProfilePicture
 
-                if (type) {
-                    const preSigned = await getUserPreSigned(type).unwrap();
+                if (image) {
+                    const preSigned = await getUserPreSigned(image).unwrap();
 
                     if (preSigned?.uploadURL) {
                         const result = await fetch(preSigned.uploadURL, {
-                            body: profileImage,
+                            body: profilePicture,
                             method: 'PUT'
                         });
 
                         if (result?.status === 200) {
-                            try {
-                                if (!signature) {
-                                    await handleSignature(signMessage);
-                                } 
-                                    
-                                const userResult = await updateUserDetails(data, preSigned)
-                                
-                                if (userResult) {
-                                    dispatch(setUser({ user: { ...userResult }}));
-                                }
-                            } catch (error: any) {
-                                if (error?.data?.error?.name === 'EXPIRED_SIGNATURE') {
-                                    const { success } = await handleSignature(signMessage);
-                                    
-                                    if (success) onSubmit(data);
-                                } else {
-                                    console.log(error);
-                                    toast.error(<Message id="errorOccurred" />);
-                                }
-                            }
+                            updatedProfilePicture = preSigned
                         }
                     }
                 }
+
+                try {    
+                    const userResult = await updateUserDetails(data, updatedProfilePicture)
+    
+                    if (userResult) {
+                        dispatch(setUser({ user: { ...userResult }}));
+                    }
+                } catch (error: any) {
+                    console.log(error);
+                    toast.error(<Message id="errorOccurred" />);
+                } 
             }
 
+            // Get city from City,Country dropdown
+            let city
+
+            if (data.location?.label?.includes('-')){
+                city = data.location?.label?.lastIndexOf('-')
+            }
+            if (data.location?.label?.includes(',')){
+                city = data.location?.label?.lastIndexOf(',')
+            }
+
+            // Add Community    dubai - pais
             const payload = {
-                city: data.location?.label?.substring(0, data.location?.label?.lastIndexOf(','))?.trim() || '',
+                city: data.location?.label?.substring(0, city)?.trim() || data.location?.label,
                 contractParams: {
                     baseInterval: frequencyToNumber(data.baseInterval),
                     claimAmount: data.claimAmount.toString(),
@@ -197,7 +190,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                 coverMediaPath: '',
                 currency,
                 description: data.description,
-                email: data.email,
+                email: submitAuth?.user?.email || data.email,
                 gps: {
                     latitude: data.location?.gps?.lat || 0,
                     longitude: data.location?.gps?.lng || 0
@@ -205,7 +198,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                 language,
                 name: data.name,
                 placeId: data.location?.value?.place_id,
-                requestByAddress: auth?.user?.address
+                requestByAddress: submitAuth?.user?.address || data?.address
             };
 
             if (communityImage) {
@@ -231,7 +224,6 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
 
                             reset();
                             setCommunityImage(null);
-                            setProfileImage(null);
                             removeAddCommunityInfo();
                         }
                         else {
@@ -283,20 +275,6 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         submitCount={submitCount}
                     />
                 </Box>
-                {
-                    (!auth?.user?.email || !auth?.user?.avatarMediaPath || !auth?.user?.firstName || !auth?.user?.lastName) &&
-                    <Box mt={1.25}>
-                        <PersonalForm
-                            control={control}
-                            errors={errors}
-                            isLoading={isSubmitting}
-                            profileImage={profileImage}
-                            setProfileImage={setProfileImage}
-                            submitCount={submitCount}
-                            user={auth?.user}
-                        />
-                    </Box>
-                }
                 <Box mt={1.25}>
                     <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} />
                 </Box>

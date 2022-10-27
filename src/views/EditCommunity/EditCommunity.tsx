@@ -1,5 +1,5 @@
 import { Box, Display, ViewContainer } from '@impact-market/ui';
-import { addCommunitySchema } from '../../utils/communities';
+import { editCommunitySchema } from '../../utils/communities';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
@@ -99,7 +99,7 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
         setValue,
         reset
     } = useForm({
-        resolver: useYupValidationResolver(addCommunitySchema)
+        resolver: useYupValidationResolver(editCommunitySchema)
     });
 
     useEffect(() => {

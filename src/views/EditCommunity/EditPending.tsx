@@ -3,7 +3,7 @@
 import { Box, Button, Display, toast } from '@impact-market/ui';
 import { Community, Contract, useEditPendingCommunityMutation, useGetCommunityPreSignedMutation } from '../../api/community';
 import { SubmitHandler, useForm, useWatch } from "react-hook-form";
-import { addCommunitySchema } from '../../utils/communities';
+import { editCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber, frequencyToText } from '@impact-market/utils';
 import { getCountryCurrency, getCountryNameFromInitials } from '../../utils/countries';
 import { getImage } from '../../utils/images';
@@ -61,7 +61,7 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
             maxClaim: contract?.maxClaim || '',
             name: community?.name || ''
         },
-        resolver: useYupValidationResolver(addCommunitySchema)
+        resolver: useYupValidationResolver(editCommunitySchema)
     });
 
     // We can only edit this Community if: the current User is the one who created OR the current User is an Ambassador for this Community
