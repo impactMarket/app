@@ -29,7 +29,7 @@ const Alerts: React.FC<{ canRequestFunds: boolean; fundsRemainingDays: number; h
 
             const response = await requestFunds();
 
-            setFundsReceived(currencyFormat(toNumber(response), localeCurrency));
+            setFundsReceived(response)
 
             setLoading(false);
 
@@ -93,7 +93,7 @@ const Alerts: React.FC<{ canRequestFunds: boolean; fundsRemainingDays: number; h
                     icon="checkCircle" 
                     mb={1.25} 
                     success 
-                    title={<Message id="communityReceivedFromDAO" medium small variables={{ value: fundsReceived }} />}
+                    title={<Message id="communityReceivedFromDAO" medium small variables={{ value: (() => currencyFormat(toNumber(fundsReceived), localeCurrency)) }} />}
                 />
             }
         </>
