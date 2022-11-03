@@ -7,6 +7,7 @@ import ContractForm from '../AddCommunity/ContractForm';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect } from 'react';
 import config from '../../../config';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const schema = yup.object().shape({
     baseInterval: yup.string().required(),
@@ -17,6 +18,7 @@ const schema = yup.object().shape({
 
 const ContractDetailsForm = ({community, currency, rates, formData}: any) => {
     const { updateBeneficiaryParams } = useImpactMarketCouncil();
+    const { t } = useTranslations();
 
     const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm({
         defaultValues: formData,
@@ -35,7 +37,7 @@ const ContractDetailsForm = ({community, currency, rates, formData}: any) => {
     const onSubmit = async (data: any) => {
         try {
             const res = await updateBeneficiaryParams({
-                baseInterval: community?.state?.baseInterval,
+                baseInterval: data.baseInterval === t('day').toLowerCase() ? '17280' : '120960',
                 claimAmount: toToken(data?.claimAmount),
                 communityAddress: community?.contractAddress,
                 decreaseStep: toToken(0.01),
