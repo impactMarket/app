@@ -1,3 +1,4 @@
+/* eslint-disable no-nested-ternary */
 import { Bar, BarChart, Line, LineChart, ResponsiveContainer, Tooltip } from 'recharts';
 import { Card, Text, colors } from '@impact-market/ui';
 import { CustomTooltip } from './DashboardChartTooltip';
@@ -33,14 +34,39 @@ const chartComponents = {
 export const DashboardChart = ({thegraphData, prismicData, days}: any) => { 
     const { Chart, ChartItem, itemProps, tooltipProps } = chartComponents[prismicData?.chartType] || {}
 
+    //  Contributions is temporarly an array in thegraph. This code will be changed in the future. 
+
+    const contributions = thegraphData.map((value: any) => {
+        if (Array.isArray(value) && value.length) {
+           return value[0]?.amount
+        }
+        if ((Array.isArray(value) && !value.length) || (value === "0")) {
+            return "0"
+        }
+    })
+
+    const updatedGraphData = () => {
+        if (prismicData?.chartHelper === "contributions") {
+            return contributions
+        }
+
+        return thegraphData
+    }
+
     // Create array with tooltip, value and dayId
     const data = thegraphData?.map((data: any, key: number) => { 
+        let value
+
+        if (Array.isArray(data) && data.length) {
+            value = data[0]?.amount
+        }
+
         return ({
             // Transform dayId back to unix (dayId * 1000 * 86400)
             days: days[key] * 1000 * 86400,
-            value: data
+            value: Array.isArray(data) ? (value ? value : "0") : data
         })
-    })
+    })    
 
     return (
         <Card>
@@ -48,9 +74,9 @@ export const DashboardChart = ({thegraphData, prismicData, days}: any) => {
                 {prismicData?.chartLabel}
             </Text>
             <Text bold extralarge fLayout="end start" inlineFlex>
-                {!thegraphData.includes(undefined) ? 
+                {!updatedGraphData().includes(undefined) ? 
                     // Add all values from array (transform the string ones to number) and, if there are decimals, only show 2 decimals
-                    thegraphData.reduce((a: string, b: string) => (Math.round((parseFloat(a) + parseFloat(b)) * 100) / 100), 0) 
+                    updatedGraphData().reduce((a: string, b: string) => (Math.round((parseFloat(a) + parseFloat(b)) * 100) / 100), 0) 
                 : 0}
                 <Text extrasmall g500 mb={0.15} ml={0.3}>
                     {prismicData?.currency && 'cUsd'}
