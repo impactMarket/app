@@ -1,8 +1,9 @@
 /* eslint-disable no-nested-ternary */
 // import { getExpectedUBIDuration } from '../../utils/communities';
 import { Box, Card, Col, Divider, Row, Text} from '@impact-market/ui';
+import { ContractDetailsFormValues } from '../EditCommunity/ContractDetailsForm';
+import { Control, useFormState, useWatch } from "react-hook-form";
 import { convertCurrency, getCurrencySymbol } from '../../utils/currencies';
-import { useFormState, useWatch } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import FormActions from '../Profile/FormActions';
 import Input from '../../components/Input';
@@ -11,7 +12,7 @@ import RichText from '../../libs/Prismic/components/RichText';
 import Select from '../../components/Select';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const ContractForm: React.FC<{ control: any, currency: string, errors: any, isLoading: boolean, rates: any, save?: boolean, reset?: () => void }> = props => {
+const ContractForm: React.FC<{ control: Control<ContractDetailsFormValues, any>, currency: string, errors: any, isLoading: boolean, rates: any, save?: boolean, reset?: () => void }> = props => {
     const { control, currency, errors, isLoading, rates, save = false, reset = () => {} } = props;
     const [claimAmountSuffix, setClaimAmountSuffix] = useState('');
     const [maxClaimSuffix, setMaxClaimSuffix] = useState('');

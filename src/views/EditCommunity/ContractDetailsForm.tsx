@@ -7,7 +7,6 @@ import ContractForm from '../AddCommunity/ContractForm';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect } from 'react';
 import config from '../../../config';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const schema = yup.object().shape({
     baseInterval: yup.string().required(),
@@ -16,11 +15,17 @@ const schema = yup.object().shape({
     maxClaim: yup.number().moreThan(yup.ref('claimAmount'), 'Max claim must be bigger than claim amount.').required()
 });
 
+export type ContractDetailsFormValues = {
+    baseInterval: 'day' | 'week';
+    claimAmount: string;
+    incrementInterval: string;
+    maxClaim: string;
+};
+
 const ContractDetailsForm = ({community, currency, rates, formData}: any) => {
     const { updateBeneficiaryParams } = useImpactMarketCouncil();
-    const { t } = useTranslations();
 
-    const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm({
+    const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm<ContractDetailsFormValues>({
         defaultValues: formData,
         resolver: useYupValidationResolver(schema)
     });
@@ -34,10 +39,10 @@ const ContractDetailsForm = ({community, currency, rates, formData}: any) => {
     }, [isSubmitSuccessful]);
     
 
-    const onSubmit = async (data: any) => {
+    const onSubmit = async (data: ContractDetailsFormValues) => {
         try {
             const res = await updateBeneficiaryParams({
-                baseInterval: data.baseInterval === t('day').toLowerCase() ? '17280' : '120960',
+                baseInterval: data.baseInterval === 'day' ? '17280' : '120960',
                 claimAmount: toToken(data?.claimAmount),
                 communityAddress: community?.contractAddress,
                 decreaseStep: toToken(0.01),
