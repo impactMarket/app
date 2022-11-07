@@ -1,6 +1,0 @@
-extends:
-  - impact-market/web
-  - next
-rules:
-  react/require-default-props: off
-  react-hooks/exhaustive-deps: off
