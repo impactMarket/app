@@ -14,6 +14,6 @@ export const handleSignature = async (signMessage: any) => {
     } catch (error) {
         console.log(error);
 
-        return { success: false };
+        throw Error;
     }
 };

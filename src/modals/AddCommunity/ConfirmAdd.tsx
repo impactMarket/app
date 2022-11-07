@@ -24,6 +24,7 @@ const ConfirmAdd = () => {
     const auth = useSelector(selectCurrentUser);
     const [updatedData, setUpdatedData] = useState(data) as any
     const [profilePicture, setProfilePicture] = useState(null);
+    const [hasPersonalData, setHasPersonalData] = useState(false);
 
     const localeCurrency = new Intl.NumberFormat(language, {
         currency: 'USD',
@@ -57,16 +58,18 @@ const ConfirmAdd = () => {
         if (isValid) {
             try {
                 if (!signature){
-                    const { success } = await handleSignature(signMessage);
-                    
-                    if (success && (profilePicture || auth?.user?.avatarMediaPath)) {
-                        setUpdatedData({...data, ...userData})
-                    }
-                } else if (profilePicture || auth?.user?.avatarMediaPath) {
-                    setUpdatedData({...data, ...userData})
+                    await handleSignature(signMessage);
                 }
+
+                setUpdatedData({...data, ...userData})
+
+                const authData = (!auth?.user?.email || !auth?.user?.firstName || !auth?.user?.lastName || !auth?.user?.avatarMediaPath)
+                const personalData = (!updatedData?.email || !updatedData?.firstName || !updatedData?.lastName)
+            
+                setHasPersonalData(authData && personalData);
+
             } catch (error: any) {
-                if (error?.data?.error?.name === 'EXPIRED_SIGNATURE') {           
+                if (error?.data?.error?.name === 'EXPIRED_SIGNATURE' || error?.data?.error?.name === 'INVALID_SINATURE' ) {           
                     const { success } = await handleSignature(signMessage);
                     
                     if (success) personalForm(data);
@@ -78,61 +81,58 @@ const ConfirmAdd = () => {
         }  
     }
 
-    const authData = (!auth?.user?.email || !auth?.user?.firstName || !auth?.user?.lastName || !auth?.user?.avatarMediaPath)
-    const personalData = (!updatedData?.email || !updatedData?.firstName || !updatedData?.lastName)
-
     return (
         <ModalWrapper maxW={30} padding={1.5} w="100%">
-            {authData && personalData ?
+            { !hasPersonalData ?
                 <>
-                <CircledIcon icon="user" medium success /> 
-                <Text g900 large mt={1.25} semibold>{basicProfileData[0]?.text}</Text>
-                <Box flex>
-                    <form onSubmit={handleSubmit(personalForm)} style={{ width: '100%' }}>
-                        <Box mt={1.25}>
-                            <PersonalForm
-                                control={control}
-                                errors={errors}
-                                isLoading={isSubmitting}
-                                profilePicture={profilePicture}
-                                setProfilePicture={setProfilePicture}
-                                submitCount={submitCount}
-                                user={auth?.user}
-                            />
-                        </Box>
-                        <Box flex mt={2}>
-                            <Box pr={0.375} w="50%">
-                                <Button disabled={isSubmitting} gray onClick={handleClose} w="100%">
-                                    <String id="goBack" />
-                                </Button>
+                    <CircledIcon icon="user" medium success /> 
+                    <Text g900 large mt={1.25} semibold>{basicProfileData[0]?.text}</Text>
+                    <Box flex>
+                        <form onSubmit={handleSubmit(() => personalForm)} style={{ width: '100%' }}>
+                            <Box mt={1.25}>
+                                <PersonalForm
+                                    control={control}
+                                    errors={errors}
+                                    isLoading={isSubmitting}
+                                    profilePicture={profilePicture}
+                                    setProfilePicture={setProfilePicture}
+                                    submitCount={submitCount}
+                                    user={auth?.user}
+                                />
                             </Box>
-                            <Box pl={0.375} w="50%">
-                                <Button disabled={isSubmitting} isLoading={isSubmitting} onClick={() => personalForm(data)} w="100%">
-                                    <String id="submit" />
-                                </Button>
+                            <Box flex mt={2}>
+                                <Box pr={0.375} w="50%">
+                                    <Button disabled={isSubmitting} gray onClick={handleClose} w="100%">
+                                        <String id="goBack" />
+                                    </Button>
+                                </Box>
+                                <Box pl={0.375} w="50%">
+                                    <Button disabled={isSubmitting} isLoading={isSubmitting} onClick={() => personalForm(data)} w="100%">
+                                        <String id="submit" />
+                                    </Button>
+                                </Box>
                             </Box>
-                        </Box>
-                    </form>
-                </Box>
+                        </form>
+                    </Box>
                 </>
             :
                 <>
-                <CircledIcon icon="checkCircle" medium success /> 
-                <Text g900 large mt={1.25} semibold>{title}</Text>
-                <RichText content={content} g500 mt={0.5} small />
-                <RichText content={beneficiaryAble} g500 mt={1.25} variables={{ amount, interval, maxAmount, minutes }} />
-                <Box flex mt={2}>
-                    <Box pr={0.375} w="50%">
-                        <Button disabled={isSubmitting} gray onClick={handleClose} w="100%">
-                            <String id="cancel" />
-                        </Button>
+                    <CircledIcon icon="checkCircle" medium success />
+                    <Text g900 large mt={1.25} semibold>{title}</Text>
+                    <RichText content={content} g500 mt={0.5} small />
+                    <RichText content={beneficiaryAble} g500 mt={1.25} variables={{ amount, interval, maxAmount, minutes }} />
+                    <Box flex mt={2}>
+                        <Box pr={0.375} w="50%">
+                            <Button disabled={isSubmitting} gray onClick={handleClose} w="100%">
+                                <String id="cancel" />
+                            </Button>
+                        </Box>
+                        <Box pl={0.375} w="50%">
+                            <Button disabled={isSubmitting} isLoading={isSubmitting} onClick={() => { console.log(updatedData); onSubmit(updatedData, auth, profilePicture && profilePicture); handleClose(); }} w="100%">
+                                <String id="iConfirm" />
+                            </Button>
+                        </Box>
                     </Box>
-                    <Box pl={0.375} w="50%">
-                        <Button disabled={isSubmitting} isLoading={isSubmitting} onClick={() => { onSubmit(updatedData, auth, profilePicture && profilePicture); handleClose(); }} w="100%">
-                            <String id="iConfirm" />
-                        </Button>
-                    </Box>
-                </Box>
                 </>
             }
         </ModalWrapper>

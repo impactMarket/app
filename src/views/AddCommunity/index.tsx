@@ -110,11 +110,11 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         if (!!communityImage) {
             if (!auth?.user) {
                 try {
-                    await connect()
+                    await connect();
                 } catch (error) { 
-                    console.log(error)
+                    console.log(error);
                 }
-            } 
+            }
 
             if (auth?.user) {
                 openModal('confirmAddCommunity', { data, isSubmitting, language, onSubmit });
@@ -261,7 +261,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                     </Box>
                     <Box mt={{ sm: 0, xs: 1 }} tAlign={{ sm: 'right', xs: 'left' }} w={{ sm: '25%', xs: '100%' }}>
                         <Button disabled={isSubmitting} icon="send" isLoading={isSubmitting} type="submit" w={{ sm: 'auto', xs: '100%' }}>
-                            <String id="submit" />
+                            {auth?.user ? <String id="submit" /> : <String id="connectWallet" />}
                         </Button>
                     </Box>
                 </Box>
