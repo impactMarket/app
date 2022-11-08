@@ -194,7 +194,6 @@ const DonateCard = (props: DonateCardProps) => {
                             <String id="poweredBy" />
                         </Text>
                         <a href="https://esolidar.com" rel="noreferrer noopener" target="_blank">
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
                             <img alt="e-solidar logo" height="14px" src="/img/partners/esolidar.svg" width="65px" />
                         </a>
                     </Box>

@@ -1,6 +1,5 @@
 /* eslint-disable no-nested-ternary */
 import { Box, Card, Col, Divider, Row, Text } from '@impact-market/ui';
-import { ContractDetailsFormValues } from '../EditCommunity/ContractDetailsForm';
 import { Control, useFormState, useWatch } from 'react-hook-form';
 import { convertCurrency, getCurrencySymbol } from '../../utils/currencies';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -12,7 +11,7 @@ import Select from '../../components/Select';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const ContractForm: React.FC<{
-    control: Control<ContractDetailsFormValues, any>;
+    control: Control<any, any>;
     currency: string;
     errors: any;
     isLoading: boolean;

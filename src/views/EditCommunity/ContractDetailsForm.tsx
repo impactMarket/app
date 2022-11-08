@@ -21,13 +21,6 @@ const schema = yup.object().shape({
         .required()
 });
 
-export type ContractDetailsFormValues = {
-    baseInterval: 'day' | 'week';
-    claimAmount: string;
-    incrementInterval: string;
-    maxClaim: string;
-};
-
 const ContractDetailsForm = ({ community, currency, rates, formData }: any) => {
     const { updateBeneficiaryParams } = useImpactMarketCouncil();
 
@@ -37,7 +30,7 @@ const ContractDetailsForm = ({ community, currency, rates, formData }: any) => {
         control,
         getValues,
         formState: { errors }
-    } = useForm<ContractDetailsFormValues>({
+    } = useForm({
         defaultValues: formData,
         resolver: useYupValidationResolver(schema)
     });
@@ -50,7 +43,7 @@ const ContractDetailsForm = ({ community, currency, rates, formData }: any) => {
         }
     }, [isSubmitSuccessful]);
 
-    const onSubmit = async (data: ContractDetailsFormValues) => {
+    const onSubmit = async (data: any) => {
         try {
             const res = await updateBeneficiaryParams({
                 baseInterval: data.baseInterval === 'day' ? '17280' : '120960',
