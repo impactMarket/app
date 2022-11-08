@@ -177,7 +177,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                 city = data.location?.label?.lastIndexOf(',')
             }
 
-            // Add Community    dubai - pais
+            // Add Community
             const payload = {
                 city: data.location?.label?.substring(0, city)?.trim() || data.location?.label,
                 contractParams: {

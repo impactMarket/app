@@ -24,7 +24,6 @@ const ConfirmAdd = () => {
     const auth = useSelector(selectCurrentUser);
     const [updatedData, setUpdatedData] = useState(data) as any
     const [profilePicture, setProfilePicture] = useState(null);
-    const [hasPersonalData, setHasPersonalData] = useState(false);
 
     const localeCurrency = new Intl.NumberFormat(language, {
         currency: 'USD',
@@ -61,13 +60,9 @@ const ConfirmAdd = () => {
                     await handleSignature(signMessage);
                 }
 
-                setUpdatedData({...data, ...userData})
-
-                const authData = (!auth?.user?.email || !auth?.user?.firstName || !auth?.user?.lastName || !auth?.user?.avatarMediaPath)
-                const personalData = (!updatedData?.email || !updatedData?.firstName || !updatedData?.lastName)
-            
-                setHasPersonalData(authData && personalData);
-
+                if (profilePicture || auth?.user?.avatarMediaPath) {
+                    setUpdatedData({...data, ...userData})
+                }
             } catch (error: any) {
                 if (error?.data?.error?.name === 'EXPIRED_SIGNATURE' || error?.data?.error?.name === 'INVALID_SINATURE' ) {           
                     const { success } = await handleSignature(signMessage);
@@ -81,14 +76,17 @@ const ConfirmAdd = () => {
         }  
     }
 
+    const authData = (!auth?.user?.email || !auth?.user?.firstName || !auth?.user?.lastName || !auth?.user?.avatarMediaPath)
+    const personalData = (!updatedData?.email || !updatedData?.firstName || !updatedData?.lastName)
+
     return (
         <ModalWrapper maxW={30} padding={1.5} w="100%">
-            { !hasPersonalData ?
+            {authData && personalData ?
                 <>
                     <CircledIcon icon="user" medium success /> 
                     <Text g900 large mt={1.25} semibold>{basicProfileData[0]?.text}</Text>
                     <Box flex>
-                        <form onSubmit={handleSubmit(() => personalForm)} style={{ width: '100%' }}>
+                        <form onSubmit={handleSubmit(personalForm)} style={{ width: '100%' }}>
                             <Box mt={1.25}>
                                 <PersonalForm
                                     control={control}
@@ -107,7 +105,7 @@ const ConfirmAdd = () => {
                                     </Button>
                                 </Box>
                                 <Box pl={0.375} w="50%">
-                                    <Button disabled={isSubmitting} isLoading={isSubmitting} onClick={() => personalForm(data)} w="100%">
+                                    <Button disabled={isSubmitting} isLoading={isSubmitting} type="submit" w="100%">
                                         <String id="submit" />
                                     </Button>
                                 </Box>
