@@ -29,7 +29,7 @@ export const getExpectedUBIDuration = (claimAmountWatch: string, maxClaimWatch: 
     };
 }
 
-export const addCommunitySchema = yup.object().shape({
+export const editCommunitySchema = yup.object().shape({
     baseInterval: yup.string().required(),
     claimAmount: yup.number().required().positive().min(0),
     description: yup.string().min(240).max(2048).required(),
@@ -41,6 +41,23 @@ export const addCommunitySchema = yup.object().shape({
     maxBeneficiaries: yup.number().positive().integer().min(0).max(100000).nullable(true),
     maxClaim: yup.number().moreThan(yup.ref('claimAmount'), 'Max claim must be bigger than claim amount.').required(),
     name: yup.string().required()
+});
+
+export const addCommunitySchema = yup.object().shape({
+    baseInterval: yup.string().required(),
+    claimAmount: yup.number().required().positive().min(0),
+    description: yup.string().min(240).max(2048).required(),
+    incrementInterval: yup.number().required().positive().integer().min(0),
+    location: yup.mixed().required(),
+    maxBeneficiaries: yup.number().positive().integer().min(0).max(100000).nullable(true),
+    maxClaim: yup.number().moreThan(yup.ref('claimAmount'), 'Max claim must be bigger than claim amount.').required(),
+    name: yup.string().required()
+});
+
+export const addUserSchema = yup.object().shape({
+    email: yup.string().required().matches(emailRegExp).email(),
+    firstName: yup.string().required(),
+    lastName: yup.string().required(),
 });
 
 export const editValidCommunitySchema = yup.object().shape({

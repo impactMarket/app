@@ -3,7 +3,7 @@ import config from '../../config';
 
 export const handleSignature = async (signMessage: any) => {
     try {
-        const timestamp = new Date().getTime().toString();
+        const timestamp = new Date()?.getTime()?.toString();
         const messageToSign = `${config.signatureMessage} ${timestamp}`;
 
         await signMessage(messageToSign).then((signature: string) => {
@@ -14,6 +14,6 @@ export const handleSignature = async (signMessage: any) => {
     } catch (error) {
         console.log(error);
 
-        return { success: false };
+        throw Error;
     }
 };
