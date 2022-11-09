@@ -1,26 +1,36 @@
 import { toToken } from '@impact-market/utils/toToken';
 import { toast } from '@impact-market/ui';
-import { useForm, useFormState } from "react-hook-form";
+import { useForm, useFormState } from 'react-hook-form';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import { useYupValidationResolver, yup } from '../../helpers/yup';
 import ContractForm from '../AddCommunity/ContractForm';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect } from 'react';
 import config from '../../../config';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const schema = yup.object().shape({
     baseInterval: yup.string().required(),
     claimAmount: yup.number().required().positive().min(0),
     incrementInterval: yup.number().required().positive().integer().min(0),
-    maxClaim: yup.number().moreThan(yup.ref('claimAmount'), 'Max claim must be bigger than claim amount.').required()
+    maxClaim: yup
+        .number()
+        .moreThan(
+            yup.ref('claimAmount'),
+            'Max claim must be bigger than claim amount.'
+        )
+        .required()
 });
 
-const ContractDetailsForm = ({community, currency, rates, formData}: any) => {
+const ContractDetailsForm = ({ community, currency, rates, formData }: any) => {
     const { updateBeneficiaryParams } = useImpactMarketCouncil();
-    const { t } = useTranslations();
 
-    const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm({
+    const {
+        handleSubmit,
+        reset,
+        control,
+        getValues,
+        formState: { errors }
+    } = useForm({
         defaultValues: formData,
         resolver: useYupValidationResolver(schema)
     });
@@ -32,16 +42,17 @@ const ContractDetailsForm = ({community, currency, rates, formData}: any) => {
             reset(getValues());
         }
     }, [isSubmitSuccessful]);
-    
 
     const onSubmit = async (data: any) => {
         try {
             const res = await updateBeneficiaryParams({
-                baseInterval: data.baseInterval === t('day').toLowerCase() ? '17280' : '120960',
+                baseInterval: data.baseInterval === 'day' ? '17280' : '120960',
                 claimAmount: toToken(data?.claimAmount),
                 communityAddress: community?.contractAddress,
                 decreaseStep: toToken(0.01),
-                incrementInterval: (parseInt(data?.incrementInterval, 10) * 12).toString(),
+                incrementInterval: (
+                    parseInt(data?.incrementInterval, 10) * 12
+                ).toString(),
                 maxBeneficiaries: 0,
                 maxClaim: toToken(data?.maxClaim),
                 proposalDescription: `## Description:
@@ -61,16 +72,23 @@ const ContractDetailsForm = ({community, currency, rates, formData}: any) => {
             if (res) {
                 toast.success(<Message id="generatedSuccess" />);
             }
-            
         } catch (error) {
             console.log(error);
             toast.error(<Message id="errorOccurred" />);
         }
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
-            <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} reset={() => reset(formData)} save />
+            <ContractForm
+                control={control}
+                currency={currency}
+                errors={errors}
+                isLoading={isSubmitting}
+                rates={rates}
+                reset={() => reset(formData)}
+                save
+            />
         </form>
     );
 };

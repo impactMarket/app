@@ -1,5 +1,3 @@
-/* eslint-disable @next/next/no-img-element */
-/* eslint-disable jsx-a11y/alt-text */
 import { GeneratedPropTypes, Text, TextProps } from '@impact-market/ui';
 import { PrismicRichText } from '@prismicio/react';
 import { RichTextField } from '@prismicio/types';
