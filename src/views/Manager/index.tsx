@@ -1,6 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Display, ViewContainer } from '@impact-market/ui';
-import { getCommunityEntity } from '../../graph/community';
+import { getCommunityEntity, getInactiveBeneficiaries } from '../../graph/community';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunityAmbassadorMutation, useGetCommunityMutation } from '../../api/community';
 import { useManager } from '@impact-market/utils';
@@ -21,7 +21,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
     const [community, setCommunity] = useState({}) as any;
     const [communityAmbassador, setCommunityAmbassador] = useState({}) as any;
     const [primaryCards, setPrimaryCards] = useState([]) as any;
-    const [secondaryCards] = useState([]) as any;
+    const [secondaryCards, setSecondaryCards] = useState([]) as any;
     const [loadingCommunity, toggleLoadingCommunity] = useState(true);
 
     const { extractFromView } = usePrismicData();
@@ -49,6 +49,11 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
     // TODO: on error should we show any warning?
     const communityEntity = useQuery(getCommunityEntity, { variables: { address: auth?.user?.manager?.community } });
 
+    const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, { variables: { 
+        address: community?.contractAddress?.toLowerCase(), 
+        lastActivity_lt: Math.floor(new Date().getTime() / 1000 - 1036800) 
+    }});
+
     // Check if there's a Community with the address associated with the User. If not, return to Homepage
     useEffect(() => {
         const init = async () => {
@@ -73,6 +78,9 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
         init();
     }, []);
 
+    const totalInactiveBeneficiaries = inactiveBeneficiaries?.data ? Object.keys(inactiveBeneficiaries?.data?.beneficiaryEntities).length : 0
+    const totalActiveBeneficiaries = inactiveBeneficiaries?.data ? communityEntity?.data?.communityEntity?.beneficiaries - totalInactiveBeneficiaries : 0
+
     useEffect(() => {
         setPrimaryCards([
             {
@@ -89,32 +97,32 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
 
         // TODO: secondary cards commented by Bernardo request for now, finish them later and add add final URL's
 
-        // setSecondaryCards([
-        //     {
-        //         number: 0,
-        //         title: t('suspiciousActivity'),
-        //         url: '/manager/beneficiaries'
-        //     },
-        //     {
-        //         number: 0,
-        //         title: t('blocked'),
-        //         url: '/manager/beneficiaries'
-        //     },
-        //     {
-        //         number: 0,
-        //         title: t('active'),
-        //         url: '/manager/beneficiaries'
-        //     },
-        //     {
-        //         number: 0,
-        //         title: t('inactive'),
-        //         url: '/manager/beneficiaries'
-        //     }
-        // ]);
-    }, [communityEntity?.data]);
+        setSecondaryCards([
+            // {
+            //     number: 0,
+            //     title: t('suspiciousActivity'),
+            //     url: '/manager/beneficiaries'
+            // },
+            // {
+            //     number: 0,
+            //     title: t('blocked'),
+            //     url: '/manager/beneficiaries'
+            // },
+            {
+                number: totalActiveBeneficiaries || 0,
+                title: "Active Beneficiaries",
+                url: '/manager/beneficiaries'
+            },
+            {
+                number: totalInactiveBeneficiaries || 0,
+                title: "Inactive Beneficiaries",
+                url: '/manager/beneficiaries?state=3&orderBy=since:desc'
+            }
+        ]);
+    }, [communityEntity?.data, inactiveBeneficiaries?.data]);
 
     return (
-        <ViewContainer isLoading={!isReady || isLoading || loadingCommunity || communityEntity?.loading}>
+        <ViewContainer isLoading={!isReady || isLoading || loadingCommunity || communityEntity?.loading || inactiveBeneficiaries?.loading}>
             <Box pl={0.75} pr={0.75}>
                 <Alerts canRequestFunds={canRequestFunds} fundsRemainingDays={fundsRemainingDays} hasFunds={hasFunds} requestFunds={requestFunds} />
                 <Display g900 medium>

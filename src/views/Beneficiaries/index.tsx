@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Button, Display, Tab, TabList, TabPanel, Tabs, ViewContainer, openModal } from '@impact-market/ui';
 import { getCommunityBeneficiaries } from '../../graph/user';
+import { getInactiveBeneficiaries } from '../../graph/community';
 import { request } from 'graphql-request'
 import { selectCurrentUser } from '../../state/slices/auth';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -18,7 +20,11 @@ import useFilters from '../../hooks/useFilters';
 import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
+
 import { useGetCommunityMutation } from '../../api/community';
+import { useQuery } from '@apollo/client';
+
+const lastActivity = Math.floor(new Date().getTime() / 1000 - 1036800) 
 
 const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
@@ -81,8 +87,13 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
         init();
     }, []);
 
+    const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, { variables: { 
+        address: community?.contractAddress?.toLowerCase(), 
+        lastActivity_lt: lastActivity
+    }});
+
     return (
-        <ViewContainer isLoading={isLoading || loadingCommunity}>
+        <ViewContainer isLoading={isLoading || loadingCommunity || inactiveBeneficiaries?.loading}>
             <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout="start between" flex>
                 <Box>
                     <Display g900  medium>
@@ -100,12 +111,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
             {
                 data?.beneficiaryEntities?.length > 0 && !loadingCommunity ?
                 <Box mt={0.5}>
-                    <Tabs defaultIndex={
-                        // eslint-disable-next-line no-nested-ternary
-                        getByKey('state') === '0' ? 0 : 
-                        getByKey('state') === '1' ? 1 : 
-                        getByKey('state') === '2' && 2
-                    }>
+                    <Tabs defaultIndex={+getByKey('state')}>
                         <TabList>
                             { /* TODO: check if the "number" calculation is correct */ }
                             <Tab
@@ -123,12 +129,17 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                                 onClick={() => update('state', 2)}
                                 title={t('blocked')}
                             />
+                            <Tab
+                                number={inactiveBeneficiaries?.data ? Object.keys(inactiveBeneficiaries?.data?.beneficiaryEntities).length : 0}
+                                onClick={() => update('state', 3)}
+                                title={t('inactive')}
+                            />
                         </TabList>
                         <FakeTabPanel />
                         <FakeTabPanel />
                     </Tabs>
                     <Filters margin="1.5 0 0 0" maxW={20} property="search"/>
-                    <BeneficiariesList community={community?.id} />
+                    <BeneficiariesList community={community} lastActivity={lastActivity}/>
                 </Box>
                 :
                 <NoBeneficiaries />

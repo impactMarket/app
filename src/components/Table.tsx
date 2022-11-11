@@ -1,11 +1,14 @@
 /* eslint-disable no-nested-ternary */
 import { Table as BaseTable, TableProps as BaseTableProps, Box, Pagination } from '@impact-market/ui';
+import { currencyFormat } from '../utils/currencies';
+import { selectCurrentUser } from '../state/slices/auth';
+import { selectRates } from '../state/slices/rates';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
 import React, { useEffect, useRef, useState } from 'react';
+import useBeneficiaries from '../hooks/useBeneficiaries';
 import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
-
-import useBeneficiaries from '../hooks/useBeneficiaries';
 
 type Partial<BaseTableProps> = {
     [P in keyof BaseTableProps]?: BaseTableProps[P];
@@ -14,9 +17,11 @@ type Partial<BaseTableProps> = {
 type TableProps = {
     callback?: Function;
     callbackProps?: Object;
+    count?: number;
     itemsPerPage: number;
     prefix: string;
     refresh?: Date;
+    thegraph?: any;
 };
 
 const sortToString = (sort: any) => {
@@ -28,7 +33,7 @@ const sortToString = (sort: any) => {
 }
 
 const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
-    const { columns, callback, callbackProps, itemsPerPage, prefix, refresh, ...forwardProps } = props; 
+    const { columns, count, callback, callbackProps, itemsPerPage, prefix, refresh, thegraph, ...forwardProps } = props;
 
     const tableRef = useRef<null | HTMLDivElement>(null);
     const [sortKey, setSortKey] = useState({}) as any;
@@ -47,9 +52,19 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
         offset: itemOffset,
         orderBy: getByKey('orderBy') ? getByKey('orderBy').toString() : 'since:desc',
         search: getByKey('search') ? getByKey('search') : '',
-        state: getByKey('state'),
+        state: getByKey('state') !== "3" && getByKey('state'),
         ...callbackProps
     });
+
+    // If data comes from thegraph
+    const [thegraphData, setThegraphData] = useState(null)
+
+    useEffect(() => {
+        !!thegraph ?
+            setThegraphData(thegraph?.slice(itemOffset, itemOffset + itemsPerPage)) 
+        :
+            setThegraphData(null)
+    }, [itemOffset, asPath, thegraph])
 
     useEffect(() => {
         const page = getByKey('page') ? parseInt(getByKey('page').toString(), 10) : 0;
@@ -73,7 +88,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
         let pageChanged = false;
 
         if (event.selected >= 0) {
-            const newOffset = (event.selected * itemsPerPage) % (data?.count || 0);
+            const newOffset = (event.selected * itemsPerPage) % ((count ?? data?.count) || 0);
 
             pageChanged = true;
 
@@ -82,16 +97,16 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
             update('page', event.selected + 1);
         } else if (direction === 1 && currentPage > 0) {
             const newPage = currentPage - 1;
-            const newOffset = (newPage * itemsPerPage) % (data?.count || 0);
+            const newOffset = (newPage * itemsPerPage) % ((count ?? data?.count) || 0);
 
-            pageChanged = true;
+            pageChanged = true; 
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
             update('page', newPage + 1);
-        } else if (direction === 2 && currentPage < (data?.count / itemsPerPage) - 1 || 0) {
+        } else if (direction === 2 && currentPage < ((count ?? data?.count) / itemsPerPage) - 1 || 0) {
             const newPage = currentPage + 1;
-            const newOffset = (newPage * itemsPerPage) % (data?.count || 0);
+            const newOffset = (newPage * itemsPerPage) % ((count ?? data?.count) || 0);
 
             pageChanged = true;
 
@@ -112,13 +127,27 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
 
         setSortKey(newSort);
     };
+    
+    const auth = useSelector(selectCurrentUser);
+    const rates = useSelector(selectRates);
+
+    const localeCurrency = new Intl.NumberFormat(auth?.user.currency.language || 'en-US', { 
+        currency: auth?.user.currency || 'USD', 
+        style: 'currency' 
+    });
+
+    if (!!thegraphData) {
+        thegraphData?.map((row: any) => {
+            row.claimedFormatted = currencyFormat(row?.claimed, localeCurrency, rates)
+        });
+    }
 
     return (
         <Box ref={tableRef} {...forwardProps}>
             <BaseTable 
                 columns={columns}
                 handleSort={handleSort}
-                isLoading={loading || !data}
+                isLoading={loading || thegraph?.loading || (thegraph ? !thegraphData : !data)}
                 noResults={t('noResults')}
                 pagination={
                     <Pagination
@@ -127,12 +156,12 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
                         handlePageClick={handlePageClick}
                         nextIcon="arrowRight"
                         nextLabel={t('next')}
-                        pageCount={Math.ceil(data?.count / itemsPerPage) || 0}
+                        pageCount={Math.ceil((count ? count : data?.count) / itemsPerPage) || 0}
                         previousIcon="arrowLeft"
                         previousLabel={t('previous')}
                     />
                 }
-                rows={data?.rows}
+                rows={thegraph ? thegraphData : data?.rows}
                 sortKey={sortKey}
             />
         </Box>
