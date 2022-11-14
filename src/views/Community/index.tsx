@@ -39,13 +39,15 @@ query communityQuery($id: String!, $todayDayId: Int, $daysBefore: Int) {
         beneficiaries
         claimed
         claims
-        contributed
+        contributions {
+            amount
+        }
         contributors
-        volume
-        transactions
-        reach
-        fundingRate
         dayId
+        fundingRate
+        reach
+        transactions
+        volume
     }
 }
 `;
@@ -65,7 +67,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
             id: communityData?.contractAddress?.toLowerCase(), 
             todayDayId: Math.floor(new Date().getTime()/1000/86400)
         },
-    });    
+    });
 
     const [loading, setLoading] = useState(true);
     const [buttonLoading, setButtonLoading] = useState({

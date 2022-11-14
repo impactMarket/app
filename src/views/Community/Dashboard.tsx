@@ -9,7 +9,7 @@ const emptyDailyEntities = {
     beneficiaries: 0,
     claimed: "0",
     claims: 0,
-    contributed: "0",
+    contributions: "0",
     contributors: 0,
     dayId: 0,
     fundingRate: "0",
