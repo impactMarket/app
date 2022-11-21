@@ -51,7 +51,7 @@ const KitWrapper = (props: WithChildrenProps) => {
     const forwardData = { address, connect, disconnect, isReady, network };
 
     return (
-        <ImpactProvider address={address} connection={kit.connection} jsonRpc={config.networkRpcUrl}>
+        <ImpactProvider address={address} connection={kit.connection} jsonRpc={config.networkRpcUrl} networkId={config.chainId}>
             <AppProvider {...forwardData}>
                 {children}
             </AppProvider>
@@ -181,6 +181,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
                         SupportedProviders.Injected,
                         SupportedProviders.Ledger,
                         SupportedProviders.Steakwallet,
+                        SupportedProviders.CoinbaseWallet,
                     ],
                 },
             }}
