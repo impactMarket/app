@@ -82,6 +82,11 @@ const config = {
     sentryDSN: process.env.NEXT_PUBLIC_SENTRY_DSN,
 
     /**
+     * cUSD smart contract address
+     */
+    cUSDAddress: process.env.NEXT_PUBLIC_CUSD_ADDRESS,
+
+    /**
      * Number of days until a signature is expired
      */
     signatureExpires: process.env.NEXT_PUBLIC_SIGNATURE_EXPIRES,

@@ -74,7 +74,8 @@ const generateCommunityProposal = ( community: Community, contract: Contract ) =
 
 
         More details: ${config.baseUrl}/communities/${id}`,
-        proposalTitle: `[New Community] ${name}`
+        proposalTitle: `[New Community] ${name}`,
+        tokenAddress: config.cUSDAddress,
     };
 };
 
