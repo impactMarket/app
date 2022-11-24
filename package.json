@@ -20,12 +20,16 @@
   },
   "dependencies": {
     "@apollo/client": "3.5.6",
-    "@celo/contractkit": "2.0.0",
-    "@celo/react-celo": "4.0.1",
-    "@ethersproject/address": "5.6.0",
-    "@ethersproject/providers": "5.5.3",
+    "@celo/contractkit": "2.3.0",
+    "@celo/react-celo": "4.2.1",
+    "@ethersproject/abi": "5.7.0",
+    "@ethersproject/abstract-signer": "5.7.0",
+    "@ethersproject/bytes": "5.7.0",
+    "@ethersproject/contracts": "5.7.0",
+    "@ethersproject/providers": "5.7.1",
+    "@ethersproject/strings": "5.7.0",
     "@impact-market/ui": "1.5.1",
-    "@impact-market/utils": "3.0.3",
+    "@impact-market/utils": "3.1.2",
     "@prismicio/client": "6.3.0",
     "@prismicio/helpers": "2.2.0",
     "@prismicio/next": "0.1.0",
@@ -80,7 +84,7 @@
     "typescript": "4.3.2"
   },
   "resolutions": {
-    "@celo/contractkit": "2.0.0",
-    "@celo/react-celo": "4.0.1"
+    "@celo/contractkit": "2.3.0",
+    "@celo/react-celo": "4.2.1"
   }
 }
