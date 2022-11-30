@@ -64,7 +64,7 @@ export const DashboardChart = ({thegraphData, prismicData, days}: any) => {
         return ({
             // Transform dayId back to unix (dayId * 1000 * 86400)
             days: days[key] * 1000 * 86400,
-            value: Array.isArray(data) ? (value ? value : "0") : data
+            value: Array.isArray(data) ? (value ? parseFloat(value) : 0) : parseFloat(data)
         })
     })    
 
