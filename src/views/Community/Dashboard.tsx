@@ -7,15 +7,15 @@ import RichText from '../../libs/Prismic/components/RichText';
 const emptyDailyEntities = {
     __typename: "",
     beneficiaries: 0,
-    claimed: "0",
+    claimed: 0,
     claims: 0,
-    contributions: "0",
+    contributions: 0,
     contributors: 0,
     dayId: 0,
-    fundingRate: "0",
+    fundingRate: 0,
     reach: 0,
     transactions: 0,
-    volume: "0",
+    volume: 0,
 };
 
 const Dashboard = ({ data: thegraphData, daysInterval }: any) => {
