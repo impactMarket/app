@@ -27,7 +27,7 @@ const PROPOSAL_CONSTANTS = {
     maxBeneficiaries: 50,
     prod: {
         maxTranche: 5000,
-        minTranche: 100
+        minTranche: 5
     }
 };
 
