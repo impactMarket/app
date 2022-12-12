@@ -23,7 +23,7 @@ export default function useLevels(levels: any) {
                 apiLevel = levels[item.prismicId];
             } else {
                 const found = Object.values(levels).filter((elem: any) => {
-                    return elem.alternate_languages.find((it) => it.id === item.prismicId);
+                    return elem.alternate_languages.find((it: any) => it.id === item.prismicId);
                 });
 
                 const transaltedLevel = found.pop() as Object;
@@ -49,6 +49,6 @@ export default function useLevels(levels: any) {
     }
 
     return {
-        data: data.filter(item => item !== null)
+        data: data.filter((item: any) => item !== null)
     }
 }

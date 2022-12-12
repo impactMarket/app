@@ -136,7 +136,7 @@ const Prismic = {
 
     getDocumentByType: async ({
         clientOptions = {},
-        lang: langCode = defaultLang,
+        // lang: langCode = defaultLang,
         document = ''
     }: any) => {
         const api = await client(clientOptions);

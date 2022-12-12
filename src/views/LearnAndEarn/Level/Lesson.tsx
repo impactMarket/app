@@ -115,27 +115,27 @@ const Lesson = (props: any) => {
                                         const copy = [...userAnswers];
 
                                         return (
-                                            <OptionItem
-                                                content={question.text}
-                                                isActive={
-                                                    userAnswers[currentPage][
-                                                        idx
-                                                    ]
-                                                }
-                                                onClick={() => {
-                                                    copy[currentPage] = [
-                                                        false,
-                                                        false,
-                                                        false
-                                                    ];
-                                                    copy[currentPage][
-                                                        idx
-                                                    ] = !copy[currentPage][idx];
-                                                    setUserAnswers(copy);
-
-                                                    return true;
-                                                }}
-                                            />
+                                            <Box mb=".75rem" onClick={() => {
+                                                copy[currentPage] = [
+                                                    false,
+                                                    false,
+                                                    false
+                                                ];
+                                                copy[currentPage][
+                                                    idx
+                                                ] = !copy[currentPage][idx];
+                                                setUserAnswers(copy);
+                                            }}>
+                                                <OptionItem
+                                                    content={question.text}
+                                                    isActive={
+                                                        userAnswers[currentPage][
+                                                            idx
+                                                        ]
+                                                    }
+                                                />
+                                            </Box>
+                                            
                                         );
                                     }
                                 )}

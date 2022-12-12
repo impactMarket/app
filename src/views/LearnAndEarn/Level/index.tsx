@@ -94,7 +94,7 @@ const Level = (props: any) => {
 
                     <Divider mt="2rem" />
 
-                    {lessonsTest?.map((item, idx) => {
+                    {lessonsTest?.map((item: any, idx: number) => {
                         console.log(item);
 
                         return (
@@ -125,7 +125,7 @@ const Level = (props: any) => {
                                         {item.status === 'started' && (
                                             <Button
                                                 fluid
-                                                disabled={!!((idx - 1 >= 0 && lessonsTest[idx-1]?.status !== 'completed'))}
+                                                disabled={((idx - 1 >= 0 && lessonsTest[idx-1]?.status !== 'completed'))}
                                                 onClick={() =>
                                                     router.push(
                                                         `/${lang}/learn-and-earn/${params.level}/${item.uid}?id=${item.backendId}`
@@ -157,14 +157,14 @@ const Level = (props: any) => {
                                             </Badge>
                                         )}
 
-                                        {--idx >= 0 && lessonsTest[idx-1]?.status !== 'completed' && !!item.status && (
+                                        {/* {--idx >= 0 && lessonsTest[idx-1]?.status !== 'completed' && !!item.status && (
                                             <Button
                                                 fluid
                                                 disabled
                                             >
                                                 {'Continue'}
                                             </Button>
-                                        )}
+                                        )} */}
                                     </Box>
                                 </Box>
                                 <Divider />

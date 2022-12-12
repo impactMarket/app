@@ -32,7 +32,7 @@ const LearnAndEarn = (props: any) => {
     const [search, setSearch] = useState(getByKey('search') ?? '');
     const { data } = useLevels(levels);
     const filteredData = data.filter(
-        (item) => item.title.toLowerCase().indexOf(search) !== -1
+        (item: any) => item.title.toLowerCase().indexOf(search) !== -1
     );
 
     //  Handle Pagination
@@ -66,9 +66,7 @@ const LearnAndEarn = (props: any) => {
     const pageEnd = currentPage * ITEMS_PER_PAGE + ITEMS_PER_PAGE;
 
     const filterLevels = (filter: string) => {
-        console.log(data.filter((el) => el.status === filter));
-
-        return data.filter((el) => el.status === filter);
+        return data.filter((el: any) => el.status === filter);
     };
 
     useEffect(() => {
