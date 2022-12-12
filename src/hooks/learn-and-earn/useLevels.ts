@@ -1,9 +1,9 @@
-import useSWR from 'swr';
-import config from '../../../config';
-import { useSelector } from 'react-redux';
 import { selectCurrentUser } from '../../state/slices/auth';
+import { useSelector } from 'react-redux';
+import config from '../../../config';
+import useSWR from 'swr';
 
-export default function useLevels(levels: any) { //endpoint, 
+export default function useLevels(levels: any) {
     const auth = useSelector(selectCurrentUser);
     let data = [];
 
@@ -12,7 +12,7 @@ export default function useLevels(levels: any) { //endpoint,
         headers: { Authorization: `Bearer ${auth.token}` }
     }).then((res) => res.json());
 
-    const { data: apiData, error } = useSWR(`/learn-and-earn/levels`, fetcher);
+    const { data: apiData } = useSWR(`/learn-and-earn/levels`, fetcher);
     
     if (apiData) {
         data = apiData?.data?.rows.map((item: any) => {
@@ -41,9 +41,9 @@ export default function useLevels(levels: any) { //endpoint,
             return {
                 ...item,
                 id: null,
+                status: 'available',
                 totalLessons: item?.lessons?.length,
                 totalReward: item?.data?.reward,
-                status: 'available'
             };
         });
     }

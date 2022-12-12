@@ -1,23 +1,23 @@
 import {
-    ViewContainer,
-    ComposedCard,
+    Box,
     Button,
+    ComposedCard,
+    Display,
+    DropdownMenu,
+    Grid,
+    Pagination,
     Tab,
     TabList,
     Tabs,
-    DropdownMenu,
-    Box,
-    Grid,
-    Pagination,
-    Display
+    ViewContainer
 } from '@impact-market/ui';
-import RichText from '../../libs/Prismic/components/RichText';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
-import useFilters from '../../hooks/useFilters';
 import Filters from '../../components/Filters';
-import useLevels from '../../hooks/learn-and-earn/useLevels';
 import Metrics from './Metrics';
+import RichText from '../../libs/Prismic/components/RichText';
+import useFilters from '../../hooks/useFilters';
+import useLevels from '../../hooks/learn-and-earn/useLevels';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -73,6 +73,7 @@ const LearnAndEarn = (props: any) => {
 
     useEffect(() => {
         setCurrentPage(
+            /* eslint-disable no-nested-ternary */
             !!getByKey('search')
                 ? 0
                 : !!getByKey('page')

@@ -1,5 +1,5 @@
-import useSWR from 'swr';
 import config from '../../../config';
+import useSWR from 'swr';
 // import { useSelector } from 'react-redux';
 // import { selectCurrentUser } from '../../state/slices/auth';
 
@@ -14,7 +14,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
     // }, []);
 
     if (levelId) {
-        const { data, error } = useSWR(
+        const { data } = useSWR(
             `/learn-and-earn/levels/${levelId}/lessons`,
             fetcher
         );

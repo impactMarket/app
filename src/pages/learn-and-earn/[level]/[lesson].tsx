@@ -1,8 +1,8 @@
 // import { ClientConfig } from '@prismicio/client';
+import { ClientConfig } from '@prismicio/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Lesson from '../../../views/LearnAndEarn/Level/Lesson';
 import Prismic from '../../../libs/Prismic/Prismic';
-import { ClientConfig } from '@prismicio/client';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = (slug) => {
     console.log(slug);
@@ -41,8 +41,8 @@ export const getStaticProps: GetStaticProps = async ({
 
    return {
     props: {
-        fallback: '',
         data,
+        fallback: '',
         lang,
         params,
         prismic: {

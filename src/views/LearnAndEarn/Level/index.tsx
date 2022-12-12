@@ -1,18 +1,20 @@
-import { Divider, Badge, Icon } from '@impact-market/ui';
 import {
+    Badge,
     Box,
-    Display,
-    ViewContainer,
     Button,
-    TextLink
+    Display,
+    Divider,
+    Icon,
+    // TextLink,
+    ViewContainer
 } from '@impact-market/ui';
-import RichText from '../../../libs/Prismic/components/RichText';
-import { useRouter } from 'next/router';
-import config from '../../../../config';
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import useLessons from '../../../hooks/learn-and-earn/useLessons';
+import RichText from '../../../libs/Prismic/components/RichText';
+import config from '../../../../config';
 import useFilters from '../../../hooks/useFilters';
+import useLessons from '../../../hooks/learn-and-earn/useLessons';
 
 const Level = (props: any) => {
     const { prismic, params, lang } = props;
@@ -29,15 +31,15 @@ const Level = (props: any) => {
             const res = await fetch(
                 `${config.baseApiUrl}/learn-and-earn/lessons`,
                 {
-                    method: 'POST',
-                    headers: {
-                        Accept: 'application/json',
-                        'Content-Type': 'application/json',
-                        Authorization: `Bearer ${auth.token}`
-                    },
                     body: JSON.stringify({
                         lesson: lessonId
-                    })
+                    }),
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${auth.token}`,
+                        'Content-Type': 'application/json'
+                    },
+                    method: 'POST',
                 }
             );
 
@@ -123,7 +125,7 @@ const Level = (props: any) => {
                                         {item.status === 'started' && (
                                             <Button
                                                 fluid
-                                                disabled={(idx - 1 >= 0 && lessonsTest[idx-1]?.status !== 'completed') ? true : false}
+                                                disabled={!!((idx - 1 >= 0 && lessonsTest[idx-1]?.status !== 'completed'))}
                                                 onClick={() =>
                                                     router.push(
                                                         `/${lang}/learn-and-earn/${params.level}/${item.uid}?id=${item.backendId}`

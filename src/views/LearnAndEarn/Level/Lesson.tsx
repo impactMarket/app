@@ -1,21 +1,21 @@
 import {
     Box,
     Button,
-    ViewContainer,
-    Divider,
     Display,
-    openModal,
+    Divider,
     OptionItem,
     Pagination,
-    ProgressIndicator
+    ProgressIndicator,
+    ViewContainer,
+    openModal
 } from '@impact-market/ui';
-import RichText from '../../../libs/Prismic/components/RichText';
-import useFilters from '../../../hooks/useFilters';
-import { useState } from 'react';
-import config from '../../../../config';
 import { selectCurrentUser } from '../../../state/slices/auth';
-import { useSelector } from 'react-redux';
 import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import RichText from '../../../libs/Prismic/components/RichText';
+import config from '../../../../config';
+import useFilters from '../../../hooks/useFilters';
 
 const Lesson = (props: any) => {
     const { prismic, lang } = props;
@@ -186,16 +186,16 @@ const Lesson = (props: any) => {
                                         const res = await fetch(
                                             `${config.baseApiUrl}/learn-and-earn/lessons/${lessonId}/answers`,
                                             {
-                                                method: 'POST',
-                                                headers: {
-                                                    Accept: 'application/json',
-                                                    'Content-Type':
-                                                        'application/json',
-                                                    Authorization: `Bearer ${auth.token}`
-                                                },
                                                 body: JSON.stringify({
                                                     answers
-                                                })
+                                                }),
+                                                headers: {
+                                                    Accept: 'application/json',
+                                                    Authorization: `Bearer ${auth.token}`,
+                                                    'Content-Type':
+                                                        'application/json'
+                                                },
+                                                method: 'POST',
                                             }
                                         );
 
@@ -203,10 +203,10 @@ const Lesson = (props: any) => {
 
                                         if (response?.data?.success === false) {
                                             openModal('wrongAnswer', {
-                                                onClose: () =>
-                                                    toggleQuiz(false),
                                                 attempts:
-                                                    response?.data?.attempts
+                                                    response?.data?.attempts,
+                                                onClose: () =>
+                                                    toggleQuiz(false)
                                             });
                                         } else {
                                             openModal('successModal', {

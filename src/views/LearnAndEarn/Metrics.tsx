@@ -1,8 +1,8 @@
-import { ProgressCard, Display } from '@impact-market/ui';
-import useSWR from 'swr';
-import config from '../../../config';
-import { useSelector } from 'react-redux';
+import { Display, ProgressCard } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
+import { useSelector } from 'react-redux';
+import config from '../../../config';
+import useSWR from 'swr';
 
 const Metrics = () => {
     const auth = useSelector(selectCurrentUser);

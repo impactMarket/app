@@ -1,8 +1,8 @@
 // import { ClientConfig } from '@prismicio/client';
+import { ClientConfig } from '@prismicio/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Level from '../../../views/LearnAndEarn/Level';
 import Prismic from '../../../libs/Prismic/Prismic';
-import { ClientConfig } from '@prismicio/client';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = (slug) => {
     return {
@@ -27,10 +27,10 @@ export const getStaticProps: GetStaticProps = async ({
 
     if (!prismicLevel) {
         return {
+            props: {},
             redirect: {
                 destination: '/learn-and-earn'
-            },
-            props: {}
+            }
         };
     }
 
@@ -58,14 +58,14 @@ export const getStaticProps: GetStaticProps = async ({
 
     return {
         props: {
-            fallback: '',
-            params,
-            lang,
             data,
+            fallback: '',
+            lang,
+            params,
             prismic: {
-                level: prismicLevel,
+                categories,
                 lessons,
-                categories
+                level: prismicLevel
             },
             view: 'LearnAndEarn'
             // withPreview: !!previewData

@@ -13,9 +13,9 @@ export const store = configureStore({
         getDefaultMiddleware().concat(api.middleware),
     reducer: {
         auth: authReducer,
+        learnAndEarn: learnAndEarnReduce,
         notifications: notificationsReducer,
         rates: ratesReducer,
-        learnAndEarn: learnAndEarnReduce,
         [api.reducerPath]: api.reducer
     }
 });

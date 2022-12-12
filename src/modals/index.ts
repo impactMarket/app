@@ -14,10 +14,10 @@ const modals = {
     reloadInfoAddCommunity: dynamic(() => import('./AddCommunity/ReloadInfo'), { ssr: false }),
     reportStory: dynamic(() => import('./Stories/ReportStory'), { ssr: false }),
     reportSuspiciousActivity: dynamic(() => import('./ReportSuspiciousActivity'), { ssr: false }),
+    successModal: dynamic(() => import('./LearnAndEarn/SuccessModal'), { ssr: false }),
     welcomeBeneficiary: dynamic(() => import('./WelcomeBeneficiary'), { ssr: false }),
     wrongAnswer: dynamic(() => import('./LearnAndEarn/WrongAnswer'), { ssr: false }),
     wrongNetwork: dynamic(() => import('./WrongNetwork'), { ssr: false }),
-    successModal: dynamic(() => import('./LearnAndEarn/SuccessModal'), { ssr: false }),
 }
 
 export default modals;
