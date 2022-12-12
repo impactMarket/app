@@ -38,7 +38,7 @@ const serializer: SerializerFunction = ({
 
     // TODO use UI Image comp
     if (type === 'image') {
-        return <img {...node} />;
+        return <img src={node.url} style={{maxWidth: '100%'}} />;
     }
 
     if (type === 'span') {

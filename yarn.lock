@@ -1632,13 +1632,14 @@
   resolved "https://registry.yarnpkg.com/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz#b520529ec21d8e5945a1851dfd1c32e94e39ff45"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.5.1":
-  version "1.5.1"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.1.tgz#4ba1bb32dab2d9c0671ca894f305e504011d5c85"
-  integrity sha512-f+JDMKT57rR8mvSLa6pGzShSom6zYHGYS6rF8Z5dd7jiByVE3L6vd33NU3Pp+/4YeOEXkRRaxjp7fXGvY897MA==
+"@impact-market/ui@1.5.2":
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.2.tgz#6d6685aa4b91967212b184f10c6a7cc0ea159c8c"
+  integrity sha512-LAY6hBIjFGJxJutrxsUJvysZ7PTzWn0Mr5tz2rleahIJmxy+EziqqeYGcXwpmOfjL0cO4XWte7ZHzhYk/Hdj/A==
   dependencies:
     polished "^4.1.4"
     react-circle-flags "^0.0.17"
+    react-circular-progressbar "^2.1.0"
     react-tabs "^4.2.0"
     react-toastify "^8.2.0"
     styled-gen "^1.4.8"
@@ -9461,6 +9462,11 @@ react-circle-flags@^0.0.17:
   version "0.0.17"
   resolved "https://registry.yarnpkg.com/react-circle-flags/-/react-circle-flags-0.0.17.tgz#e0e4d3ff74f35715c15cc159d43407c28188cf35"
   integrity sha512-RsgnkmTuSQNlB5jn7XcFzbp3W+WI75/sxT5CtjPa+67AiM8qjgMvxC45UWvDkjxH+qpoIAwEvA6VXpBbfnyH3g==
+
+react-circular-progressbar@^2.1.0:
+  version "2.1.0"
+  resolved "https://registry.yarnpkg.com/react-circular-progressbar/-/react-circular-progressbar-2.1.0.tgz#99e5ae499c21de82223b498289e96f66adb8fa3a"
+  integrity sha512-xp4THTrod4aLpGy68FX/k1Q3nzrfHUjUe5v6FsdwXBl3YVMwgeXYQKDrku7n/D6qsJA9CuunarAboC2xCiKs1g==
 
 react-device-detect@^2.1.2:
   version "2.2.2"
