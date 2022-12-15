@@ -3,9 +3,9 @@ import {
     Button,
     Display,
     Divider,
+    Label,
     OptionItem,
     Pagination,
-    ProgressIndicator,
     ViewContainer,
     openModal
 } from '@impact-market/ui';
@@ -14,11 +14,19 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import RichText from '../../../libs/Prismic/components/RichText';
+import String from '../../../libs/Prismic/components/String';
+import Video from '../Video';
 import config from '../../../../config';
 import useFilters from '../../../hooks/useFilters';
 
+const initialAnswers = [
+    [false, false, false],
+    [false, false, false],
+    [false, false, false]
+];
+
 const Lesson = (props: any) => {
-    const { prismic, lang } = props;
+    const { prismic, lang, params } = props;
     const { prismicLesson } = prismic;
     const { tutorial: content, questions } = prismicLesson;
     const { update, getByKey } = useFilters();
@@ -28,17 +36,16 @@ const Lesson = (props: any) => {
     const [isQuiz, setIsQuiz] = useState(false);
     const auth = useSelector(selectCurrentUser);
     const lessonId = getByKey('id') ? parseInt(getByKey('id')[0], 10) : null;
+    const levelId = getByKey('levelId') || '';
     const router = useRouter();
 
-    const [userAnswers, setUserAnswers] = useState([
-        [false, false, false],
-        [false, false, false],
-        [false, false, false]
-    ]);
+    const [userAnswers, setUserAnswers] = useState(initialAnswers);
 
-    const slide = content[currentPage].primary.content;
-
-    console.log(content);
+    const slide =
+        content[currentPage].slice_type === 'video_section'
+            ? content[currentPage]
+            : content[currentPage].primary.content;
+    const currentQuestion = questions[currentPage];
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
@@ -67,8 +74,52 @@ const Lesson = (props: any) => {
         setCurrentPage(0);
     };
 
+    const ContentDisplay = (props: any) => {
+        const { slide } = props;
+
+        if (slide[0]?.type) {
+            if (
+                (slide.length === 1 && slide[0].type === 'preformatted') ||
+                slide[0].type === 'image'
+            ) {
+                return <RichText content={slide} />;
+            }
+
+            return (
+                <Box maxW="36.25rem" w="100%">
+                    <RichText content={slide} pb=".5rem" />
+                </Box>
+            );
+        }
+        if (slide.slice_type === 'video_section') {
+            return (
+                <Box maxW="100%" flex style={{ justifyContent: 'center' }}>
+                    <Video {...slide} />
+                </Box>
+            );
+        }
+
+        return <></>;
+    };
+
     return (
         <ViewContainer>
+            {!isQuiz && (
+                <Box
+                    as="a"
+                    onClick={() =>
+                        router.push(
+                            `/${lang}/learn-and-earn/${params.level}?levelId=${levelId}`
+                        )
+                    }
+                >
+                    <Label
+                        content={<String id="back" />}
+                        icon="arrowLeft"
+                        mb="1rem"
+                    />
+                </Box>
+            )}
             <Display g900 medium mb=".25rem">
                 {prismicLesson.title}
             </Display>
@@ -80,150 +131,140 @@ const Lesson = (props: any) => {
             />
 
             <Divider />
-            <Box flex fDirection="column" style={{ alignItems: 'center' }}>
-                <Box maxW="36.25rem" w="100%">
+            <Box
+                flex
+                fDirection="column"
+                style={{ alignItems: 'center', position: 'relative' }}
+            >
+                {/* <Box maxW="100%" flex style={{justifyContent: 'center'}}> */}
+                {!isQuiz ? (
+                    <ContentDisplay slide={slide} />
+                ) : (
                     <Box
-                        margin="2rem 0"
+                        maxW="36.25rem"
                         flex
                         style={{ justifyContent: 'center' }}
+                        fDirection="column"
+                        w="100%"
+                        mt="2.5rem"
                     >
-                        <ProgressIndicator
-                            steps={!isQuiz ? content.length : 3}
-                            currentStep={currentPage + 1}
-                            maxW="350px"
+                        <RichText
+                            content={currentQuestion.primary.question[0].text}
+                            g900
+                            medium
+                            pb="1rem"
                         />
+
+                        {currentQuestion.items.map((item: any, idx: number) => {
+                            const question = item.answer[0];
+                            const temp = [...userAnswers];
+
+                            return (
+                                <Box
+                                    mb=".75rem"
+                                    onClick={() => {
+                                        temp[currentPage] = [
+                                            false,
+                                            false,
+                                            false
+                                        ];
+                                        temp[currentPage][idx] = !temp[
+                                            currentPage
+                                        ][idx];
+                                        setUserAnswers(temp);
+                                    }}
+                                >
+                                    <OptionItem
+                                        content={question.text}
+                                        isActive={userAnswers[currentPage][idx]}
+                                    />
+                                </Box>
+                            );
+                        })}
                     </Box>
+                )}
+                {/* </Box> */}
 
-                    <Box maxW="100%">
-                        {!isQuiz ? (
-                            <RichText content={slide} pb=".5rem" />
-                        ) : (
-                            <>
-                                <RichText
-                                    content={
-                                        questions[currentPage].primary
-                                            .question[0].text
-                                    }
-                                    g900
-                                    medium
-                                    pb="1rem"
-                                />
-
-                                {questions[currentPage].items.map(
-                                    (item: any, idx: number) => {
-                                        const question = item.answer[0];
-                                        const copy = [...userAnswers];
-
-                                        return (
-                                            <Box mb=".75rem" onClick={() => {
-                                                copy[currentPage] = [
-                                                    false,
-                                                    false,
-                                                    false
-                                                ];
-                                                copy[currentPage][
-                                                    idx
-                                                ] = !copy[currentPage][idx];
-                                                setUserAnswers(copy);
-                                            }}>
-                                                <OptionItem
-                                                    content={question.text}
-                                                    isActive={
-                                                        userAnswers[currentPage][
-                                                            idx
-                                                        ]
-                                                    }
-                                                />
-                                            </Box>
-                                            
-                                        );
-                                    }
-                                )}
-                            </>
-                        )}
+                {currentPage + 1 === content.length && (
+                    <Box mt="1rem">
+                        <Button
+                            fluid
+                            secondary
+                            xl
+                            onClick={() => toggleQuiz(true)}
+                        >
+                            {`Start Quiz`}
+                        </Button>
                     </Box>
+                )}
 
-                    {currentPage + 1 === content.length && (
-                        <Box mt="1rem">
-                            <Button
-                                fluid
-                                secondary
-                                xl
-                                onClick={() => toggleQuiz(true)}
-                            >
-                                {`Start Quiz`}
-                            </Button>
-                        </Box>
-                    )}
+                {isQuiz && currentPage + 1 >= 3 && (
+                    <Box mt="1rem">
+                        <Button
+                            fluid
+                            secondary
+                            xl
+                            onClick={async () => {
+                                if (!isQuiz) {
+                                    setIsQuiz(true);
+                                    update({ page: 0 });
+                                    setCurrentPage(0);
+                                } else {
+                                    // Post answers
+                                    const answers = userAnswers
+                                        .reduce((next: any, current: any) => {
+                                            return [
+                                                current.findIndex(
+                                                    (el: any) => el
+                                                ),
+                                                ...next
+                                            ];
+                                        }, [])
+                                        .reverse();
 
-                    {isQuiz && currentPage + 1 >= 3 && (
-                        <Box mt="1rem">
-                            <Button
-                                fluid
-                                secondary
-                                xl
-                                onClick={async () => {
-                                    if (!isQuiz) {
-                                        setIsQuiz(true);
-                                        update({ page: 0 });
-                                        setCurrentPage(0);
-                                    } else {
-                                        // Post answers
-                                        const answers = userAnswers
-                                            .reduce(
-                                                (next: any, current: any) => {
-                                                    return [
-                                                        current.findIndex(
-                                                            (el: any) => el
-                                                        ),
-                                                        ...next
-                                                    ];
-                                                },
-                                                []
-                                            )
-                                            .reverse();
-
-                                        const res = await fetch(
-                                            `${config.baseApiUrl}/learn-and-earn/lessons/${lessonId}/answers`,
-                                            {
-                                                body: JSON.stringify({
-                                                    answers
-                                                }),
-                                                headers: {
-                                                    Accept: 'application/json',
-                                                    Authorization: `Bearer ${auth.token}`,
-                                                    'Content-Type':
-                                                        'application/json'
-                                                },
-                                                method: 'POST',
-                                            }
-                                        );
-
-                                        const response = await res.json();
-
-                                        if (response?.data?.success === false) {
-                                            openModal('wrongAnswer', {
-                                                attempts:
-                                                    response?.data?.attempts,
-                                                onClose: () =>
-                                                    toggleQuiz(false)
-                                            });
-                                        } else {
-                                            openModal('successModal', {
-                                                onClose: () =>
-                                                    router.push(
-                                                        `/${lang}/learn-and-earn/`
-                                                    )
-                                            });
+                                    const res = await fetch(
+                                        `${config.baseApiUrl}/learn-and-earn/lessons/${lessonId}/answers`,
+                                        {
+                                            body: JSON.stringify({
+                                                answers
+                                            }),
+                                            headers: {
+                                                Accept: 'application/json',
+                                                Authorization: `Bearer ${auth.token}`,
+                                                'Content-Type':
+                                                    'application/json'
+                                            },
+                                            method: 'POST'
                                         }
-                                    }
-                                }}
-                            >
-                                {isQuiz ? `Submit` : `Start Quiz`}
-                            </Button>
-                        </Box>
-                    )}
+                                    );
 
+                                    const response = await res.json();
+
+                                    if (response?.data?.success === false) {
+                                        openModal('wrongAnswer', {
+                                            attempts: response?.data?.attempts,
+                                            onClose: () => {
+                                                toggleQuiz(false);
+                                                setUserAnswers(initialAnswers);
+                                            }
+                                        });
+                                    } else {
+                                        openModal('successModal', {
+                                            onClose: () =>
+                                                router.push(
+                                                    `/${lang}/learn-and-earn/${params.level}?levelId=${levelId}`
+                                                )
+                                        });
+                                    }
+                                }
+                            }}
+                        >
+                            {isQuiz ? `Submit` : `Start Quiz`}
+                        </Button>
+                    </Box>
+                )}
+
+                <Box maxW="36.25rem" w="100%">
                     <Divider />
                     <Box maxW="580px" w="100%">
                         <Pagination

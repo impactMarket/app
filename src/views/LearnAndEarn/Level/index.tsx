@@ -5,13 +5,14 @@ import {
     Display,
     Divider,
     Icon,
-    // TextLink,
+    Label,
     ViewContainer
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import RichText from '../../../libs/Prismic/components/RichText';
+import String from '../../../libs/Prismic/components/String';
 import config from '../../../../config';
 import useFilters from '../../../hooks/useFilters';
 import useLessons from '../../../hooks/learn-and-earn/useLessons';
@@ -22,7 +23,7 @@ const Level = (props: any) => {
     const { title } = level.data;
     const auth = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
-    const levelId = getByKey('id') || '';
+    const levelId = getByKey('levelId') || '';
     const { data: lessonsTest } = useLessons(lessons, levelId, auth);
     const router = useRouter();
 
@@ -59,7 +60,12 @@ const Level = (props: any) => {
 
     return (
         <ViewContainer isLoading={false}>
-            <Display g900 medium mb=".5rem">
+            <Box as="a" onClick={() => router.push(
+                    `/${lang}/learn-and-earn/`
+                )}>
+                <Label content={<String id="back" />} icon="arrowLeft" />
+            </Box>
+            <Display g900 medium mt="1rem" mb=".5rem">
                 {title}
             </Display>
 
@@ -121,14 +127,14 @@ const Level = (props: any) => {
                                         fDirection="column"
                                         style={{ justifyContent: 'center' }}
                                     >
-                                        {/* {item.status === 'started' && (idx - 1 < 0 || lessonsTest[idx-1]?.status === 'completed') && 'cenas'} */}
                                         {item.status === 'started' && (
                                             <Button
                                                 fluid
                                                 disabled={((idx - 1 >= 0 && lessonsTest[idx-1]?.status !== 'completed'))}
+                                                ml=".8rem"
                                                 onClick={() =>
                                                     router.push(
-                                                        `/${lang}/learn-and-earn/${params.level}/${item.uid}?id=${item.backendId}`
+                                                        `/${lang}/learn-and-earn/${params.level}/${item.uid}?id=${item.backendId}&levelId=${levelId}`
                                                     )
                                                 }
                                             >
@@ -139,6 +145,7 @@ const Level = (props: any) => {
                                         {item.status === 'available' && (idx - 1 < 0 || lessonsTest[idx-1]?.status === 'completed') && (
                                             <Button
                                                 fluid
+                                                ml=".8rem"
                                                 onClick={() =>
                                                     startLesson(
                                                         item.backendId,
@@ -151,20 +158,12 @@ const Level = (props: any) => {
                                         )}
 
                                         {item.status === 'completed' && (
-                                            <Badge bgS50 s700>
+                                            <Badge bgS50 ml=".8rem" s700>
                                                 {'Completed '}
                                                 <Icon icon="check" s700 />
                                             </Badge>
                                         )}
 
-                                        {/* {--idx >= 0 && lessonsTest[idx-1]?.status !== 'completed' && !!item.status && (
-                                            <Button
-                                                fluid
-                                                disabled
-                                            >
-                                                {'Continue'}
-                                            </Button>
-                                        )} */}
                                     </Box>
                                 </Box>
                                 <Divider />

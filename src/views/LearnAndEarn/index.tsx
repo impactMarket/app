@@ -142,7 +142,6 @@ const LearnAndEarn = (props: any) => {
 
                     <Filters
                         property="search"
-                        // action={(e: any) => setFilters(e.target.value)}
                     />
                 </Box>
 
@@ -173,7 +172,7 @@ const LearnAndEarn = (props: any) => {
                                                         elem?.uid
                                                     }${
                                                         elem?.id
-                                                            ? `?id=${elem?.id}`
+                                                            ? `?levelId=${elem?.id}`
                                                             : ''
                                                     }`
                                                 )
@@ -181,14 +180,6 @@ const LearnAndEarn = (props: any) => {
                                         >
                                             {`Earn up to ${elem.totalReward} PACTS`}
                                         </Button>
-                                        {/* <TextLink
-                                        href={`/${lang}/learn-and-earn/${elem?.uid}`}
-                                    >
-                                        {`Earn up to ${elem?.totalReward} PACTS`}
-                                    </TextLink> */}
-                                        {/* <Test href={`/${lang}/learn-and-earn/${elem?.uid}?id=${elem?.id}`}>
-                                        {`Earn up to ${elem?.totalReward} PACTS`}
-                                    </Test> */}
                                     </ComposedCard>
                                 );
                             })}

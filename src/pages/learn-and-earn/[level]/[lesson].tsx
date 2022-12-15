@@ -4,9 +4,7 @@ import { GetStaticPaths, GetStaticProps } from 'next';
 import Lesson from '../../../views/LearnAndEarn/Level/Lesson';
 import Prismic from '../../../libs/Prismic/Prismic';
 
-export const getStaticPaths: GetStaticPaths<{ slug: string }> = (slug) => {
-    console.log(slug);
-    
+export const getStaticPaths: GetStaticPaths = () => {
     return {
         fallback: 'blocking',
         paths: []

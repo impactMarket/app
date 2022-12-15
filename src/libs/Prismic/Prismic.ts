@@ -162,13 +162,6 @@ const Prismic = {
 
             const { alternate_languages, data, id, lang, uid } = response;
 
-            console.log('cenassssssssss');
-            console.log(alternate_languages);
-
-            console.log(
-                alternate_languages.filter((elem) => elem.lang === 'en-us')
-            );
-
             return { alternate_languages, ...data, id, lang, uid };
         } catch (error) {
             return null;

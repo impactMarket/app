@@ -70,7 +70,7 @@ const config = {
      * MapBox API style
      */
     mapBoxStyle: process.env.NEXT_PUBLIC_MAPBOX_STYLE!,
-    
+
     /**
      * Google Places Key
      */
@@ -94,7 +94,12 @@ const config = {
     /**
      * Signature message to confirm signature
      */
-    signatureMessage: process.env.NEXT_PUBLIC_SIGNATURE_MESSAGE
+    signatureMessage: process.env.NEXT_PUBLIC_SIGNATURE_MESSAGE,
+
+    /**
+     * Feature flag for learn and earn
+     */
+    enableLearnEarn: process.env.NEXT_PUBLIC_ENABLE_LEARN_EARN
 };
 
 export default config;

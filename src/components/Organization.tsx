@@ -31,7 +31,7 @@ const Organization = (props: OrganizationProps) => {
                     mr="1.5rem"
                     style={{ position: 'relative' }}
                 >
-                    <Image alt="Community cover image" src={image} />
+                    {image && <Image alt="Community cover image" src={image} />}
                 </Box>
                 <Box fDirection="column" fLayout="start center" flex>
                     <Text flex g900 medium>

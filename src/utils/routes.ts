@@ -1,8 +1,15 @@
+import config from '../../config';
+
 export type Routes = string[];
 
-export const publicRoutes: Routes = ['/', '/stories', '/proposals', '/communities', '/communities/[id]', '/notifications', '/messages', '/manager/communities/add', '/learn-and-earn', '/learn-and-earn/[level]'];
+// Feature flag for learn and earn, remove once fully deployed
+const laePublicRoutes = config.enableLearnEarn === 'true' ? ['/learn-and-earn', '/learn-and-earn/[level]'] : [];
 
-export const privateRoutes: Routes = ['/profile', '/settings', '/mycommunity', '/learn-and-earn/[level]/[lesson]'];
+const laePrivateRoutes = config.enableLearnEarn === 'true' ? ['/learn-and-earn/[level]/[lesson]'] : [];
+
+export const publicRoutes: Routes = ['/', '/stories', '/proposals', '/communities', '/communities/[id]', '/notifications', '/messages', '/manager/communities/add', ...laePublicRoutes];
+
+export const privateRoutes: Routes = ['/profile', '/settings', '/mycommunity', ...laePrivateRoutes];
 
 export const demoRoutes: Routes = [];
 
