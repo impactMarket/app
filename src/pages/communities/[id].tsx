@@ -44,7 +44,7 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
 
     //  Dynamic pages
     const { id } = params
-    const res = await fetch(`${config.baseApiUrl}/communities/${id}`)
+    const res = await fetch(`${config.baseApiUrl}/communities/${id}?state=base`)
     const community = await res.json()
 
     return {
