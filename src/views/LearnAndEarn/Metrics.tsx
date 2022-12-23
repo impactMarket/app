@@ -11,7 +11,7 @@ const Metrics = () => {
         fetch(config.baseApiUrl + url, {
             headers: { Authorization: `Bearer ${auth.token}` }
         }).then((res) => res.json());
-    const { data } = useSWR(`/learn-and-earn/total`, fetcher);
+    const { data } = useSWR(`/learn-and-earn`, fetcher);
 
     const totals = data?.data;
 

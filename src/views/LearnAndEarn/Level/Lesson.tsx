@@ -223,10 +223,11 @@ const Lesson = (props: any) => {
                                         .reverse();
 
                                     const res = await fetch(
-                                        `${config.baseApiUrl}/learn-and-earn/lessons/${lessonId}/answers`,
+                                        `${config.baseApiUrl}/learn-and-earn/lessons`,
                                         {
                                             body: JSON.stringify({
-                                                answers
+                                                answers,
+                                                lesson: lessonId
                                             }),
                                             headers: {
                                                 Accept: 'application/json',
@@ -234,7 +235,7 @@ const Lesson = (props: any) => {
                                                 'Content-Type':
                                                     'application/json'
                                             },
-                                            method: 'POST'
+                                            method: 'PUT'
                                         }
                                     );
 

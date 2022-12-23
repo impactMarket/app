@@ -15,7 +15,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
 
     if (levelId) {
         const { data } = useSWR(
-            `/learn-and-earn/levels/${levelId}/lessons`,
+            `/learn-and-earn/levels/${levelId}`,
             fetcher
         );
 
