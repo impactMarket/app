@@ -14,12 +14,12 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
     // }, []);
 
     if (levelId) {
-        const { data } = useSWR(
+        const { data } = useSWR<{ data: { totalPoints: number, lessons: any[] }}, string>(
             `/learn-and-earn/levels/${levelId}`,
             fetcher
         );
 
-        const mergedLessons = data?.data?.map((item: any) => {
+        const mergedLessons = data?.data?.lessons.map((item: any) => {
             const formattedLessons = lessons.map((el: any) => {
                 const ids = el.alternate_languages.reduce(
                     (next: any, profile: any) => {
