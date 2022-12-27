@@ -31,11 +31,6 @@ const Communities = (props: any) => {
     const { communities, supportingCountries } = useCommunities(filters);
 
     if (
-        !getByKey('type') ||
-        (getByKey('type') === 'myCommunities' && !user?.roles?.includes('ambassador'))
-    ) {
-        router.push('/communities?type=all', undefined, { shallow: true });
-    } else if (
         getByKey('type') === 'myCommunities' &&
         user?.roles?.includes('ambassador') &&
         !getByKey('ambassadorAddress')
