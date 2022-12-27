@@ -17,13 +17,13 @@ const Metrics = () => {
 
     const totalData = [
         { ...totals?.level, label: 'Levels Completed' },
-        { ...totals?.lesson, label: 'Lessons Completed' },
-        { ...totals?.reward, label: 'Earned' }
+        { ...totals?.lesson, label: 'Lessons Completed' }
+        // { ...totals?.reward, label: 'Earned' }
     ];
 
     return (
         <>
-            {totalData.map((item) => (
+            {totalData.map((item, idx) => (
                 <ProgressCard
                     label={item.label}
                     progress={
@@ -33,6 +33,7 @@ const Metrics = () => {
                     flex
                     fGrow={1}
                     maxW="32%"
+                    ml={!idx ? 0 : '1.5%'}
                     margin="1.5rem 0 1rem"
                 >
                     <Display semibold>

@@ -1,7 +1,5 @@
 import config from '../../../config';
 import useSWR from 'swr';
-// import { useSelector } from 'react-redux';
-// import { selectCurrentUser } from '../../state/slices/auth';
 
 export default function useLessons(lessons: any, levelId: any, auth: any) {
     const fetcher = (url: string) =>
@@ -9,15 +7,11 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
             headers: { Authorization: `Bearer ${auth.token}` }
         }).then((res) => res.json());
 
-    // const av = lessons[0].alternate_languages.reduce((next: any, profile: any) => {
-    //     return [...next, profile.id];
-    // }, []);
-
     if (levelId) {
-        const { data } = useSWR<{ data: { totalPoints: number, lessons: any[] }}, string>(
-            `/learn-and-earn/levels/${levelId}`,
-            fetcher
-        );
+        const { data } = useSWR<
+            { data: { totalPoints: number; lessons: any[] } },
+            string
+        >(`/learn-and-earn/levels/${levelId}`, fetcher);
 
         const mergedLessons = data?.data?.lessons.map((item: any) => {
             const formattedLessons = lessons.map((el: any) => {
@@ -40,11 +34,13 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
             data:
                 levelId && mergedLessons
                     ? mergedLessons.filter((e: any) => e)
-                    : lessons
+                    : lessons,
+            totalPoints: data?.data?.totalPoints || 0
         };
     }
 
     return {
-        data: lessons
+        data: lessons,
+        totalPoints: 0
     };
 }

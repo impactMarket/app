@@ -9,6 +9,7 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import RichText from '../../../libs/Prismic/components/RichText';
@@ -21,10 +22,16 @@ const Level = (props: any) => {
     const { prismic, params, lang } = props;
     const { level, lessons } = prismic;
     const { title } = level.data;
+    const { view } = usePrismicData();
+    const { instructions } = view.data;
     const auth = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
     const levelId = getByKey('levelId') || '';
-    const { data: lessonsTest } = useLessons(lessons, levelId, auth);
+    const { data: lessonsTest, totalPoints } = useLessons(
+        lessons,
+        levelId,
+        auth
+    );
     const router = useRouter();
 
     const startLesson = async (lessonId: number, uid: string) => {
@@ -40,7 +47,7 @@ const Level = (props: any) => {
                         Authorization: `Bearer ${auth.token}`,
                         'Content-Type': 'application/json'
                     },
-                    method: 'POST',
+                    method: 'POST'
                 }
             );
 
@@ -48,7 +55,7 @@ const Level = (props: any) => {
 
             if (response?.success) {
                 router.push(
-                    `/${lang}/learn-and-earn/${params.level}/${uid}?id=${lessonId}`
+                    `/${lang}/learn-and-earn/${params.level}/${uid}?id=${lessonId}&levelId=${levelId}`
                 );
             } else {
                 console.log('error');
@@ -60,9 +67,7 @@ const Level = (props: any) => {
 
     return (
         <ViewContainer isLoading={false}>
-            <Box as="a" onClick={() => router.push(
-                    `/${lang}/learn-and-earn/`
-                )}>
+            <Box as="a" onClick={() => router.push(`/${lang}/learn-and-earn/`)}>
                 <Label content={<String id="back" />} icon="arrowLeft" />
             </Box>
             <Display g900 medium mt="1rem" mb=".5rem">
@@ -74,27 +79,13 @@ const Level = (props: any) => {
 
             <Box flex style={{ justifyContent: 'center' }}>
                 <Box maxW="580px">
-                    <RichText
-                        content={
-                            'After each lesson you will be prompt to answer a simple quiz based on what you have learned. For every successful quiz, you will receive $PACT tokens in your Libera wallet.'
-                        }
-                        g500
-                    />
-
-                    <RichText
-                        content={
-                            'After 3 attempts to answer a quiz and the result is still wrong, you will not be able to earn rewards but will still be able to learn. Learn all the rules....'
-                        }
-                        g500
-                        bold
-                        mt="1rem"
-                    />
+                    <RichText content={instructions} g500 />
 
                     <Box margin="1rem 0">
-                        <RichText content={'TotAL Points'} g500 small />
+                        <RichText content={'Total Points'} g500 small />
 
                         <Display g900 medium bold>
-                            {0}
+                            {totalPoints}
                         </Display>
                     </Box>
 
@@ -130,7 +121,11 @@ const Level = (props: any) => {
                                         {item.status === 'started' && (
                                             <Button
                                                 fluid
-                                                disabled={((idx - 1 >= 0 && lessonsTest[idx-1]?.status !== 'completed'))}
+                                                disabled={
+                                                    idx - 1 >= 0 &&
+                                                    lessonsTest[idx - 1]
+                                                        ?.status !== 'completed'
+                                                }
                                                 ml=".8rem"
                                                 onClick={() =>
                                                     router.push(
@@ -142,20 +137,23 @@ const Level = (props: any) => {
                                             </Button>
                                         )}
 
-                                        {item.status === 'available' && (idx - 1 < 0 || lessonsTest[idx-1]?.status === 'completed') && (
-                                            <Button
-                                                fluid
-                                                ml=".8rem"
-                                                onClick={() =>
-                                                    startLesson(
-                                                        item.backendId,
-                                                        item.uid
-                                                    )
-                                                }
-                                            >
-                                                {'Start Lesson'}
-                                            </Button>
-                                        )}
+                                        {item.status === 'available' &&
+                                            (idx - 1 < 0 ||
+                                                lessonsTest[idx - 1]?.status ===
+                                                    'completed') && (
+                                                <Button
+                                                    fluid
+                                                    ml=".8rem"
+                                                    onClick={() =>
+                                                        startLesson(
+                                                            item.backendId,
+                                                            item.uid
+                                                        )
+                                                    }
+                                                >
+                                                    {'Start Lesson'}
+                                                </Button>
+                                            )}
 
                                         {item.status === 'completed' && (
                                             <Badge bgS50 ml=".8rem" s700>
@@ -163,7 +161,6 @@ const Level = (props: any) => {
                                                 <Icon icon="check" s700 />
                                             </Badge>
                                         )}
-
                                     </Box>
                                 </Box>
                                 <Divider />

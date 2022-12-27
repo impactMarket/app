@@ -12,7 +12,7 @@ export const getStaticProps: GetStaticProps = async ({
     const clientOptions = previewData as ClientConfig;
     const categories = await Prismic.getAllCategories({ clientOptions, lang, types: 'pwa-lae-category' });
     const levels = await Prismic.getAllLevels({ clientOptions, document: 'pwa-lae-level', lang });
-    const data = await fetcher({ lang, types: 'pwa-lae-category' });
+    const data = await fetcher({ lang, types: ['pwa-lae-category', 'pwa-view-learn-and-earn'] });
 
     return {
         props: {

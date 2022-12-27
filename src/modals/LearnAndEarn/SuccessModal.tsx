@@ -4,13 +4,15 @@ import {
     CircledIcon,
     Col,
     ModalWrapper,
-    Text,
     useModal
 } from '@impact-market/ui';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import React from 'react';
+import RichText from '../../libs/Prismic/components/RichText';
 
 const SuccessModal = () => {
     const { handleClose, onClose } = useModal();
+    const { modals } = usePrismicData();
     const closeModal = () => {
         handleClose();
         onClose();
@@ -24,9 +26,15 @@ const SuccessModal = () => {
                 </Col>
             </Box>
             <Box mt="1.25rem">
-                <Text large g900 semibold>
-                    {'Congrats you have completed the lesson.'}
-                </Text>
+                <RichText
+                    content={modals.data.success_title}
+                    large
+                    g900
+                    semibold
+                />
+            </Box>
+            <Box mt="1.25rem">
+                <RichText content={modals.data.success_content} medium g500 />
             </Box>
             <Button fluid gray xl onClick={() => closeModal()} mt="2rem">
                 {`Continue`}

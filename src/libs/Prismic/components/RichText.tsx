@@ -5,7 +5,6 @@ import React from 'react';
 import TextLink from '../../../components/TextLink';
 import bracked from '../helpers/bracked';
 import parse from '../helpers/parse';
-
 import styled from 'styled-components';
 
 const LoadingWrapper = styled.div`
@@ -61,6 +60,10 @@ const serializer: SerializerFunction = ({
     // TODO use UI Image comp
     if (type === 'image') {
         return <img src={node.url} style={{maxWidth: '100%'}} />;
+    }
+
+    if (type === 'paragraph' && !node?.text?.length && !node?.spans?.length) {
+        return <br />;
     }
 
     if (type === 'span') {

@@ -35,8 +35,8 @@ const Lesson = (props: any) => {
     );
     const [isQuiz, setIsQuiz] = useState(false);
     const auth = useSelector(selectCurrentUser);
-    const lessonId = getByKey('id') ? parseInt(getByKey('id')[0], 10) : null;
-    const levelId = getByKey('levelId') || '';
+    const lessonId = getByKey('id') ? +getByKey('id') : null;
+    const levelId = +getByKey('levelId') || null;
     const router = useRouter();
 
     const [userAnswers, setUserAnswers] = useState(initialAnswers);
