@@ -1,5 +1,5 @@
-import '@celo/react-celo/lib/styles.css';
-import { Alfajores, CeloProvider, Mainnet, Network, SupportedProviders, useCelo } from '@celo/react-celo';
+import 'react-celo-impactmarket/lib/styles.css';
+import { Alfajores, CeloProvider, Mainnet, Network, SupportedProviders, useCelo } from 'react-celo-impactmarket';
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
 import React, { useEffect, useState } from 'react';
 import Web3 from 'web3';
@@ -85,50 +85,6 @@ const WrapperProvider = (props: WithChildrenProps) => {
                         // see https://github.com/WalletConnect/walletconnect-registry/#schema for a schema example
                         {
                             app: {
-                                android: 'https://play.google.com/store/apps/details?id=com.impactmarket.mobile',
-                                browser: '',
-                                ios: 'https://apps.apple.com/app/impactmarket/id1530870911',
-                                linux: '',
-                                mac: '',
-                                windows: '',
-                            },
-                            chains: ['eip:42220'],
-                            description: 'Your future unlocked.',
-                            desktop: {
-                                native: 'libera://',
-                                universal: 'libera://',
-                            },
-                            homepage: 'https://impactmarket.com/',
-                            id: 'libera-wallet',
-                            logos: {
-                                lg: 'https://dxdwf61ltxjyn.cloudfront.net/eyJidWNrZXQiOiJpbXBhY3RtYXJrZXQtYXBwIiwia2V5IjoiTGliZXJhTG9nby5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSJ9fSwib3V0cHV0Rm9ybWF0IjoianBnIn0=',
-                                md: 'https://dxdwf61ltxjyn.cloudfront.net/eyJidWNrZXQiOiJpbXBhY3RtYXJrZXQtYXBwIiwia2V5IjoiTGliZXJhTG9nby5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSJ9fSwib3V0cHV0Rm9ybWF0IjoianBnIn0=',
-                                sm: 'https://dxdwf61ltxjyn.cloudfront.net/eyJidWNrZXQiOiJpbXBhY3RtYXJrZXQtYXBwIiwia2V5IjoiTGliZXJhTG9nby5qcGciLCJlZGl0cyI6eyJyZXNpemUiOnsid2lkdGgiOjQwMCwiaGVpZ2h0Ijo0MDAsImZpdCI6Imluc2lkZSJ9fSwib3V0cHV0Rm9ybWF0IjoianBnIn0=',
-                            },
-                            metadata: {
-                                colors: {
-                                    primary: '#fff',
-                                    secondary: '#2E6AFF',
-                                },
-                                shortName: 'Libera',
-                            },
-                            mobile: {
-                                native: 'libera://',
-                                universal: 'libera://'
-                            },
-                            name: 'Libera',
-                            responsive: {
-                                browserFriendly: false,
-                                browserOnly: false,
-                                mobileFriendly: true,
-                                mobileOnly: true,
-                            },
-                            // IMPORTANT
-                            // This is the version of WC. We only support version 1 at the moment.
-                            versions: ['1'],
-                        },
-                        {
-                            app: {
                                 android: 'https://play.google.com/store/apps/details?id=com.bitkeep.wallet',
                                 browser: 'https://chrome.google.com/webstore/detail/bitkeep-bitcoin-crypto-wa/jiidiaalihmmhddjgbnbgdfflelocpak',
                                 ios: 'https://apps.apple.com/app/bitkeep/id1395301115',
@@ -180,7 +136,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
                         SupportedProviders.CeloDance,
                         SupportedProviders.Injected,
                         SupportedProviders.Ledger,
-                        SupportedProviders.Steakwallet,
+                        SupportedProviders.Omni,
                         SupportedProviders.CoinbaseWallet,
                     ],
                 },
