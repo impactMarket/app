@@ -1,9 +1,5 @@
-import {
-    Grid,
-    Pagination,
-    TabPanel,
-    Tabs,
-} from '@impact-market/ui';
+import { Grid, Pagination, TabPanel, Tabs } from '@impact-market/ui';
+import { useState } from 'react';
 
 import CommunityCard from '../../components/CommunityCard';
 import String from '../../libs/Prismic/components/String';
@@ -13,19 +9,30 @@ import useFilters from '../../hooks/useFilters';
 const CommunitiesList = (props: any) => {
     const { communitiesTabs, filters } = props;
     const { update, getByKey } = useFilters();
-    const { communities, loadingCommunities, pageCount, itemsPerPage } = useCommunities(filters);
+    const {
+        communities,
+        loadingCommunities,
+        pageCount,
+        itemsPerPage
+    } = useCommunities(filters);
+    const [currentPage, setCurrentPage] = useState<number>(
+        +getByKey('page') || 0
+    );
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
-        const currentPage = getByKey('page') ? parseInt(getByKey('page')[0], 10) : 0;
- 
+        let page;
+
         if (event.selected >= 0) {
-            update({ page: event.selected });
+            page = event.selected;
         } else if (direction === 1 && currentPage > 0) {
-            update({ page: currentPage - 1 });
+            page = currentPage - 1;
         } else if (direction === 2 && currentPage < pageCount - 1) {
-            update({ page: currentPage + 1 });
+            page = currentPage + 1;
         }
+
+        setCurrentPage(page);
+        update({ page });
     };
 
     return (
@@ -33,11 +40,7 @@ const CommunitiesList = (props: any) => {
             {loadingCommunities ? (
                 <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }} mt="1.3rem">
                     {[...Array(itemsPerPage)].map((key: number) => (
-                        <CommunityCard
-                            community={{}}
-                            isLoading
-                            key={key}
-                        />
+                        <CommunityCard community={{}} isLoading key={key} />
                     ))}
                 </Grid>
             ) : (
@@ -59,11 +62,7 @@ const CommunitiesList = (props: any) => {
                                 )}
                             </Grid>
                             <Pagination
-                                currentPage={
-                                    getByKey('page')
-                                        ? parseInt(getByKey('page')[0], 10)
-                                        : 0
-                                }
+                                currentPage={currentPage}
                                 handlePageClick={handlePageClick}
                                 mt={2}
                                 nextIcon="arrowRight"
