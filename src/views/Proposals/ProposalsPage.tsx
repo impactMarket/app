@@ -1,5 +1,5 @@
 import { Box, Pagination, Row, Spinner } from '@impact-market/ui';
-import { useCelo } from '@celo/react-celo';
+import { useCelo } from 'react-celo-impactmarket';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import Proposal from './Proposal';
 import React, { useEffect, useState } from 'react';

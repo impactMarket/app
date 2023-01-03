@@ -1,4 +1,4 @@
-import { Alfajores, Mainnet } from '@celo/react-celo';
+import { Alfajores, Mainnet } from 'react-celo-impactmarket';
 import { AppContext } from '../components/WrapperProvider';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
