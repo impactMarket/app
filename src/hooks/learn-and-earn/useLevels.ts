@@ -8,33 +8,42 @@ export default function useLevels(levels: any) {
     let data = [];
 
     const fetcher = (url: string) =>
-    fetch(config.baseApiUrl + url, {
-        headers: { Authorization: `Bearer ${auth.token}` }
-    }).then((res) => res.json());
+        fetch(config.baseApiUrl + url, {
+            headers: { Authorization: `Bearer ${auth.token}` }
+        }).then((res) => res.json());
 
     const { data: apiData } = useSWR(`/learn-and-earn/levels`, fetcher);
-    
+
     if (apiData) {
         data = apiData?.data?.rows.map((item: any) => {
-            const levelData: { totalLessons: number, totalReward: number, status: string, id: string } = item;
+            const levelData: {
+                totalLessons: number;
+                totalReward: number;
+                status: string;
+                id: string;
+            } = item;
             let apiLevel;
 
             if (levels[item.prismicId]) {
                 apiLevel = levels[item.prismicId];
             } else {
                 const found = Object.values(levels).filter((elem: any) => {
-                    return elem.alternate_languages.find((it: any) => it.id === item.prismicId);
+                    return elem.alternate_languages.find(
+                        (it: any) => it.id === item.prismicId
+                    );
                 });
 
                 const transaltedLevel = found.pop() as Object;
 
-                apiLevel = transaltedLevel ?? null
+                apiLevel = transaltedLevel ?? null;
             }
 
-            return !!apiLevel ? {
-                ...apiLevel,
-                ...levelData,
-            } : null
+            return !!apiLevel
+                ? {
+                      ...apiLevel,
+                      ...levelData
+                  }
+                : null;
         });
     } else {
         data = Object.values(levels).map((item: any) => {
@@ -43,12 +52,12 @@ export default function useLevels(levels: any) {
                 id: null,
                 status: 'available',
                 totalLessons: item?.lessons?.length,
-                totalReward: item?.data?.reward,
+                totalReward: item?.data?.reward
             };
         });
     }
 
     return {
         data: data.filter((item: any) => item !== null)
-    }
+    };
 }

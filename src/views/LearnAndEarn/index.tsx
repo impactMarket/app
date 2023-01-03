@@ -13,7 +13,6 @@ import {
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useEffect, useState } from 'react';
-import { useLearnAndEarch } from '@impact-market/utils/useLearnAndEarn';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -21,32 +20,64 @@ import Filters from '../../components/Filters';
 import Metrics from './Metrics';
 import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
+import styled from 'styled-components';
 import useFilters from '../../hooks/useFilters';
 import useLevels from '../../hooks/learn-and-earn/useLevels';
 import useSWR from 'swr';
 
 const ITEMS_PER_PAGE = 3;
 
+const Dropdown = styled(DropdownMenu)`
+    > div {
+        width: 100%;
+    }
+`;
+
+const ClickableCard = styled(ComposedCard)`
+    cursor: pointer;
+`;
+
 const LearnAndEarn = (props: any) => {
     const { prismic, lang } = props;
     const { view } = usePrismicData();
-    const { headingTitle: heading, headingContent: content } = view.data;
+    const {
+        headingTitle: heading,
+        headingContent: content,
+        claimAvailable = null,
+        claimDisabled = null
+    } = view.data;
+
+    console.log(view.data);
 
     const { levels, categories } = prismic;
     const router = useRouter();
     const auth = useSelector(selectCurrentUser);
-    const { update, getByKey } = useFilters();
-    const [currentPage, setCurrentPage] = useState(
-        getByKey('page') ? parseInt(getByKey('page')[0], 10) : 0
-    );
+    const { update, getByKey, clear } = useFilters();
+    const [currentPage, setCurrentPage] = useState(+getByKey('page') ?? 0);
     const [search, setSearch] = useState(getByKey('search') ?? '');
-    // console.log(getByKey('state'));
-
     const [state, setState] = useState(getByKey('state') || 'available');
     const { data } = useLevels(levels);
     const filteredData = data
         .filter((item: any) => item.title.toLowerCase().indexOf(search) !== -1)
-        .filter((el: any) => el.status === state);
+        .filter((el: any) => el.status === state)
+        .filter((el: any) =>
+            !!getByKey('category') ? el.category === getByKey('category') : el
+        );
+
+    const loggedTabs = auth.type ? ['started', 'completed'] : [];
+    const TabItems = ['available', ...loggedTabs];
+    const tabRouter = (state: string) => {
+        switch (state) {
+            case 'available':
+                return 0;
+            case 'started':
+                return 1;
+            case 'completed':
+                return 2;
+            default:
+                return 0;
+        }
+    }
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
@@ -68,10 +99,7 @@ const LearnAndEarn = (props: any) => {
         fetch(config.baseApiUrl + url, {
             headers: { Authorization: `Bearer ${auth.token}` }
         }).then((res) => res.json());
-    const { data: laeData } = useSWR(`/learn-and-earn`, fetcher);
-    const { amount, levelId, signature: signatures } =
-        laeData?.data?.claimRewards[0] ?? {};
-    const { claimRewardForLevels } = useLearnAndEarch();
+    const { data: laeData, error } = useSWR(`/learn-and-earn`, fetcher);
 
     const totalPages = (items: number) => {
         const pages = Math.floor(items / ITEMS_PER_PAGE);
@@ -86,20 +114,39 @@ const LearnAndEarn = (props: any) => {
         return data.filter((el: any) => el.status === filter);
     };
 
+    const categoryItems = [
+        { id: '', onClick: () => clear('category'), title: 'All' },
+        ...new Set(
+            Object.values(categories).map((item: any, idx: number) => {
+                const value = Object.keys(categories)[idx];
+
+                return {
+                    id: value,
+                    onClick: () => update({ category: value }),
+                    title: item.title
+                };
+            })
+        )
+    ];
+
+    const selectedCategory =
+        categoryItems.find((el) => el.id === getByKey('category') ?? '')
+            ?.title || 'Category';
+
     useEffect(() => {
         setCurrentPage(
             /* eslint-disable no-nested-ternary */
             !!getByKey('search')
                 ? 0
                 : !!getByKey('page')
-                ? parseInt(getByKey('page')[0], 10)
+                ? +getByKey('page')
                 : 0
         );
         setSearch(getByKey('search')?.toString().toLowerCase() || '');
     }, [getByKey('search')]);
 
     return (
-        <ViewContainer>
+        <ViewContainer isLoading={!data && !error && !laeData && !filteredData}>
             <Box flex style={{ justifyContent: 'space-between' }}>
                 <Box flex fDirection={'column'}>
                     <Display g900 medium mb=".25rem">
@@ -108,85 +155,39 @@ const LearnAndEarn = (props: any) => {
 
                     <RichText content={content} g500 small />
                 </Box>
-                {amount && levelId && signatures && (
-                    <Box>
-                        <Button
-                            onClick={async () => {
-                                console.log(auth.user.address);
-
-                                const response = await claimRewardForLevels(
-                                    auth.user.address,
-                                    levelId,
-                                    amount,
-                                    signatures
-                                );
-
-                                console.log(response);
-                                
-                            }}
-                        >
-                            {'Claim'}
-                        </Button>
-                    </Box>
-                )}
             </Box>
 
             {auth.type && (
-                <Box flex>
-                    <Metrics />
-                </Box>
+                <Metrics
+                    claimRewards={laeData?.data?.claimRewards[0] ?? {}}
+                    copy={{ failed: claimDisabled, success: claimAvailable }}
+                />
             )}
-
-            <Tabs defaultIndex={0}>
+            <Tabs defaultIndex={tabRouter(getByKey('state')?.toString() ?? 'available')}>
                 <TabList>
-                    <Tab
-                        onClick={() => {
-                            setState('available');
-                            update({ state: 'available' });
-                        }}
-                        title={'Available'}
-                        number={filterLevels('available').length}
-                    />
-                    {auth.type && (
-                        <>
-                            <Tab
-                                onClick={() => {
-                                    setState('started');
-                                    update({ state: 'started' });
-                                }}
-                                title={'Started'}
-                                number={filterLevels('started').length}
-                            />
-                            <Tab
-                                onClick={() => {
-                                    setState('completed');
-                                    update({ state: 'completed' });
-                                }}
-                                title={'Completed'}
-                                number={filterLevels('completed').length}
-                            />
-                        </>
-                    )}
+                    {TabItems.map((el: string) => (
+                        <Tab
+                            onClick={() => {
+                                setState(el);
+                                update({ state: el });
+                            }}
+                            // ADD TAB TITLE TO TRANSLATIONS
+                            title={el}
+                            number={filterLevels(el).length}
+                        />
+                    ))}
                 </TabList>
 
-                <Box flex padding=".5rem 0rem 1.5rem">
-                    <Box>
-                        <DropdownMenu
+                <Box flex fWrap={'wrap'} mb="1rem">
+                    <Box padding=".5rem 0rem">
+                        <Dropdown
                             asButton
                             headerProps={{
                                 fLayout: 'center between'
                             }}
                             icon="chevronDown"
-                            items={[
-                                {
-                                    icon: 'loader',
-                                    onClick: () => {
-                                        console.log('clicked');
-                                    },
-                                    title: ''
-                                }
-                            ]}
-                            title={'Category'}
+                            items={categoryItems}
+                            title={selectedCategory}
                             wrapperProps={{
                                 mr: 1,
                                 w: 15
@@ -194,19 +195,10 @@ const LearnAndEarn = (props: any) => {
                         />
                     </Box>
 
-                    <Filters property="search" />
+                    <Box padding=".5rem 0rem" fGrow={1}>
+                        <Filters property="search" />
+                    </Box>
                 </Box>
-
-                {console.log([
-                    ...new Set(
-                        Object.values(categories).map((item: any) => item.title)
-                    )
-                ])}
-                {/* {
-                    Object.entries(categories).reduce((item) => {
-                        debugger
-                    }, {})
-                } */}
 
                 <Grid colSpan={1.5} cols={{ lg: 3, xs: 1 }}>
                     {filteredData &&
@@ -214,18 +206,28 @@ const LearnAndEarn = (props: any) => {
                             .slice(pageStart, pageEnd)
                             .map((elem: any) => {
                                 return (
-                                    <ComposedCard
+                                    <ClickableCard
                                         heading={elem?.title || ''}
                                         content={`${elem?.totalLessons} lessons`}
                                         image={elem.data?.image?.url}
                                         label={
                                             categories[elem?.category]?.title
                                         }
+                                        // ADD ON UI SIDE
+                                        // onClick={() =>
+                                        //     router.push(
+                                        //         `/${lang}/learn-and-earn/${
+                                        //             elem?.uid
+                                        //         }${
+                                        //             elem?.id
+                                        //                 ? `?levelId=${elem?.id}`
+                                        //                 : ''
+                                        //         }`
+                                        //     )
+                                        // }
                                     >
-                                        <Button
+                                        <Button 
                                             fluid
-                                            secondary
-                                            xl
                                             onClick={() =>
                                                 router.push(
                                                     `/${lang}/learn-and-earn/${
@@ -237,10 +239,12 @@ const LearnAndEarn = (props: any) => {
                                                     }`
                                                 )
                                             }
+                                            secondary 
+                                            xl
                                         >
                                             {`Earn up to ${elem.totalReward} PACTS`}
                                         </Button>
-                                    </ComposedCard>
+                                    </ClickableCard>
                                 );
                             })}
                 </Grid>

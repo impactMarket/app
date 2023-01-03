@@ -20,7 +20,7 @@ const WrongAnswer = () => {
         onClose();
     };
 
-    const attemptsNumber = attempts <= 3 ? 3 - attempts : 0;
+    const attemptsNumber = attempts <= 3 ? (3 - attempts).toString() : '0';
 
     return (
         <ModalWrapper maxW={25} padding={1.5} w="100%">

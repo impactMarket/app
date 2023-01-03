@@ -22,7 +22,7 @@ const SuccessModal = () => {
         <ModalWrapper maxW={25} padding={1.5} w="100%">
             <Box fLayout="between" flex w="100%">
                 <Col>
-                    <CircledIcon icon="alertCircle" large e600 />
+                    <CircledIcon icon="checkBold" large s700 />
                 </Col>
             </Box>
             <Box mt="1.25rem">
