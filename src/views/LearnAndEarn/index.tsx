@@ -155,7 +155,8 @@ const LearnAndEarn = (props: any) => {
                         <Tab
                             onClick={() => {
                                 setState(el);
-                                update({ state: el });
+                                update({ page: 0, state: el });
+                                setCurrentPage(0);
                             }}
                             // ADD TAB TITLE TO TRANSLATIONS
                             title={el}

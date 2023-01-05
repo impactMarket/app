@@ -1,7 +1,8 @@
-import { Box, Button, Card, Display, Grid, ProgressCard } from '@impact-market/ui';
+import { Box, Button, Card, Display, Grid, ProgressCard, toast } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useLearnAndEarn } from '@impact-market/utils/useLearnAndEarn';
 import { useSelector } from 'react-redux';
+import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
 import styled from 'styled-components';
@@ -42,8 +43,28 @@ const Metrics = (props: any) => {
     const hasRewards = amount && levelId && signatures;
     const disabled = hasRewards ? { bgS400: true } : {};
 
+    const claimRewards = async () => {
+        try {
+            const response = await claimRewardForLevels(
+                auth.user.address.toString(),
+                [levelId],
+                [amount],
+                [signatures]
+            );
+
+            console.log(response);
+        } catch (error) {
+            console.log(error);
+            toast.error(<Message id="errorOccurred" />);
+            throw Error;
+        }
+
+        toast.success(<Message id="successfullyClaimedUbi" />);
+    };
+        
+
     return (
-        <CardsGrid colSpan={1} cols={{ lg: 3,md: 1, sm: 3, xs: 1 }} margin='1.5rem -.75rem' flex>
+        <CardsGrid colSpan={1} cols={{ lg: 3,md: 1, sm: 3, xs: 1 }} margin="1.5rem -.75rem" flex>
             {totalData.map((item) => (
                 <ProgressCard
                     label={item.label}
@@ -69,26 +90,7 @@ const Metrics = (props: any) => {
                 <Box flex fDirection={'column'} style={{alignItems: 'center'}}>
                     <RichText center g500 medium small mb="1rem" content={hasRewards ? props.copy.success : props.copy.failed} />
                     <RewardsButton
-                        onClick={async () => {
-                            // console.log(!!claimRewards.length);
-                            
-                            console.log(auth.user.address);
-
-                            console.log(auth.user.address.toString(),
-                            [levelId],
-                            [amount],
-                            [signatures]);
-                            
-
-                            const response = await claimRewardForLevels(
-                                auth.user.address.toString(),
-                                [levelId],
-                                [amount],
-                                [signatures]
-                            );
-
-                            console.log(response);
-                        }}
+                        onClick={claimRewards}
                         {...disabled}
                         disabled={!(hasRewards)}
                     >

@@ -136,7 +136,6 @@ const Prismic = {
 
     getDocumentByType: async ({
         clientOptions = {},
-        // lang: langCode = defaultLang,
         document = ''
     }: any) => {
         const api = await client(clientOptions);
@@ -178,8 +177,6 @@ const Prismic = {
 
         const api = await client(clientOptions);
 
-        console.log(lang);
-
         try {
             const response = await api.getByIDs(lessonIds, { lang });
 
@@ -219,18 +216,6 @@ const Prismic = {
             } = response;
 
             const filteredLessons = data.lessons.filter((el: any) => {
-                // if (!!el.lesson.id) {
-                // console.log('......----------------------.......');
-
-                // console.log(el.lesson.id);
-
-                // const test = await api.getByUID('pwa-lae-lesson', {el.lesson.uid});
-
-                // console.log('TESTE-------');
-                // console.log(await api.getByID('pwa-lae-lesson', el.lesson.id));
-
-                // }
-
                 return !!el.lesson.id;
             });
 

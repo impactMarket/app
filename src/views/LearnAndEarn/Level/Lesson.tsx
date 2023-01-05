@@ -29,7 +29,7 @@ const initialAnswers = [
 const Lesson = (props: any) => {
     const { prismic, lang, params } = props;
     const { prismicLesson } = prismic;
-    const { tutorial: content, questions } = prismicLesson;
+    const { tutorial: content, questions, sponsor } = prismicLesson;
     const { t } = useTranslations();
     const { update, getByKey } = useFilters();
     const [currentPage, setCurrentPage] = useState(
@@ -52,18 +52,16 @@ const Lesson = (props: any) => {
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
-        const currentPage = getByKey('page')
-            ? parseInt(getByKey('page')[0], 10)
-            : 0;
+        const currentPage = getByKey('page') ? +getByKey('page') : 0;
         let page = currentPage;
 
         if (event.selected >= 0) {
             update({ page: event.selected });
             page = event.selected;
-        } else if (direction === 1) {
+        } else if (direction === 1 && currentPage > 0) {
             page = currentPage - 1;
             update({ page });
-        } else if (direction === 2) {
+        } else if (direction === 2 && currentPage <= content?.length) {
             page = currentPage + 1;
             update({ page });
         }
@@ -127,11 +125,15 @@ const Lesson = (props: any) => {
                 {prismicLesson.title}
             </Display>
 
-            <RichText
-                content={'1 min read - Beginner - Sponsored by XXX'}
-                g500
-                small
-            />
+            <Box flex>
+                <RichText
+                    content={`1 min read - Beginner - Sponsored by `}
+                    g500
+                    small
+                />
+
+                <RichText content={sponsor} g500 small />
+            </Box>
 
             <Divider />
             <Box
@@ -268,9 +270,9 @@ const Lesson = (props: any) => {
                     </Box>
                 )}
 
-                <Box maxW="36.25rem" w="100%">
+                <Box>
                     <Divider />
-                    <Box maxW="580px" w="100%">
+                    <Box w="100%">
                         <Pagination
                             currentPage={currentPage}
                             handlePageClick={handlePageClick}
