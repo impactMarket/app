@@ -2,11 +2,14 @@
 import { Avatar, Box, CircledIcon, Text, TextLink } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
+import { getInactiveBeneficiaries } from '../../graph/community';
 import { getUserName } from '../../utils/users';
+import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
 import React from 'react';
 import String from '../../libs/Prismic/components/String';
 import Table from '../../components/Table';
+import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
@@ -80,16 +83,37 @@ const getColumns = () => {
     ];
 };
 
-const BeneficiariesList: React.FC<{ community: string }> = props => {
-    const { community } = props;
+const BeneficiariesList: React.FC<{ community: any, lastActivity: number }> = props => {
+    const { community, lastActivity } = props;
+    const { getByKey } = useFilters();
+
+    const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, { variables: { 
+        address: community?.contractAddress?.toLowerCase(), 
+        lastActivity_lt: lastActivity
+    }});
+
+    const totalInactiveBeneficiaries = inactiveBeneficiaries?.data ? Object.keys(inactiveBeneficiaries?.data?.beneficiaryEntities).length : 0
+
+    const thegraphData: any[] = []
+
+    // Clone object to make it extensible
+    if (!!inactiveBeneficiaries?.data) {
+        inactiveBeneficiaries?.data?.beneficiaryEntities?.map((row: any) => {
+            const rowClone = JSON.parse(JSON.stringify(row))
+            
+            thegraphData.push(rowClone)
+        })    
+    }
 
     return (
         <Table
             columns={getColumns()}
+            count={getByKey('state') === "3" && totalInactiveBeneficiaries}
             itemsPerPage={itemsPerPage}
             mt={1.25}
             pb={2}
-            prefix={`${community}/beneficiaries`}
+            prefix={`${community?.id}/beneficiaries`}
+            thegraph={getByKey('state') === "3" && thegraphData}
         />
     );
 };

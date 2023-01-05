@@ -28,3 +28,14 @@ export const getCommunityBeneficiaries = gql`
         }
     }
 `;
+
+export const getInactiveBeneficiaries = gql`
+    query getInactiveBeneficiaries($lastActivity_lt: Int!, $address: String!) {
+        beneficiaryEntities(where: { lastActivity_lt: $lastActivity_lt, community: $address }){
+            id
+            address
+            since
+            claimed
+        }
+    }
+`;
