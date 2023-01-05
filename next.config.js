@@ -66,7 +66,7 @@ module.exports = withBundleAnalyzer(
                 dest: 'public',
                 // disabled for better dev experience
                 // eslint-disable-next-line no-process-env
-                disable: process.env.NODE_ENV === 'development',
+                disable: true,
                 runtimeCaching
             },
             redirects,
