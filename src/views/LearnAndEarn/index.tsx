@@ -1,10 +1,7 @@
 import {
     Box,
-    Button,
-    ComposedCard,
     Display,
     DropdownMenu,
-    Grid,
     Pagination,
     Tab,
     TabList,
@@ -12,11 +9,12 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
+import { tabRouter } from './Helpers';
 import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Filters from '../../components/Filters';
+import LevelsTable from './LevelsTable';
 import Metrics from './Metrics';
 import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
@@ -24,6 +22,7 @@ import styled from 'styled-components';
 import useFilters from '../../hooks/useFilters';
 import useLevels from '../../hooks/learn-and-earn/useLevels';
 import useSWR from 'swr';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -33,13 +32,10 @@ const Dropdown = styled(DropdownMenu)`
     }
 `;
 
-const ClickableCard = styled(ComposedCard)`
-    cursor: pointer;
-`;
-
 const LearnAndEarn = (props: any) => {
     const { prismic, lang } = props;
     const { view } = usePrismicData();
+    const { t } = useTranslations();
     const {
         headingTitle: heading,
         headingContent: content,
@@ -47,16 +43,14 @@ const LearnAndEarn = (props: any) => {
         claimDisabled = null
     } = view.data;
 
-    console.log(view.data);
-
     const { levels, categories } = prismic;
-    const router = useRouter();
     const auth = useSelector(selectCurrentUser);
     const { update, getByKey, clear } = useFilters();
     const [currentPage, setCurrentPage] = useState(+getByKey('page') ?? 0);
     const [search, setSearch] = useState(getByKey('search') ?? '');
     const [state, setState] = useState(getByKey('state') || 'available');
-    const { data } = useLevels(levels);
+    const { data, levelsLoading } = useLevels(levels);
+
     const filteredData = data
         .filter((item: any) => item.title.toLowerCase().indexOf(search) !== -1)
         .filter((el: any) => el.status === state)
@@ -66,18 +60,6 @@ const LearnAndEarn = (props: any) => {
 
     const loggedTabs = auth.type ? ['started', 'completed'] : [];
     const TabItems = ['available', ...loggedTabs];
-    const tabRouter = (state: string) => {
-        switch (state) {
-            case 'available':
-                return 0;
-            case 'started':
-                return 1;
-            case 'completed':
-                return 2;
-            default:
-                return 0;
-        }
-    }
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
@@ -99,7 +81,7 @@ const LearnAndEarn = (props: any) => {
         fetch(config.baseApiUrl + url, {
             headers: { Authorization: `Bearer ${auth.token}` }
         }).then((res) => res.json());
-    const { data: laeData, error } = useSWR(`/learn-and-earn`, fetcher);
+    const { data: laeData } = useSWR(`/learn-and-earn`, fetcher);
 
     const totalPages = (items: number) => {
         const pages = Math.floor(items / ITEMS_PER_PAGE);
@@ -146,7 +128,7 @@ const LearnAndEarn = (props: any) => {
     }, [getByKey('search')]);
 
     return (
-        <ViewContainer isLoading={!data && !error && !laeData && !filteredData}>
+        <ViewContainer isLoading={levelsLoading && !laeData && !filteredData}>
             <Box flex style={{ justifyContent: 'space-between' }}>
                 <Box flex fDirection={'column'}>
                     <Display g900 medium mb=".25rem">
@@ -163,7 +145,11 @@ const LearnAndEarn = (props: any) => {
                     copy={{ failed: claimDisabled, success: claimAvailable }}
                 />
             )}
-            <Tabs defaultIndex={tabRouter(getByKey('state')?.toString() ?? 'available')}>
+            <Tabs
+                defaultIndex={tabRouter(
+                    getByKey('state')?.toString() ?? 'available'
+                )}
+            >
                 <TabList>
                     {TabItems.map((el: string) => (
                         <Tab
@@ -200,65 +186,24 @@ const LearnAndEarn = (props: any) => {
                     </Box>
                 </Box>
 
-                <Grid colSpan={1.5} cols={{ lg: 3, xs: 1 }}>
-                    {filteredData &&
-                        filteredData
-                            .slice(pageStart, pageEnd)
-                            .map((elem: any) => {
-                                return (
-                                    <ClickableCard
-                                        heading={elem?.title || ''}
-                                        content={`${elem?.totalLessons} lessons`}
-                                        image={elem.data?.image?.url}
-                                        label={
-                                            categories[elem?.category]?.title
-                                        }
-                                        // ADD ON UI SIDE
-                                        // onClick={() =>
-                                        //     router.push(
-                                        //         `/${lang}/learn-and-earn/${
-                                        //             elem?.uid
-                                        //         }${
-                                        //             elem?.id
-                                        //                 ? `?levelId=${elem?.id}`
-                                        //                 : ''
-                                        //         }`
-                                        //     )
-                                        // }
-                                    >
-                                        <Button 
-                                            fluid
-                                            onClick={() =>
-                                                router.push(
-                                                    `/${lang}/learn-and-earn/${
-                                                        elem?.uid
-                                                    }${
-                                                        elem?.id
-                                                            ? `?levelId=${elem?.id}`
-                                                            : ''
-                                                    }`
-                                                )
-                                            }
-                                            secondary 
-                                            xl
-                                        >
-                                            {`Earn up to ${elem.totalReward} PACTS`}
-                                        </Button>
-                                    </ClickableCard>
-                                );
-                            })}
-                </Grid>
+                <LevelsTable
+                    data={filteredData}
+                    categories={categories}
+                    pageStart={pageStart}
+                    pageEnd={pageEnd}
+                    lang={lang}
+                />
 
                 <Pagination
                     currentPage={currentPage}
                     handlePageClick={handlePageClick}
                     mt={2}
                     nextIcon="arrowRight"
-                    nextLabel="Next"
+                    nextLabel={t('next')}
                     pageCount={totalPages(filteredData.length)}
                     pb={2}
                     previousIcon="arrowLeft"
-                    previousLabel="Previous"
+                    previousLabel={t('previous')}
                 />
             </Tabs>
         </ViewContainer>

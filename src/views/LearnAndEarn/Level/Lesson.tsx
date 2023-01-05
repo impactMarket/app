@@ -18,6 +18,7 @@ import String from '../../../libs/Prismic/components/String';
 import Video from '../Video';
 import config from '../../../../config';
 import useFilters from '../../../hooks/useFilters';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const initialAnswers = [
     [false, false, false],
@@ -29,6 +30,7 @@ const Lesson = (props: any) => {
     const { prismic, lang, params } = props;
     const { prismicLesson } = prismic;
     const { tutorial: content, questions } = prismicLesson;
+    const { t } = useTranslations();
     const { update, getByKey } = useFilters();
     const [currentPage, setCurrentPage] = useState(
         getByKey('page') ? parseInt(getByKey('page')[0], 10) : 0
@@ -42,9 +44,10 @@ const Lesson = (props: any) => {
     const [userAnswers, setUserAnswers] = useState(initialAnswers);
 
     const slide =
-        content[currentPage].slice_type === 'video_section'
-            ? content[currentPage]
-            : content[currentPage].primary.content;
+        content[currentPage]?.slice_type === 'video_section'
+            ? content[currentPage] ?? {}
+            : content[currentPage]?.primary?.content ?? {};
+
     const currentQuestion = questions[currentPage];
 
     //  Handle Pagination
@@ -82,7 +85,7 @@ const Lesson = (props: any) => {
                 (slide.length === 1 && slide[0].type === 'preformatted') ||
                 slide[0].type === 'image'
             ) {
-                return <RichText content={slide} />;
+                return <RichText content={slide} w="100%" />;
             }
 
             return (
@@ -185,7 +188,7 @@ const Lesson = (props: any) => {
                 )}
                 {/* </Box> */}
 
-                {currentPage + 1 === content.length && (
+                {!isQuiz && currentPage + 1 === content.length && (
                     <Box mt="1rem">
                         <Button
                             fluid
@@ -198,7 +201,7 @@ const Lesson = (props: any) => {
                     </Box>
                 )}
 
-                {isQuiz && currentPage + 1 >= 3 && (
+                {isQuiz && currentPage + 1 === 3 && (
                     <Box mt="1rem">
                         <Button
                             fluid
@@ -260,7 +263,7 @@ const Lesson = (props: any) => {
                                 }
                             }}
                         >
-                            {isQuiz ? `Submit` : `Start Quiz`}
+                            {isQuiz ? t('submit') : `Start Quiz`}
                         </Button>
                     </Box>
                 )}
@@ -274,11 +277,11 @@ const Lesson = (props: any) => {
                             mt={2}
                             mobileText
                             nextIcon="arrowRight"
-                            nextLabel={'Next'}
+                            nextLabel={t('next')}
                             pageCount={isQuiz ? 3 : content.length}
                             pb={2}
                             previousIcon="arrowLeft"
-                            previousLabel="Previous"
+                            previousLabel={t('previous')}
                         />
                     </Box>
                 </Box>

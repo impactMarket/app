@@ -6,10 +6,10 @@ import {
     ModalWrapper,
     useModal
 } from '@impact-market/ui';
-import React from 'react';
-
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
+import String from '../../libs/Prismic/components/String';
 
 const WrongAnswer = () => {
     const { handleClose, onClose, attempts } = useModal();
@@ -46,7 +46,7 @@ const WrongAnswer = () => {
                 />
             </Box>
             <Button fluid gray xl onClick={() => closeModal()} mt="2rem">
-                {`Continue`}
+                <String id="continue" />
             </Button>
         </ModalWrapper>
     );

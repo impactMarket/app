@@ -27,7 +27,7 @@ const Level = (props: any) => {
     const auth = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
     const levelId = getByKey('levelId') || '';
-    const { data: lessonsTest, totalPoints } = useLessons(
+    const { data: lessonsData, totalPoints } = useLessons(
         lessons,
         levelId,
         auth
@@ -91,9 +91,7 @@ const Level = (props: any) => {
 
                     <Divider mt="2rem" />
 
-                    {lessonsTest?.map((item: any, idx: number) => {
-                        console.log(item);
-
+                    {lessonsData?.map((item: any, idx: number) => {
                         return (
                             <>
                                 <Box flex>
@@ -123,7 +121,7 @@ const Level = (props: any) => {
                                                 fluid
                                                 disabled={
                                                     idx - 1 >= 0 &&
-                                                    lessonsTest[idx - 1]
+                                                    lessonsData[idx - 1]
                                                         ?.status !== 'completed'
                                                 }
                                                 ml=".8rem"
@@ -133,13 +131,13 @@ const Level = (props: any) => {
                                                     )
                                                 }
                                             >
-                                                {'Continue'}
+                                                <String id="continue" />
                                             </Button>
                                         )}
 
                                         {item.status === 'available' &&
                                             (idx - 1 < 0 ||
-                                                lessonsTest[idx - 1]?.status ===
+                                                lessonsData[idx - 1]?.status ===
                                                     'completed') && (
                                                 <Button
                                                     fluid

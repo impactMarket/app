@@ -9,6 +9,7 @@ import {
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
+import String from '../../libs/Prismic/components/String';
 
 const SuccessModal = () => {
     const { handleClose, onClose } = useModal();
@@ -37,7 +38,7 @@ const SuccessModal = () => {
                 <RichText content={modals.data.success_content} medium g500 />
             </Box>
             <Button fluid gray xl onClick={() => closeModal()} mt="2rem">
-                {`Continue`}
+                <String id="continue" />
             </Button>
         </ModalWrapper>
     );

@@ -12,7 +12,7 @@ export default function useLevels(levels: any) {
             headers: { Authorization: `Bearer ${auth.token}` }
         }).then((res) => res.json());
 
-    const { data: apiData } = useSWR(`/learn-and-earn/levels`, fetcher);
+    const { data: apiData, error } = useSWR(`/learn-and-earn/levels`, fetcher);
 
     if (apiData) {
         data = apiData?.data?.rows.map((item: any) => {
@@ -57,7 +57,10 @@ export default function useLevels(levels: any) {
         });
     }
 
+    const levelsLoading = !data && !error;
+
     return {
-        data: data.filter((item: any) => item !== null)
+        data: data.filter((item: any) => item !== null),
+        levelsLoading
     };
 }
