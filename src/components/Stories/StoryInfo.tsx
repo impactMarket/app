@@ -124,7 +124,7 @@ const StoryInfo = (props: any) => {
                     onClick={() => onContribute(story?.community?.id)}
                     reverse
                 >
-                    <String id="contribute" />
+                    <String id="donate" />
                 </Button>
             </Box>
             <Box mt={1}>
