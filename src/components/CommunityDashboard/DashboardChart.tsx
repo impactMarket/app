@@ -66,7 +66,12 @@ export const DashboardChart = ({thegraphData, prismicData, days}: any) => {
             days: days[key] * 1000 * 86400,
             value: Array.isArray(data) ? (value ? parseFloat(value) : 0) : parseFloat(data)
         })
-    })    
+    })
+
+    // Add all values from array (transform the string ones to number) and, if there are decimals, only show 2 decimals
+    const totalCount = (a: any, b: any) => {
+        return Math.round((parseFloat(a !== undefined ? a : 0) + parseFloat(b !== undefined ? b : 0)) * 100) / 100
+    }
 
     return (
         <Card>
@@ -74,10 +79,7 @@ export const DashboardChart = ({thegraphData, prismicData, days}: any) => {
                 {prismicData?.chartLabel}
             </Text>
             <Text bold extralarge fLayout="end start" inlineFlex>
-                {!updatedGraphData().includes(undefined) ? 
-                    // Add all values from array (transform the string ones to number) and, if there are decimals, only show 2 decimals
-                    updatedGraphData().reduce((a: string, b: string) => (Math.round((parseFloat(a) + parseFloat(b)) * 100) / 100), 0) 
-                : 0}
+                {updatedGraphData().reduce((a: any, b: any) => totalCount(a, b), 0)}
                 <Text extrasmall g500 mb={0.15} ml={0.3}>
                     {prismicData?.currency && 'cUsd'}
                     {prismicData?.percentage && '%'}
