@@ -32,8 +32,12 @@ const AddBeneficiary = () => {
     const { 
         addBeneficiaryCommunityErrorTitle, 
         addBeneficiaryCommunityErrorDescription, 
+        addBeneficiaryMaximumBeneficiaries,
+        addBeneficiaryMaximumBeneficiariesDescription,
         addBeneficiaryValoraErrorDescription, 
-        addBeneficiaryValoraErrorTitle
+        addBeneficiaryValoraErrorTitle,
+        addBeneficiaryUserNotAllowed,
+        addBeneficiaryUserNotAllowedDescription
     } = modals?.data
     
     const schema = yup.object().shape({
@@ -41,7 +45,7 @@ const AddBeneficiary = () => {
     });
     
     const auth = useSelector(selectCurrentUser);
-    const { handleClose } = useModal();
+    const { activeBeneficiariesLength, handleClose, maxBeneficiaries } = useModal();
     const { t } = useTranslations();
     const [beneficiaryAddress, setBeneficiaryAddress] = useState(null)
     const [isLoading, setIsLoading] = useState(false)
@@ -73,6 +77,30 @@ const AddBeneficiary = () => {
     const { addBeneficiary } = useManager(auth?.user?.manager?.community);
 
     const onSubmit: SubmitHandler<any> = (submitData: { address?: string }) => setBeneficiaryAddress(submitData?.address);
+
+    const errorMessagesHandling = (error: any) => {
+        const errorMessage = error.toString().toLowerCase();
+
+        if ((activeBeneficiariesLength >= maxBeneficiaries) && (maxBeneficiaries !== 0)) {
+            setError({
+                description: addBeneficiaryMaximumBeneficiariesDescription[0].text,
+                state: true,
+                title: addBeneficiaryMaximumBeneficiaries
+            })
+        } else if (errorMessage.includes('usernotallowed')) {
+                setError({
+                    description: addBeneficiaryUserNotAllowedDescription[0].text,
+                    state: true,
+                    title: addBeneficiaryUserNotAllowed
+                })
+            } else {
+                setError({
+                    description: addBeneficiaryValoraErrorDescription[0].text,
+                    state: true,
+                    title: addBeneficiaryValoraErrorTitle
+                })
+            } 
+    };
 
     useEffect(() => {
         if (data?.beneficiaryEntities?.length === 0) {
@@ -119,17 +147,14 @@ const AddBeneficiary = () => {
                         }).catch((error) => {
                             handleKnownErrors(error);
                             processTransactionError(error, 'add_beneficiary');
+                            errorMessagesHandling(error);
 
-                            setError({
-                                description: addBeneficiaryValoraErrorDescription[0].text,
-                                state: true,
-                                title: addBeneficiaryValoraErrorTitle
-                            })
+                            console.log(error)
 
                             return setIsLoading(false)
                         })
 
-                    return setIsLoading(false)
+                    return setIsLoading(false)               
                 }
                 catch(e) {
                     handleKnownErrors(error);
@@ -176,7 +201,6 @@ const AddBeneficiary = () => {
                         withError={!!errors?.address}
                     />
                     {error?.state &&
-                        //  Todo: add alert texts on prismic
                         <Row margin={0} mt={1} w="100%">
                             <Alert
                                 error
