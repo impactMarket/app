@@ -266,7 +266,9 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                     onClick={() => router.push(`/communities/${story?.community?.id}?contribute`)}
                                     reverse
                                 >
-                                    <String id="donate" />
+                                    <Text as="div" medium>
+                                        <String id="donate" />
+                                    </Text>
                                 </Button>
                             </Col>
                         </Row>
