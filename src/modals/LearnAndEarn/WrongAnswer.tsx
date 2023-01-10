@@ -31,7 +31,7 @@ const WrongAnswer = () => {
             </Box>
             <Box mt="1.25rem">
                 <RichText
-                    content={modals.data.failed_title}
+                    content={modals.data.title_failed}
                     large
                     g900
                     semibold
@@ -39,10 +39,10 @@ const WrongAnswer = () => {
             </Box>
             <Box mt="1.25rem">
                 <RichText
-                    content={modals.data.failed_content}
+                    content={modals.data.content_failed}
                     medium
                     g500
-                    variables={{ attemptsNumber }}
+                    variables={{ attempts: attemptsNumber }}
                 />
             </Box>
             <Button fluid gray xl onClick={() => closeModal()} mt="2rem">

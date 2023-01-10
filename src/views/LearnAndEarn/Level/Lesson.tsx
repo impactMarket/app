@@ -6,8 +6,9 @@ import {
     Label,
     OptionItem,
     Pagination,
+    Text,
     ViewContainer,
-    openModal
+    openModal,
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useRouter } from 'next/router';
@@ -26,6 +27,8 @@ const initialAnswers = [
     [false, false, false]
 ];
 
+const QUIZ_LENGTH = 3;
+
 const Lesson = (props: any) => {
     const { prismic, lang, params } = props;
     const { prismicLesson } = prismic;
@@ -33,7 +36,7 @@ const Lesson = (props: any) => {
     const { t } = useTranslations();
     const { update, getByKey } = useFilters();
     const [currentPage, setCurrentPage] = useState(
-        getByKey('page') ? parseInt(getByKey('page')[0], 10) : 0
+        getByKey('page') ? +getByKey('page') : 0
     );
     const [isQuiz, setIsQuiz] = useState(false);
     const auth = useSelector(selectCurrentUser);
@@ -41,7 +44,10 @@ const Lesson = (props: any) => {
     const levelId = +getByKey('levelId') || null;
     const router = useRouter();
 
+    const [progress, setProgress] = useState([currentPage]);
     const [userAnswers, setUserAnswers] = useState(initialAnswers);
+
+    const canGotoQuiz = progress.length === content.length;
 
     const slide =
         content[currentPage]?.slice_type === 'video_section'
@@ -66,6 +72,9 @@ const Lesson = (props: any) => {
             update({ page });
         }
 
+        if (!isQuiz && ![...new Set(progress)].includes(page)) {
+            setProgress([...progress, page]);
+        }
         setCurrentPage(page);
     };
 
@@ -79,10 +88,7 @@ const Lesson = (props: any) => {
         const { slide } = props;
 
         if (slide[0]?.type) {
-            if (
-                (slide.length === 1 && slide[0].type === 'preformatted') ||
-                slide[0].type === 'image'
-            ) {
+            if (slide[0].type === 'image') {
                 return <RichText content={slide} w="100%" />;
             }
 
@@ -141,7 +147,6 @@ const Lesson = (props: any) => {
                 fDirection="column"
                 style={{ alignItems: 'center', position: 'relative' }}
             >
-                {/* <Box maxW="100%" flex style={{justifyContent: 'center'}}> */}
                 {!isQuiz ? (
                     <ContentDisplay slide={slide} />
                 ) : (
@@ -188,11 +193,11 @@ const Lesson = (props: any) => {
                         })}
                     </Box>
                 )}
-                {/* </Box> */}
 
                 {!isQuiz && currentPage + 1 === content.length && (
                     <Box mt="1rem">
                         <Button
+                            disabled={!canGotoQuiz}
                             fluid
                             secondary
                             xl
@@ -203,69 +208,72 @@ const Lesson = (props: any) => {
                     </Box>
                 )}
 
-                {isQuiz && currentPage + 1 === 3 && (
+                {!canGotoQuiz && currentPage + 1 === content.length && (
+                    <Text
+                        pt="1rem"
+                        g500
+                        small
+                    >{`You must check all the lesson content, before proceed.`}</Text>
+                )}
+
+                {isQuiz && currentPage + 1 === QUIZ_LENGTH && (
                     <Box mt="1rem">
                         <Button
                             fluid
                             secondary
                             xl
+                            disabled={!(progress.length == content.length)}
                             onClick={async () => {
-                                if (!isQuiz) {
-                                    setIsQuiz(true);
-                                    update({ page: 0 });
-                                    setCurrentPage(0);
-                                } else {
-                                    // Post answers
-                                    const answers = userAnswers
-                                        .reduce((next: any, current: any) => {
-                                            return [
-                                                current.findIndex(
-                                                    (el: any) => el
-                                                ),
-                                                ...next
-                                            ];
-                                        }, [])
-                                        .reverse();
+                                // Post answers
+                                const answers = userAnswers
+                                    .reduce((next: any, current: any) => {
+                                        return [
+                                            current.findIndex(
+                                                (el: any) => el
+                                            ),
+                                            ...next
+                                        ];
+                                    }, [])
+                                    .reverse();
 
-                                    const res = await fetch(
-                                        `${config.baseApiUrl}/learn-and-earn/lessons`,
-                                        {
-                                            body: JSON.stringify({
-                                                answers,
-                                                lesson: lessonId
-                                            }),
-                                            headers: {
-                                                Accept: 'application/json',
-                                                Authorization: `Bearer ${auth.token}`,
-                                                'Content-Type':
-                                                    'application/json'
-                                            },
-                                            method: 'PUT'
-                                        }
-                                    );
-
-                                    const response = await res.json();
-
-                                    if (response?.data?.success === false) {
-                                        openModal('wrongAnswer', {
-                                            attempts: response?.data?.attempts,
-                                            onClose: () => {
-                                                toggleQuiz(false);
-                                                setUserAnswers(initialAnswers);
-                                            }
-                                        });
-                                    } else {
-                                        openModal('successModal', {
-                                            onClose: () =>
-                                                router.push(
-                                                    `/${lang}/learn-and-earn/${params.level}?levelId=${levelId}`
-                                                )
-                                        });
+                                const res = await fetch(
+                                    `${config.baseApiUrl}/learn-and-earn/lessons`,
+                                    {
+                                        body: JSON.stringify({
+                                            answers,
+                                            lesson: lessonId
+                                        }),
+                                        headers: {
+                                            Accept: 'application/json',
+                                            Authorization: `Bearer ${auth.token}`,
+                                            'Content-Type':
+                                                'application/json'
+                                        },
+                                        method: 'PUT'
                                     }
+                                );
+
+                                const response = await res.json();
+
+                                if (response?.data?.success === false) {
+                                    openModal('laeFailedLesson', {
+                                        attempts: response?.data?.attempts,
+                                        onClose: () => {
+                                            toggleQuiz(false);
+                                            setUserAnswers(initialAnswers);
+                                        }
+                                    });
+                                } else {
+                                    openModal('laeSuccessLesson', {
+                                        onClose: () =>
+                                            router.push(
+                                                `/${lang}/learn-and-earn/${params.level}?levelId=${levelId}`
+                                            )
+                                    });
                                 }
                             }}
                         >
-                            {isQuiz ? t('submit') : `Start Quiz`}
+                            {t('submit')}
                         </Button>
                     </Box>
                 )}
@@ -280,7 +288,7 @@ const Lesson = (props: any) => {
                             mobileText
                             nextIcon="arrowRight"
                             nextLabel={t('next')}
-                            pageCount={isQuiz ? 3 : content.length}
+                            pageCount={isQuiz ? QUIZ_LENGTH : content.length}
                             pb={2}
                             previousIcon="arrowLeft"
                             previousLabel={t('previous')}

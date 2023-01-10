@@ -9,14 +9,14 @@ const modals = {
     contribute: dynamic(() => import('./Contribute'), { ssr: false }),
     createStory: dynamic(() => import('./Stories/CreateStory'), { ssr: false }),
     deleteStory: dynamic(() => import('./Stories/DeleteStory'), { ssr: false }),
+    laeFailedLesson: dynamic(() => import('./LearnAndEarn/WrongAnswer'), { ssr: false }),
+    laeSuccessLesson: dynamic(() => import('./LearnAndEarn/SuccessModal'), { ssr: false }),
     openStory: dynamic(() => import('./Stories/OpenStory'), { ssr: false }),
     recoverAccount: dynamic(() => import('./RecoverAccount'), { ssr: false }),
     reloadInfoAddCommunity: dynamic(() => import('./AddCommunity/ReloadInfo'), { ssr: false }),
     reportStory: dynamic(() => import('./Stories/ReportStory'), { ssr: false }),
     reportSuspiciousActivity: dynamic(() => import('./ReportSuspiciousActivity'), { ssr: false }),
-    successModal: dynamic(() => import('./LearnAndEarn/SuccessModal'), { ssr: false }),
     welcomeBeneficiary: dynamic(() => import('./WelcomeBeneficiary'), { ssr: false }),
-    wrongAnswer: dynamic(() => import('./LearnAndEarn/WrongAnswer'), { ssr: false }),
     wrongNetwork: dynamic(() => import('./WrongNetwork'), { ssr: false }),
 }
 

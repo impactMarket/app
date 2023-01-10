@@ -28,14 +28,14 @@ const SuccessModal = () => {
             </Box>
             <Box mt="1.25rem">
                 <RichText
-                    content={modals.data.success_title}
+                    content={modals.data.title_success}
                     large
                     g900
                     semibold
                 />
             </Box>
             <Box mt="1.25rem">
-                <RichText content={modals.data.success_content} medium g500 />
+                <RichText content={modals.data.content_success} medium g500 />
             </Box>
             <Button fluid gray xl onClick={() => closeModal()} mt="2rem">
                 <String id="continue" />

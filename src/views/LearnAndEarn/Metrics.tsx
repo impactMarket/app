@@ -2,6 +2,7 @@ import { Box, Button, Card, Display, Grid, ProgressCard, toast } from '@impact-m
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useLearnAndEarn } from '@impact-market/utils/useLearnAndEarn';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
@@ -26,6 +27,7 @@ const Metrics = (props: any) => {
     const { amount = false, levelId = false, signature: signatures = false } = props.claimRewards;
     const auth = useSelector(selectCurrentUser);
     const { claimRewardForLevels } = useLearnAndEarn();
+    const [isLoading, setIsLoading] = useState(false);
 
     const fetcher = (url: string) =>
         fetch(config.baseApiUrl + url, {
@@ -44,8 +46,11 @@ const Metrics = (props: any) => {
     const disabled = hasRewards ? { bgS400: true } : {};
 
     const claimRewards = async () => {
+        setIsLoading(true);
+        let response;
+
         try {
-            const response = await claimRewardForLevels(
+            response = await claimRewardForLevels(
                 auth.user.address.toString(),
                 [levelId],
                 [amount],
@@ -54,12 +59,36 @@ const Metrics = (props: any) => {
 
             console.log(response);
         } catch (error) {
+            setIsLoading(false);
             console.log(error);
             toast.error(<Message id="errorOccurred" />);
             throw Error;
         }
 
+        const { transactionHash } = response;
+
+        console.log(transactionHash);
+
+        const res = await fetch(
+            `${config.baseApiUrl}/learn-and-earn/levels`,
+            {
+                body: JSON.stringify({
+                    transactionHash
+                }),
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${auth.token}`,
+                    'Content-Type':
+                        'application/json'
+                },
+                method: 'PUT'
+            }
+        );
+        
+        console.log(res);
+
         toast.success(<Message id="successfullyClaimedUbi" />);
+        setIsLoading(false);
     };
         
 
@@ -93,6 +122,7 @@ const Metrics = (props: any) => {
                         onClick={claimRewards}
                         {...disabled}
                         disabled={!(hasRewards)}
+                        isLoading={isLoading}
                     >
                         {'Claim Rewards'}
                     </RewardsButton>
