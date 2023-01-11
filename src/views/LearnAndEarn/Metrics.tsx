@@ -56,8 +56,6 @@ const Metrics = (props: any) => {
                 [amount],
                 [signatures]
             );
-
-            console.log(response);
         } catch (error) {
             setIsLoading(false);
             console.log(error);
@@ -66,10 +64,7 @@ const Metrics = (props: any) => {
         }
 
         const { transactionHash } = response;
-
-        console.log(transactionHash);
-
-        const res = await fetch(
+        await fetch(
             `${config.baseApiUrl}/learn-and-earn/levels`,
             {
                 body: JSON.stringify({
@@ -85,8 +80,6 @@ const Metrics = (props: any) => {
             }
         );
         
-        console.log(res);
-
         toast.success(<Message id="successfullyClaimedUbi" />);
         setIsLoading(false);
     };

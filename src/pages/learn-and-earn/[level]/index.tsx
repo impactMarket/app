@@ -1,4 +1,3 @@
-// import { ClientConfig } from '@prismicio/client';
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
 import Level from '../../../views/LearnAndEarn/Level';
