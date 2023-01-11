@@ -64,6 +64,7 @@ const Metrics = (props: any) => {
         }
 
         const { transactionHash } = response;
+
         await fetch(
             `${config.baseApiUrl}/learn-and-earn/levels`,
             {

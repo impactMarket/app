@@ -9,13 +9,13 @@ const laePrivateRoutes = config.enableLearnEarn === 'true' ? ['/learn-and-earn/[
 
 export const publicRoutes: Routes = ['/', '/stories', '/proposals', '/communities', '/communities/[id]', '/notifications', '/messages', '/manager/communities/add', ...laePublicRoutes];
 
-export const privateRoutes: Routes = ['/profile', '/settings', '/mycommunity', ...laePrivateRoutes];
+export const privateRoutes: Routes = ['/profile', '/settings', '/mycommunity'];
 
 export const demoRoutes: Routes = [];
 
-export const beneficiaryRoutes: Routes = ['/beneficiary'];
+export const beneficiaryRoutes: Routes = ['/beneficiary', ...laePrivateRoutes];
 
-export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/manager/beneficiaries/[id]', '/manager/managers'];
+export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/manager/beneficiaries/[id]', '/manager/managers', ...laePrivateRoutes];
 
 export const ambassadorRoutes: Routes = ['/requests', '/ambassador', '/ambassador/reports', '/communities/edit/[id]', '/manager/beneficiaries'];
 
