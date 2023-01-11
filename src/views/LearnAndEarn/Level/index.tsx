@@ -27,7 +27,7 @@ const Level = (props: any) => {
     const auth = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
     const levelId = getByKey('levelId') || '';
-    const { data: lessonsData, totalPoints } = useLessons(
+    const { data: lessonsData, totalPoints, completedToday } = useLessons(
         lessons,
         levelId,
         auth
@@ -120,9 +120,9 @@ const Level = (props: any) => {
                                             <Button
                                                 fluid
                                                 disabled={
-                                                    idx - 1 >= 0 &&
+                                                    (idx - 1 >= 0 &&
                                                     lessonsData[idx - 1]
-                                                        ?.status !== 'completed'
+                                                        ?.status !== 'completed') || completedToday
                                                 }
                                                 ml=".8rem"
                                                 onClick={() =>
@@ -142,6 +142,7 @@ const Level = (props: any) => {
                                                 <Button
                                                     fluid
                                                     ml=".8rem"
+                                                    disabled={completedToday}
                                                     onClick={() =>
                                                         startLesson(
                                                             item.backendId,

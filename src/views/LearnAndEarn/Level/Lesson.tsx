@@ -9,11 +9,13 @@ import {
     Text,
     ViewContainer,
     openModal,
+    toast,
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
+import Message from '../../../libs/Prismic/components/Message';
 import RichText from '../../../libs/Prismic/components/RichText';
 import String from '../../../libs/Prismic/components/String';
 import Video from '../Video';
@@ -263,13 +265,15 @@ const Lesson = (props: any) => {
                                             setUserAnswers(initialAnswers);
                                         }
                                     });
-                                } else {
+                                } else if (response?.data?.success) {
                                     openModal('laeSuccessLesson', {
                                         onClose: () =>
                                             router.push(
                                                 `/${lang}/learn-and-earn/${params.level}?levelId=${levelId}`
                                             )
                                     });
+                                } else {
+                                    toast.error(<Message id="errorOccurred" />);
                                 }
                             }}
                         >

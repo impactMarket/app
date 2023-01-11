@@ -1645,10 +1645,10 @@
     styled-gen "^1.4.8"
     styled-reset "^4.3.4"
 
-"@impact-market/utils@3.2.4":
-  version "3.2.4"
-  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-3.2.4.tgz#84a9315c622e6f7614acae6da6ecd2c8cb681fc3"
-  integrity sha512-/OIMvLQo734XPkWiTi2oRMM7Uw6ZM+eU+0N3es6sM+yF8bqlU64Eb9q9bZPDUzsTugAZ5rz4nvu8OcAtzxC8qw==
+"@impact-market/utils@3.2.5":
+  version "3.2.5"
+  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-3.2.5.tgz#1d99ea69b6be65911c79cd3c3b4314778ed709f6"
+  integrity sha512-dKYUrz8v5+c0Xl9/rd8uPDSSIZf2yG6ZRmn7dTsEM9DSfzXUa79seF0lu8M3/G1gvqayWvU8Ta1qfYc8w/DGXQ==
   dependencies:
     "@celo/connect" "2.3.0"
 
