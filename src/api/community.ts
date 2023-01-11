@@ -117,6 +117,15 @@ interface PostValidCommunity {
     coverMediaPath: string;
 };
 
+interface PostContractParams {
+    contractParams?: {
+        claimAmount: string;
+        maxClaim: string;
+        baseInterval: number;
+        incrementInterval: number;
+    }
+};
+
 interface PreSigned {
     filePath?: string;
     filename?: string;
@@ -161,6 +170,14 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 body,
                 method: 'POST',
                 url: 'communities'
+            }),
+            transformResponse: (response: { data: Community }) => response.data
+        }),
+        editContractParams: builder.mutation<Community, { id: string, body: PostContractParams}>({
+            query: ({id, body}) => ({
+                body,
+                method: 'PUT',
+                url: `communities/${id}`
             }),
             transformResponse: (response: { data: Community }) => response.data
         }),
@@ -297,6 +314,7 @@ export const {
     useGetCommunityPreSignedMutation,
     useGetClaimsLocationsMutation,
     useGetPromoterMutation,
+    useEditContractParamsMutation,
     useEditPendingCommunityMutation,
     useEditValidCommunityMutation,
     useGetCommunityCampaignMutation

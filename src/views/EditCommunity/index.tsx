@@ -1,11 +1,12 @@
 import { ViewContainer } from '@impact-market/ui';
 import { useGetCommunityContractMutation, useGetCommunityMutation } from '../../api/community';
 import { useRouter } from 'next/router';
+import EditCommunity from './EditCommunity';
 import EditPending from './EditPending';
 import EditValid from './EditValid';
 import React, { useEffect, useState } from 'react';
 
-const EditCommunity: React.FC<{ isLoading?: boolean }> = props => {
+const EditCommunityMain: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [community, setCommunity] = useState({}) as any;
@@ -43,7 +44,7 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = props => {
     return (
         <ViewContainer isLoading={isLoading || loadingCommunity}>
             {community?.status === 'valid' ?
-                <EditValid community={community} />
+                <EditCommunity community={community} contract={contract}/>
                 :
                 <EditPending community={community} contract={contract} />
             }
@@ -51,4 +52,4 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = props => {
     );
 };
 
-export default EditCommunity;
+export default EditCommunityMain;

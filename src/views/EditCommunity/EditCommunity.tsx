@@ -1,11 +1,11 @@
-import { Box, Display, ViewContainer } from '@impact-market/ui';
+import { Box, Display } from '@impact-market/ui';
+import { Community, Contract } from '../../api/community';
 import { editCommunitySchema } from '../../utils/communities';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { useAmbassador } from '@impact-market/utils/useAmbassador';
 import { useForm } from 'react-hook-form';
-import { useGetCommunityContractMutation, useGetCommunityMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -18,17 +18,12 @@ import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
-    const { isLoading } = props;
-    const [loadingCommunity, toggleLoadingCommunity] = useState(true);
+const EditCommunity: React.FC<{ community: Community, contract: Contract }> = props => {
+    const { community, contract } = props;
     const [maxBeneficiaries, setMaxBeneficiaries] = useState(0);
     const [isLocked, setIsLocked] = useState(false);
-    const [community, setCommunity] = useState({}) as any;
-    const [contract, setContract] = useState({}) as any;
 
     const router = useRouter();
-    const [getCommunity] = useGetCommunityMutation();
-    const [getCommunityContract] = useGetCommunityContractMutation();
     const { t } = useTranslations();
     const { isCommunityLocked, getMaxBeneficiaries } = useAmbassador();
 
@@ -56,16 +51,12 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
     useEffect(() => {
         const init = async () => {
             try {
-                const id = router?.query?.id as any;
-                const communityData = await getCommunity(id).unwrap();
-                const contractData = await getCommunityContract(id).unwrap();
-
-                if (!!communityData?.contractAddress) {
+                if (!!community?.contractAddress) {
                     const isLocked = await isCommunityLocked(
-                        communityData?.contractAddress
+                        community?.contractAddress
                     );
                     const maxBeneficiaries = await getMaxBeneficiaries(
-                        communityData?.contractAddress
+                        community?.contractAddress
                     );
 
                     setIsLocked(isLocked);
@@ -73,17 +64,9 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
                 } else {
                     setIsLocked(null);
                     setMaxBeneficiaries(null);
-                }
-                
-
-                setCommunity(communityData);
-                setContract(contractData?.data);
-                
-                toggleLoadingCommunity(false);
+                }                
             } catch (error) {
                 console.log(error);
-
-                toggleLoadingCommunity(false);
 
                 router.push('/communities');
 
@@ -107,7 +90,7 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
             baseInterval: contract?.baseInterval === 17280 ? t('day').toLowerCase() : t('week').toLowerCase() || '',
             claimAmount: contract?.claimAmount || '',
             description: community?.description || '',
-            incrementInterval: contract?.incrementInterval || '',
+            incrementInterval: contract?.incrementInterval || 0,
             maxBeneficiaries: maxBeneficiaries || 0,
             maxClaim: contract?.maxClaim || '',
         });
@@ -126,8 +109,10 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
         ) as any;
     }, [community, contract, maxBeneficiaries]);
 
+    console.log(community)
+
     return (
-        <ViewContainer isLoading={isLoading || loadingCommunity}>
+        <>
             <Box fLayout="start between" fWrap="wrap" flex>
                 <Box
                     column
@@ -155,25 +140,23 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
                 />
             </Box>
             <Box mt={1.25}>
-                {
-                    !!auth?.user?.councilMember && !!community.contractAddress && (
-                        <ContractDetailsForm
-                            community={community}
-                            currency={currency}
-                            errors={errors}
-                            formData={{
-                                baseInterval:
-                                    contract?.baseInterval === 17280
-                                        ? t('day').toLowerCase()
-                                        : t('week').toLowerCase() || '',
-                                claimAmount: contract?.claimAmount,
-                                incrementInterval: parseInt(contract?.incrementInterval, 10) / 12,
-                                maxClaim: contract?.maxClaim
-                            }}
-                            rates={rates}
-                        />
-                    )
-                }
+                {!!auth?.user?.councilMember && !!community.contractAddress && (
+                    <ContractDetailsForm
+                        community={community}
+                        currency={currency}
+                        errors={errors}
+                        formData={{
+                            baseInterval:
+                                contract?.baseInterval === 17280
+                                    ? t('day').toLowerCase()
+                                    : t('week').toLowerCase() || '',
+                            claimAmount: contract?.claimAmount,
+                            incrementInterval: contract?.incrementInterval / 12,
+                            maxClaim: contract?.maxClaim
+                        }}
+                        rates={rates}
+                    />
+                )}
 
                 {!!auth?.user?.ambassador && isLocked !== null && maxBeneficiaries !== null &&
                     community?.ambassadorAddress?.toLowerCase() ===
@@ -185,9 +168,10 @@ const EditCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
                             maxBeneficiaries={maxBeneficiaries}
                             reset={() => reset(formFields)}
                         />
-                    )}
+                    )
+                }
             </Box>
-        </ViewContainer>
+        </>
     );
 };
 

@@ -11,7 +11,7 @@ import {
 } from '@impact-market/ui';
 import { Controller, useForm } from 'react-hook-form';
 import { useAmbassador } from '@impact-market/utils/useAmbassador';
-// import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useYupValidationResolver, yup } from '../../helpers/yup';
 import FormActions from '../Profile/FormActions';
 import Input from '../../components/Input';
@@ -33,9 +33,8 @@ const schema = yup.object().shape({
 
 const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries, isLocked }: any) => {
     const { t } = useTranslations();
-    // TODO: Add form title and description to Prismic
-    // const { extractFromView } = usePrismicData();
-    // const { contractDescription, contractTitle } = extractFromView('community') as any;
+    const { extractFromView } = usePrismicData();
+    const { managementDescription, managementTitle } = extractFromView('formSections') as any;
     const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } = useAmbassador();
     const {
         handleSubmit,
@@ -55,6 +54,8 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
         e.preventDefault();
         reset();
     };
+
+    console.log(extractFromView('formSections'))
 
     const onSubmit = async (data: any) => {
         try {
@@ -140,10 +141,10 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                         show={{ sm: 'none', xs: 'block' }}
                     />
                     <Text g700 medium small>
-                        Community Management
+                        {managementTitle}
                     </Text>
                     <RichText
-                        content="Here you will define some community parameters"
+                        content={managementDescription}
                         g500
                         regular
                         small
@@ -174,6 +175,7 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                                     }
                                     label="Maximum number of beneficiaries"
                                     name="maxBeneficiaries"
+                                    placeholder={maxBeneficiaries || ''}
                                     onKeyDown={(e: any) =>
                                         (e.key === 'e' || e.key === '-') &&
                                         e.preventDefault()

@@ -99,6 +99,8 @@ const EditCommunity: React.FC<{ community: Community }> = props => {
         }
     }
 
+    console.log('Valid')
+
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box fLayout="start between" fWrap="wrap" flex>
