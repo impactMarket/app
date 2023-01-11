@@ -77,8 +77,10 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
         resolver: useYupValidationResolver(editCommunitySchema)
     });
 
-    // We can only edit this Community if: the current User is the one who created OR the current User is an Ambassador for this Community
-    if(community?.requestByAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase() && community?.ambassadorAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase()) {
+    const userNotAmbassadorOrCreator = (community?.requestByAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase() && community?.ambassadorAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase())
+
+    // We can only edit this Community if: the current User is the one who created OR the current User is an Ambassador for this Community or Council Member
+    if (userNotAmbassadorOrCreator && !auth?.user?.councilMember) {
         router.push('/communities');
 
         return null;
@@ -141,7 +143,6 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
         ) as any;
     }, [community, contract, maxBeneficiaries]);
 
-    // TODO: check if all of this function is correct
     const onSubmit = async (data: any) => {
         try {
             if (communityImage) {
@@ -194,7 +195,6 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
                     id: community?.id
                 }).unwrap();
 
-                // TODO: on success, what should we do?
                 if (result) {
                     toast.success("Community edited successfully!");
                 }
@@ -242,9 +242,11 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
                     submitCount={submitCount}
                 />
             </Box>
-            <Box mt={1.25}>
-                <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} />
-            </Box>
+            {!auth?.user?.councilMember &&
+                <Box mt={1.25}>
+                    <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} />
+                </Box>
+            }
         </form>
     );
 };

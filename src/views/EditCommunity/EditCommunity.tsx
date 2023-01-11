@@ -109,8 +109,6 @@ const EditCommunity: React.FC<{ community: Community, contract: Contract }> = pr
         ) as any;
     }, [community, contract, maxBeneficiaries]);
 
-    console.log(community)
-
     return (
         <>
             <Box fLayout="start between" fWrap="wrap" flex>

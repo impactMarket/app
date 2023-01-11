@@ -3,10 +3,9 @@ import { useGetCommunityContractMutation, useGetCommunityMutation } from '../../
 import { useRouter } from 'next/router';
 import EditCommunity from './EditCommunity';
 import EditPending from './EditPending';
-import EditValid from './EditValid';
 import React, { useEffect, useState } from 'react';
 
-const EditCommunityMain: React.FC<{ isLoading?: boolean }> = props => {
+const EditCommunityIndex: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
     const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [community, setCommunity] = useState({}) as any;
@@ -52,4 +51,4 @@ const EditCommunityMain: React.FC<{ isLoading?: boolean }> = props => {
     );
 };
 
-export default EditCommunityMain;
+export default EditCommunityIndex;

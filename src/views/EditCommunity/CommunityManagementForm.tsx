@@ -34,7 +34,19 @@ const schema = yup.object().shape({
 const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries, isLocked }: any) => {
     const { t } = useTranslations();
     const { extractFromView } = usePrismicData();
-    const { managementDescription, managementTitle } = extractFromView('formSections') as any;
+    const { 
+        communityManagement, 
+        communityParameters, 
+        maxNumberBeneficiaries, 
+        lockCommunity: lockCommunityTitle, 
+        lockedCommunityHint, 
+        maxBeneficiariesUpdated,
+        maxBeneficiariesUpdateError,
+        lockedCommunitySuccess,
+        lockedCommunityError,
+        unlockCommunitySuccess,
+        unlockCommunityError
+    } = extractFromView('formSections') as any;
     const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } = useAmbassador();
     const {
         handleSubmit,
@@ -69,12 +81,10 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                         data.maxBeneficiaries
                     )
                         .then(() => {
-                            toast.success('Maximum beneficiaries updated');
+                            toast.success(maxBeneficiariesUpdated[0]?.text);
                         })
                         .catch(() => {
-                            toast.error(
-                                'Failed to update maximum number of benefeciaries'
-                            );
+                            toast.error(maxBeneficiariesUpdateError[0]?.text);
                             transactionFailed = true;
                         })
                 );
@@ -87,12 +97,10 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                     lockAction.push(
                         await lockCommunity(communityAddress)
                             .then(() => {
-                                toast.success(
-                                    'Successfully locked the community'
-                                );
+                                toast.success(lockedCommunitySuccess[0]?.text);
                             })
                             .catch(() => {
-                                toast.error('Failed to lock the community');
+                                toast.error(lockedCommunityError[0]?.text);
                                 transactionFailed = true;
                             })
                     );
@@ -100,13 +108,11 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                     lockAction.push(
                         await unlockCommunity(communityAddress)
                             .then(() => {
-                                toast.success(
-                                    'Successfully unlocked the community'
-                                );
+                                toast.success(unlockCommunitySuccess[0]?.text);
                             })
                             .catch(() => {
                                 transactionFailed = true;
-                                toast.error('Failed to unlock the community');
+                                toast.error(unlockCommunityError[0]?.text);
                             })
                     );
                 }
@@ -140,11 +146,14 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                         margin="1.25 0"
                         show={{ sm: 'none', xs: 'block' }}
                     />
-                    <Text g700 medium small>
-                        {managementTitle}
-                    </Text>
                     <RichText
-                        content={managementDescription}
+                        content={communityManagement}
+                        g700
+                        medium
+                        small
+                    />
+                    <RichText
+                        content={communityParameters}
                         g500
                         regular
                         small
@@ -173,7 +182,7 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                                               )
                                             : ''
                                     }
-                                    label="Maximum number of beneficiaries"
+                                    label={maxNumberBeneficiaries[0]?.text}
                                     name="maxBeneficiaries"
                                     placeholder={maxBeneficiaries || ''}
                                     onKeyDown={(e: any) =>
@@ -202,10 +211,10 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                                 </Box>
                                 <Box w="100%">
                                     <Text g700 medium small>
-                                        Lock this community.
+                                        {lockCommunityTitle[0]?.text}
                                     </Text>
                                     <RichText
-                                        content="Locked communities beneficiaires cannot claim funds and managers cannot add/remove benericiaires."
+                                        content={lockedCommunityHint[0]?.text}
                                         g500
                                         small
                                     />
