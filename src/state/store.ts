@@ -4,6 +4,8 @@ import authReducer from './slices/auth';
 import notificationsReducer from './slices/notifications';
 import ratesReducer from './slices/rates';
 
+import learnAndEarnReduce from './slices/learnAndEarn';
+
 export const store = configureStore({
     // Adding the api middleware enables caching, invalidation, polling,
     // and other useful features of `rtk-query`.
@@ -11,6 +13,7 @@ export const store = configureStore({
         getDefaultMiddleware().concat(api.middleware),
     reducer: {
         auth: authReducer,
+        learnAndEarn: learnAndEarnReduce,
         notifications: notificationsReducer,
         rates: ratesReducer,
         [api.reducerPath]: api.reducer
