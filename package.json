@@ -81,7 +81,7 @@
     "eslint-config-impact-market": "2.0.3",
     "eslint-config-next": "12.0.10",
     "prettier": "2.2.1",
-    "slice-machine-ui": "0.3.7",
+    "slice-machine-ui": "0.6.0",
     "typescript": "4.3.2"
   },
   "resolutions": {
