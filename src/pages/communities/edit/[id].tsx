@@ -1,6 +1,6 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import EditCommunity from '../../../views/EditCommunity/EditCommunity';
+import EditCommunity from '../../../views/EditCommunity';
 import Prismic from '../../../libs/Prismic/Prismic';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = () => {

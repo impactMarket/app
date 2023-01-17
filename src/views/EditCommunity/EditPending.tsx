@@ -1,15 +1,14 @@
 /* eslint-disable max-depth */
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Box, Button, Display, toast } from '@impact-market/ui';
 import { Community, Contract, useEditPendingCommunityMutation, useGetCommunityPreSignedMutation } from '../../api/community';
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
 import { editCommunitySchema } from '../../utils/communities';
-import { frequencyToNumber, frequencyToText } from '@impact-market/utils';
+import { frequencyToNumber, frequencyToText, useAmbassador } from '@impact-market/utils';
 import { getCountryCurrency, getCountryNameFromInitials } from '../../utils/countries';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { toCamelCase } from '../../helpers/toCamelCase';
+import { useForm, useWatch } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
@@ -20,6 +19,8 @@ import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+
 
 const EditPending: React.FC<{ community: Community, contract: Contract }> = props => {
     const auth = useSelector(selectCurrentUser);
@@ -29,14 +30,26 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
     const [isSubmitting, toggleSubmitting] = useState(false);
     const [communityImage, setCommunityImage] = useState(getImage({ filePath: community?.coverMediaPath, fit: 'cover', height: 160, width: 160 })) as any;
     const [currency, setCurrency] = useState(auth?.user?.currency || null);
+    const [maxBeneficiaries, setMaxBeneficiaries] = useState(0);
 
     const { extractFromView } = usePrismicData({ list: true });
     const { submissionContent, submissionTitle } = extractFromView('heading') as any;
+    const { t } = useTranslations();
+
+    const [formFields, setFormFields] = useState({
+        baseInterval: '',
+        claimAmount: '',
+        description: '',
+        incrementInterval: 0,
+        maxBeneficiaries: 0,
+        maxClaim: '',
+    });
 
     const router = useRouter();
     const rates = useSelector(selectRates);
     const [editPendingCommunity] = useEditPendingCommunityMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
+    const { getMaxBeneficiaries } = useAmbassador();
 
     const location = { 
         country: community?.country, 
@@ -50,7 +63,7 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
         }
     };
 
-    const { handleSubmit, control, formState: { errors, submitCount } } = useForm({
+    const { handleSubmit, control, setValue, formState: { errors, submitCount } } = useForm({
         defaultValues: {
             baseInterval: frequencyToText(contract?.baseInterval) || '',
             claimAmount: contract?.claimAmount || '',
@@ -59,13 +72,15 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
             incrementInterval: (contract?.incrementInterval / 12) || '',
             location: location || null,
             maxClaim: contract?.maxClaim || '',
-            name: community?.name || ''
+            name: community?.name || '',
         },
         resolver: useYupValidationResolver(editCommunitySchema)
     });
 
-    // We can only edit this Community if: the current User is the one who created OR the current User is an Ambassador for this Community
-    if(community?.requestByAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase() && community?.ambassadorAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase()) {
+    const userNotAmbassadorOrCreator = (community?.requestByAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase() && community?.ambassadorAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase())
+
+    // We can only edit this Community if: the current User is the one who created OR the current User is an Ambassador for this Community or Council Member
+    if (userNotAmbassadorOrCreator && !auth?.user?.councilMember) {
         router.push('/communities');
 
         return null;
@@ -80,8 +95,55 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
         }
     }, [locationWatch]);
 
-    // TODO: check if all of this function is correct
-    const onSubmit: SubmitHandler<any> = async (data: any) => {
+    useEffect(() => {
+        const init = async () => {
+            try {
+                if (!!community?.contractAddress) {
+                    const maxBeneficiaries = await getMaxBeneficiaries(
+                        community?.contractAddress
+                    );
+
+                    setMaxBeneficiaries(maxBeneficiaries);
+                } else {
+                    setMaxBeneficiaries(null);
+                }
+            } catch (error) {
+                console.log(error);
+
+                router.push('/communities');
+
+                return false;
+            }
+        };
+
+        init();
+    }, []);
+
+    useEffect(() => {
+        setFormFields({
+            baseInterval: contract?.baseInterval === 17280 ? t('day').toLowerCase() : t('week').toLowerCase() || '',
+            claimAmount: contract?.claimAmount || '',
+            description: community?.description || '',
+            incrementInterval: contract?.incrementInterval || 0,
+            maxBeneficiaries: maxBeneficiaries || 0,
+            maxClaim: contract?.maxClaim || '',
+        });
+
+        Object.entries(formFields).forEach(([name, value]: any) =>
+            setValue(name, value)
+        );
+
+        setCommunityImage(
+            getImage({
+                filePath: community?.coverMediaPath,
+                fit: 'cover',
+                height: 160,
+                width: 160
+            })
+        ) as any;
+    }, [community, contract, maxBeneficiaries]);
+
+    const onSubmit = async (data: any) => {
         try {
             if (communityImage) {
                 toggleSubmitting(true);
@@ -133,7 +195,6 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
                     id: community?.id
                 }).unwrap();
 
-                // TODO: on success, what should we do?
                 if (result) {
                     toast.success("Community edited successfully!");
                 }
@@ -151,6 +212,8 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
             toast.error(<Message id={toCamelCase(e.data?.error?.name, 'communityForm')} />);
         }
     }
+
+    console.log('Pending')
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -179,9 +242,11 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
                     submitCount={submitCount}
                 />
             </Box>
-            <Box mt={1.25}>
-                <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} />
-            </Box>
+            {!auth?.user?.councilMember &&
+                <Box mt={1.25}>
+                    <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} />
+                </Box>
+            }
         </form>
     );
 };
