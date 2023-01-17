@@ -17,12 +17,14 @@ import String from '../../../libs/Prismic/components/String';
 import config from '../../../../config';
 import useFilters from '../../../hooks/useFilters';
 import useLessons from '../../../hooks/learn-and-earn/useLessons';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const Level = (props: any) => {
     const { prismic, params, lang } = props;
     const { level, lessons } = prismic;
     const { title } = level.data;
     const { view } = usePrismicData();
+    const { t } = useTranslations();
     const { instructions } = view.data;
     const auth = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
@@ -97,7 +99,7 @@ const Level = (props: any) => {
                                 <Box flex>
                                     <Box fGrow="1">
                                         <RichText
-                                            content={`Lesson ${idx + 1}`}
+                                            content={`${t('lesson')} ${idx + 1}`}
                                             g500
                                             bold
                                         />

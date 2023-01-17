@@ -1,3 +1,4 @@
+import Message from '../../libs/Prismic/components/Message';
 import React from 'react';
 import String from '../../libs/Prismic/components/String';
 
@@ -8,7 +9,7 @@ export const ctaText = (status: string, reward: number) => {
         case 'started':
             return <String id="continue" />;
         case 'completed':
-            return 'View Lessons';
+            return <Message id="viewLessons" />;
         default:
             return 0;
     }

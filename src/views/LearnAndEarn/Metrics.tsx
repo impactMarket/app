@@ -5,9 +5,11 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
+import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
 import styled from 'styled-components';
 import useSWR from 'swr';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const CardsGrid = styled(Grid)`
     flex-wrap: wrap;
@@ -28,6 +30,7 @@ const Metrics = (props: any) => {
     const auth = useSelector(selectCurrentUser);
     const { claimRewardForLevels } = useLearnAndEarn();
     const [isLoading, setIsLoading] = useState(false);
+    const { t } = useTranslations();
 
     const fetcher = (url: string) =>
         fetch(config.baseApiUrl + url, {
@@ -81,7 +84,7 @@ const Metrics = (props: any) => {
             }
         );
         
-        toast.success(<Message id="successfullyClaimedUbi" />);
+        toast.success(<Message id="successfullyClaimed" />);
         setIsLoading(false);
     };
         
@@ -103,7 +106,7 @@ const Metrics = (props: any) => {
                                 fontWeight: 400
                             }}
                         >
-                            {'of'}
+                            {t('of')}
                         </span>
                         {` ${item?.total}`}
                     </Display>
@@ -118,7 +121,7 @@ const Metrics = (props: any) => {
                         disabled={!(hasRewards)}
                         isLoading={isLoading}
                     >
-                        {'Claim Rewards'}
+                        <String id="claimRewards" />  
                     </RewardsButton>
                 </Box>
             </Card>

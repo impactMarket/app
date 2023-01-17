@@ -1523,6 +1523,55 @@
           "placeholder": "Your profile photo"
         },
         "type": "Text"
+      },
+      "string-available": {
+        "type": "Text",
+        "config": {
+          "label": "available",
+          "placeholder": "Available"
+        }
+      },
+      "string-started": {
+        "type": "Text",
+        "config": {
+          "label": "started",
+          "placeholder": "Started"
+        }
+      },
+      "string-completed": {
+        "type": "Text",
+        "config": {
+          "label": "completed",
+          "placeholder": "completed"
+        }
+      },
+      "string-category": {
+        "type": "Text",
+        "config": {
+          "label": "category",
+          "placeholder": "Category"
+        }
+      },
+      "string-claimRewards": {
+        "type": "Text",
+        "config": {
+          "label": "claimRewards",
+          "placeholder": "Claim Rewards"
+        }
+      },
+      "string-of": {
+        "type": "Text",
+        "config": {
+          "label": "of",
+          "placeholder": "of"
+        }
+      },
+      "string-lesson": {
+        "type": "Text",
+        "config": {
+          "label": "lesson",
+          "placeholder": "Lesson"
+        }
       }
     },
     "messages": {
@@ -1866,6 +1915,24 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-viewLessons": {
+        "type": "StructuredText",
+        "config": {
+          "label": "viewLessons",
+          "placeholder": "View lessons",
+          "allowTargetBlank": false,
+          "single": "paragraph"
+        }
+      },
+      "message-successfullyClaimed": {
+        "type": "StructuredText",
+        "config": {
+          "label": "successfullyClaimed",
+          "placeholder": "Successfully claimed rewards",
+          "allowTargetBlank": false,
+          "single": "paragraph,strong"
         }
       },
       "slices1": {
