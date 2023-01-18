@@ -218,31 +218,6 @@ const Sidebar = () => {
         })
     }, [asPath, user, notifications]);
 
-    const handleLogoClick = () => {
-        let route = '/';
-
-        if ((user?.roles)?.includes('beneficiary')) {
-            route = '/beneficiary';
-        }
-        else if ((user?.roles)?.includes('manager') || (user?.roles)?.includes('pendingManager')) {
-            route = '/';
-        }
-        else if ((user?.roles)?.includes('ambassador')) {
-            route = '/requests';
-        }
-        else if ((user?.roles)?.includes('councilMember')) {
-            route = '/proposals';
-        }
-        else if ((user?.roles)?.includes('ambassador')) {
-            route = '/communities';
-        }
-        else {
-            route = '/communities';
-        }
-
-        return push(route, undefined, { shallow: true });
-    }
-
     const footerMenu = () => {
         const userBeneficiary = user?.roles?.includes('beneficiary')
         const removeReportFromArr = data?.footerMenu?.filter((item: any) => item?.uid !== "reportSuspiciousActivity")
@@ -261,7 +236,7 @@ const Sidebar = () => {
     return (
         <SidebarBase
             footer={<SidebarFooter isActive={checkRoute('/profile')} user={user} />}
-            handleLogoClick={handleLogoClick}
+            handleLogoClick={() => push('/')}
             isLoading={!data}
             mobileActions={<SidebarMobileActions user={user} />}
         >
