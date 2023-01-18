@@ -159,6 +159,13 @@
         },
         "type": "Text"
       },
+      "string-available": {
+        "config": {
+          "label": "available",
+          "placeholder": "Available"
+        },
+        "type": "Text"
+      },
       "string-back": {
         "config": {
           "label": "back",
@@ -229,6 +236,13 @@
         },
         "type": "Text"
       },
+      "string-category": {
+        "config": {
+          "label": "category",
+          "placeholder": "Category"
+        },
+        "type": "Text"
+      },
       "string-charactersLeft": {
         "config": {
           "label": "charactersLeft",
@@ -254,6 +268,13 @@
         "config": {
           "label": "claimPerBeneficiary",
           "placeholder": "Claim per beneficiary"
+        },
+        "type": "Text"
+      },
+      "string-claimRewards": {
+        "config": {
+          "label": "claimRewards",
+          "placeholder": "Claim Rewards"
         },
         "type": "Text"
       },
@@ -345,6 +366,13 @@
         "config": {
           "label": "communityRunOutOfFunds",
           "placeholder": "Community has run out of funds."
+        },
+        "type": "Text"
+      },
+      "string-completed": {
+        "config": {
+          "label": "completed",
+          "placeholder": "completed"
         },
         "type": "Text"
       },
@@ -492,6 +520,13 @@
         "config": {
           "label": "disconnectWallet",
           "placeholder": "Disconnect Wallet"
+        },
+        "type": "Text"
+      },
+      "string-donate": {
+        "config": {
+          "label": "donate",
+          "placeholder": "Donate"
         },
         "type": "Text"
       },
@@ -709,6 +744,27 @@
         "config": {
           "label": "learnMore",
           "placeholder": "Learn More"
+        },
+        "type": "Text"
+      },
+      "string-lesson": {
+        "config": {
+          "label": "lesson",
+          "placeholder": "Lesson"
+        },
+        "type": "Text"
+      },
+      "string-lessonsCompleted": {
+        "config": {
+          "label": "lessonsCompleted",
+          "placeholder": "Lessons Completed"
+        },
+        "type": "Text"
+      },
+      "string-levelsCompleted": {
+        "config": {
+          "label": "levelsCompleted",
+          "placeholder": "Levels Completed"
         },
         "type": "Text"
       },
@@ -947,6 +1003,13 @@
         "config": {
           "label": "notifications",
           "placeholder": "Notifications"
+        },
+        "type": "Text"
+      },
+      "string-of": {
+        "config": {
+          "label": "of",
+          "placeholder": "of"
         },
         "type": "Text"
       },
@@ -1311,6 +1374,13 @@
         "config": {
           "label": "sort",
           "placeholder": "Sort"
+        },
+        "type": "Text"
+      },
+      "string-started": {
+        "config": {
+          "label": "started",
+          "placeholder": "Started"
         },
         "type": "Text"
       },
@@ -1866,6 +1936,24 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "message-viewLessons": {
+        "type": "StructuredText",
+        "config": {
+          "label": "viewLessons",
+          "placeholder": "View lessons",
+          "allowTargetBlank": false,
+          "single": "paragraph"
+        }
+      },
+      "message-successfullyClaimed": {
+        "type": "StructuredText",
+        "config": {
+          "label": "successfullyClaimed",
+          "placeholder": "Successfully claimed rewards",
+          "allowTargetBlank": false,
+          "single": "paragraph,strong"
         }
       },
       "slices1": {

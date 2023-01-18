@@ -113,7 +113,7 @@ const LearnAndEarn = (props: any) => {
 
     const selectedCategory =
         categoryItems.find((el) => el.id === getByKey('category') ?? '')
-            ?.title || 'Category';
+            ?.title || t('category');
 
     useEffect(() => {
         setCurrentPage(
@@ -158,8 +158,7 @@ const LearnAndEarn = (props: any) => {
                                 update({ page: 0, state: el });
                                 setCurrentPage(0);
                             }}
-                            // ADD TAB TITLE TO TRANSLATIONS
-                            title={el}
+                            title={t(el)}
                             number={filterLevels(el).length}
                         />
                     ))}
