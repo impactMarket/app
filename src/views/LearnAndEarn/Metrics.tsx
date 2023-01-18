@@ -41,8 +41,8 @@ const Metrics = (props: any) => {
     const totals = data?.data;
 
     const totalData = [
-        { ...totals?.level, label: 'Levels Completed' },
-        { ...totals?.lesson, label: 'Lessons Completed' },
+        { ...totals?.level, label: t('levelsCompleted') },
+        { ...totals?.lesson, label: t('lessonsCompleted') },
     ];
 
     const hasRewards = amount && levelId && signatures;

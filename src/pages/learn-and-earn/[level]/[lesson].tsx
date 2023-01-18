@@ -24,7 +24,7 @@ export const getStaticProps: GetStaticProps = async ({
     const data = await Prismic.getByTypes({
         clientOptions,
         lang,
-        types: 'pwa-lae-lesson'
+        types: 'pwa-view-learn-and-earn'
     });
 
 //    if (!prismicLesson) {
@@ -45,7 +45,7 @@ export const getStaticProps: GetStaticProps = async ({
         prismic: {
             prismicLesson
         },
-        view: 'managerDashboard',
+        view: 'pwa-view-learn-and-earn',
         // withPreview: !!previewData
     }
 };

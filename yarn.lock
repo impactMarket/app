@@ -1632,10 +1632,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.5.2":
-  version "1.5.2"
-  resolved "https://registry.npmjs.org/@impact-market/ui/-/ui-1.5.2.tgz"
-  integrity sha512-LAY6hBIjFGJxJutrxsUJvysZ7PTzWn0Mr5tz2rleahIJmxy+EziqqeYGcXwpmOfjL0cO4XWte7ZHzhYk/Hdj/A==
+"@impact-market/ui@1.5.3":
+  version "1.5.3"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.3.tgz#ac57f9c806b2d0d132dbeb384b21d936c680a26e"
+  integrity sha512-XpOhJh1bwZcnMbrOU+AppIbsjMG4v4q3APQLtXDspKr4t6j/6oaY3l0WyXy71mfXuHnfTVgKaeSr9avS+Gv5qw==
   dependencies:
     polished "^4.1.4"
     react-circle-flags "^0.0.17"
@@ -9014,7 +9014,7 @@ pngjs@^5.0.0:
 
 polished@4.2.2, polished@^4.1.4:
   version "4.2.2"
-  resolved "https://registry.npmjs.org/polished/-/polished-4.2.2.tgz"
+  resolved "https://registry.yarnpkg.com/polished/-/polished-4.2.2.tgz#2529bb7c3198945373c52e34618c8fe7b1aa84d1"
   integrity sha512-Sz2Lkdxz6F2Pgnpi9U5Ng/WdWAUZxmHrNPoVlm3aAemxoy2Qy7LGjQg4uf8qKelDAUW94F4np3iH2YPf2qefcQ==
   dependencies:
     "@babel/runtime" "^7.17.8"
@@ -9441,12 +9441,12 @@ react-celo-impactmarket@4.2.2:
 
 react-circle-flags@^0.0.17:
   version "0.0.17"
-  resolved "https://registry.npmjs.org/react-circle-flags/-/react-circle-flags-0.0.17.tgz"
+  resolved "https://registry.yarnpkg.com/react-circle-flags/-/react-circle-flags-0.0.17.tgz#e0e4d3ff74f35715c15cc159d43407c28188cf35"
   integrity sha512-RsgnkmTuSQNlB5jn7XcFzbp3W+WI75/sxT5CtjPa+67AiM8qjgMvxC45UWvDkjxH+qpoIAwEvA6VXpBbfnyH3g==
 
 react-circular-progressbar@^2.1.0:
   version "2.1.0"
-  resolved "https://registry.npmjs.org/react-circular-progressbar/-/react-circular-progressbar-2.1.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-circular-progressbar/-/react-circular-progressbar-2.1.0.tgz#99e5ae499c21de82223b498289e96f66adb8fa3a"
   integrity sha512-xp4THTrod4aLpGy68FX/k1Q3nzrfHUjUe5v6FsdwXBl3YVMwgeXYQKDrku7n/D6qsJA9CuunarAboC2xCiKs1g==
 
 react-device-detect@^2.1.2:
@@ -9616,7 +9616,7 @@ react-smooth@^2.0.1:
 
 react-tabs@^4.2.0:
   version "4.2.1"
-  resolved "https://registry.npmjs.org/react-tabs/-/react-tabs-4.2.1.tgz"
+  resolved "https://registry.yarnpkg.com/react-tabs/-/react-tabs-4.2.1.tgz#82e2dc787555e791f909746dd64164d780d7d477"
   integrity sha512-nQcEN3KrAsSry6f9Jz2oyMQsnh+sLEy31YjlskL/mnI3KU/c7BeyD1VzHZmmcJ15UEFu12pYOXYkdTzZ0uyIbw==
   dependencies:
     clsx "^1.1.0"
@@ -9624,7 +9624,7 @@ react-tabs@^4.2.0:
 
 react-toastify@^8.2.0:
   version "8.2.0"
-  resolved "https://registry.npmjs.org/react-toastify/-/react-toastify-8.2.0.tgz"
+  resolved "https://registry.yarnpkg.com/react-toastify/-/react-toastify-8.2.0.tgz#ef7d56bdfdc6272ca6b228368ab564721c3a3244"
   integrity sha512-Pg2Ju7NngAamarFvLwqrFomJ57u/Ay6i6zfLurt/qPynWkAkOthu6vxfqYpJCyNhHRhR4hu7+bySSeWWJu6PAg==
   dependencies:
     clsx "^1.1.1"
@@ -10831,7 +10831,7 @@ styled-components@5.3.5:
 
 styled-gen@1.4.8, styled-gen@^1.4.8:
   version "1.4.8"
-  resolved "https://registry.npmjs.org/styled-gen/-/styled-gen-1.4.8.tgz"
+  resolved "https://registry.yarnpkg.com/styled-gen/-/styled-gen-1.4.8.tgz#35ae520f95b03d59c5edc762f1ba0cb485758a6e"
   integrity sha512-d2vH5+zghU7csh04HTcv1T2mq0ej3cemhKXJAMlWia2EYMxk6HeFLburgT43p8TKALNxmLBf/oUPp0Vb5Op5Ig==
 
 styled-jsx@5.0.1:
@@ -10840,9 +10840,9 @@ styled-jsx@5.0.1:
   integrity sha512-+PIZ/6Uk40mphiQJJI1202b+/dYeTVd9ZnMPR80pgiWbjIwvN2zIp4r9et0BgqBuShh48I0gttPlAXA7WVvBxw==
 
 styled-reset@^4.3.4:
-  version "4.4.2"
-  resolved "https://registry.npmjs.org/styled-reset/-/styled-reset-4.4.2.tgz"
-  integrity sha512-VzVhEZHpO/CD/F5ZllqTAY+GTaKlNDZt5mTrtPf/kXZSe85+wMkhRIiPARgvCP9/HQMk+ZGaEWk1IkdP2SYAUQ==
+  version "4.4.5"
+  resolved "https://registry.yarnpkg.com/styled-reset/-/styled-reset-4.4.5.tgz#8c4bf50ee4f53d104473b156d0697ff509d54405"
+  integrity sha512-uEQzbCqSBbx1ZT9VuquoGOJyVzs3kMIMCyjxmtSo4/JoTCrq92UFTJx91KcdMncDaymz6NE8sgSvstHHcJjExg==
 
 stylis@4.0.13:
   version "4.0.13"

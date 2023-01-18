@@ -16,7 +16,7 @@ const LevelsTable = (props: any) => {
     const auth = useSelector(selectCurrentUser);
     const isEligible = !auth?.type
         ? false
-        : auth.type.some((r) => ['beneficiary', 'manager'].includes(r));
+        : auth.type.some((r: any) => ['beneficiary', 'manager'].includes(r));
 
     return (
         <Grid colSpan={1.5} cols={{ lg: 3, xs: 1 }}>
@@ -28,30 +28,20 @@ const LevelsTable = (props: any) => {
                             content={`${elem?.totalLessons} lessons`}
                             image={elem.data?.image?.url}
                             label={categories[elem?.category]?.title}
-                            // ADD ON UI SIDE
-                            // onClick={() =>
-                            //     router.push(
-                            //         `/${lang}/learn-and-earn/${
-                            //             elem?.uid
-                            //         }${
-                            //             elem?.id
-                            //                 ? `?levelId=${elem?.id}`
-                            //                 : ''
-                            //         }`
-                            //     )
-                            // }
+                            onClick={() =>
+                                router.push(
+                                    `/${lang}/learn-and-earn/${
+                                        elem?.uid
+                                    }${
+                                        elem?.id && isEligible
+                                            ? `?levelId=${elem?.id}`
+                                            : ''
+                                    }`
+                                )
+                            }
                         >
                             <Button
                                 fluid
-                                onClick={() =>
-                                    router.push(
-                                        `/${lang}/learn-and-earn/${elem?.uid}${
-                                            elem?.id && isEligible
-                                                ? `?levelId=${elem?.id}`
-                                                : ''
-                                        }`
-                                    )
-                                }
                                 secondary
                                 xl
                             >
