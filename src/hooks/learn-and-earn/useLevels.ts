@@ -57,10 +57,11 @@ export default function useLevels(levels: any) {
         });
     }
 
+    const finalLevels = !config.useTestNet ? data.filter((item: any) => item?.data?.is_live) : data;
     const levelsLoading = !data && !error;
 
     return {
-        data: data.filter((item: any) => item !== null),
+        data: finalLevels.filter((item: any) => item !== null),
         levelsLoading
     };
 }
