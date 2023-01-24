@@ -21,8 +21,8 @@ import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const Level = (props: any) => {
     const { prismic, params, lang } = props;
-    const { level, lessons } = prismic;
-    const { title } = level.data;
+    const { level, lessons, categories } = prismic;
+    const { title, category } = level.data;
     const { view } = usePrismicData();
     const { t } = useTranslations();
     const { instructions } = view.data;
@@ -76,7 +76,7 @@ const Level = (props: any) => {
                 {title}
             </Display>
 
-            <RichText content={'Beginner'} g500 />
+            <RichText content={categories[category?.id]?.title} g500 />
             <Divider />
 
             <Box flex style={{ justifyContent: 'center' }}>
@@ -158,7 +158,7 @@ const Level = (props: any) => {
 
                                         {item.status === 'completed' && (
                                             <Badge bgS50 ml=".8rem" s700>
-                                                {'Completed '}
+                                                {t('completed') }
                                                 <Icon icon="check" s700 />
                                             </Badge>
                                         )}

@@ -12,6 +12,7 @@ import {
     toast,
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
@@ -34,8 +35,10 @@ const QUIZ_LENGTH = 3;
 const Lesson = (props: any) => {
     const { prismic, lang, params } = props;
     const { prismicLesson } = prismic;
-    const { tutorial: content, questions, sponsor } = prismicLesson;
+    const { tutorial: content, questions, sponsor, readTime } = prismicLesson;
     const { t } = useTranslations();
+    const { viewLearnAndEarn } = usePrismicData().data as any;
+    const { startQuiz, completeContent } = viewLearnAndEarn.data;
     const { update, getByKey } = useFilters();
     const [currentPage, setCurrentPage] = useState(
         getByKey('page') ? +getByKey('page') : 0
@@ -134,8 +137,9 @@ const Lesson = (props: any) => {
             </Display>
 
             <Box flex>
+                <RichText content={readTime} g500 small />
                 <RichText
-                    content={`1 min read - Beginner - Sponsored by `}
+                    content={` - Beginner - Sponsored by `}
                     g500
                     small
                 />
@@ -205,7 +209,7 @@ const Lesson = (props: any) => {
                             xl
                             onClick={() => toggleQuiz(true)}
                         >
-                            {`Start Quiz`}
+                            <RichText content={startQuiz} />
                         </Button>
                     </Box>
                 )}
@@ -215,7 +219,9 @@ const Lesson = (props: any) => {
                         pt="1rem"
                         g500
                         small
-                    >{`You must check all the lesson content, before proceed.`}</Text>
+                    >
+                        <RichText content={completeContent} />
+                    </Text>
                 )}
 
                 {isQuiz && currentPage + 1 === QUIZ_LENGTH && (
