@@ -115,7 +115,8 @@ const Lesson = (props: any) => {
     };
 
     return (
-        <ViewContainer>
+        //  Add support to style prop -> style={{ minHeight: '100vh'}}
+        <ViewContainer> 
             {!isQuiz && (
                 <Box
                     as="a"
@@ -288,9 +289,9 @@ const Lesson = (props: any) => {
                     </Box>
                 )}
 
-                <Box>
+                <Box w="100%">
                     <Divider />
-                    <Box w="100%">
+                    <Box>
                         <Pagination
                             currentPage={currentPage}
                             handlePageClick={handlePageClick}
