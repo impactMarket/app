@@ -132,7 +132,7 @@ const Contribute = () => {
                 return toast.error(<Message id="errorOccurred" />);
             }
 
-            toast.success('Thanks for your contribution.');
+            toast.success('Thanks for your donation.');
             closeModal();
         } catch (error) {
             toast.error(<Message id="errorOccurred" />);

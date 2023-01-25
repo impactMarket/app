@@ -155,7 +155,7 @@ const DonateCard = (props: DonateCardProps) => {
             <Box mt={1.5}>
                 <Button h={3.8} isLoading={isLoading} onClick={onClick} w="100%">
                     <Text large medium>
-                        <String id={type} />
+                        <String id="donate" />
                     </Text>
                 </Button>
             </Box>
