@@ -25,13 +25,10 @@
       "./types",
       "./node_modules/@types"
     ],
+    "baseUrl": "./src",
+    "sourceMap": true,
     "incremental": true
   },
-  "include": [
-    "src/pages/**/*",
-    "./utils/**/*",
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "exclude": [".github", ".next", "_content_cache", "node_modules", "public"],
+  "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"]
 }
