@@ -1,0 +1,1852 @@
+{
+  "id": "pwa-view-shortcuts",
+  "label": "[PWA] [View] Shortcuts",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "seo-description": {
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "seo-keywords": {
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        },
+        "type": "Text"
+      },
+      "seo-image": {
+        "config": {
+          "label": "SEO Image",
+          "constraint": {},
+          "thumbnails": []
+        },
+        "type": "Image"
+      }
+    },
+    "default": {
+      "cards-default": {
+        "type": "Group",
+        "config": {
+          "label": "Cards",
+          "fields": {
+            "is-active": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is Active",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "description": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Description",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            },
+            "size": {
+              "type": "Boolean",
+              "config": {
+                "label": "Size",
+                "placeholder_false": "medium",
+                "placeholder_true": "large",
+                "default_value": false
+              }
+            }
+          }
+        }
+      },
+      "links-default": {
+        "type": "Group",
+        "config": {
+          "label": "Links",
+          "fields": {
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "donor": {
+      "cards-donor": {
+        "type": "Group",
+        "config": {
+          "label": "Cards",
+          "fields": {
+            "is-active": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is Active",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "description": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Description",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            },
+            "size": {
+              "type": "Boolean",
+              "config": {
+                "label": "Size",
+                "placeholder_false": "medium",
+                "placeholder_true": "large",
+                "default_value": false
+              }
+            }
+          }
+        }
+      },
+      "links-donor": {
+        "type": "Group",
+        "config": {
+          "label": "Links",
+          "fields": {
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "manager": {
+      "cards-manager": {
+        "type": "Group",
+        "config": {
+          "label": "Cards",
+          "fields": {
+            "is-active": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is Active",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "description": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Description",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            },
+            "size": {
+              "type": "Boolean",
+              "config": {
+                "label": "Size",
+                "placeholder_false": "medium",
+                "placeholder_true": "large",
+                "default_value": false
+              }
+            }
+          }
+        }
+      },
+      "links-manager": {
+        "type": "Group",
+        "config": {
+          "label": "Links",
+          "fields": {
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "pending-manager": {
+      "cards-manager": {
+        "type": "Group",
+        "config": {
+          "label": "Cards",
+          "fields": {
+            "is-active": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is Active",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "description": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Description",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            },
+            "size": {
+              "type": "Boolean",
+              "config": {
+                "label": "Size",
+                "placeholder_false": "medium",
+                "placeholder_true": "large",
+                "default_value": false
+              }
+            }
+          }
+        }
+      },
+      "links-manager": {
+        "type": "Group",
+        "config": {
+          "label": "Links",
+          "fields": {
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "beneficiary": {
+      "cards-beneficiary": {
+        "type": "Group",
+        "config": {
+          "label": "Cards",
+          "fields": {
+            "is-active": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is Active",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "description": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Description",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            },
+            "size": {
+              "type": "Boolean",
+              "config": {
+                "label": "Size",
+                "placeholder_false": "medium",
+                "placeholder_true": "large",
+                "default_value": false
+              }
+            }
+          }
+        }
+      },
+      "links-beneficiary": {
+        "type": "Group",
+        "config": {
+          "label": "Links",
+          "fields": {
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "ambassador": {
+      "cards-ambassador": {
+        "type": "Group",
+        "config": {
+          "label": "Cards",
+          "fields": {
+            "is-active": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is Active",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "description": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Description",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            },
+            "size": {
+              "type": "Boolean",
+              "config": {
+                "label": "Size",
+                "placeholder_false": "medium",
+                "placeholder_true": "large",
+                "default_value": false
+              }
+            }
+          }
+        }
+      },
+      "links-ambassador": {
+        "type": "Group",
+        "config": {
+          "label": "Links",
+          "fields": {
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    },
+    "council-member": {
+      "cards-council-member": {
+        "type": "Group",
+        "config": {
+          "label": "Cards",
+          "fields": {
+            "is-active": {
+              "type": "Boolean",
+              "config": {
+                "label": "Is Active",
+                "placeholder_false": "false",
+                "placeholder_true": "true",
+                "default_value": true
+              }
+            },
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "description": {
+              "type": "StructuredText",
+              "config": {
+                "label": "Description",
+                "placeholder": "",
+                "allowTargetBlank": true,
+                "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl"
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            },
+            "size": {
+              "type": "Boolean",
+              "config": {
+                "label": "Size",
+                "placeholder_false": "medium",
+                "placeholder_true": "large",
+                "default_value": false
+              }
+            }
+          }
+        }
+      },
+      "links-council-member": {
+        "type": "Group",
+        "config": {
+          "label": "Links",
+          "fields": {
+            "icon": {
+              "type": "Select",
+              "config": {
+                "label": "Icon",
+                "placeholder": "",
+                "options": [
+                  "alertCircle",
+                  "alertTriangle",
+                  "arrowDown",
+                  "arrowLeft",
+                  "arrowRight",
+                  "arrowUp",
+                  "barChart2",
+                  "barChart",
+                  "bell",
+                  "bookOpen",
+                  "box",
+                  "chat",
+                  "checkBold",
+                  "checkCircle",
+                  "check",
+                  "chevronDown",
+                  "chevronRight",
+                  "chevronUp",
+                  "clock",
+                  "close",
+                  "codepen",
+                  "coinStack",
+                  "coins",
+                  "coment",
+                  "copy",
+                  "creditCard",
+                  "discord",
+                  "edit",
+                  "ellipsis",
+                  "eye",
+                  "facebook",
+                  "filter",
+                  "flag",
+                  "flash",
+                  "forbidden",
+                  "github",
+                  "grid",
+                  "growth",
+                  "heartFilled",
+                  "heart",
+                  "help",
+                  "home",
+                  "image",
+                  "impactMarket",
+                  "infoCircle",
+                  "instagram",
+                  "key",
+                  "linkedIn",
+                  "loader",
+                  "lock",
+                  "logout",
+                  "mail",
+                  "medium",
+                  "menu",
+                  "minusCircle",
+                  "open",
+                  "phone",
+                  "plusCircle",
+                  "plus",
+                  "pocket",
+                  "questionCircle",
+                  "sad",
+                  "search",
+                  "send",
+                  "settings",
+                  "share",
+                  "smile",
+                  "spaceship",
+                  "target",
+                  "telegram",
+                  "tick",
+                  "token",
+                  "trash",
+                  "tray",
+                  "twitter",
+                  "upload",
+                  "userCheck",
+                  "userCross",
+                  "userMinus",
+                  "userPlus",
+                  "user",
+                  "users",
+                  "website",
+                  "youtube"
+                ]
+              }
+            },
+            "title": {
+              "type": "Text",
+              "config": {
+                "label": "Title",
+                "placeholder": ""
+              }
+            },
+            "url": {
+              "type": "Text",
+              "config": {
+                "label": "Url",
+                "placeholder": ""
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

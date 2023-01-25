@@ -285,6 +285,13 @@
         },
         "type": "Text"
       },
+      "string-claimUbi": {
+        "type": "Text",
+        "config": {
+          "label": "claimUbi",
+          "placeholder": ""
+        }
+      },
       "string-claimed": {
         "config": {
           "label": "claimed",
@@ -1405,6 +1412,13 @@
         },
         "type": "Text"
       },
+      "string-submitCommunity": {
+        "type": "Text",
+        "config": {
+          "label": "submitCommunity",
+          "placeholder": ""
+        }
+      },
       "string-submitToProposal": {
         "config": {
           "label": "submitToProposal",
@@ -1954,6 +1968,51 @@
           "placeholder": "Successfully claimed rewards",
           "allowTargetBlank": false,
           "single": "paragraph,strong"
+        }
+      },
+      "message-welcome": {
+        "type": "StructuredText",
+        "config": {
+          "label": "welcomeToImpactMarketDapp",
+          "placeholder": "Welcome to impactMarket DApp!",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "message-personalizeShortcuts": {
+        "type": "StructuredText",
+        "config": {
+          "label": "personalizeShortcuts",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "message-submittingCommunity": {
+        "type": "StructuredText",
+        "config": {
+          "label": "submittingCommunity",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "message-claimUbi": {
+        "type": "StructuredText",
+        "config": {
+          "label": "claimUbi",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "message-claimUbiDescription": {
+        "type": "StructuredText",
+        "config": {
+          "label": "claimUbiDescription",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
         }
       },
       "slices1": {
