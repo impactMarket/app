@@ -2,7 +2,7 @@
   "name": "app-impact-market",
   "version": "0.1.0",
   "engines": {
-    "node": ">=14"
+    "node": "16"
   },
   "scripts": {
     "dev": "next dev",
@@ -28,7 +28,7 @@
     "@ethersproject/providers": "5.7.1",
     "@ethersproject/strings": "5.7.0",
     "@impact-market/ui": "1.5.3",
-    "@impact-market/utils": "3.2.5",
+    "@impact-market/utils": "3.2.9",
     "@prismicio/client": "6.3.0",
     "@prismicio/helpers": "2.2.0",
     "@prismicio/next": "0.1.0",

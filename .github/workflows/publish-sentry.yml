@@ -12,26 +12,30 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
+      SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
+      SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
+      # SENTRY_URL: https://sentry.io/
+      PRISMIC_KEY: ${{ secrets.PRISMIC_KEY }}
+      NEXT_PUBLIC_BASE_API_URL: https://impactmarket-api-production.herokuapp.com
     steps:
       - uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16
-      - run: npm build
-
-  publish-sentry:
-    needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
+      - name: Run install
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: install # will run `yarn install` command
+      - name: Run build
+        uses: borales/actions-yarn@v4
+        with:
+          cmd: build
+      - name: Set SENTRY_RELEASE
+        run: export SENTRY_RELEASE=`sentry-cli releases propose-version`
       - name: Create Sentry release
         uses: getsentry/action-release@v1
-        env:
-          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
-          SENTRY_ORG: ${{ secrets.SENTRY_ORG }}
-          SENTRY_PROJECT: ${{ secrets.SENTRY_PROJECT }}
-          # SENTRY_URL: https://sentry.io/
-          DRY_RUN_SENTRY_UPLOADS: false
         with:
           environment: production
-          sourcemaps: ./next
+          sourcemaps: ./.next/server/pages

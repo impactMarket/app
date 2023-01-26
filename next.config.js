@@ -50,18 +50,21 @@ const sentryWebpackPluginOptions = {
     //   release, url, org, project, authToken, configFile, stripPrefix,
     //   urlPrefix, include, ignore
 
-    // eslint-disable-next-line no-process-env
-    dryRun: (process.env.DRY_RUN_SENTRY_UPLOADS || 'true') === 'true',
-    hideSourceMaps: false,
-    setCommits: {
-        auto: true,
-        ignoreMissing: true,
-    },
-    validate: true,
-    deploy: {
-        // eslint-disable-next-line no-process-env
-        env: process.env.NODE_ENV
-    }
+    dryRun: true,
+    // hideSourceMaps: false,
+    // setCommits: {
+    //     auto: true,
+    //     ignoreMissing: true,
+    // },
+    // validate: true,
+    // deploy: {
+    //     // eslint-disable-next-line no-process-env
+    //     env: process.env.NODE_ENV
+    // },
+    // ignore: [
+    //     '**/chunks/**',
+    //     '**/cache/**',
+    // ]
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
