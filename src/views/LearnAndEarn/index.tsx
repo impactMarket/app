@@ -49,7 +49,8 @@ const LearnAndEarn = (props: any) => {
     const [currentPage, setCurrentPage] = useState(+getByKey('page') ?? 0);
     const [search, setSearch] = useState(getByKey('search') ?? '');
     const [state, setState] = useState(getByKey('state') || 'available');
-    const { data, levelsLoading } = useLevels(levels);
+    const [dataLoaded, setDataLoaded] = useState(true);
+    const { data } = useLevels(levels);
 
     const filteredData = data
         .filter((item: any) => item.title.toLowerCase().indexOf(search) !== -1)
@@ -127,8 +128,12 @@ const LearnAndEarn = (props: any) => {
         setSearch(getByKey('search')?.toString().toLowerCase() || '');
     }, [getByKey('search')]);
 
+    useEffect(() => {
+        setTimeout(() => setDataLoaded(false), 1000)
+    }, [data]);
+
     return (
-        <ViewContainer isLoading={levelsLoading && !laeData && !filteredData}>
+        <ViewContainer isLoading={dataLoaded}>
             <Box flex style={{ justifyContent: 'space-between' }}>
                 <Box flex fDirection={'column'}>
                     <Display g900 medium mb=".25rem">
@@ -201,7 +206,6 @@ const LearnAndEarn = (props: any) => {
                     nextIcon="arrowRight"
                     nextLabel={t('next')}
                     pageCount={totalPages(filteredData.length)}
-                    pb={2}
                     previousIcon="arrowLeft"
                     previousLabel={t('previous')}
                 />

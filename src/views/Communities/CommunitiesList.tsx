@@ -68,7 +68,6 @@ const CommunitiesList = (props: any) => {
                                 nextIcon="arrowRight"
                                 nextLabel="Next"
                                 pageCount={pageCount}
-                                pb={2}
                                 previousIcon="arrowLeft"
                                 previousLabel="Previous"
                             />
