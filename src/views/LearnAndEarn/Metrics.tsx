@@ -1,4 +1,12 @@
-import { Box, Button, Card, Display, Grid, ProgressCard, toast } from '@impact-market/ui';
+import {
+    Box,
+    Button,
+    Card,
+    Display,
+    Grid,
+    ProgressCard,
+    toast
+} from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useLearnAndEarn } from '@impact-market/utils/useLearnAndEarn';
 import { useSelector } from 'react-redux';
@@ -13,7 +21,7 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const CardsGrid = styled(Grid)`
     flex-wrap: wrap;
-    
+
     .grid-col {
         flex: 1;
         min-width: 17rem;
@@ -26,7 +34,11 @@ const RewardsButton = styled(Button)`
 `;
 
 const Metrics = (props: any) => {
-    const { amount = false, levelId = false, signature: signatures = false } = props.claimRewards;
+    const {
+        amount = false,
+        levelId = false,
+        signature: signatures = false
+    } = props.claimRewards;
     const auth = useSelector(selectCurrentUser);
     const { claimRewardForLevels } = useLearnAndEarn();
     const [isLoading, setIsLoading] = useState(false);
@@ -42,7 +54,7 @@ const Metrics = (props: any) => {
 
     const totalData = [
         { ...totals?.level, label: t('levelsCompleted') },
-        { ...totals?.lesson, label: t('lessonsCompleted') },
+        { ...totals?.lesson, label: t('lessonsCompleted') }
     ];
 
     const hasRewards = amount && levelId && signatures;
@@ -68,35 +80,33 @@ const Metrics = (props: any) => {
 
         const { transactionHash } = response;
 
-        await fetch(
-            `${config.baseApiUrl}/learn-and-earn/levels`,
-            {
-                body: JSON.stringify({
-                    transactionHash
-                }),
-                headers: {
-                    Accept: 'application/json',
-                    Authorization: `Bearer ${auth.token}`,
-                    'Content-Type':
-                        'application/json'
-                },
-                method: 'PUT'
-            }
-        );
-        
+        await fetch(`${config.baseApiUrl}/learn-and-earn/levels`, {
+            body: JSON.stringify({
+                transactionHash
+            }),
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${auth.token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT'
+        });
+
         toast.success(<Message id="successfullyClaimed" />);
         setIsLoading(false);
     };
-        
 
     return (
-        <CardsGrid colSpan={1} cols={{ lg: 3,md: 1, sm: 3, xs: 1 }} margin="1.5rem -.75rem" flex>
+        <CardsGrid
+            colSpan={1}
+            cols={{ lg: 3, md: 1, sm: 3, xs: 1 }}
+            margin="1.5rem -.75rem"
+            flex
+        >
             {totalData.map((item) => (
                 <ProgressCard
                     label={item.label}
-                    progress={
-                        item?.completed ?? (item?.received / item?.total) * 100
-                    }
+                    progress={(item?.completed / item?.total) * 100}
                     pathColor="p600"
                 >
                     <Display semibold>
@@ -112,16 +122,33 @@ const Metrics = (props: any) => {
                     </Display>
                 </ProgressCard>
             ))}
-            <Card flex style={{alignItems: 'center', justifyContent: 'center'}} h="100%">
-                <Box flex fDirection={'column'} style={{alignItems: 'center'}}>
-                    <RichText center g500 medium small mb="1rem" content={hasRewards ? props.copy.success : props.copy.failed} />
+            <Card
+                flex
+                style={{ alignItems: 'center', justifyContent: 'center' }}
+                h="100%"
+            >
+                <Box
+                    flex
+                    fDirection={'column'}
+                    style={{ alignItems: 'center' }}
+                >
+                    <RichText
+                        center
+                        g500
+                        medium
+                        small
+                        mb="1rem"
+                        content={
+                            hasRewards ? props.copy.success : props.copy.failed
+                        }
+                    />
                     <RewardsButton
                         onClick={claimRewards}
                         {...disabled}
-                        disabled={!(hasRewards)}
+                        disabled={!hasRewards}
                         isLoading={isLoading}
                     >
-                        <String id="claimRewards" />  
+                        <String id="claimRewards" />
                     </RewardsButton>
                 </Box>
             </Card>

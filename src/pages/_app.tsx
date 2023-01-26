@@ -86,7 +86,7 @@ const InnerApp = (props: AppProps) => {
             {isLoading ? (
                 <ViewContainer isLoading />
             ) : (
-                <>{authorized && <Content style={{paddingTop: '65px'}} {...pageProps} />}</>
+                <>{authorized && <Content {...pageProps} />}</>
             )}
         </AppContainer>
     );
