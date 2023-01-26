@@ -4,13 +4,11 @@
 name: Sentry Release
 
 on:
-  # release:
-  #   types: [created]
-  push:
-    branches: [ "feature/better-error-reporting" ]
+   release:
+     types: [created]
 
 jobs:
-  build:
+  release:
     runs-on: ubuntu-latest
     env:
       SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_AUTH_TOKEN }}
