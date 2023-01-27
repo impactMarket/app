@@ -18,6 +18,7 @@ import Input from '../components/Input';
 import Message from '../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
+import processTransactionError from '../utils/processTransactionError';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 //  Get managers community from thegraph
@@ -78,11 +79,9 @@ const AddManager = () => {
 
                     return setIsLoading(false)
                 }
-                catch(e) {
+                catch(error) {
                     //  Todo: get error name directly from backend to write a specific message (edward or benardo)
-                    console.log(e);
-                    console.log(community?.id, submitData?.address);
-                    Sentry.captureException(e);
+                    processTransactionError(error, 'add_manager');
 
                     toast.error(<Message id="errorOccurred" />);
 
