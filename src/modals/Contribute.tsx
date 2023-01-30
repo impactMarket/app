@@ -20,6 +20,7 @@ import BigNumber from 'bignumber.js';
 import Message from '../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
+import processTransactionError from '../utils/processTransactionError';
 import styled from 'styled-components';
 import useFilters from '../hooks/useFilters';
 
@@ -106,7 +107,8 @@ const Contribute = () => {
             toast.success('Approved successfully.');
             setApproved(contribution);
             setStep(1);
-        } catch (e) {
+        } catch (error) {
+            processTransactionError(error, 'approve');
             toast.error(<Message id="errorOccurred" />);
         } finally {
             setLoading(false);
@@ -135,6 +137,7 @@ const Contribute = () => {
             toast.success('Thanks for your donation.');
             closeModal();
         } catch (error) {
+            processTransactionError(error, 'donate');
             toast.error(<Message id="errorOccurred" />);
         } finally {
             setLoading(false);

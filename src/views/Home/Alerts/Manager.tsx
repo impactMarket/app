@@ -6,6 +6,7 @@ import { useManager } from '@impact-market/utils';
 import { useSelector } from 'react-redux';
 import Message from '../../../libs/Prismic/components/Message';
 import React, { useState } from 'react';
+import processTransactionError from '../../../utils/processTransactionError';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const ManagerAlerts = () => {
@@ -39,8 +40,8 @@ const ManagerAlerts = () => {
             // TODO: on success, setFundsReceived with the received value
             setRequestSuccess(true);
         }
-        catch(error: any) {
-            console.log(error);
+        catch(error) {
+            processTransactionError(error, 'request_funds');
 
             setLoading(false);
             
