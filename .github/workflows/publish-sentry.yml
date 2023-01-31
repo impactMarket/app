@@ -36,4 +36,5 @@ jobs:
         uses: getsentry/action-release@v1
         with:
           environment: production
-          sourcemaps: ./.next/server/pages
+          sourcemaps: ./.next
+          url_prefix: ~/_next
