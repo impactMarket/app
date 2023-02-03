@@ -3,6 +3,7 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
+import { BrowserTracing } from "@sentry/tracing";
 import { Offline as OfflineIntegration } from "@sentry/integrations";
 import config from './config';
 
@@ -14,7 +15,7 @@ Sentry.init({
 	enabled: process.env.NODE_ENV !== 'development' && config.useTestNet !== true,
 	integrations: [
 		new OfflineIntegration(),
-		new Sentry.BrowserTracing(),
+		new BrowserTracing(),
 	],
 	// Adjust this value in production, or use tracesSampler for greater control
 	tracesSampler: samplingContext => {

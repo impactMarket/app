@@ -35,6 +35,7 @@ const useGuard = (options: UseGuardType) => {
                 toast.error('Looks like your address has changed, please reconnect your wallet.');
             }
         };
+
         connectionCheck();
     }, [address, auth?.user?.address]);
 

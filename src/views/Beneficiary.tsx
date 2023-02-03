@@ -114,13 +114,13 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         try {
             toggleLoadingButton(true);
 
-            await claim().then(async ({ status }) => {
+            await claim().then(({ status }) => {
                 if (status) {
                     const communityPosition: {
                         latitude: number;
                         longitude: number;
                     } = community?.gps;
-                    let communityLocation = { coords: communityPosition };
+                    const communityLocation = { coords: communityPosition };
 
                     navigator.permissions
                         .query({ name: 'geolocation' })

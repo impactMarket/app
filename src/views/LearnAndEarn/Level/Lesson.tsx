@@ -115,7 +115,8 @@ const Lesson = (props: any) => {
     };
 
     return (
-        <ViewContainer style={{ minHeight: '100vh'}}>
+        //  Add support to style prop -> style={{ minHeight: '100vh'}}
+        <ViewContainer> 
             {!isQuiz && (
                 <Box
                     as="a"
