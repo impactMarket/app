@@ -1,13 +1,14 @@
 import { ambassadorRoutes, beneficiaryRoutes, councilMemberRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
 import { getUserTypes, userAmbassador, userBeneficiary, userCouncilMember, userManager } from '../utils/users';
-import { pageview } from '../helpers/gtag';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
+import { toast } from '@impact-market/ui';
 import { useEffect, useState } from 'react';
 import { useGetUserMutation } from '../api/user';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import langConfig from '../../locales.config';
+import useWallet from '../hooks/useWallet';
 
 type UseGuardType = {
     withPreview?: boolean;
@@ -19,25 +20,23 @@ const useGuard = (options: UseGuardType) => {
     const [authorized, setAuthorized] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [getUser] = useGetUserMutation();
+    const { address, disconnect} = useWallet();
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
-    const { asPath, locale, push } = router;
+    const { asPath, locale, push } = router;
 
-    const handleRouteStart = (_: any, { shallow }: any) => {
-        if(!shallow) {
-            setIsLoading(true);
-        }
-    }
 
-    const handleRouteComplete = (url: string) => {
-        pageview(url);
-
-        if (isLoading) {
-            setIsLoading(false);
-        }
-    }
+    useEffect(() => {
+        const connectionCheck = async () => {
+            if (!!auth?.user?.address && !!address && (address !== auth?.user?.address)) {
+                await disconnect();
+                toast.error('Looks like your address has changed, please reconnect your wallet.');
+            }
+        };
+        connectionCheck();
+    }, [address, auth?.user?.address]);
 
     useEffect(() => {
         const userLang = langConfig.find(({ code, shortCode }) => auth?.user?.language === code || auth?.user?.language === shortCode)?.shortCode;
@@ -106,17 +105,6 @@ const useGuard = (options: UseGuardType) => {
         };
 
         authCheck();
-
-        router.events.on('routeChangeStart', handleRouteStart);
-
-        router.events.on('routeChangeComplete', handleRouteComplete);
-
-        // unsubscribe from events in useEffect return function
-        return () => {
-            router.events.off('routeChangeStart', handleRouteStart);
-
-            router.events.off('routeChangeComplete', handleRouteComplete);
-        };
     }, [auth?.token, router.pathname]);
 
     return { authorized, isLoading };
