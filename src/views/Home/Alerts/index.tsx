@@ -37,7 +37,7 @@ const Alerts = () => {
     }
 
     return (
-        <Box w="100%" style={{ padding: "1rem 1rem 0 1rem" }}>
+        <Box w="100%" style={{ padding: "0.5rem 0.5rem 0 0.5rem" }}>
             {!user && 
                 <Alert 
                     button={connectWallet()} 
