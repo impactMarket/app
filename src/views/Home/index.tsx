@@ -60,8 +60,8 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
                 <Alerts/>
                 {cards?.map((card: any, key: React.Key) => (
                     card.isActive && card.title && card.url && (
-                        <Col colSize={{ sm: card.size ? 12 : 6, xs: 12}}>
-                            <Link href={card.url ||'/'} passHref key={key}>
+                        <Col colSize={{ sm: card.size ? 12 : 6, xs: 12}} key={key}>
+                            <Link href={card.url ||'/'} passHref>
                                 <Card as="a" flex style={{ alignItems: "center", justifyContent: "space-between" }}>
                                     <Box inlineFlex style={{ alignItems: "center", gap: "1rem" }}>
                                         <CircledIcon icon={card.icon} large /> 

@@ -245,21 +245,21 @@ const Sidebar = () => {
             {!!menu?.length && (
                 <SidebarMenuGroup>
                     {menu?.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} flag={data?.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
+                        <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
                     ))}
                 </SidebarMenuGroup>
             )}             
             {!!data?.commonMenu?.length && (
                 <SidebarMenuGroup isCollapsible={!!data?.menus?.length} title={!!data?.menus?.length ? 'impactMarket' : undefined}>
                     {data?.commonMenu.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} flag={data?.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
+                        <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
                     ))}
                 </SidebarMenuGroup>
             )}
             {!!data?.footerMenu?.length && (
                 <SidebarMenuGroup mt="auto">
                         {footerMenu()?.map((item, index) => item?.isVisible && (
-                            <MenuItem {...item} flag={data?.flags.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
+                            <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
                         ))}
                 </SidebarMenuGroup>
             )}
