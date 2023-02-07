@@ -59,10 +59,10 @@ const BeneficiaryAlerts = () => {
         <> 
             {isReady &&
                 <>
-                    {(fundsRemainingDays <= 3 && fundsRemainingDays > 0) &&
+                    {(fundsRemainingDays <= 3 && fundsRemainingDays > 0) && !auth?.user?.roles.includes('manager') &&
                         <Alert icon="alertTriangle" mb={1} message={<Message id="communityFundsWillRunOut" medium small variables={{ count: fundsRemainingDays, timeUnit: t("days").toLowerCase() }} />} warning />
                     }
-                    {!hasFunds &&
+                    {!hasFunds && !auth?.user?.roles.includes('manager') &&
                         <Alert error icon="alertCircle" mb={1} message={<Message id="communityFundsHaveRunOut" medium small/>} />
                     }
                     {!auth?.user?.active &&

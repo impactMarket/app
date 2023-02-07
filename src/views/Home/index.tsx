@@ -20,7 +20,7 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { view } = usePrismicData();
     const { user } = useSelector(selectCurrentUser);
-    const userRoles = user?.roles
+    const userRoles = user?.roles ?? ['']
    
     const [cards, setCards] = useState() as any[]
     const [links, setLinks] = useState() as any[]
@@ -60,8 +60,8 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
                 <Alerts/>
                 {cards?.map((card: any, key: React.Key) => (
                     card.isActive && card.title && card.url && (
-                        <Col colSize={{ sm: card.size ? 12 : 6, xs: 12}} padding={0.5}>
-                            <Link href={card.url ||'/'} passHref key={key}>
+                        <Col colSize={{ sm: card.size ? 12 : 6, xs: 12}} padding={0.5} key={key}>
+                            <Link href={card.url ||'/'} passHref>
                                 <Card as="a" flex style={{ alignItems: "center", justifyContent: "space-between" }} h="100%">
                                     <Box inlineFlex style={{ alignItems: "center", gap: "1rem" }}>
                                         <CircledIcon icon={card.icon} large /> 

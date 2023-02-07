@@ -21,6 +21,7 @@ import ShimmerEffect from '../../components/ShimmerEffect';
 import String from '../../libs/Prismic/components/String';
 import UserCard from '../../components/UserCard';
 import config from '../../../config';
+import processTransactionError from '../../utils/processTransactionError';
 import useManagers from '../../hooks/useManagers';
 
 const Managers = ({
@@ -55,6 +56,7 @@ const Managers = ({
             }
         } catch (e) {
             console.log(e);
+            processTransactionError(e, 'remove_manager');
 
             toast.error(<Message id="errorOccurred" />);
         }
