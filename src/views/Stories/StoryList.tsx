@@ -230,20 +230,32 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                             </Link>
                                         </Box>
                                         <Box ml={1} mr={1}>
-                                            <Link href={`/communities/${story?.community?.id}`} passHref>
-                                                <TextLink>
-                                                    <Text g700 semibold>
-                                                        {story?.community?.name}
-                                                    </Text>
-                                                </TextLink>
-                                            </Link>
+                                            <Box show={{ sm: 'flex', xs: 'none' }}>
+                                                <Link href={`/communities/${story?.community?.id}`} passHref>
+                                                    <TextLink>
+                                                        <Text g700 semibold>
+                                                            {story?.community?.name}
+                                                        </Text>
+                                                    </TextLink>
+                                                </Link>
+                                            </Box>
+                                            <Box show={{ sm: 'none', xs: 'flex' }}>
+                                                <Link href={`/communities/${story?.community?.id}`} passHref>
+                                                    <TextLink>
+                                                        <Trim g700 semibold hideSeeMore rows={1} limit={20} message={story?.community?.name}/>
+                                                    </TextLink>
+                                                </Link>
+                                            </Box>
                                             <Text as="div" g500 regular small>
                                                 <Box fLayout="center start" flex >
                                                     <CountryFlag countryCode={story?.community?.country} height={1.2} mr={0.5} />
-                                                    <Box>
+                                                    <Box show={{ sm: 'flex', xs: 'none' }}>
                                                         <Text>
                                                             {story?.community?.city},{' '}{getCountryNameFromInitials(story?.community?.country)}
                                                         </Text>
+                                                    </Box>
+                                                    <Box show={{ sm: 'none', xs: 'flex' }}>
+                                                        <Trim hideSeeMore rows={1} limit={20} message={`${story?.community?.city}, ${getCountryNameFromInitials(story?.community?.country)}`}/>
                                                     </Box>
                                                 </Box>
                                             </Text>

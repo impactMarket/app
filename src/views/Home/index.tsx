@@ -60,9 +60,9 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
                 <Alerts/>
                 {cards?.map((card: any, key: React.Key) => (
                     card.isActive && card.title && card.url && (
-                        <Col colSize={{ sm: card.size ? 12 : 6, xs: 12}} key={key}>
+                        <Col colSize={{ sm: card.size ? 12 : 6, xs: 12}} padding={0.5} key={key}>
                             <Link href={card.url ||'/'} passHref>
-                                <Card as="a" flex style={{ alignItems: "center", justifyContent: "space-between" }}>
+                                <Card as="a" flex style={{ alignItems: "center", justifyContent: "space-between" }} h="100%">
                                     <Box inlineFlex style={{ alignItems: "center", gap: "1rem" }}>
                                         <CircledIcon icon={card.icon} large /> 
                                         <Box>
@@ -86,7 +86,7 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
                     )
                 ))}
                 {(!!links?.length) && (
-                    <Box w="100%">
+                    <Box w="100%" style={{ padding: "0.5rem" }}>
                         <Card flex fDirection="column" style={{ gap: "1rem" }}>
                             {links?.map((link: any, key: React.Key) => (
                                 <Link href={link.url || '/'} passHref key={key}>
