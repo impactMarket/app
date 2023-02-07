@@ -134,10 +134,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                     } = community?.gps;
                     const communityLocation = { coords: communityPosition };
 
-                    navigator.permissions
+                    navigator?.permissions
                         .query({ name: 'geolocation' })
                         .then(async (permissionStatus) => {
-                            if (permissionStatus.state == 'granted') {
+                            if (permissionStatus?.state === 'granted') {
                                 return (await getLocation()) as {
                                     coords: {
                                         latitude: number | null;
