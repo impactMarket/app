@@ -30,7 +30,7 @@ const useGuard = (options: UseGuardType) => {
 
     useEffect(() => {
         const connectionCheck = async () => {
-            if (!!auth?.user?.address && !!address && (address !== auth?.user?.address)) {
+            if (!!auth?.user?.address && !!address && (address.toLowerCase() !== auth?.user?.address.toLowerCase())) {
                 await disconnect();
                 toast.error('Looks like your address has changed, please reconnect your wallet.');
             }
