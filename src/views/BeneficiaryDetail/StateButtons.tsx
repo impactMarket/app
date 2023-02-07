@@ -4,6 +4,7 @@ import { useManager } from '@impact-market/utils';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import String from '../../libs/Prismic/components/String';
+import processTransactionError from '../../utils/processTransactionError';
 
 const StateButtons: React.FC<{ beneficiary: any, community: string }> = props => {
     const { beneficiary, community } = props;
@@ -78,7 +79,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
             setLoadingRemoveButton(false);
         }
         catch(error) {
-            console.log(error);
+            processTransactionError(error, 'remove_beneficiary');
 
             setLoadingRemoveButton(false);
 

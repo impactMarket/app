@@ -1,6 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Alert, Box, Button, CircledIcon, Col, ModalWrapper, Row, Text, toast, useModal } from '@impact-market/ui';
 import { SubmitHandler, useForm } from "react-hook-form";
+import { getCommunityBeneficiaries } from '../graph/user';
 import { gql, useQuery } from '@apollo/client';
 import { mutate } from 'swr';
 import { selectCurrentUser } from '../state/slices/auth';
@@ -13,6 +14,7 @@ import Input from '../components/Input';
 import Message from '../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import String from '../libs/Prismic/components/String';
+import processTransactionError from '../utils/processTransactionError';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 //  Get managers community from thegraph
@@ -23,8 +25,6 @@ const beneficiariesQuery = gql`
         }
     }
 `;
-
-import { getCommunityBeneficiaries } from '../graph/user';
 
 const AddBeneficiary = () => {
     const { modals } = usePrismicData();
@@ -103,6 +103,8 @@ const AddBeneficiary = () => {
                                 toast.success(<Message id="beneficiaryAdded" />);
                             }
                             else {
+                                processTransactionError(error, 'add_beneficiary');
+
                                 setError({
                                     description: t('pleaseTryAgainLater'),
                                     state: true,
@@ -112,8 +114,8 @@ const AddBeneficiary = () => {
         
                             return setIsLoading(false)
 
-                        }).catch((e) => {
-                            console.log(e)
+                        }).catch((error) => {
+                            processTransactionError(error, 'add_beneficiary');
 
                             setError({
                                 description: addBeneficiaryValoraErrorDescription[0].text,
@@ -127,7 +129,7 @@ const AddBeneficiary = () => {
                     return setIsLoading(false)
                 }
                 catch(e) {
-                    console.log(e);
+                    processTransactionError(error, 'add_beneficiary');
 
                     setError({
                         description: t('pleaseTryAgainLater'),

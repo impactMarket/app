@@ -114,7 +114,7 @@ const LearnAndEarn = (props: any) => {
 
     const selectedCategory =
         categoryItems.find((el) => el.id === getByKey('category') ?? '')
-            ?.title || t('category');
+            ?.title || t('all');
 
     useEffect(() => {
         setCurrentPage(
