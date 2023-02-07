@@ -57,13 +57,14 @@ const Map = (props: MapProps) => {
             claims.forEach((claim) =>
                 bounds.extend([claim?.longitude, claim?.latitude])
             );
-            bounds.setNorthEast({
-                lat: bounds.getNorthEast().lat + 2,
-                lng: bounds.getNorthEast().lng + 2
+
+            bounds?.setNorthEast({
+                lat: bounds?.getNorthEast()?.lat + 2 || 52.023,
+                lng: bounds?.getNorthEast()?.lng + 2 || 39.80224
             });
-            bounds.setSouthWest({
-                lat: bounds.getSouthWest().lat - 2,
-                lng: bounds.getSouthWest().lng - 2
+            bounds?.setSouthWest({
+                lat: bounds?.getSouthWest()?.lat - 2 || -36.603722,
+                lng: bounds?.getSouthWest()?.lng - 2 || -10.381592
             });
 
             const map = new mapboxgl.Map({
@@ -76,7 +77,7 @@ const Map = (props: MapProps) => {
 
             const claimFeatures = claims.map((claim) => ({
                 geometry: {
-                    coordinates: [claim.longitude, claim.latitude],
+                    coordinates: [claim?.longitude, claim?.latitude],
                     type: 'Point'
                 },
                 type: 'Feature'
