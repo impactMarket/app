@@ -187,9 +187,7 @@ const Sidebar = () => {
 
     const { userConfig, extractFromConfig } = usePrismicData();
 
-    const { address } = useWallet();
-
-    const menu = getUserMenu(!!user?.address && !!address && (address !== user?.address) ? [''] : user?.roles);
+    const menu = getUserMenu(!!user ? user?.roles : ['']);
 
     const checkRoute = (route: string | undefined) =>
         typeof route === 'string' ? asPath.split('?')[0] === route : false;
