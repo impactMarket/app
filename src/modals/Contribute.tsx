@@ -53,7 +53,7 @@ const ButtonWrapper = styled(Button)`
 `;
 
 const AlertWrapper = styled(Box)`
-    a{
+    a {
         font-size:0.875rem;
     }
 `;
@@ -101,7 +101,9 @@ const Contribute = () => {
             const response = await approve(amount, contractAddress);
 
             if (!response?.status) {
-                return toast.error('error');
+                processTransactionError(response, 'approve');
+                
+                return toast.error(<Message id="errorOccurred" />);
             }
 
             toast.success('Approved successfully.');
@@ -131,6 +133,8 @@ const Contribute = () => {
                 : await donateToTreasury(amount);
 
             if (!response?.status) {
+                processTransactionError(response, 'donate');
+
                 return toast.error(<Message id="errorOccurred" />);
             }
 

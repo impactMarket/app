@@ -37,6 +37,7 @@ import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 import TextLink from '../components/TextLink';
 import config from '../../config';
+import styled from 'styled-components';
 import useCommunity from '../hooks/useCommunity';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
@@ -49,6 +50,17 @@ const communityQuery = gql`
         communityEntity(id: $id) {
             incrementInterval
         }
+    }
+`;
+
+const AccordionComponent = styled(Accordion)`
+    a {
+        flex-wrap: wrap;
+        max-width: 100%;
+    }
+
+    p {
+        max-width: 100%;
     }
 `;
 
@@ -358,7 +370,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                 />
             </Box>
             {view?.data?.faq?.length > 0 && (
-                <Accordion mt={2}>
+                <AccordionComponent mt={2}>
                     {view.data.faq.map((faq: any, index: number) => (
                         <AccordionItem
                             key={index}
@@ -368,7 +380,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                             <RichText content={faq.content} g500 small />
                         </AccordionItem>
                     ))}
-                </Accordion>
+                </AccordionComponent>
             )}
         </ViewContainer>
     );
