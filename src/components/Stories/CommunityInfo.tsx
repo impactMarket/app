@@ -25,7 +25,7 @@ const CommmunityInfo = (props: any) => {
     const { asPath } = router;
 
     const copyToClipboard = (content: string) => {
-        navigator.clipboard.writeText(content);
+        navigator?.clipboard.writeText(content);
         toast.success(<Message id="copiedAddress" />);
     };
 

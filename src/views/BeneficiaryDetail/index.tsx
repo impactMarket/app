@@ -56,7 +56,7 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
     }, []);
 
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(user?.address);
+        navigator?.clipboard.writeText(user?.address);
 
         toast.success(<Message id="copiedAddress" />);
     }
