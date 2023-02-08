@@ -66,7 +66,7 @@ const Reports: React.FC<{ isLoading?: boolean }> = props => {
     }, []);
 
     const copyToClipboard = (content: string) => {
-        navigator.clipboard.writeText(content);
+        navigator?.clipboard.writeText(content);
         toast.success(<Message id="copiedAddress" />);
     };
 

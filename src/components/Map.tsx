@@ -88,7 +88,7 @@ const Map = (props: MapProps) => {
 
             if (
                 /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
-                    navigator.userAgent
+                    navigator?.userAgent
                 )
             ) {
                 // true for mobile device

@@ -2,13 +2,11 @@ import { ambassadorRoutes, beneficiaryRoutes, councilMemberRoutes, managerRoutes
 import { getUserTypes, userAmbassador, userBeneficiary, userCouncilMember, userManager } from '../utils/users';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
-import { toast } from '@impact-market/ui';
 import { useEffect, useState } from 'react';
 import { useGetUserMutation } from '../api/user';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import langConfig from '../../locales.config';
-import useWallet from '../hooks/useWallet';
 
 type UseGuardType = {
     withPreview?: boolean;
@@ -20,24 +18,12 @@ const useGuard = (options: UseGuardType) => {
     const [authorized, setAuthorized] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [getUser] = useGetUserMutation();
-    const { address, disconnect} = useWallet();
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
     const { asPath, locale, push } = router;
 
-
-    useEffect(() => {
-        const connectionCheck = async () => {
-            if (!!auth?.user?.address && !!address && (address.toLowerCase() !== auth?.user?.address.toLowerCase())) {
-                await disconnect();
-                toast.error('Looks like your address has changed, please reconnect your wallet.');
-            }
-        };
-
-        connectionCheck();
-    }, [address, auth?.user?.address]);
 
     useEffect(() => {
         const userLang = langConfig.find(({ code, shortCode }) => auth?.user?.language === code || auth?.user?.language === shortCode)?.shortCode;

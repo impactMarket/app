@@ -172,7 +172,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
     }
 
     const copyToClipboard = () => {
-        navigator.clipboard.writeText(auth?.user?.address);
+        navigator?.clipboard.writeText(auth?.user?.address);
 
         toast.success(<Message id="copiedAddress" />);
     }

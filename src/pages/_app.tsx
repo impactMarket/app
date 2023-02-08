@@ -41,10 +41,15 @@ const InnerApp = (props: AppProps) => {
 
     useEffect(() => {
         const init = async () => {
-            try {
-                // Prompt user to allow/block access to his location coordinates (no need to "await", we just want the User to allow/block)
-                getLocation();
+            navigator?.permissions && navigator?.permissions?.query({name: 'geolocation'})
+                .then((PermissionStatus) => {
+                    if (PermissionStatus?.state === 'prompt') {
+                        // Prompt user to allow/block access to his location coordinates (no need to "await", we just want the User to allow/block)
+                        getLocation();
+                    }
+                });
 
+            try {
                 // Get and save to reducer Exchange Rates
                 const rates = await getRates().unwrap();
 
