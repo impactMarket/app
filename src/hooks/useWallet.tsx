@@ -82,7 +82,7 @@ const useWallet = () => {
                 })
             )
 
-            localStorage.clear();
+            localStorage.removeItem('walletconnect');
 
             if (!!callback) {
                 await callback();
