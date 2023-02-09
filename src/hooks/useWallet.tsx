@@ -82,6 +82,8 @@ const useWallet = () => {
                 })
             )
 
+            localStorage.clear();
+
             if (!!callback) {
                 await callback();
             }
