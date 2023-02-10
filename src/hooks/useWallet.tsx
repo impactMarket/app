@@ -2,12 +2,13 @@ import { Alfajores, Mainnet } from 'react-celo-impactmarket';
 import { AppContext } from '../components/WrapperProvider';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
-import { removeCookies, setCookies } from 'cookies-next';
-import { removeCredentials, setCredentials, setSignature } from '../state/slices/auth';
+import { setCookies } from 'cookies-next';
+import { setCredentials } from '../state/slices/auth';
 import { useCreateUserMutation } from '../api/user';
 import { useDispatch } from 'react-redux';
 import React from 'react';
 import config from '../../config';
+import useCache from '../hooks/useCache';
 
 const network = config.useTestNet ? Alfajores : Mainnet;
 
@@ -15,6 +16,8 @@ const useWallet = () => {
     const { address, connect: connectFromHook, disconnect: disconnectFromHook, isReady, network: walletNetwork } = React.useContext(AppContext);
 
     const dispatch = useDispatch();
+
+    const { cacheClear } = useCache();
 
     const wrongNetwork = network?.chainId !== walletNetwork?.chainId;
 
@@ -69,20 +72,8 @@ const useWallet = () => {
 
     const disconnect = async (callback?: Function) => {
         try {
+            cacheClear();
             await disconnectFromHook();
-
-            dispatch(removeCredentials());
-            removeCookies('AUTH_TOKEN', { path: '/' });
-            removeCookies('SIGNATURE', { path: '/' });
-            removeCookies('MESSAGE', { path: '/' });
-
-            dispatch(setSignature({
-                    message: null,
-                    signature: null
-                })
-            )
-
-            localStorage.removeItem('walletconnect');
 
             if (!!callback) {
                 await callback();

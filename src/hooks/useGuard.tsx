@@ -7,6 +7,8 @@ import { useGetUserMutation } from '../api/user';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import langConfig from '../../locales.config';
+import useCache from '../hooks/useCache';
+
 
 type UseGuardType = {
     withPreview?: boolean;
@@ -18,11 +20,30 @@ const useGuard = (options: UseGuardType) => {
     const [authorized, setAuthorized] = useState(false);
     const [isLoading, setIsLoading] = useState(true);
     const [getUser] = useGetUserMutation();
+    const { cacheClear } = useCache();
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
 
     const { asPath, locale, push } = router;
+
+    useEffect(() => {
+        const refreshLocalData = () => {
+            const isRefreshed = localStorage.getItem('isRefreshed') || null;
+
+            if (!isRefreshed) {
+                const walletconnectData = localStorage.getItem('walletconnect') || null;
+
+                if (!!walletconnectData) {
+                    cacheClear();
+                }
+                
+                localStorage.setItem('isRefreshed', 'true');        
+            };
+        };
+
+        refreshLocalData();
+    }, []);
 
 
     useEffect(() => {
