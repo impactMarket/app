@@ -56,6 +56,7 @@ const sentryWebpackPluginOptions = {
     setCommits: {
         auto: true,
         ignoreMissing: true,
+        ignoreEmpty:true,
     },
     deploy: {
         // eslint-disable-next-line no-process-env
