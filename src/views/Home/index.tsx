@@ -20,7 +20,7 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { view } = usePrismicData();
     const { user } = useSelector(selectCurrentUser);
-    const userRoles = user?.roles ?? ['']
+    const userRoles = user?.roles ?? ['donor']
    
     const [cards, setCards] = useState() as any[]
     const [links, setLinks] = useState() as any[]
