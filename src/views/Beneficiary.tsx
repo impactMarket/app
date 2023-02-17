@@ -1,6 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-nested-ternary */
-import * as Sentry from '@sentry/nextjs';
 import {
     Accordion,
     AccordionItem,
@@ -23,6 +22,7 @@ import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
 import { gql, useQuery } from '@apollo/client';
+import { handleKnownErrors } from "../helpers/handleKnownErrors";
 import { selectCurrentUser } from '../state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -37,6 +37,7 @@ import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 import TextLink from '../components/TextLink';
 import config from '../../config';
+import processTransactionError from '../utils/processTransactionError';
 import styled from 'styled-components';
 import useCommunity from '../hooks/useCommunity';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
@@ -126,6 +127,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         try {
             toggleLoadingButton(true);
 
+            toast.info('Please go to the wallet approve the transaction');
             await claim().then(({ status }) => {
                 if (status) {
                     const communityPosition: {
@@ -135,7 +137,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                     const communityLocation = { coords: communityPosition };
 
                     navigator?.permissions
-                        .query({ name: 'geolocation' })
+                        ?.query({ name: 'geolocation' })
                         .then(async (permissionStatus) => {
                             if (permissionStatus?.state === 'granted') {
                                 return (await getLocation()) as {
@@ -163,9 +165,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
             toggleLoadingButton(false);
 
             toast.success(<Message id="successfullyClaimedUbi" />);
-        } catch (error) {
-            console.log(error);
-            Sentry.captureException(error);
+        } catch (error: any) {
+            handleKnownErrors(error);
+
+            processTransactionError(error, 'claim');
 
             toggleLoadingButton(false);
             toggleClaim(false);

@@ -40,7 +40,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = props => {
     
     const { t } = useTranslations();
     const { clear, update, getByKey } = useFilters();
-    const page = getByKey('page') ? parseInt(getByKey('page').toString(), 10) : 0;
+    const page = getByKey('page') ? +getByKey('page') : 0;
     const actualPage = page - 1 >= 0 ? page - 1 : 0;
     const [itemOffset, setItemOffset] = useState(actualPage * itemsPerPage || 0);
     const [currentPage, setCurrentPage] = useState(actualPage);

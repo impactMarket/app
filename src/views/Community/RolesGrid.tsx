@@ -46,6 +46,7 @@ const Managers = ({
         setUpdateState([...updateState, key]);
 
         try {
+            toast.info('Please go to the wallet approve the transaction');
             const { status } = await removeManager(community?.id, address);
 
             if (status) {

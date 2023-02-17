@@ -147,7 +147,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
                 name: 'impactMarket',
                 url: 'https://app.impactmarket.com',
             }}
-            network={network}
+            defaultNetwork={network.name}
             networks={networks}
         >
             <KitWrapper>

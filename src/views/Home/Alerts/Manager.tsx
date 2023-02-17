@@ -1,5 +1,6 @@
 import { Alert, Button, toast } from '@impact-market/ui';
 import { currencyFormat } from '../../../utils/currencies';
+import { handleKnownErrors } from "../../../helpers/handleKnownErrors";
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { toNumber } from '@impact-market/utils/toNumber';
 import { useManager } from '@impact-market/utils';
@@ -31,6 +32,7 @@ const ManagerAlerts = () => {
         try {
             setLoading(true);
 
+            toast.info('Please go to the wallet approve the transaction');
             const response = await requestFunds();
 
             setFundsReceived(response)
@@ -41,6 +43,7 @@ const ManagerAlerts = () => {
             setRequestSuccess(true);
         }
         catch(error) {
+            handleKnownErrors(error);
             processTransactionError(error, 'request_funds');
 
             setLoading(false);

@@ -13,6 +13,7 @@ import {
     toast,
     useModal
 } from '@impact-market/ui';
+import { handleKnownErrors } from "../helpers/handleKnownErrors";
 import { localeFormat } from '../utils/currencies';
 import { useCUSDBalance, useDonationMiner } from '@impact-market/utils';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -98,6 +99,7 @@ const Contribute = () => {
             BigNumber.config({ EXPONENTIAL_AT: 29 });
             const amount = new BigNumber(contribution).toString();
 
+            toast.info('Please go to the wallet, approve the transaction');
             const response = await approve(amount, contractAddress);
 
             if (!response?.status) {
@@ -109,7 +111,8 @@ const Contribute = () => {
             toast.success('Approved successfully.');
             setApproved(contribution);
             setStep(1);
-        } catch (error) {
+        } catch (error: any) {
+            handleKnownErrors(error);
             processTransactionError(error, 'approve');
             toast.error(<Message id="errorOccurred" />);
         } finally {
@@ -128,6 +131,7 @@ const Contribute = () => {
             BigNumber.config({ EXPONENTIAL_AT: 29 });
             const amount = new BigNumber(contribution).toString();
 
+            toast.info('Please go to the wallet, approve the transaction');
             const response = !!contractAddress
                 ? await donateToCommunity(contractAddress, amount)
                 : await donateToTreasury(amount);

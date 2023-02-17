@@ -16,9 +16,9 @@ import { useYupValidationResolver, yup } from '../../helpers/yup';
 import FormActions from '../Profile/FormActions';
 import Input from '../../components/Input';
 import Message from '../../libs/Prismic/components/Message';
-import React from 'react';
+import React, { useEffect } from "react";
 import RichText from '../../libs/Prismic/components/RichText';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+// import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const schema = yup.object().shape({
     lock: yup.boolean(),
@@ -32,7 +32,7 @@ const schema = yup.object().shape({
 });
 
 const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries, isLocked }: any) => {
-    const { t } = useTranslations();
+    // const { t } = useTranslations();
     const { extractFromView } = usePrismicData();
     const { 
         communityManagement, 
@@ -53,27 +53,32 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
         reset,
         control,
         getValues,
+        setValue,
         formState: { errors, isDirty, isSubmitting, dirtyFields }
     } = useForm({
         defaultValues: {
-            lock: isLocked,
-            maxBeneficiaries: maxBeneficiaries || ''
+            lock: '',
+            maxBeneficiaries: 0
         },
         resolver: useYupValidationResolver(schema)
     });
+
+    useEffect(() => {
+        setValue('lock', isLocked);
+        setValue('maxBeneficiaries', maxBeneficiaries); 
+    }, [isLocked, maxBeneficiaries]);
 
     const handleCancel = (e: any) => {
         e.preventDefault();
         reset();
     };
 
-    console.log(extractFromView('formSections'))
-
     const onSubmit = async (data: any) => {
         try {
             const transactionChain: any = [];
             let transactionFailed = false;
 
+            toast.info('Please go to the wallet approve the transaction');
             if (dirtyFields.maxBeneficiaries) {
                 transactionChain.push(
                     updateMaxBeneficiaries(
@@ -170,18 +175,6 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                                 <Input
                                     control={control}
                                     disabled={isLoading}
-                                    hint={
-                                        errors?.maxBeneficiaries?.message?.key
-                                            ? t(
-                                                  errors?.maxBeneficiaries
-                                                      ?.message?.key
-                                              )?.replace(
-                                                  '{{ value }}',
-                                                  errors?.maxBeneficiaries
-                                                      ?.message?.value
-                                              )
-                                            : ''
-                                    }
                                     label={maxNumberBeneficiaries[0]?.text}
                                     name="maxBeneficiaries"
                                     placeholder={maxBeneficiaries || ''}
