@@ -11,6 +11,7 @@ import {
 } from '@impact-market/ui';
 import { SubmitHandler, useForm } from "react-hook-form";
 import { gql, useLazyQuery } from '@apollo/client';
+import { handleKnownErrors } from "../helpers/handleKnownErrors";
 import { useAmbassador } from '@impact-market/utils/useAmbassador';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useYupValidationResolver, yup } from '../helpers/yup';
@@ -62,8 +63,9 @@ const AddManager = () => {
                     setIsLoading(true)
         
                     Sentry.captureMessage(`addManager ${community?.id} ${submitData?.address}`);
-                    const { status } = await addManager(community?.id, submitData?.address);
 
+                    toast.info('Please go to the wallet approve the transaction');
+                    const { status } = await addManager(community?.id, submitData?.address);
 
                     if(status) {
                         mutate();
@@ -81,6 +83,7 @@ const AddManager = () => {
                 }
                 catch(error) {
                     //  Todo: get error name directly from backend to write a specific message (edward or benardo)
+                    handleKnownErrors(error);
                     processTransactionError(error, 'add_manager');
 
                     toast.error(<Message id="errorOccurred" />);

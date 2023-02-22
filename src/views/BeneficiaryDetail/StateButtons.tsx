@@ -1,5 +1,6 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { Button, toast } from '@impact-market/ui';
+import { handleKnownErrors } from "../../helpers/handleKnownErrors";
 import { useManager } from '@impact-market/utils';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useState } from 'react';
@@ -19,6 +20,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
         try {
             setLoadingBlockButton(true);
 
+            toast.info('Please go to the wallet approve the transaction');
             const { status } = await lockBeneficiary(beneficiary.address);
 
             if(status) {
@@ -43,6 +45,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
         try {
             setLoadingBlockButton(true);
 
+            toast.info('Please go to the wallet approve the transaction');
             const { status } = await unlockBeneficiary(beneficiary.address);
 
             if(status) {
@@ -67,6 +70,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
         try {
             setLoadingRemoveButton(true);
 
+            toast.info('Please go to the wallet approve the transaction');
             const { status } = await removeBeneficiary(beneficiary.address);
 
             if(status) {
@@ -79,6 +83,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
             setLoadingRemoveButton(false);
         }
         catch(error) {
+            handleKnownErrors(error);
             processTransactionError(error, 'remove_beneficiary');
 
             setLoadingRemoveButton(false);

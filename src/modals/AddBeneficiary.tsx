@@ -3,6 +3,7 @@ import { Alert, Box, Button, CircledIcon, Col, ModalWrapper, Row, Text, toast, u
 import { SubmitHandler, useForm } from "react-hook-form";
 import { getCommunityBeneficiaries } from '../graph/user';
 import { gql, useQuery } from '@apollo/client';
+import { handleKnownErrors } from "../helpers/handleKnownErrors";
 import { mutate } from 'swr';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useManager } from '@impact-market/utils/useManager';
@@ -88,12 +89,13 @@ const AddBeneficiary = () => {
                     //  Check if user can be Beneficiary
                     await canUsersBeBeneficiaries([beneficiaryAddress])
                         .then( async () => {
+                            toast.info('Please go to the wallet approve the transaction');
                             const { status } = await addBeneficiary(beneficiaryAddress);
 
                             if(status) {
                                 handleClose();
 
-                                mutate('/communities/beneficiaries?limit=7&offset=0&orderBy=since:desc&state=active');
+                                mutate('/communities/beneficiaries?limit=7&offset=0&orderBy=since:desc&state=0');
                                 mutate([getCommunityBeneficiaries, {address: auth?.user?.manager?.community}]);
 
                                 setBeneficiaryAddress(null)
@@ -115,6 +117,7 @@ const AddBeneficiary = () => {
                             return setIsLoading(false)
 
                         }).catch((error) => {
+                            handleKnownErrors(error);
                             processTransactionError(error, 'add_beneficiary');
 
                             setError({
@@ -129,6 +132,7 @@ const AddBeneficiary = () => {
                     return setIsLoading(false)
                 }
                 catch(e) {
+                    handleKnownErrors(error);
                     processTransactionError(error, 'add_beneficiary');
 
                     setError({

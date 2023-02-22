@@ -8,6 +8,7 @@ import {
     toast
 } from '@impact-market/ui';
 import { dateHelpers } from '../../helpers/dateHelpers';
+import { handleKnownErrors } from "../../helpers/handleKnownErrors";
 import styled from 'styled-components';
 
 import DonateCard from '../../components/DonateCard';
@@ -81,6 +82,8 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
 
     const addProposal = async () => {
         try {
+
+            toast.info('Please go to the wallet approve the transaction');
             await addCommunity({
                 ...generateCommunityProposal(community, data),
                 claimAmount: toToken(claimAmount, { EXPONENTIAL_AT: 25 }),
@@ -93,6 +96,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                 <Message id="generatedSuccess" />
             );
         } catch (error) {
+            handleKnownErrors(error);
             toast.error(
                 <Message id="generatedError" />
             );

@@ -24,6 +24,10 @@ const useWallet = () => {
     const [createUser, userConnection] = useCreateUserMutation();
 
     const connect = async (callback?: Function) => {
+        if (localStorage.getItem('walletconnect')) {
+            localStorage.removeItem('walletconnect');
+        };
+        
         try {
             const connector = await connectFromHook();
 
