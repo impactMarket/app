@@ -21,10 +21,21 @@ Sentry.init({
 	tracesSampler: samplingContext => {
         const error = samplingContext.transactionContext;
 
-        // if there's any user action, send 100%
-        // (it tracks only extremely important errors)
-        if (error && error.tags && error.tags['user_activity']) {
-            return 1;
+        if (error) {
+			if (error.tags && error.tags['user_activity']) {
+				// if there's any user action, send 100%
+				// (it tracks only extremely important errors)
+				return 1;
+			} else if (
+				error.description && 
+				(
+					error.description.match(/GeolocationPositionError/i) ||
+					error.description.match(/denied transaction signature/i)
+				)
+			) {
+				// some things we know and want to ignore
+				return 0;
+			}
         }
 
         return 0.1;

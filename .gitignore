@@ -46,3 +46,5 @@ tsconfig.tsbuildinfo
 
 # Sentry
 .sentryclirc
+
+.env.alfajores
