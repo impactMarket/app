@@ -173,6 +173,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 buttonLoading={buttonLoading}
                 community={community}
                 updateReview={functionUpdateReview}
+                ambassador={ambassador}
             />
             <CommunityDetails
                 claimsLocation={claimsLocation}

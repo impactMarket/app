@@ -18,8 +18,8 @@ import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
-const EditCommunity: React.FC<{ community: Community, contract: Contract }> = props => {
-    const { community, contract } = props;
+const EditCommunity: React.FC<{ ambassadorAddress: string, community: Community, contract: Contract }> = props => {
+    const { ambassadorAddress, community, contract } = props;
     const [maxBeneficiaries, setMaxBeneficiaries] = useState(0);
     const [isLocked, setIsLocked] = useState(false);
 
@@ -157,7 +157,7 @@ const EditCommunity: React.FC<{ community: Community, contract: Contract }> = pr
                 )}
 
                 {!!auth?.user?.ambassador && isLocked !== null && maxBeneficiaries !== null &&
-                    community?.ambassadorAddress?.toLowerCase() ===
+                    ambassadorAddress?.toLowerCase() ===
                         auth?.user?.address?.toLowerCase() && (
                         <CommunityManagementForm
                             communityAddress={community?.contractAddress}

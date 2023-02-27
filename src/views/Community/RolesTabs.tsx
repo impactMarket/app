@@ -19,62 +19,64 @@ const RolesTabs = ({ ambassador, community, merchants, status, communityId, requ
     const { t } = useTranslations();
 
     return (
-        !!Object.keys(community).length && (
-            <Box mb={2} mt={3}>
-                <Tabs>
-                    <TabList>
-                        <Tab
-                            title={t('managers')}
-                        />
-                        {ambassador?.active &&
+        community && (
+            !!Object.keys(community).length && (
+                <Box mb={2} mt={3}>
+                    <Tabs>
+                        <TabList>
                             <Tab
-                                title={t('ambassadors')}
+                                title={t('managers')}
                             />
-                        }  
-                        {!!merchants?.length &&
-                            <Tab
-                                title={t('merchants')}
-                            /> 
-                        }
-                    </TabList>
-                
-                    {/* Managers */}
-                    <TabPanel>
-                        <RolesGrid
-                            ambassador={ambassador}
-                            community={community}
-                            communityId={communityId}
-                            requestedCommunity={requestedCommunity}
-                            status={status}
-                        />  
-                    </TabPanel>
-
-                    {/* Ambassador */}
-                    {ambassador?.active &&
-                        <TabPanel>
-                            <Grid cols={{ sm: 3, xs: 1 }}>
-                                <Card>
-                                    <UserCard
-                                        community={community}
-                                        data={ambassador}
-                                    />
-                                </Card>
-                            </Grid> 
-                        </TabPanel>
-                    }
-
-                    {/* Merchants */}
-                    {!!merchants?.length &&
+                            {ambassador?.active &&
+                                <Tab
+                                    title={t('ambassadors')}
+                                />
+                            }  
+                            {!!merchants?.length &&
+                                <Tab
+                                    title={t('merchants')}
+                                /> 
+                            }
+                        </TabList>
+                    
+                        {/* Managers */}
                         <TabPanel>
                             <RolesGrid
+                                ambassador={ambassador}
                                 community={community}
+                                communityId={communityId}
                                 requestedCommunity={requestedCommunity}
-                                role={{merchants}}
+                                status={status}
                             />  
                         </TabPanel>
-                    }
-                </Tabs>
-            </Box>
+
+                        {/* Ambassador */}
+                        {ambassador?.active &&
+                            <TabPanel>
+                                <Grid cols={{ sm: 3, xs: 1 }}>
+                                    <Card>
+                                        <UserCard
+                                            community={community}
+                                            data={ambassador}
+                                        />
+                                    </Card>
+                                </Grid> 
+                            </TabPanel>
+                        }
+
+                        {/* Merchants */}
+                        {!!merchants?.length &&
+                            <TabPanel>
+                                <RolesGrid
+                                    community={community}
+                                    requestedCommunity={requestedCommunity}
+                                    role={{merchants}}
+                                />  
+                            </TabPanel>
+                        }
+                    </Tabs>
+                </Box>
+            )
         )
 )}
 
