@@ -60,6 +60,7 @@ class MyDocument extends Document {
                 <body>
                     <Main />
                     <NextScriptContent />
+                    <script type="text/javascript" src="/la-chat.js" />
                 </body>
             </Html>
         );
