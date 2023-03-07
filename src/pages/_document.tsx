@@ -60,7 +60,13 @@ class MyDocument extends Document {
                 <body>
                     <Main />
                     <NextScriptContent />
-                    <script type="text/javascript" src="/la-chat.js" />
+                    {
+                        // chat feature can be only in one url, so avoid enabling it
+                        // eslint-disable-next-line no-process-env
+                        process.env.NEXT_PUBLIC_ENABLE_LIVE_AGENT_CHAT === 'true'
+                            ? <script type="text/javascript" src="/la-chat.js" />
+                            : null
+                    }
                 </body>
             </Html>
         );
