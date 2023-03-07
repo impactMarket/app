@@ -15,7 +15,8 @@ import useCommunities from '../../hooks/useCommunities';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
+const fetcher = (url: string, headers: any | {}) =>
+    fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
 const Communities = (props: any) => {
     const { fallback } = props;
@@ -41,6 +42,15 @@ const Communities = (props: any) => {
     useEffect(() => {
         setFilters(getAllQueryParams());
     }, [asPath]);
+
+    useEffect(() => {
+        !!getByKey('search')
+            ? setFilters({ ...getAllQueryParams(), page: 0 })
+            : setFilters({
+                  ...getAllQueryParams(),
+                  page: +getByKey('page') ?? 0
+              });
+    }, [getByKey('search')]);
 
     const handleClickOnCommunityFilter = (communityFilter: any) => {
         const resetFilters = {

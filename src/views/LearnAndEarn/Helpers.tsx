@@ -26,9 +26,9 @@ export const ctaText = (status: string, reward: number) => {
 
 export const tabRouter = (state: string) => {
     switch (state) {
-        case 'available':
-            return 0;
         case 'started':
+            return 0;
+        case 'available':
             return 1;
         case 'completed':
             return 2;

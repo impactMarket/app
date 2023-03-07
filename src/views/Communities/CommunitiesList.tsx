@@ -1,5 +1,5 @@
 import { Grid, Pagination, TabPanel, Tabs } from '@impact-market/ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import CommunityCard from '../../components/CommunityCard';
 import String from '../../libs/Prismic/components/String';
@@ -18,6 +18,10 @@ const CommunitiesList = (props: any) => {
     const [currentPage, setCurrentPage] = useState<number>(
         +getByKey('page') || 0
     );
+
+    useEffect(() => {
+        setCurrentPage(+getByKey('page'));
+    }, [getByKey('page')]);
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {

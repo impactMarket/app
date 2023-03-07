@@ -278,19 +278,19 @@
         },
         "type": "Text"
       },
-      "string-claimableFunds": {
-        "config": {
-          "label": "claimableFunds",
-          "placeholder": "Claimable funds"
-        },
-        "type": "Text"
-      },
       "string-claimUbi": {
         "type": "Text",
         "config": {
           "label": "claimUbi",
           "placeholder": ""
         }
+      },
+      "string-claimableFunds": {
+        "config": {
+          "label": "claimableFunds",
+          "placeholder": "Claimable funds"
+        },
+        "type": "Text"
       },
       "string-claimed": {
         "config": {
@@ -1413,11 +1413,11 @@
         "type": "Text"
       },
       "string-submitCommunity": {
-        "type": "Text",
         "config": {
           "label": "submitCommunity",
           "placeholder": ""
-        }
+        },
+        "type": "Text"
       },
       "string-submitToProposal": {
         "config": {
@@ -2013,6 +2013,24 @@
           "placeholder": "",
           "allowTargetBlank": true,
           "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "message-ApproveTransaction": {
+        "type": "StructuredText",
+        "config": {
+          "label": "approveTransaction",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,heading1,strong,em,hyperlink"
+        }
+      },
+      "message-signMessage": {
+        "type": "StructuredText",
+        "config": {
+          "label": "signMessage",
+          "placeholder": "",
+          "allowTargetBlank": false,
+          "single": "paragraph,strong,em"
         }
       },
       "slices1": {
