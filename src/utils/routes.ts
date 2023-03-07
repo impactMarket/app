@@ -7,7 +7,7 @@ const laePublicRoutes = config.enableLearnEarn === 'true' ? ['/learn-and-earn', 
 
 const laePrivateRoutes = config.enableLearnEarn === 'true' ? ['/learn-and-earn/[level]/[lesson]'] : [];
 
-export const publicRoutes: Routes = ['/', '/stories', '/proposals', '/communities', '/communities/[id]', '/notifications', '/messages', '/manager/communities/add', ...laePublicRoutes];
+export const publicRoutes: Routes = ['/', '/support', '/stories', '/proposals', '/communities', '/communities/[id]', '/notifications', '/messages', '/manager/communities/add', ...laePublicRoutes];
 
 export const privateRoutes: Routes = ['/profile', '/settings', '/mycommunity'];
 

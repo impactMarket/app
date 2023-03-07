@@ -4,7 +4,6 @@ import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvi
 import { Provider } from 'react-redux';
 import { addNotification } from '../state/slices/notifications';
 import { checkCookies, getCookie } from 'cookies-next';
-import { getLocation } from '../utils/position';
 import { setRates } from '../state/slices/rates';
 import { setSignature, setToken } from '../state/slices/auth';
 import { store } from '../state/store';
@@ -41,14 +40,6 @@ const InnerApp = (props: AppProps) => {
 
     useEffect(() => {
         const init = async () => {
-            navigator?.permissions && navigator?.permissions?.query({name: 'geolocation'})
-                .then((PermissionStatus) => {
-                    if (PermissionStatus?.state === 'prompt') {
-                        // Prompt user to allow/block access to his location coordinates (no need to "await", we just want the User to allow/block)
-                        getLocation();
-                    }
-                });
-
             try {
                 // Get and save to reducer Exchange Rates
                 const rates = await getRates().unwrap();
