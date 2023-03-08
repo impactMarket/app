@@ -20,7 +20,9 @@ const CommunitiesList = (props: any) => {
     );
 
     useEffect(() => {
-        setCurrentPage(+getByKey('page'));
+        if (currentPage !== +getByKey('page') && !!getByKey('page')) {
+            setCurrentPage(+getByKey('page'));
+        }
     }, [getByKey('page')]);
 
     //  Handle Pagination

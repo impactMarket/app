@@ -50,6 +50,7 @@ const Communities = (props: any) => {
                   ...getAllQueryParams(),
                   page: +getByKey('page') ?? 0
               });
+        update('page', 0);
     }, [getByKey('search')]);
 
     const handleClickOnCommunityFilter = (communityFilter: any) => {
