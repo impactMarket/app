@@ -68,6 +68,8 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
 
     useEffect(() => {
         const init = async () => {
+            console.log('inside');
+            
             try {
                 const communityAddress = getByKey('community') || auth?.user?.manager?.community;
                 const data = await getCommunity(communityAddress).unwrap();
@@ -79,12 +81,15 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
             }
         };
 
-        if(!getByKey('state')) {
-            router.push('/manager/beneficiaries?state=0&orderBy=since:desc&page=1');
-        }
-
         init();
     }, []);
+
+    useEffect(() => {
+        if(!getByKey('state') || !getByKey('page')) {
+            router.push('/manager/beneficiaries?state=0&orderBy=since:desc&page=1');
+        }
+    }, [getByKey('state'), getByKey('page')]);
+
 
     const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, { variables: { 
         address: community?.contractAddress?.toLowerCase(), 

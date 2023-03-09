@@ -10,7 +10,7 @@ export default function useBeneficiariesCount(query?: Array<any>) {
 
     const loading = !data && !error;
     const beneficiariesCount = data?.communityEntities?.reduce(
-        (partialSum: number, a: any) => partialSum + a.beneficiaries,
+        (partialSum: number, a: any) => partialSum + a?.beneficiaries,
         0
     );
 

@@ -81,7 +81,8 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
     const activeTab = !!data?.count
         ? Object.keys(data?.count)[+getByKey('state')]
         : 'beneficiaries';
-    const activeCount = data?.count[activeTab];
+
+    const activeCount = !!data?.count ? data?.count[activeTab] : 0;
 
     // If data comes from thegraph
     const [thegraphData, setThegraphData] = useState(null);
