@@ -15,6 +15,7 @@ import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
+import processTransactionError from '../../utils/processTransactionError';
 import styled from 'styled-components';
 import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -73,6 +74,7 @@ const Metrics = (props: any) => {
             );
         } catch (error) {
             setIsLoading(false);
+            processTransactionError(error, 'claim_lae_rewards');
             console.log(error);
             toast.error(<Message id="errorOccurred" />);
             throw Error;
