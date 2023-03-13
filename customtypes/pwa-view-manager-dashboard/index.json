@@ -52,6 +52,44 @@
           "single": "paragraph,strong,em,hyperlink"
         }
       }
+    },
+    "cards": {
+      "cards-inactiveBeneficiariesTooltip": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Inactive Beneficiaries Tooltip",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "cards-activeBeneficiariesTooltip": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Active Beneficiaries Tooltip",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "cards-suspiciousActivityTooltip": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Suspicious Activity Tooltip",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      },
+      "cards-blockedTooltip": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Blocked Tooltip",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
+      }
     }
   }
 }

@@ -5,11 +5,16 @@ import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
 import React from 'react';
 import String from '../../libs/Prismic/components/String';
+import TooltipIcon from '../../components/TooltipIcon';
+
 
 type Cards = {
     number: number;
     title: string;
+    tooltip: boolean;
+    tooltipContent: any;
     url: string;
+    tooltipVariables: any;
 }
 
 const renderCard = (card: Cards, index: number, type: number) => {
@@ -21,8 +26,9 @@ const renderCard = (card: Cards, index: number, type: number) => {
         <Col colSize={{ ...colProps }} key={index}>
             <Card column fLayout="start between" flex h="100%" pl={0} pr={0} pt={1.5}>
                 <Box pl={1.5} pr={1.5} w="100%">
-                    <Text {...titleProps}>
+                    <Text {...titleProps} flex>
                         {card.title}
+                        {card?.tooltip && <TooltipIcon variables={card?.tooltipVariables}>{card?.tooltipContent}</TooltipIcon>}
                     </Text>
                     <Display {...numberProps}>
                         {card.number}
