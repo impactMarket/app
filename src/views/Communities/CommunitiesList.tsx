@@ -1,5 +1,5 @@
-import { Grid, Pagination, TabPanel, Tabs } from '@impact-market/ui';
-import { useEffect, useState } from 'react';
+import { Box, Grid, Pagination, TabPanel, Tabs } from '@impact-market/ui';
+import React, { useEffect, useState } from 'react';
 
 import CommunityCard from '../../components/CommunityCard';
 import String from '../../libs/Prismic/components/String';
@@ -67,16 +67,18 @@ const CommunitiesList = (props: any) => {
                                     )
                                 )}
                             </Grid>
-                            <Pagination
-                                currentPage={currentPage}
-                                handlePageClick={handlePageClick}
-                                mt={2}
-                                nextIcon="arrowRight"
-                                nextLabel="Next"
-                                pageCount={pageCount}
-                                previousIcon="arrowLeft"
-                                previousLabel="Previous"
-                            />
+                            <Box pb={6}>
+                                <Pagination
+                                    currentPage={currentPage}
+                                    handlePageClick={handlePageClick}
+                                    mt={2}
+                                    nextIcon="arrowRight"
+                                    nextLabel="Next"
+                                    pageCount={pageCount}
+                                    previousIcon="arrowLeft"
+                                    previousLabel="Previous"
+                                />
+                            </Box>
                         </>
                     </TabPanel>
                 ))

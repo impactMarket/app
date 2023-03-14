@@ -1,9 +1,9 @@
 import { SWRConfig } from 'swr';
 import { Tab, TabList, Tabs, ViewContainer } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
-import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 
 import ClaimsMap from './ClaimsMap';
 import CommunitiesList from './CommunitiesList';

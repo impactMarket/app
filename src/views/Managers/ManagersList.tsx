@@ -74,6 +74,7 @@ const ManagersList: React.FC<{ community: string }> = props => {
             columns={getColumns()}
             itemsPerPage={itemsPerPage}
             mt={1.25}
+            pb={6}
             prefix={`${community}/managers`}
         />
     );

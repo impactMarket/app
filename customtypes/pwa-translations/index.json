@@ -1607,6 +1607,20 @@
           "placeholder": "Your profile photo"
         },
         "type": "Text"
+      },
+      "string-activeBeneficiaries": {
+        "type": "Text",
+        "config": {
+          "label": "activeBeneficiaries",
+          "placeholder": ""
+        }
+      },
+      "string-inactiveBeneficiaries": {
+        "type": "Text",
+        "config": {
+          "label": "inactiveBeneficiaries",
+          "placeholder": ""
+        }
       }
     },
     "messages": {

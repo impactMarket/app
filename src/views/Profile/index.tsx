@@ -196,52 +196,54 @@ const Profile: React.FC<{ isLoading?: boolean }> = props => {
 
     return (
         <ViewContainer isLoading={isLoading}>
-            <Row>
-                <Col colSize={{ sm: 6, xs: 12 }}>
-                    {(auth?.user?.firstName || auth?.user?.lastName) && <Display g900 medium>
-                        {getUserName(auth?.user)}
-                    </Display>
-                    }
-                    <DropdownMenu
-                        icon="chevronDown"
-                        items={[
-                            {
-                                icon: 'open',
-                                onClick: () => window.open(config.explorerUrl?.replace('#USER#', auth?.user?.address)),
-                                title: t('openInExplorer')
-                            },
-                            {
-                                icon: 'copy',
-                                onClick: () => copyToClipboard(),
-                                title: t('copyAddress')
-                            }
-                        ]}
-                        title={formatAddress(auth?.user?.address, [6, 4])}
-                        wrapperProps={{
-                            mt: 0.25
-                        }}
-                    />
-                </Col>
-                <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0 }} tAlign={{ sm: 'right', xs: 'left' }}>
-                    <Button default icon="logout" onClick={handleDisconnectClick}>
-                        <String id="disconnectWallet" />
-                    </Button>
-                </Col>
-            </Row>
-            <Box mt={{ sm: 4, xs: 2 }}>
-                {renderCard(photoTitle, photoDescription, <ImageForm isLoading={imageLoading} onSubmit={onImageSubmit} />, true)}
-            </Box>
-            <Box>
-                {renderCard(personalTitle, personalDescription, <PersonalForm onSubmit={onSubmit} />)}
-            </Box>
-            <Box>
-                {renderCard(contactTitle, contactDescription, <ContactForm onSubmit={onSubmit} />)}
-            </Box>
-            <Box>
-                {renderCard(additionalInfoTitle, additionalInfoDescription, <AditionalForm onSubmit={onSubmit} />)}
-            </Box>
-            <Box>
-                {renderCard(deleteAccountTitle, deleteAccountDescription, <DeleteForm onSubmit={onDelete} />)}
+            <Box pb={5}>
+                <Row>
+                    <Col colSize={{ sm: 6, xs: 12 }}>
+                        {(auth?.user?.firstName || auth?.user?.lastName) && <Display g900 medium>
+                            {getUserName(auth?.user)}
+                        </Display>
+                        }
+                        <DropdownMenu
+                            icon="chevronDown"
+                            items={[
+                                {
+                                    icon: 'open',
+                                    onClick: () => window.open(config.explorerUrl?.replace('#USER#', auth?.user?.address)),
+                                    title: t('openInExplorer')
+                                },
+                                {
+                                    icon: 'copy',
+                                    onClick: () => copyToClipboard(),
+                                    title: t('copyAddress')
+                                }
+                            ]}
+                            title={formatAddress(auth?.user?.address, [6, 4])}
+                            wrapperProps={{
+                                mt: 0.25
+                            }}
+                        />
+                    </Col>
+                    <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 1, xs: 0 }} tAlign={{ sm: 'right', xs: 'left' }}>
+                        <Button default icon="logout" onClick={handleDisconnectClick}>
+                            <String id="disconnectWallet" />
+                        </Button>
+                    </Col>
+                </Row>
+                <Box mt={{ sm: 4, xs: 2 }}>
+                    {renderCard(photoTitle, photoDescription, <ImageForm isLoading={imageLoading} onSubmit={onImageSubmit} />, true)}
+                </Box>
+                <Box>
+                    {renderCard(personalTitle, personalDescription, <PersonalForm onSubmit={onSubmit} />)}
+                </Box>
+                <Box>
+                    {renderCard(contactTitle, contactDescription, <ContactForm onSubmit={onSubmit} />)}
+                </Box>
+                <Box>
+                    {renderCard(additionalInfoTitle, additionalInfoDescription, <AditionalForm onSubmit={onSubmit} />)}
+                </Box>
+                <Box>
+                    {renderCard(deleteAccountTitle, deleteAccountDescription, <DeleteForm onSubmit={onDelete} />)}
+                </Box>
             </Box>
         </ViewContainer>
     );

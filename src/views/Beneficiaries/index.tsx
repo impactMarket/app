@@ -20,7 +20,6 @@ import useFilters from '../../hooks/useFilters';
 import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-
 import { useGetCommunityMutation } from '../../api/community';
 import { useQuery } from '@apollo/client';
 
