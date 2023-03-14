@@ -1,6 +1,6 @@
 /* eslint-disable no-nested-ternary */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Box, Button, Display, Tab, TabList, TabPanel, Tabs, ViewContainer, openModal } from '@impact-market/ui';
+import { Box, Button, Display, Tab, TabList, Tabs, ViewContainer, openModal } from '@impact-market/ui';
 import { getCommunityBeneficiaries } from '../../graph/user';
 import { getInactiveBeneficiaries } from '../../graph/community';
 import { request } from 'graphql-request'
@@ -28,7 +28,6 @@ const lastActivity = Math.floor(new Date().getTime() / 1000 - 1036800)
 
 const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
-    const FakeTabPanel = TabPanel as any;
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
@@ -69,6 +68,8 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
 
     useEffect(() => {
         const init = async () => {
+            console.log('inside');
+            
             try {
                 const communityAddress = getByKey('community') || auth?.user?.manager?.community;
                 const data = await getCommunity(communityAddress).unwrap();
@@ -80,12 +81,15 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
             }
         };
 
-        if(!getByKey('state')) {
-            router.push('/manager/beneficiaries?state=0&orderBy=since:desc', undefined, { shallow: true });
-        }
-
         init();
     }, []);
+
+    useEffect(() => {
+        if(!getByKey('state') || !getByKey('page')) {
+            router.push('/manager/beneficiaries?state=0&orderBy=since:desc&page=1');
+        }
+    }, [getByKey('state'), getByKey('page')]);
+
 
     const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, { variables: { 
         address: community?.contractAddress?.toLowerCase(), 
@@ -113,30 +117,22 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                 <Box mt={0.5}>
                     <Tabs defaultIndex={+getByKey('state')}>
                         <TabList>
-                            { /* TODO: check if the "number" calculation is correct */ }
                             <Tab
                                 number={data?.beneficiaryEntities?.filter((elem: any) => elem.state === 0)?.length}
-                                onClick={() => update('state', 0)}
+                                onClick={() => update({ 'page': 0, 'state': 0})}
                                 title={t('added')}
                             />
                             <Tab
                                 number={data?.beneficiaryEntities?.filter((elem: any) => elem.state === 1)?.length}
-                                onClick={() => update('state', 1)}
+                                onClick={() => update({ 'page': 0, 'state': 1})}
                                 title={t('removed')}
                             />
                             <Tab
                                 number={data?.beneficiaryEntities?.filter((elem: any) => elem.state === 2)?.length}
-                                onClick={() => update('state', 2)}
+                                onClick={() => update({ 'page': 0, 'state': 2})}
                                 title={t('blocked')}
                             />
-                            <Tab
-                                number={inactiveBeneficiaries?.data ? Object.keys(inactiveBeneficiaries?.data?.beneficiaryEntities).length : 0}
-                                onClick={() => update('state', 3)}
-                                title={t('inactive')}
-                            />
                         </TabList>
-                        <FakeTabPanel />
-                        <FakeTabPanel />
                     </Tabs>
                     <Filters margin="1.5 0 0 0" maxW={20} property="search"/>
                     <BeneficiariesList community={community} lastActivity={lastActivity}/>

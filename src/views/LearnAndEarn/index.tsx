@@ -44,13 +44,23 @@ const LearnAndEarn = (props: any) => {
     } = view.data;
 
     const { levels, categories } = prismic;
+    const { data } = useLevels(levels);
     const auth = useSelector(selectCurrentUser);
     const { update, getByKey, clear } = useFilters();
     const [currentPage, setCurrentPage] = useState(+getByKey('page') ?? 0);
     const [search, setSearch] = useState(getByKey('search') ?? '');
-    const [state, setState] = useState(getByKey('state') || 'available');
+    const [state, setState] = useState(getByKey('state') ?? 'available');
     const [dataLoaded, setDataLoaded] = useState(true);
-    const { data } = useLevels(levels);
+
+    useEffect(() => {
+        if (
+            !getByKey('state') &&
+            data.filter((el: any) => el.status === 'started').length
+        ) {
+            setState('started');
+            update('state', 'started');
+        }
+    }, [data]);
 
     const filteredData = data
         .filter((item: any) => item.title.toLowerCase().indexOf(search) !== -1)
@@ -58,9 +68,6 @@ const LearnAndEarn = (props: any) => {
         .filter((el: any) =>
             !!getByKey('category') ? el.category === getByKey('category') : el
         );
-
-    const loggedTabs = auth.type ? ['started', 'completed'] : [];
-    const TabItems = ['available', ...loggedTabs];
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {
@@ -97,6 +104,18 @@ const LearnAndEarn = (props: any) => {
         return data.filter((el: any) => el.status === filter);
     };
 
+    const TabItems = [];
+
+    if (auth.type && filterLevels('started').length) {
+        TabItems.push('started');
+    }
+
+    TabItems.push('available');
+
+    if (auth.type && filterLevels('completed').length) {
+        TabItems.push('completed');
+    }
+
     const categoryItems = [
         { id: '', onClick: () => clear('category'), title: 'All' },
         ...new Set(
@@ -118,18 +137,13 @@ const LearnAndEarn = (props: any) => {
 
     useEffect(() => {
         setCurrentPage(
-            /* eslint-disable no-nested-ternary */
-            !!getByKey('search')
-                ? 0
-                : !!getByKey('page')
-                ? +getByKey('page')
-                : 0
+            !getByKey('search') && !!getByKey('page') ? +getByKey('page') : 0
         );
         setSearch(getByKey('search')?.toString().toLowerCase() || '');
     }, [getByKey('search')]);
 
     useEffect(() => {
-        setTimeout(() => setDataLoaded(false), 1000)
+        setTimeout(() => setDataLoaded(false), 1000);
     }, [data]);
 
     return (
@@ -150,11 +164,7 @@ const LearnAndEarn = (props: any) => {
                     copy={{ failed: claimDisabled, success: claimAvailable }}
                 />
             )}
-            <Tabs
-                defaultIndex={tabRouter(
-                    getByKey('state')?.toString() ?? 'available'
-                )}
-            >
+            <Tabs defaultIndex={tabRouter(state.toString())}>
                 <TabList>
                     {TabItems.map((el: string) => (
                         <Tab

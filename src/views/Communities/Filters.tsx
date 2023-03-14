@@ -69,7 +69,7 @@ const Filters = ({myCommunityTitle, filters, filterProperty}: any) => {
                     callback={
                         (value: any) => {
                             setSelectedCountries(value);
-                            update('country', value.join(';'));
+                            update({'country': value.join(';'), 'page': 0});
                         }
                     }
                     initialValue={getByKey('country')}
