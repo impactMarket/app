@@ -127,7 +127,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         try {
             toggleLoadingButton(true);
 
-            toast.info('Please go to the wallet approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             await claim().then(({ status }) => {
                 if (status) {
                     const communityPosition: {

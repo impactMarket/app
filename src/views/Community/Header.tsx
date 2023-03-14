@@ -5,7 +5,6 @@ import {
     Box,
     CountryFlag,
     Display,
-    Grid,
     Label,
     Text
 } from '@impact-market/ui';
@@ -13,10 +12,10 @@ import {
 import { getCountryNameFromInitials } from '../../utils/countries';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useRouter } from 'next/router';
-import Review from './ReviewState'
+import Actions from './Actions'
 import String from '../../libs/Prismic/components/String';
 
-const Header = ({ ambassador, buttonLoading, community, updateReview }: any) => {
+const Header = ({ buttonLoading, community, updateReview, thegraphData }: any) => {
     const { user } = useSelector(selectCurrentUser);
     const router = useRouter();
 
@@ -29,7 +28,7 @@ const Header = ({ ambassador, buttonLoading, community, updateReview }: any) => 
             } 
 
             {!!Object.keys(community).length && (
-                <Grid cols={{ sm: 2, xs: 1 }} mt={1}>
+                <Box flex fLayout="start between" fWrap="wrap" style={{ gap: "1rem" }} mt={1} pt={1} pb={1}>
                     <Box>
                         <Display>{community?.name}</Display>
                         <Box fLayout="center start" inlineFlex mt={0.25}>
@@ -40,21 +39,20 @@ const Header = ({ ambassador, buttonLoading, community, updateReview }: any) => 
                                 />
                             )}
 
-                            <Text g700 medium>
+                            <Text g700 medium w="100%">
                                 {community?.city}, {getCountryNameFromInitials(community?.country)}
                             </Text>
                         </Box>
                     </Box>
                     {(!!user?.ambassador || !!user?.councilMember) &&
-                        <Review
-                            ambassador={ambassador}
+                        <Actions
                             buttonLoading={buttonLoading}
                             community={community}
                             updateReview={updateReview}
+                            thegraphData={thegraphData}
                         />
                     }
-
-                </Grid>
+                </Box>
             )}
         </>
     );

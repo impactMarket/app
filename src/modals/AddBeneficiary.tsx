@@ -89,7 +89,7 @@ const AddBeneficiary = () => {
                     //  Check if user can be Beneficiary
                     await canUsersBeBeneficiaries([beneficiaryAddress])
                         .then( async () => {
-                            toast.info('Please go to the wallet approve the transaction');
+                            toast.info(<Message id="approveTransaction"/>);
                             const { status } = await addBeneficiary(beneficiaryAddress);
 
                             if(status) {

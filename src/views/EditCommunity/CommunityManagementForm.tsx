@@ -78,7 +78,7 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
             const transactionChain: any = [];
             let transactionFailed = false;
 
-            toast.info('Please go to the wallet approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             if (dirtyFields.maxBeneficiaries) {
                 transactionChain.push(
                     updateMaxBeneficiaries(

@@ -20,7 +20,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
         try {
             setLoadingBlockButton(true);
 
-            toast.info('Please go to the wallet approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             const { status } = await lockBeneficiary(beneficiary.address);
 
             if(status) {
@@ -45,7 +45,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
         try {
             setLoadingBlockButton(true);
 
-            toast.info('Please go to the wallet approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             const { status } = await unlockBeneficiary(beneficiary.address);
 
             if(status) {
@@ -70,7 +70,7 @@ const StateButtons: React.FC<{ beneficiary: any, community: string }> = props =>
         try {
             setLoadingRemoveButton(true);
 
-            toast.info('Please go to the wallet approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             const { status } = await removeBeneficiary(beneficiary.address);
 
             if(status) {

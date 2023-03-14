@@ -34,6 +34,7 @@ query communityQuery($id: String!, $todayDayId: Int, $daysBefore: Int) {
         maxClaim
         incrementInterval
         decreaseStep
+        baseInterval
     }
     communityDailyEntities(where: {community: $id, dayId_lte: $todayDayId, dayId_gte: $daysBefore} orderBy: dayId, orderDirection: asc) {
         beneficiaries
@@ -173,7 +174,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 buttonLoading={buttonLoading}
                 community={community}
                 updateReview={functionUpdateReview}
-                ambassador={ambassador}
+                thegraphData={data?.communityEntity}
             />
             <CommunityDetails
                 claimsLocation={claimsLocation}

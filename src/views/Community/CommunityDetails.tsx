@@ -83,7 +83,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
     const addProposal = async () => {
         try {
 
-            toast.info('Please go to the wallet approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             await addCommunity({
                 ...generateCommunityProposal(community, data),
                 claimAmount: toToken(claimAmount, { EXPONENTIAL_AT: 25 }),

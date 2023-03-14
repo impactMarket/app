@@ -575,6 +575,38 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "add-beneficiary-maximum-beneficiaries": {
+        "type": "Text",
+        "config": {
+          "label": "Maximum Beneficiaries Limit",
+          "placeholder": ""
+        }
+      },
+      "add-beneficiary-maximum-beneficiaries-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Maximum Beneficiaries Limit Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      },
+      "add-beneficiary-user-not-allowed": {
+        "type": "Text",
+        "config": {
+          "label": "User Not Allowed",
+          "placeholder": ""
+        }
+      },
+      "add-beneficiary-user-not-allowed-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Add Beneficiary User Not Allowed Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,list-item,o-list-item,image"
+        }
       }
     },
     "add-manager": {
@@ -637,6 +669,38 @@
         "type": "Text",
         "config": {
           "label": "Account Recovered",
+          "placeholder": ""
+        }
+      }
+    },
+    "remove-community": {
+      "remove-community-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "remove-community-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,list-item,o-list-item,image"
+        }
+      },
+      "remove-community-success": {
+        "type": "Text",
+        "config": {
+          "label": "Remove Community Success",
+          "placeholder": ""
+        }
+      },
+      "remove-community-error": {
+        "type": "Text",
+        "config": {
+          "label": "Remove Community Error",
           "placeholder": ""
         }
       }
