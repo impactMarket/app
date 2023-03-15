@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Display,
     DropdownMenu,
@@ -200,6 +201,12 @@ const LearnAndEarn = (props: any) => {
                         <Filters property="search" />
                     </Box>
                 </Box>
+
+                <Alert
+                    icon="infoCircle" 
+                    mb={1}
+                    title={'Learn&Earn courses are ONLY available for impactMarket UBI beneficiaries.'}
+                />
 
                 <LevelsTable
                     data={filteredData}

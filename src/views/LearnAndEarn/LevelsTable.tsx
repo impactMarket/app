@@ -22,9 +22,11 @@ const LevelsTable = (props: any) => {
     const { data, categories, pageStart, pageEnd, lang } = props;
     const router = useRouter();
     const auth = useSelector(selectCurrentUser);
+    const isLAEUser = auth?.type?.some((r: any) => ['beneficiary', 'manager'].includes(r)) ?? false;
+
     const isEligible = !auth?.type
         ? false
-        : auth.type.some((r: any) => ['beneficiary', 'manager'].includes(r));
+        : isLAEUser;
 
     return (
         <>
@@ -48,7 +50,7 @@ const LevelsTable = (props: any) => {
                                 }
                             >
                                 <Button fluid secondary xl>
-                                    {ctaText(elem.status, elem.totalReward)}
+                                    {ctaText(elem.status, elem.totalReward, isLAEUser)}
                                 </Button>
                             </ClickableCard>
                         );

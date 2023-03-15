@@ -7,7 +7,7 @@ import 'tippy.js/dist/tippy.css';
 interface TooltipProps {
     children: any;
     content: string;
-    disabled?: boolean;
+    disabledTooltip?: boolean;
 }
 
 const StyledTippy = styled(Tippy)`
@@ -26,12 +26,12 @@ const StyledTippy = styled(Tippy)`
 `;
 
 const Tooltip = (props: TooltipProps) => {
-    const { children, content, disabled = false } = props;
+    const { children, content, disabledTooltip = false } = props;
 
     return (
         <StyledTippy
             content={content}
-            disabled={disabled}
+            disabled={disabledTooltip}
             placement="bottom"
         >
             <div>

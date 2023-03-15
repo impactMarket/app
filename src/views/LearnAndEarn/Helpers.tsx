@@ -4,20 +4,21 @@ import React from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 
-export const ctaText = (status: string, reward: number) => {
+export const ctaText = (status: string, reward: number, isLAEUser: boolean) => {
     const { view } = usePrismicData();
     const { earnRewards } = view.data;
 
     switch (status) {
         case 'available':
-            return <RichText
-                content={earnRewards}
-                medium
-                variables={{ reward }}
-            />
+            return isLAEUser ? (
+                <RichText content={earnRewards} medium variables={{ reward }} />
+            ) : (
+                <Message id="viewLessons" />
+            );
+
         case 'started':
             return <String id="continue" />;
-        case 'completed':
+        case 'completed' || !isLAEUser:
             return <Message id="viewLessons" />;
         default:
             return 0;
