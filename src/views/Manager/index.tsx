@@ -26,6 +26,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
+    const { activeBeneficiariesTooltip, inactiveBeneficiariesTooltip } = extractFromView('cards') as any;
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();
@@ -95,8 +96,6 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
             }
         ]);
 
-        // TODO: secondary cards commented by Bernardo request for now, finish them later and add add final URL's
-
         setSecondaryCards([
             // {
             //     number: 0,
@@ -110,12 +109,22 @@ const Manager: React.FC<{ isLoading?: boolean }> = props => {
             // },
             {
                 number: totalActiveBeneficiaries || 0,
-                title: "Active Beneficiaries",
+                title: t('activeBeneficiaries'),
+                tooltip: true,
+                tooltipContent: activeBeneficiariesTooltip,
+                tooltipVariables: {
+                    days: '12'
+                },
                 url: '/manager/beneficiaries'
             },
             {
                 number: totalInactiveBeneficiaries || 0,
-                title: "Inactive Beneficiaries",
+                title: t('inactiveBeneficiaries'),
+                tooltip: true,
+                tooltipContent: inactiveBeneficiariesTooltip,
+                tooltipVariables: {
+                    days: '12'
+                },
                 url: '/manager/beneficiaries?state=3&orderBy=since:desc'
             }
         ]);
