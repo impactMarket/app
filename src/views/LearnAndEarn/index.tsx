@@ -10,12 +10,12 @@ import {
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { tabRouter } from './Helpers';
-import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import Filters from '../../components/Filters';
 import LevelsTable from './LevelsTable';
 import Metrics from './Metrics';
+import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
 import styled from 'styled-components';
@@ -216,6 +216,7 @@ const LearnAndEarn = (props: any) => {
                     nextIcon="arrowRight"
                     nextLabel={t('next')}
                     pageCount={totalPages(filteredData.length)}
+                    pb={7}
                     previousIcon="arrowLeft"
                     previousLabel={t('previous')}
                 />

@@ -111,7 +111,7 @@ const BeneficiariesList: React.FC<{ community: any, lastActivity: number }> = pr
             count={getByKey('state') === "3" && totalInactiveBeneficiaries}
             itemsPerPage={itemsPerPage}
             mt={1.25}
-            pb={2}
+            pb={6}
             prefix={`${community?.id}/beneficiaries`}
             thegraph={getByKey('state') === "3" && thegraphData}
         />

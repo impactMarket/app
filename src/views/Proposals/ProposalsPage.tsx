@@ -123,6 +123,7 @@ const ProposalsPage = () => {
                         nextIcon="arrowRight"
                         nextLabel="Next"
                         pageCount={pageCount}
+                        pb={4}
                         previousIcon="arrowLeft"
                         previousLabel="Previous"
                     />

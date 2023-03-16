@@ -99,6 +99,7 @@ const ReviewTabs = ({ communities, loading, setReview, currentPage, handlePageCl
                                         nextIcon="arrowRight"
                                         nextLabel="Next"
                                         pageCount={pageCount}
+                                        pb={6}
                                         previousIcon="arrowLeft"
                                         previousLabel="Previous"
                                     />
