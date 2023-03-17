@@ -24,16 +24,3 @@ export const ctaText = (status: string, reward: number, isLAEUser: boolean) => {
             return 0;
     }
 };
-
-export const tabRouter = (state: string) => {
-    switch (state) {
-        case 'started':
-            return 0;
-        case 'available':
-            return 1;
-        case 'completed':
-            return 2;
-        default:
-            return 0;
-    }
-};
