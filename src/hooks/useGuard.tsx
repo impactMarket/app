@@ -1,4 +1,4 @@
-import { ambassadorRoutes, beneficiaryRoutes, councilMemberRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
+import { ambassadorRoutes, beneficiaryRoutes, borrowerRoutes, councilMemberRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
 import { getUserTypes, userAmbassador, userBeneficiary, userCouncilMember, userManager } from '../utils/users';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
@@ -73,6 +73,9 @@ const useGuard = (options: UseGuardType) => {
                         userPaths = userPaths.concat(councilMemberRoutes);
                     }
                 }
+
+                // TEMPORARY
+                userPaths = userPaths.concat(borrowerRoutes);
 
                 if(!userPaths.includes(router.pathname)) {
                     setAuthorized(false);

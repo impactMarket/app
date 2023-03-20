@@ -67,7 +67,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const loadingCommunity = !data && !error;
 
     useEffect(() => {
-        const init = async () => {            
+        const init = async () => {
             try {
                 const communityAddress = getByKey('community') || auth?.user?.manager?.community;
                 const data = await getCommunity(communityAddress).unwrap();

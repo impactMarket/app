@@ -20,3 +20,5 @@ export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/ma
 export const ambassadorRoutes: Routes = ['/requests', '/ambassador', '/ambassador/reports', '/communities/edit/[id]', '/manager/beneficiaries'];
 
 export const councilMemberRoutes: Routes = ['/communities/edit/[id]'];
+
+export const borrowerRoutes: Routes = ['/micro-credit'];
