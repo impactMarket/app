@@ -19,8 +19,6 @@ const languageRedirects = [
     { source: '/fr-fr/:path*', destination: '/fr/:path*' },
     { source: '/pt-br/:path*', destination: '/pt/:path*' },
     { source: '/pt-BR/:path*', destination: '/pt/:path*' },
-    // eslint-disable-next-line no-process-env
-    { source: '/support', destination: process.env.NEXT_PUBLIC_SUPPORT_URL },
 ].map(redirect => ({ ...redirect, permanent: true }));
 
 const redirects = () => languageRedirects;
