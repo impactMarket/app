@@ -1621,6 +1621,41 @@
           "label": "inactiveBeneficiaries",
           "placeholder": ""
         }
+      },
+      "string-lastActiveOn": {
+        "type": "Text",
+        "config": {
+          "label": "lastActiveOn",
+          "placeholder": ""
+        }
+      },
+      "string-noActivity": {
+        "type": "Text",
+        "config": {
+          "label": "noActivity",
+          "placeholder": ""
+        }
+      },
+      "string-viewAllTransactions": {
+        "type": "Text",
+        "config": {
+          "label": "viewAllTransactions",
+          "placeholder": ""
+        }
+      },
+      "string-activity": {
+        "type": "Text",
+        "config": {
+          "label": "activity",
+          "placeholder": ""
+        }
+      },
+      "string-removeCommunity": {
+        "type": "Text",
+        "config": {
+          "label": "removeCommunity",
+          "placeholder": ""
+        }
       }
     },
     "messages": {
@@ -2045,6 +2080,15 @@
           "placeholder": "",
           "allowTargetBlank": false,
           "single": "paragraph,strong,em"
+        }
+      },
+      "message-connectWallet": {
+        "type": "StructuredText",
+        "config": {
+          "label": "connectWallet",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,list-item,o-list-item"
         }
       },
       "slices1": {

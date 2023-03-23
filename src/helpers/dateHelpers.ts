@@ -29,5 +29,7 @@ export const dateHelpers = {
 
     compact: (date: string | Date) => (date ? format(new Date(date), 'MMM d, y') : ''),
 
-    unix: (date: number) => (date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : ''),
+    complete: (date: number) => (date ? format(new Date(fromUnixTime(date)), `MMM d, y • H:m`) : ''),
+
+    unix: (date: number) => (date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : '')
 };

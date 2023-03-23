@@ -8,12 +8,13 @@ import {
     Text,
     ViewContainer
 } from '@impact-market/ui';
-import { getCommunityBeneficiaries, getCommunityEntity } from '../../graph/community';
+import { getCommunityBeneficiaries, getCommunityEntities, getCommunityEntity } from '../../graph/community';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useQuery } from '@apollo/client';
 import { useSelector } from 'react-redux';
+import Activity from './Activity';
 import Link from 'next/link';
 import ProgressBar from './ProgressBar';
 import React, { useEffect, useState } from 'react';
@@ -46,8 +47,10 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     const isNotViewAll = !(getByKey('view') === 'myCommunities' || !getByKey('view'));
     const { t } = useTranslations();
     const language = auth?.user?.language || 'en-US';
+    const [ activitySortDesc, setActivitySortDesc ] = useState(true);
 
     const communityEntity = useQuery(getCommunityEntity, { variables: { address: getByKey('view')?.toString().toLowerCase() } });
+    const { data: communityEntities, loading: entitiesLoading } = useQuery(getCommunityEntities, { variables: { ids: auth?.user?.ambassador?.communities, orderDirection: activitySortDesc ? 'desc' : 'asc' } });
 
     let communityBeneficiaries;
     
@@ -189,6 +192,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                         <Col key={key}>{renderCard(el)}</Col>
                     ))}
                 </Grid>
+                {!currentCommunity && <Activity activitySort={activitySortDesc} data={communityEntities?.communityEntities} loading={entitiesLoading} myCommunities={myCommunities} setActivitySort={setActivitySortDesc}/>}
                 {currentCommunity && <ProgressBar communityEntity={communityEntity?.data?.communityEntity} currency={currentCommunity?.currency} language={language} />}
             </Grid>
         </ViewContainer>

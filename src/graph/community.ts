@@ -7,8 +7,18 @@ export const getCommunityEntity = gql`
             contributed
             contributors
             estimatedFunds
+            lastActivity
             managers
             maxClaim
+        }
+    }
+`;
+
+export const getCommunityEntities = gql`
+    query getCommunityEntities($ids: [String], $orderDirection: String) {
+        communityEntities(orderBy: lastActivity, orderDirection: $orderDirection, where: {id_in: $ids}) {
+            id
+            lastActivity
         }
     }
 `;
