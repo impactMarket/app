@@ -4,6 +4,10 @@ import { useRouter } from 'next/router';
 import EditCommunity from './EditCommunity';
 import EditPending from './EditPending';
 import React, { useEffect, useState } from 'react';
+import config from '../../../config';
+import useAmbassador from "../../hooks/useAmbassador";
+
+const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
 const EditCommunityIndex: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
@@ -14,6 +18,9 @@ const EditCommunityIndex: React.FC<{ isLoading?: boolean }> = props => {
     const router = useRouter();
     const [getCommunity] = useGetCommunityMutation();
     const [getCommunityContract] = useGetCommunityContractMutation();
+
+    //  Get Ambassador
+    const { ambassador, loadingAmbassador } = useAmbassador(community?.id, fetcher);
 
     useEffect(() => {
         const init = async () => {
@@ -41,11 +48,11 @@ const EditCommunityIndex: React.FC<{ isLoading?: boolean }> = props => {
     }, []);
 
     return (
-        <ViewContainer isLoading={isLoading || loadingCommunity}>
+        <ViewContainer isLoading={isLoading || loadingCommunity || loadingAmbassador}>
             {community?.status === 'valid' ?
-                <EditCommunity community={community} contract={contract}/>
+                <EditCommunity ambassadorAddress={ambassador?.address} community={community} contract={contract}/>
                 :
-                <EditPending community={community} contract={contract} />
+                <EditPending ambassadorAddress={ambassador?.address} community={community} contract={contract} />
             }
         </ViewContainer>
     );

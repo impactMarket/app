@@ -16,7 +16,7 @@ import { useRouter } from 'next/router';
 import Review from './ReviewState'
 import String from '../../libs/Prismic/components/String';
 
-const Header = ({ buttonLoading, community, updateReview }: any) => {
+const Header = ({ ambassador, buttonLoading, community, updateReview }: any) => {
     const { user } = useSelector(selectCurrentUser);
     const router = useRouter();
 
@@ -47,6 +47,7 @@ const Header = ({ buttonLoading, community, updateReview }: any) => {
                     </Box>
                     {(!!user?.ambassador || !!user?.councilMember) &&
                         <Review
+                            ambassador={ambassador}
                             buttonLoading={buttonLoading}
                             community={community}
                             updateReview={updateReview}

@@ -1,7 +1,6 @@
 /* eslint-disable max-depth */
 import { Box, Button, Display, toast } from '@impact-market/ui';
 import { Community, Contract, useEditPendingCommunityMutation, useGetCommunityPreSignedMutation } from '../../api/community';
-import { editCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber, frequencyToText, useAmbassador } from '@impact-market/utils';
 import { getCountryCurrency, getCountryNameFromInitials } from '../../utils/countries';
 import { getImage } from '../../utils/images';
@@ -12,7 +11,6 @@ import { useForm, useWatch } from "react-hook-form";
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { useYupValidationResolver } from '../../helpers/yup';
 import CommunityForm from '../AddCommunity/CommunityForm';
 import ContractForm from '../AddCommunity/ContractForm';
 import Message from '../../libs/Prismic/components/Message';
@@ -21,19 +19,18 @@ import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-
-const EditPending: React.FC<{ community: Community, contract: Contract }> = props => {
+const EditPending: React.FC<{ ambassadorAddress: string, community: Community, contract: Contract }> = props => {
     const auth = useSelector(selectCurrentUser);
     const language = auth?.user?.language || 'en-US';
     
-    const { community, contract } = props;
+    const { ambassadorAddress, community, contract } = props;
     const [isSubmitting, toggleSubmitting] = useState(false);
     const [communityImage, setCommunityImage] = useState(getImage({ filePath: community?.coverMediaPath, fit: 'cover', height: 160, width: 160 })) as any;
     const [currency, setCurrency] = useState(auth?.user?.currency || null);
     const [maxBeneficiaries, setMaxBeneficiaries] = useState(0);
 
     const { extractFromView } = usePrismicData({ list: true });
-    const { submissionContent, submissionTitle } = extractFromView('heading') as any;
+    const { communityTitle, submissionContent } = extractFromView('heading') as any;
     const { t } = useTranslations();
 
     const [formFields, setFormFields] = useState({
@@ -73,11 +70,10 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
             location: location || null,
             maxClaim: contract?.maxClaim || '',
             name: community?.name || '',
-        },
-        resolver: useYupValidationResolver(editCommunitySchema)
+        }
     });
 
-    const userNotAmbassadorOrCreator = (community?.requestByAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase() && community?.ambassadorAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase())
+    const userNotAmbassadorOrCreator = (community?.requestByAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase() && ambassadorAddress?.toLowerCase() !== auth?.user?.address?.toLowerCase())
 
     // We can only edit this Community if: the current User is the one who created OR the current User is an Ambassador for this Community or Council Member
     if (userNotAmbassadorOrCreator && !auth?.user?.councilMember) {
@@ -213,14 +209,12 @@ const EditPending: React.FC<{ community: Community, contract: Contract }> = prop
         }
     }
 
-    console.log('Pending')
-
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box fLayout="start between" fWrap="wrap" flex>
                 <Box column flex pr={{ sm: 2, xs: 0 }} w={{ sm: '75%', xs: '100%' }}>
                     <Display g900 medium>
-                        {submissionTitle}
+                        {communityTitle}
                     </Display>
                     { /* TODO: missing link to "learn how..." */ }
                     <RichText content={submissionContent} g500 mt={0.25} />

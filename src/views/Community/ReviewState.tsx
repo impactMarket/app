@@ -13,9 +13,12 @@ import Link from 'next/link';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Review = ({ buttonLoading, community, updateReview }: any) => {
+const Review = ({ ambassador, buttonLoading, community, updateReview }: any) => {
     const { t } = useTranslations();
     const { user } = useSelector(selectCurrentUser);
+
+    // Show Edit Button if: community is claimed or accepted AND if the ambassador's address is the wallet connected address OR if the user is a council member
+    const showEditButton = (((community?.review === 'claimed' || community?.review === 'accepted') && (ambassador?.address?.toLowerCase() === user?.address?.toLowerCase())) || !!user?.councilMember)
 
     return (
         <Box flex>
@@ -40,7 +43,7 @@ const Review = ({ buttonLoading, community, updateReview }: any) => {
                 </Box>
             )}
 
-                {(((community?.review === 'claimed' || community?.review === 'accepted') && (community?.ambassadorAddress?.toLowerCase() === user?.address?.toLowerCase())) || !!user?.councilMember) && (
+                {showEditButton && (
                     <Box fGrow={1} fLayout="end" flex inlineFlex>
                         <Link href={`/communities/edit/${community.id}`} passHref>
                             <Button>
@@ -51,7 +54,7 @@ const Review = ({ buttonLoading, community, updateReview }: any) => {
                     </Box>
                 )}
 
-                {(community?.review === 'claimed' && community?.review !== 'accepted' && community?.ambassadorAddress?.toLowerCase() === user?.address?.toLowerCase()) && (
+                {(community?.review === 'claimed' && community?.review !== 'accepted' && ambassador?.address?.toLowerCase() === user?.address?.toLowerCase()) && (
                     <Box ml={1}>
                         <DropdownMenu
                             asButton
