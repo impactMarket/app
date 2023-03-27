@@ -14,6 +14,7 @@ const modals = {
     openStory: dynamic(() => import('./Stories/OpenStory'), { ssr: false }),
     recoverAccount: dynamic(() => import('./RecoverAccount'), { ssr: false }),
     reloadInfoAddCommunity: dynamic(() => import('./AddCommunity/ReloadInfo'), { ssr: false }),
+    removeCommunity: dynamic(() => import('./RemoveCommunity'), { ssr: false }),
     reportStory: dynamic(() => import('./Stories/ReportStory'), { ssr: false }),
     reportSuspiciousActivity: dynamic(() => import('./ReportSuspiciousActivity'), { ssr: false }),
     welcomeBeneficiary: dynamic(() => import('./WelcomeBeneficiary'), { ssr: false }),

@@ -99,7 +99,7 @@ const Contribute = () => {
             BigNumber.config({ EXPONENTIAL_AT: 29 });
             const amount = new BigNumber(contribution).toString();
 
-            toast.info('Please go to the wallet, approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             const response = await approve(amount, contractAddress);
 
             if (!response?.status) {
@@ -131,7 +131,7 @@ const Contribute = () => {
             BigNumber.config({ EXPONENTIAL_AT: 29 });
             const amount = new BigNumber(contribution).toString();
 
-            toast.info('Please go to the wallet, approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             const response = !!contractAddress
                 ? await donateToCommunity(contractAddress, amount)
                 : await donateToTreasury(amount);

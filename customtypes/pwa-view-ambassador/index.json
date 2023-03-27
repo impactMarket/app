@@ -62,6 +62,15 @@
           "allowTargetBlank": true,
           "single": "paragraph,em,hyperlink,strong"
         }
+      },
+      "message-activityDescription": {
+        "type": "StructuredText",
+        "config": {
+          "label": "activityDescription",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
+        }
       }
     }
   }

@@ -32,7 +32,7 @@ const ManagerAlerts = () => {
         try {
             setLoading(true);
 
-            toast.info('Please go to the wallet approve the transaction');
+            toast.info(<Message id="approveTransaction"/>);
             const response = await requestFunds();
 
             setFundsReceived(response)

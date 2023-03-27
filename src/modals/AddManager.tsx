@@ -64,7 +64,7 @@ const AddManager = () => {
         
                     Sentry.captureMessage(`addManager ${community?.id} ${submitData?.address}`);
 
-                    toast.info('Please go to the wallet approve the transaction');
+                    toast.info(<Message id="approveTransaction"/>);
                     const { status } = await addManager(community?.id, submitData?.address);
 
                     if(status) {

@@ -262,7 +262,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: PreSigned }) => response.data
         }),
-        getPendingCommunities: builder.mutation<PendingCommunities, {limit: number, offset: number, orderBy?: string}>({
+        getPendingCommunities: builder.mutation<PendingCommunities, {limit: any, offset: number, orderBy?: string}>({
             query: ({limit, offset, orderBy}) => ({
                 method: 'GET',
                 url: `communities?status=pending&review=accepted${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}${!!orderBy ? `&orderBy=${orderBy}` : ''}&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
