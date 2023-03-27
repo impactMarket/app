@@ -1,5 +1,6 @@
 import { ViewContainer } from "@impact-market/ui";
 import React, { useEffect } from "react";
+import config from "config";
 
 // eslint-disable-next-line no-var
 declare var LiveAgent: any;
@@ -23,6 +24,10 @@ const InnerSupport = () => {
 }
 const Support: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
+
+    useEffect(() => {
+        window.location.href = config.supportURL;
+    }, []);
 
     return <ViewContainer isLoading={isLoading}>
         <div id="la-form-impactmarket" />

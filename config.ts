@@ -99,7 +99,12 @@ const config = {
     /**
      * Feature flag for learn and earn
      */
-    enableLearnEarn: process.env.NEXT_PUBLIC_ENABLE_LEARN_EARN
+    enableLearnEarn: process.env.NEXT_PUBLIC_ENABLE_LEARN_EARN,
+    
+    /**
+     * Support URL
+     */
+    supportURL: process.env.NEXT_PUBLIC_SUPPORT_URL
 };
 
 export default config;
