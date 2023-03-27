@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Display,
     DropdownMenu,
@@ -9,13 +10,12 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
-import { tabRouter } from './Helpers';
+import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import Filters from '../../components/Filters';
 import LevelsTable from './LevelsTable';
 import Metrics from './Metrics';
-import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
 import styled from 'styled-components';
@@ -164,7 +164,7 @@ const LearnAndEarn = (props: any) => {
                     copy={{ failed: claimDisabled, success: claimAvailable }}
                 />
             )}
-            <Tabs defaultIndex={tabRouter(state.toString())}>
+            <Tabs defaultIndex={0}>
                 <TabList>
                     {TabItems.map((el: string) => (
                         <Tab
@@ -200,6 +200,12 @@ const LearnAndEarn = (props: any) => {
                         <Filters property="search" />
                     </Box>
                 </Box>
+
+                <Alert
+                    icon="infoCircle" 
+                    mb={1}
+                    title={'Learn&Earn courses are ONLY available for impactMarket UBI beneficiaries.'}
+                />
 
                 <LevelsTable
                     data={filteredData}

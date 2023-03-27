@@ -77,6 +77,10 @@ const Level = (props: any) => {
         }
     };
 
+    const isLAEUSer = auth?.user?.roles?.some((r: string) => ['beneficiary', 'manager'].includes(r));
+    const tooltipText = !isLAEUSer ? 'Learn&Earn lessons are ONLY available for impactMarket UBI beneficiaries.' : tooltip;
+    const buttonDisabled = isLAEUSer || !completedToday;
+
     return (
         <ViewContainer isLoading={false}>
             <Box as="a" onClick={() => router.push(`/${lang}/learn-and-earn/`)}>
@@ -132,7 +136,7 @@ const Level = (props: any) => {
                                         {item.status === 'started' && (
                                             <Tooltip
                                                 content={tooltip}
-                                                disabled={!completedToday}
+                                                disabledTooltip={!completedToday}
                                             >
                                                 <Button
                                                     fluid
@@ -154,18 +158,18 @@ const Level = (props: any) => {
                                             </Tooltip>
                                         )}
 
-                                        {item.status === 'available' &&
+                                        {(item.status === 'available' || !isLAEUSer) &&
                                             (idx - 1 < 0 ||
                                                 lessonsData[idx - 1]?.status ===
                                                     'completed') && (
                                                 <Tooltip
-                                                    content={tooltip}
-                                                    disabled={!completedToday}
+                                                    content={tooltipText}
+                                                    disabledTooltip={buttonDisabled}
                                                 >
                                                     <Button
                                                         fluid
                                                         disabled={
-                                                            completedToday
+                                                            completedToday || !isLAEUSer
                                                         }
                                                         onClick={() =>
                                                             startLesson(
