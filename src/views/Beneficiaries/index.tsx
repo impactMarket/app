@@ -21,6 +21,7 @@ import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 import { useGetCommunityMutation } from '../../api/community';
+import { useManager } from '@impact-market/utils/useManager';
 import { useQuery } from '@apollo/client';
 
 const lastActivity = Math.floor(new Date().getTime() / 1000 - 1036800) 
@@ -36,10 +37,10 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { t } = useTranslations();
     const { update, getByKey } = useFilters();
 
-
     const [getCommunity] = useGetCommunityMutation();
     const [community, setCommunity] = useState({}) as any;
-    
+
+    const { community: communityDataFromHook } = useManager(getByKey('community') || auth?.user?.manager?.community)
 
     // Check if current User has access to this page
     if(!auth?.type?.includes(userManager) && !auth?.type?.includes(userAmbassador)) {
@@ -66,9 +67,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const loadingCommunity = !data && !error;
 
     useEffect(() => {
-        const init = async () => {
-            console.log('inside');
-            
+        const init = async () => {            
             try {
                 const communityAddress = getByKey('community') || auth?.user?.manager?.community;
                 const data = await getCommunity(communityAddress).unwrap();
@@ -95,6 +94,11 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
         lastActivity_lt: lastActivity
     }});
 
+    // States -> 0: Added, 1: Removed, 2: Blocked
+    const beneficiariesStateLength = (state: number) => {
+        return data?.beneficiaryEntities?.filter((elem: any) => elem.state === state)?.length
+    }
+
     return (
         <ViewContainer isLoading={isLoading || loadingCommunity || inactiveBeneficiaries?.loading}>
             <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout="start between" flex>
@@ -106,7 +110,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                 </Box>
                 {
                     data?.beneficiaryEntities?.length > 0 &&
-                    <Button icon="plus" mt={{ sm: 0, xs: 1 }} onClick={() => openModal('addBeneficiary', { mutate })}>
+                    <Button icon="plus" mt={{ sm: 0, xs: 1 }} onClick={() => openModal('addBeneficiary', { activeBeneficiariesLength: beneficiariesStateLength(0), maxBeneficiaries: communityDataFromHook?.maxBeneficiaries, mutate })}>
                         <String id="addBeneficiary" />
                     </Button>
                 }
@@ -117,18 +121,18 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                     <Tabs defaultIndex={+getByKey('state')}>
                         <TabList>
                             <Tab
-                                number={data?.beneficiaryEntities?.filter((elem: any) => elem.state === 0)?.length}
-                                onClick={() => update({ 'page': 0, 'state': 0})}
+                                number={beneficiariesStateLength(0)}
+                                onClick={() => update({ 'page': 0, 'state': 0 })}
                                 title={t('added')}
                             />
                             <Tab
-                                number={data?.beneficiaryEntities?.filter((elem: any) => elem.state === 1)?.length}
-                                onClick={() => update({ 'page': 0, 'state': 1})}
+                                number={beneficiariesStateLength(1)}
+                                onClick={() => update({ 'page': 0, 'state': 1 })}
                                 title={t('removed')}
                             />
                             <Tab
-                                number={data?.beneficiaryEntities?.filter((elem: any) => elem.state === 2)?.length}
-                                onClick={() => update({ 'page': 0, 'state': 2})}
+                                number={beneficiariesStateLength(2)}
+                                onClick={() => update({ 'page': 0, 'state': 2 })}
                                 title={t('blocked')}
                             />
                         </TabList>
