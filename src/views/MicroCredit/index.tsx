@@ -9,14 +9,14 @@ import LoanRepayment from './LoanRepayment';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
-    const [loanId, setLoanId] = useState('0');
+    const [loanId, setLoanId] = useState(0);
     const auth = useSelector(selectCurrentUser);
     const {
         getActiveLoanId,
         loan,
         repayLoan,
         claimLoan,
-        isLoaded
+        isReady
     } = useMicroCredit();
 
     const loanData = [
@@ -67,9 +67,7 @@ const MicroCredit = (props: any) => {
     useEffect(() => {
         const getLoans = async () => {
             if (!!auth.user.address) {
-                const activeLoanId = (
-                    await getActiveLoanId(auth.user.address.toString())
-                ).toString();
+                const activeLoanId = await getActiveLoanId(auth.user.address.toString());
 
                 setLoanId(activeLoanId);
             }
@@ -85,7 +83,7 @@ const MicroCredit = (props: any) => {
         loan.amountBorrowed > 0 && loan.startDate > 0 && loan.currentDebt === 0;
 
     return (
-        <ViewContainer isLoading={!isLoaded}>
+        <ViewContainer isLoading={!isReady}>
             <Alert
                 warning
                 icon="alertTriangle"
