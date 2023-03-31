@@ -21,4 +21,4 @@ export const ambassadorRoutes: Routes = ['/requests', '/ambassador', '/ambassado
 
 export const councilMemberRoutes: Routes = ['/communities/edit/[id]'];
 
-export const borrowerRoutes: Routes = ['/micro-credit'];
+export const borrowerRoutes: Routes = ['/microcredit'];
