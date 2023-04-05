@@ -31,7 +31,7 @@ const WrongAnswer = () => {
             </Box>
             <Box mt="1.25rem">
                 <RichText
-                    content={modals.data.title_failed}
+                    content={modals.data.laeFailedLessonTitle}
                     large
                     g900
                     semibold
@@ -39,7 +39,7 @@ const WrongAnswer = () => {
             </Box>
             <Box mt="1.25rem">
                 <RichText
-                    content={modals.data.content_failed}
+                    content={modals.data.laeFailedLessonDescription}
                     medium
                     g500
                     variables={{ attempts: attemptsNumber }}

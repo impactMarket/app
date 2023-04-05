@@ -704,6 +704,42 @@
           "placeholder": ""
         }
       }
+    },
+    "lae-success-lesson": {
+      "lae-success-lesson-title": {
+        "type": "Text",
+        "config": {
+          "label": "LAE Success Lesson Title",
+          "placeholder": ""
+        }
+      },
+      "lae-success-lesson-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "LAE Success Lesson Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
+    },
+    "lae-failed-lesson": {
+      "lae-failed-lesson-title": {
+        "type": "Text",
+        "config": {
+          "label": "LAE Failed Lesson Title",
+          "placeholder": ""
+        }
+      },
+      "lae-failed-lesson-description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "LAE Failed Lesson Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph,em,hyperlink,strong"
+        }
+      }
     }
   }
 }
