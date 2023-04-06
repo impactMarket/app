@@ -100,12 +100,18 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
 
     const {
         isReady,
-        claimCooldown,
         claim,
-        isClaimable,
-        beneficiary: { claimedAmount },
-        community: { claimAmount, hasFunds, maxClaim },
-        fundsRemainingDays
+        beneficiary: { 
+            claimedAmount, 
+            claimCooldown, 
+            isClaimable, 
+            fundsRemainingDays, 
+            community: { 
+                claimAmount, 
+                hasFunds, 
+                maxClaim 
+            }
+        },
     } = useBeneficiary(auth?.user?.beneficiary?.community);
 
     const { community, loadingCommunity } = useCommunity(
