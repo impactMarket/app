@@ -47,6 +47,20 @@
         },
         "type": "Text"
       },
+      "string-activeBeneficiaries": {
+        "config": {
+          "label": "activeBeneficiaries",
+          "placeholder": "Active Beneficiaries"
+        },
+        "type": "Text"
+      },
+      "string-activity": {
+        "type": "Text",
+        "config": {
+          "label": "activity",
+          "placeholder": ""
+        }
+      },
       "string-addBeneficiary": {
         "config": {
           "label": "addBeneficiary",
@@ -279,11 +293,11 @@
         "type": "Text"
       },
       "string-claimUbi": {
-        "type": "Text",
         "config": {
           "label": "claimUbi",
-          "placeholder": ""
-        }
+          "placeholder": "Claim UBI"
+        },
+        "type": "Text"
       },
       "string-claimableFunds": {
         "config": {
@@ -726,12 +740,26 @@
         },
         "type": "Text"
       },
+      "string-inactiveBeneficiaries": {
+        "config": {
+          "label": "inactiveBeneficiaries",
+          "placeholder": "Inactive Beneficiaries"
+        },
+        "type": "Text"
+      },
       "string-language": {
         "config": {
           "label": "language",
           "placeholder": "Language"
         },
         "type": "Text"
+      },
+      "string-lastActiveOn": {
+        "type": "Text",
+        "config": {
+          "label": "lastActiveOn",
+          "placeholder": ""
+        }
       },
       "string-lastName": {
         "config": {
@@ -949,6 +977,13 @@
           "placeholder": "No actions found."
         },
         "type": "Text"
+      },
+      "string-noActivity": {
+        "type": "Text",
+        "config": {
+          "label": "noActivity",
+          "placeholder": ""
+        }
       },
       "string-noCommunities": {
         "config": {
@@ -1173,6 +1208,13 @@
           "placeholder": "Remove Beneficiary"
         },
         "type": "Text"
+      },
+      "string-removeCommunity": {
+        "type": "Text",
+        "config": {
+          "label": "removeCommunity",
+          "placeholder": ""
+        }
       },
       "string-removeManager": {
         "config": {
@@ -1415,7 +1457,7 @@
       "string-submitCommunity": {
         "config": {
           "label": "submitCommunity",
-          "placeholder": ""
+          "placeholder": "Submit Community"
         },
         "type": "Text"
       },
@@ -1509,6 +1551,13 @@
           "placeholder": "View All"
         },
         "type": "Text"
+      },
+      "string-viewAllTransactions": {
+        "type": "Text",
+        "config": {
+          "label": "viewAllTransactions",
+          "placeholder": ""
+        }
       },
       "string-voteHasEnded": {
         "config": {
@@ -1607,55 +1656,6 @@
           "placeholder": "Your profile photo"
         },
         "type": "Text"
-      },
-      "string-activeBeneficiaries": {
-        "type": "Text",
-        "config": {
-          "label": "activeBeneficiaries",
-          "placeholder": ""
-        }
-      },
-      "string-inactiveBeneficiaries": {
-        "type": "Text",
-        "config": {
-          "label": "inactiveBeneficiaries",
-          "placeholder": ""
-        }
-      },
-      "string-lastActiveOn": {
-        "type": "Text",
-        "config": {
-          "label": "lastActiveOn",
-          "placeholder": ""
-        }
-      },
-      "string-noActivity": {
-        "type": "Text",
-        "config": {
-          "label": "noActivity",
-          "placeholder": ""
-        }
-      },
-      "string-viewAllTransactions": {
-        "type": "Text",
-        "config": {
-          "label": "viewAllTransactions",
-          "placeholder": ""
-        }
-      },
-      "string-activity": {
-        "type": "Text",
-        "config": {
-          "label": "activity",
-          "placeholder": ""
-        }
-      },
-      "string-removeCommunity": {
-        "type": "Text",
-        "config": {
-          "label": "removeCommunity",
-          "placeholder": ""
-        }
       }
     },
     "messages": {
@@ -2064,7 +2064,7 @@
           "single": "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,list-item,o-list-item"
         }
       },
-      "message-ApproveTransaction": {
+      "message-approveTransaction": {
         "type": "StructuredText",
         "config": {
           "label": "approveTransaction",

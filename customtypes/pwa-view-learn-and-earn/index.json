@@ -4,53 +4,114 @@
   "repeatable": false,
   "status": true,
   "json": {
-    "config": {
-      "seo-title": {
-        "config": {
-          "label": "SEO title",
-          "placeholder": ""
+    "config" : {
+      "seo-title" : {
+        "config" : {
+          "label" : "SEO title",
+          "placeholder" : ""
         },
-        "type": "Text"
+        "type" : "Text"
       },
-      "seo-description": {
-        "config": {
-          "label": "SEO description",
-          "placeholder": ""
+      "seo-description" : {
+        "config" : {
+          "label" : "SEO description",
+          "placeholder" : ""
         },
-        "type": "Text"
+        "type" : "Text"
       },
-      "seo-keywords": {
-        "config": {
-          "label": "SEO keywords",
-          "placeholder": ""
+      "seo-keywords" : {
+        "config" : {
+          "label" : "SEO keywords",
+          "placeholder" : ""
         },
-        "type": "Text"
+        "type" : "Text"
       },
-      "seo-image": {
-        "config": {
-          "label": "SEO Image",
-          "constraint": {},
-          "thumbnails": []
+      "seo-image" : {
+        "config" : {
+          "label" : "SEO Image",
+          "constraint" : { },
+          "thumbnails" : [ ]
         },
-        "type": "Image"
+        "type" : "Image"
       }
     },
-    "heading": {
-      "heading-title": {
-        "config": {
-          "label": "Title",
-          "placeholder": ""
+    "heading" : {
+      "heading-title" : {
+        "config" : {
+          "label" : "Title",
+          "placeholder" : ""
         },
-        "type": "Text"
+        "type" : "Text"
       },
-      "heading-content": {
-        "config": {
-          "label": "Description",
-          "placeholder": "",
-          "allowTargetBlank": true,
-          "single": "paragraph,strong,em,hyperlink"
+      "heading-content" : {
+        "config" : {
+          "label" : "Description",
+          "placeholder" : "",
+          "allowTargetBlank" : true,
+          "single" : "paragraph,strong,em,hyperlink"
         },
-        "type": "StructuredText"
+        "type" : "StructuredText"
+      },
+      "claim-available" : {
+        "type" : "StructuredText",
+        "config" : {
+          "multi" : "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "label" : "Claim available",
+          "placeholder" : "Great job! You can now get your rewards!"
+        }
+      },
+      "claim-disabled" : {
+        "type" : "StructuredText",
+        "config" : {
+          "multi" : "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "label" : "Claim disabled",
+          "placeholder" : "You haven’t completed any topic yet."
+        }
+      }
+    },
+    "level" : {
+      "instructions" : {
+        "type" : "StructuredText",
+        "config" : {
+          "multi" : "paragraph,preformatted,heading1,heading2,heading3,heading4,heading5,heading6,strong,em,hyperlink,image,embed,list-item,o-list-item,rtl",
+          "allowTargetBlank" : true,
+          "label" : "Level instructions"
+        }
+      },
+      "earn-rewards" : {
+        "type" : "StructuredText",
+        "config" : {
+          "multi" : "paragraph",
+          "label" : "Earn rewards",
+          "placeholder" : "Earn up to 100 PACTS"
+        }
+      }
+    },
+    "lesson" : {
+      "start-quiz" : {
+        "type" : "StructuredText",
+        "config" : {
+          "single" : "paragraph",
+          "label" : "Start quiz",
+          "placeholder" : "Start Quiz"
+        }
+      },
+      "complete-content" : {
+        "type" : "StructuredText",
+        "config" : {
+          "multi" : "paragraph",
+          "label" : "Complete content",
+          "placeholder" : "You must check all the lesson content, before proceed."
+        }
+      },
+      "threshold-tooltip" : {
+        "type" : "StructuredText",
+        "config" : {
+          "multi" : "paragraph,strong,hyperlink",
+          "allowTargetBlank" : true,
+          "label" : "Threshold tooltip",
+          "placeholder" : "Lesson will be available next week."
+        }
       }
     }
   }

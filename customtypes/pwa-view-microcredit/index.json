@@ -1,0 +1,246 @@
+{
+  "id": "pwa-view-microcredit",
+  "label": "[PWA] [Vew] Microcredit",
+  "repeatable": false,
+  "status": true,
+  "json": {
+    "config": {
+      "seo-title": {
+        "type": "Text",
+        "config": {
+          "label": "SEO title",
+          "placeholder": ""
+        }
+      },
+      "seo-description": {
+        "type": "Text",
+        "config": {
+          "label": "SEO description",
+          "placeholder": ""
+        }
+      },
+      "seo-keywords": {
+        "type": "Text",
+        "config": {
+          "label": "SEO keywords",
+          "placeholder": ""
+        }
+      },
+      "seo-image": {
+        "type": "Image",
+        "config": {
+          "label": "SEO image",
+          "constraint": {},
+          "thumbnails": []
+        }
+      }
+    },
+    "heading": {
+      "heading-title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": "Microcredit"
+        }
+      },
+      "heading-content": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Content",
+          "placeholder": "Optional description on the heading",
+          "allowTargetBlank": true,
+          "single": "paragraph,strong,em,hyperlink"
+        }
+      }
+    },
+    "claim-loan": {
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph, heading1, strong, em, hyperlink, label, span"
+        }
+      },
+      "button": {
+        "type": "Text",
+        "config": {
+          "label": "Button",
+          "placeholder": ""
+        }
+      },
+      "consent-1": {
+        "type": "Text",
+        "config": {
+          "label": "Consent Checkbox",
+          "placeholder": ""
+        }
+      },
+      "consent-2": {
+        "type": "Text",
+        "config": {
+          "label": "Consent Checkbox",
+          "placeholder": ""
+        }
+      }
+    },
+    "repay-loan": {
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph, heading1, strong, em, hyperlink, label, span"
+        }
+      },
+      "button": {
+        "type": "Text",
+        "config": {
+          "label": "Button",
+          "placeholder": ""
+        }
+      }
+    },
+    "completed-loan": {
+      "title": {
+        "type": "Text",
+        "config": {
+          "label": "Title",
+          "placeholder": ""
+        }
+      },
+      "description": {
+        "type": "StructuredText",
+        "config": {
+          "label": "Description",
+          "placeholder": "",
+          "allowTargetBlank": true,
+          "single": "paragraph, heading1, strong, em, hyperlink, label, span"
+        }
+      },
+      "button": {
+        "type": "Text",
+        "config": {
+          "label": "Button",
+          "placeholder": ""
+        }
+      }
+    },
+    "loan-overview": {
+      "amount-borrowed-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": "Total loan amount"
+        }
+      },
+      "amount-borrowed-tooltip": {
+        "type": "Text",
+        "config": {
+          "label": "Tooltip",
+          "placeholder": "This is total loan amount approved and initially deposited in your wallet."
+        }
+      },
+      "amount-to-pay-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": "Total loan to pay"
+        }
+      },
+      "amount-to-pay-tooltip": {
+        "type": "Text",
+        "config": {
+          "label": "Tooltip",
+          "placeholder": "This is total loan amount to pay. It includes principal amount and interest."
+        }
+      },
+      "monthly-instalements-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": "Monthly installments"
+        }
+      },
+      "monthly-instalements-tooltip": {
+        "type": "Text",
+        "config": {
+          "label": "Tooltip",
+          "placeholder": "This is total the monthly instalements."
+        }
+      },
+      "loan-duration-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": "Term lenght"
+        }
+      },
+      "loan-duration-tooltip": {
+        "type": "Text",
+        "config": {
+          "label": "Tooltip",
+          "placeholder": "This is total loan period."
+        }
+      },
+      "interest-rate-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": "Daily Interest rate"
+        }
+      },
+      "interest-rate-tooltip": {
+        "type": "Text",
+        "config": {
+          "label": "Tooltip",
+          "placeholder": "This is the daily interest rate."
+        }
+      },
+      "type-rate-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": "Type of rate"
+        }
+      },
+      "type-rate-tooltip": {
+        "type": "Text",
+        "config": {
+          "label": "Tooltip",
+          "placeholder": "This is type of the rate."
+        }
+      },
+      "total-amount-due-label": {
+        "type": "Text",
+        "config": {
+          "label": "Label",
+          "placeholder": "Total amount due"
+        }
+      },
+      "total-amount-due-tooltip": {
+        "type": "Text",
+        "config": {
+          "label": "Tooltip",
+          "placeholder": "This is total amount due."
+        }
+      }
+    }
+  }
+}
