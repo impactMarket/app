@@ -9,7 +9,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
 
     if (levelId) {
         const { data } = useSWR<
-            { data: {  completedToday: boolean, lessons: any[], totalPoints: number, } },
+            { data: {  completedToday: boolean, lessons: any[], rewardAvailable: boolean, totalPoints: number, } },
             string
         >(`/learn-and-earn/levels/${levelId}`, fetcher);
 
@@ -38,6 +38,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
                 levelId && mergedLessons
                     ? mergedLessons.filter((e: any) => e)
                     : lessons,
+            rewardAvailable: data?.data?.rewardAvailable || false,
             totalPoints: data?.data?.totalPoints || 0
         };
     }
@@ -45,6 +46,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
     return {
         completedToday: true,
         data: lessons,
-        totalPoints: 0
+        rewardAvailable: false,
+        totalPoints: 0,
     };
 }
