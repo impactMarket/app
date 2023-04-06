@@ -1,4 +1,5 @@
 import {
+    Alert,
     Badge,
     Box,
     Button,
@@ -39,7 +40,7 @@ const Level = (props: any) => {
     const auth = useSelector(selectCurrentUser);
     const { getByKey } = useFilters();
     const levelId = getByKey('levelId') || '';
-    const { data: lessonsData, totalPoints, completedToday } = useLessons(
+    const { data: lessonsData, totalPoints, completedToday, rewardAvailable } = useLessons(
         lessons,
         levelId,
         auth
@@ -86,6 +87,18 @@ const Level = (props: any) => {
             <Box as="a" onClick={() => router.push(`/${lang}/learn-and-earn/`)}>
                 <Label content={<String id="back" />} icon="arrowLeft" />
             </Box>
+
+            {!rewardAvailable && (
+                <Box mt="1rem" >
+                    <Alert
+                        error
+                        icon="alertCircle"
+                        message="There are no rewards available for this level."
+                        title="No rewards available"
+                    />
+                </Box>
+            )}
+
             <Display g900 medium mt="1rem" mb=".5rem">
                 {title}
             </Display>
