@@ -91,15 +91,16 @@ const MicroCredit = (props: any) => {
             value: `${loan.amountRepayed}cUSD`
         },
         {
+            highlight: true,
             label: totalAmountDueLabel,
             tooltip: totalAmountDueTooltip,
-            value: `${loan.currentDebt}cUSD`
+            value: `${loan.currentDebt}cUSD`,
         }
     ];
 
     useEffect(() => {
         const getLoans = async () => {
-            if (!!auth.user.address) {
+            if (!!auth?.user?.address) {
                 const activeLoanId = await getActiveLoanId(
                     auth.user.address.toString()
                 );
@@ -109,6 +110,8 @@ const MicroCredit = (props: any) => {
                 } else {
                     setLoanId(activeLoanId);
                 }
+            } else {
+                router.push('/');
             }
         };
 

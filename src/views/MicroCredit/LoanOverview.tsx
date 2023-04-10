@@ -45,10 +45,10 @@ const LoanOverview = (props: any) => {
                 </Box>
             </a>
             <Box mt={1}>
-                {overviewData.map(({ label, value, tooltip }: any) => (
+                {overviewData.map(({ label, highlight = false, value, tooltip }: any) => (
                     <Box flex fLayout="between" mb={0.5}>
                         <Box flex fLayout="center start">
-                            <Text small g500>
+                            <Text small g500 {...(highlight && { e500: true })}>
                                 {label}
                             </Text>
                             <Tooltip content={tooltip}>

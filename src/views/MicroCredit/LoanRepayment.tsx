@@ -9,18 +9,45 @@ import {
     toast
 } from '@impact-market/ui';
 import { localeFormat } from '../../utils/currencies';
+import { mq } from 'styled-gen'
 import { useCUSDBalance, useMicroCredit } from '@impact-market/utils';
 import { useState } from 'react';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
-import styled from 'styled-components';
+import styled, { css }  from 'styled-components';
 
 const BorderWrapper = styled(Box)`
     padding: 0.6rem;
     border: 1px solid ${colors.g300};
     border-radius: 8px;
+`;
+
+const ActionWrapper = styled(Box)`
+    ${mq.phone(css`
+        flex-direction: column;
+
+        > .approve, .repay {
+            width: 100%;
+        }
+
+        > svg {
+            transform: rotate(90deg);
+        }
+    `)}
+
+    ${mq.tabletLandscape(css`
+        flex-direction: row;
+
+        > .approve, .repay {
+            width: auto;
+        }
+
+        > svg {
+            transform: rotate(0deg);
+        }
+    `)}
 `;
 
 const LoanRepayment = (props: any) => {
@@ -63,7 +90,7 @@ const LoanRepayment = (props: any) => {
         setIsLoadingApprove(true);
 
         try {
-            toast.success(<Message id="connectWallet" />);
+            toast.success(<Message id="approveTransaction" />);
             const response = await approve(token, amount);
 
             if (response.status) {
@@ -141,8 +168,9 @@ const LoanRepayment = (props: any) => {
                         {approved && 'Transaction approved. You can repay now.'}
                     </Text>
                 </Box>
-                <Box mt={1.5} flex fLayout="center" fWrap="wrap">
+                <ActionWrapper mt={1.5} flex fLayout="center" fWrap="wrap">
                     <Button
+                        className='approve'
                         h={3.8}
                         onClick={handleApprove}
                         isLoading={isLoadingApprove}
@@ -161,6 +189,7 @@ const LoanRepayment = (props: any) => {
                         mr={0.3}
                     />
                     <Button
+                        className='repay'
                         h={3.8}
                         onClick={repay}
                         isLoading={isLoadingRepay}
@@ -171,7 +200,7 @@ const LoanRepayment = (props: any) => {
                             {`Repay`}
                         </Text>
                     </Button>
-                </Box>
+                </ActionWrapper>
             </Box>
             <Box
                 style={{ flexBasis: '50%' }}
