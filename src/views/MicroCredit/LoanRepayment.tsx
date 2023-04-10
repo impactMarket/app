@@ -33,7 +33,7 @@ const LoanRepayment = (props: any) => {
     });
     const { repayLoanTitle, repayLoanDescription, repayLoanImage } = data;
 
-    const [amount, setAmount] = useState('0');
+    const [amount, setAmount] = useState('');
     const [approved, setApproved] = useState(false);
     const [isLoadingApprove, setIsLoadingApprove] = useState(false);
     const [isLoadingRepay, setIsLoadingRepay] = useState(false);
@@ -84,7 +84,7 @@ const LoanRepayment = (props: any) => {
                 <Display g800 medium>
                     {repayLoanTitle}
                 </Display>
-                <RichText content={repayLoanDescription} small mt={0.5} />
+                <RichText content={repayLoanDescription} g500 small mt={0.5} variables={{currentDebt: loan.currentDebt, totalToPay: loan.currentDebt}} />
 
                 <LoanOverview overviewData={overviewData} />
 
@@ -105,6 +105,7 @@ const LoanRepayment = (props: any) => {
                                         setAmount(e.target.value);
                                     }
                                 }}
+                                placeholder={'Enter amount to pay'}
                                 rules={{ required: true }}
                                 style={{ fontSize: '1rem' }}
                                 type="number"
@@ -145,11 +146,11 @@ const LoanRepayment = (props: any) => {
                         h={3.8}
                         onClick={handleApprove}
                         isLoading={isLoadingApprove}
-                        disabled={approved}
+                        disabled={approved || +amount === 0}
                     >
-                        <Icon icon="checkedCircle" />
+                        {approved && <Icon icon="checkCircle" mr={.5} />}
                         <Text large medium>
-                            {`Approve Transaction`}
+                            {!approved ? `Approve Transaction` : `Approved`}
                         </Text>
                     </Button>
                     <Icon
@@ -167,7 +168,7 @@ const LoanRepayment = (props: any) => {
                         mt={0.3}
                     >
                         <Text large medium>
-                            {`Repay ${amount} cUSD`}
+                            {`Repay`}
                         </Text>
                     </Button>
                 </Box>

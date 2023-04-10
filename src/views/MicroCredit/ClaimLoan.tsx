@@ -1,8 +1,16 @@
-import { Alert, Box, Button, Display, Text, toast } from '@impact-market/ui';
+import {
+    Alert,
+    Box,
+    Button,
+    Display,
+    Icon,
+    Text,
+    colors,
+    toast
+} from '@impact-market/ui';
 import { currencyFormat } from '../../utils/currencies';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
-import { useMicroCredit } from '@impact-market/utils';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Image from '../../libs/Prismic/components/Image';
@@ -26,9 +34,15 @@ const CenteredAlert = styled(Alert)`
     }
 `;
 
+const CheckBox = styled(Box)`
+    background-color: ${colors.p100};
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+`;
+
 const ClaimLoan = (props: any) => {
-    const { data, overviewData, claimLoan } = props;
-    const { loan } = useMicroCredit();
+    const { data, overviewData, claimLoan, loan } = props;
     const {
         claimLoanButton,
         claimLoanTitle,
@@ -70,29 +84,19 @@ const ClaimLoan = (props: any) => {
         setIsLoading(false);
     };
 
-    const toggleConsent1 = (e: any) => {
-        if (e.target.checked) {
-            setConsent1(true);
-        } else {
-            setConsent1(false);
-        }
-    };
-
-    const toggleConsent2 = (e: any) => {
-        if (e.target.checked) {
-            setConsent2(true);
-        } else {
-            setConsent2(false);
-        }
-    };
-
     return (
         <Box flex fDirection={{ sm: 'row', xs: 'column' }}>
             <Box style={{ flexBasis: '50%' }} center order={{ sm: 0, xs: 1 }}>
                 <Display g800 medium>
                     {claimLoanTitle}
                 </Display>
-                <RichText content={claimLoanDescription} variables={{ loanAmount: loan.amountBorrowed }} small mt={0.5} />
+                <RichText
+                    content={claimLoanDescription}
+                    variables={{ loanAmount: loan.amountBorrowed }}
+                    small
+                    mt={0.5}
+                    g500
+                />
 
                 <CenteredAlert
                     warning
@@ -105,25 +109,39 @@ const ClaimLoan = (props: any) => {
 
                 <Box fLayout="start" flex mb={1.2} mt={1.2}>
                     <Box mr={0.6}>
-                        <input
-                            type="checkbox"
-                            onClick={(e) => toggleConsent1(e)}
-                        />
+                        <CheckBox
+                            onClick={() => setConsent1(!consent1)}
+                            padding={0.3}
+                            flex
+                        >
+                            {consent1 && (
+                                <Icon icon="tick" p500 h="100%" w="100%" />
+                            )}
+                        </CheckBox>
                     </Box>
                     <label style={{ textAlign: 'left' }}>
-                        <Text small>{consentText1}</Text>
+                        <Text small g600>
+                            {consentText1}
+                        </Text>
                     </label>
                 </Box>
 
                 <Box fLayout="start" flex>
                     <Box mr={0.6}>
-                        <input
-                            type="checkbox"
-                            onClick={(e) => toggleConsent2(e)}
-                        />
+                        <CheckBox
+                            onClick={() => setConsent2(!consent2)}
+                            padding={0.3}
+                            flex
+                        >
+                            {consent2 && (
+                                <Icon icon="tick" p500 h="100%" w="100%" />
+                            )}
+                        </CheckBox>
                     </Box>
                     <label style={{ textAlign: 'left' }}>
-                        <Text small>{consentText2}</Text>
+                        <Text small g600>
+                            {consentText2}
+                        </Text>
                     </label>
                 </Box>
 

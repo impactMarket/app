@@ -31,6 +31,8 @@ const MicroCredit = (props: any) => {
         interestRateTooltip,
         loanDurationLabel,
         loanDurationTooltip,
+        monthlyInstalementsLabel,
+        monthlyInstalementsTooltip,
         totalAmountDueLabel,
         totalAmountDueTooltip,
         typeRateLabel,
@@ -39,6 +41,14 @@ const MicroCredit = (props: any) => {
 
     const monthlyInterestRate = (dailyInterest: number) => {
         return ((Math.pow(1 + dailyInterest / 100, 30) - 1) * 100).toFixed(2);
+    };
+
+    const convertToDate = (timeframeInSeconds: string) => {
+        const seconds = Number(timeframeInSeconds);
+        const secondsInMonth = 2592000;
+        const result = seconds / secondsInMonth;
+
+        return `${result} months`;
     };
 
     const loanData = [
@@ -61,19 +71,24 @@ const MicroCredit = (props: any) => {
         {
             label: loanDurationLabel,
             tooltip: loanDurationTooltip,
-            value: '6 months'
+            value: `${convertToDate(loan.period)}`
         },
         {
             label: interestRateLabel,
             tooltip: interestRateTooltip,
-            value: `${loan.dailyInterest}% ${t('daily')} / ${monthlyInterestRate(
-                loan.dailyInterest
-            )}% Monthly`
+            value: `${loan.dailyInterest}% ${t(
+                'daily'
+            )} / ${monthlyInterestRate(loan.dailyInterest)}% Monthly`
         },
         {
             label: typeRateLabel,
             tooltip: typeRateTooltip,
             value: 'FIXED'
+        },
+        {
+            label: monthlyInstalementsLabel,
+            tooltip: monthlyInstalementsTooltip,
+            value: `${loan.amountRepayed}cUSD`
         },
         {
             label: totalAmountDueLabel,

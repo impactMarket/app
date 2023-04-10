@@ -18,7 +18,7 @@ const CleanCard = styled(Card)`
 
 const LoanOverview = (props: any) => {
     const { overviewData } = props;
-    const [active, setActive] = useState(false);
+    const [active, setActive] = useState(true);
 
     const handleClick = () => {
         const overviewElement = document.querySelector('.overview');
@@ -33,7 +33,7 @@ const LoanOverview = (props: any) => {
     };
 
     return (
-        <CleanCard className="overview">
+        <CleanCard className="overview active">
             <a>
                 <Box flex fLayout="center">
                     <div className="clicked-element" onClick={handleClick}>

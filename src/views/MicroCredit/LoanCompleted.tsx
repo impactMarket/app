@@ -17,7 +17,7 @@ const LoanCompleted = (props: any) => {
                 <Display g800 medium>
                     {completedLoanTitle}
                 </Display>
-                <RichText content={completedLoanDescription} small mt={0.5} />
+                <RichText content={completedLoanDescription} small mt={0.5} g500 />
 
                 <LoanOverview overviewData={overviewData} />
             </Box>
