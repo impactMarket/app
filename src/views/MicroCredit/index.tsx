@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
 import LoanRepayment from './LoanRepayment';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
@@ -20,6 +21,7 @@ const MicroCredit = (props: any) => {
         isReady
     } = useMicroCredit();
     const router = useRouter();
+    const { t } = useTranslations();
     const {
         amountBorrowedLabel,
         amountBorrowedTooltip,
@@ -64,7 +66,7 @@ const MicroCredit = (props: any) => {
         {
             label: interestRateLabel,
             tooltip: interestRateTooltip,
-            value: `${loan.dailyInterest}% Daily / ${monthlyInterestRate(
+            value: `${loan.dailyInterest}% ${t('daily')} / ${monthlyInterestRate(
                 loan.dailyInterest
             )}% Monthly`
         },

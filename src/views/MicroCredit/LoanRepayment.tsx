@@ -33,8 +33,6 @@ const LoanRepayment = (props: any) => {
     });
     const { repayLoanTitle, repayLoanDescription, repayLoanImage } = data;
 
-    console.log(data);
-
     const [amount, setAmount] = useState('0');
     const [approved, setApproved] = useState(false);
     const [isLoadingApprove, setIsLoadingApprove] = useState(false);

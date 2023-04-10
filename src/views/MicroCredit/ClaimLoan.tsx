@@ -92,7 +92,7 @@ const ClaimLoan = (props: any) => {
                 <Display g800 medium>
                     {claimLoanTitle}
                 </Display>
-                <RichText content={claimLoanDescription} small mt={0.5} />
+                <RichText content={claimLoanDescription} variables={{ loanAmount: loan.amountBorrowed }} small mt={0.5} />
 
                 <CenteredAlert
                     warning
