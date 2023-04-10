@@ -54,14 +54,14 @@
       }
     },
     "claim-loan": {
-      "title": {
+      "claim-loan-title": {
         "type": "Text",
         "config": {
           "label": "Title",
           "placeholder": ""
         }
       },
-      "description": {
+      "claim-loan-description": {
         "type": "StructuredText",
         "config": {
           "label": "Description",
@@ -70,7 +70,7 @@
           "single": "paragraph, heading1, strong, em, hyperlink, label, span"
         }
       },
-      "button": {
+      "claim-loan-button": {
         "type": "Text",
         "config": {
           "label": "Button",
@@ -90,17 +90,25 @@
           "label": "Consent Checkbox",
           "placeholder": ""
         }
+      },
+      "claim-loan-image": {
+        "type": "Image",
+        "config": {
+          "label": "Claim Loan image",
+          "constraint": {},
+          "thumbnails": []
+        }
       }
     },
     "repay-loan": {
-      "title": {
+      "repay-loan-title": {
         "type": "Text",
         "config": {
           "label": "Title",
           "placeholder": ""
         }
       },
-      "description": {
+      "repay-loan-description": {
         "type": "StructuredText",
         "config": {
           "label": "Description",
@@ -109,23 +117,31 @@
           "single": "paragraph, heading1, strong, em, hyperlink, label, span"
         }
       },
-      "button": {
+      "repay-loan-button": {
         "type": "Text",
         "config": {
           "label": "Button",
           "placeholder": ""
+        }
+      },
+      "repay-loan-image": {
+        "type": "Image",
+        "config": {
+          "label": "Repay Loan image",
+          "constraint": {},
+          "thumbnails": []
         }
       }
     },
     "completed-loan": {
-      "title": {
+      "completed-loan-title": {
         "type": "Text",
         "config": {
           "label": "Title",
           "placeholder": ""
         }
       },
-      "description": {
+      "completed-loan-description": {
         "type": "StructuredText",
         "config": {
           "label": "Description",
@@ -134,11 +150,19 @@
           "single": "paragraph, heading1, strong, em, hyperlink, label, span"
         }
       },
-      "button": {
+      "completed-loan-button": {
         "type": "Text",
         "config": {
           "label": "Button",
           "placeholder": ""
+        }
+      },
+      "completed-loan-image": {
+        "type": "Image",
+        "config": {
+          "label": "Completed Loan image",
+          "constraint": {},
+          "thumbnails": []
         }
       }
     },
