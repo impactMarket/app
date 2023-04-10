@@ -8,6 +8,7 @@ import { useState } from 'react';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
+import RichText from '../../libs/Prismic/components/RichText';
 import styled from 'styled-components';
 
 const CenteredAlert = styled(Alert)`
@@ -28,13 +29,20 @@ const CenteredAlert = styled(Alert)`
 const ClaimLoan = (props: any) => {
     const { data, overviewData, claimLoan } = props;
     const { loan } = useMicroCredit();
-
-    /* title, description from prismic */
-    const { cardImage } = data;
+    const {
+        claimLoanButton,
+        claimLoanTitle,
+        claimLoanDescription,
+        claimLoanImage,
+        consent1: consentText1,
+        consent2: consentText2
+    } = data;
     const [isLoading, setIsLoading] = useState(false);
     const loanAmount = loan.amountBorrowed ?? 0;
     const rates = useSelector(selectRates);
     const auth = useSelector(selectCurrentUser);
+    const [consent1, setConsent1] = useState(false);
+    const [consent2, setConsent2] = useState(false);
 
     const localeCurrency = new Intl.NumberFormat(
         auth?.user?.currency?.language || 'en-US',
@@ -62,19 +70,29 @@ const ClaimLoan = (props: any) => {
         setIsLoading(false);
     };
 
+    const toggleConsent1 = (e: any) => {
+        if (e.target.checked) {
+            setConsent1(true);
+        } else {
+            setConsent1(false);
+        }
+    };
+
+    const toggleConsent2 = (e: any) => {
+        if (e.target.checked) {
+            setConsent2(true);
+        } else {
+            setConsent2(false);
+        }
+    };
+
     return (
         <Box flex fDirection={{ sm: 'row', xs: 'column' }}>
             <Box style={{ flexBasis: '50%' }} center order={{ sm: 0, xs: 1 }}>
                 <Display g800 medium>
-                    {/* {title} */}
-                    {'Your loan has been approved!'}
+                    {claimLoanTitle}
                 </Display>
-                <Text small mt={0.5}>
-                    {/* {description} */}
-                    {`Congratulations! We're thrilled to inform you that your loan application for 200 cUSD has been approved!
-                    
-We're confident that this loan will help you achieve your financial goals, and we're excited to be a part of your journey.`}
-                </Text>
+                <RichText content={claimLoanDescription} small mt={0.5} />
 
                 <CenteredAlert
                     warning
@@ -83,18 +101,47 @@ We're confident that this loan will help you achieve your financial goals, and w
                     message={'This offer expires in 1 week.'}
                     mt={1.5}
                 />
-
-                {/* LOAN OVERVIEW */}
-
                 <LoanOverview overviewData={overviewData} />
 
-                {/* ////---///// */}
+                <Box fLayout="start" flex mb={1.2} mt={1.2}>
+                    <Box mr={0.6}>
+                        <input
+                            type="checkbox"
+                            onClick={(e) => toggleConsent1(e)}
+                        />
+                    </Box>
+                    <label style={{ textAlign: 'left' }}>
+                        <Text small>{consentText1}</Text>
+                    </label>
+                </Box>
+
+                <Box fLayout="start" flex>
+                    <Box mr={0.6}>
+                        <input
+                            type="checkbox"
+                            onClick={(e) => toggleConsent2(e)}
+                        />
+                    </Box>
+                    <label style={{ textAlign: 'left' }}>
+                        <Text small>{consentText2}</Text>
+                    </label>
+                </Box>
 
                 <Box mt={1.5} flex fLayout="center">
-                    <Button h={3.8} onClick={claim} isLoading={isLoading}>
-                        <Text large medium>
+                    <Button
+                        h={3.8}
+                        onClick={claim}
+                        isLoading={isLoading}
+                        disabled={!consent1 || !consent2}
+                    >
+                        <RichText
+                            large
+                            medium
+                            content={claimLoanButton}
+                            variables={{ loanAmount }}
+                        >
                             {`Accept ${loanAmount} cUSD Loan`}
-                        </Text>
+                        </RichText>
                     </Button>
                 </Box>
                 <Text g500 small mt={1}>
@@ -113,7 +160,7 @@ We're confident that this loan will help you achieve your financial goals, and w
                 flex
                 order={{ sm: 1, xs: 0 }}
             >
-                <Image {...cardImage} radius={0.5} w="100%" mb={1} />
+                <Image {...claimLoanImage} radius={0.5} w="100%" mb={1} />
             </Box>
         </Box>
     );

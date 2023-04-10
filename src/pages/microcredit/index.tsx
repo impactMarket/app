@@ -8,14 +8,14 @@ export const getStaticProps: GetStaticProps = async ({
     previewData
 }) => {
     const clientOptions = previewData as ClientConfig;
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-micro-credit' });
+    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-microcredit' });
 
     return {
         props: {
             data,
             fallback: '',
             lang,
-            view: 'view-micro-credit',
+            view: 'view-microcredit',
             withPreview: !!previewData
         }
     };

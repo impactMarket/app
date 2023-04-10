@@ -1,7 +1,8 @@
-import { Alert, Box, Card, Display, ViewContainer } from '@impact-market/ui';
+import { Box, Card, Display, ViewContainer } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useEffect, useState } from 'react';
 import { useMicroCredit } from '@impact-market/utils';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
@@ -18,48 +19,63 @@ const MicroCredit = (props: any) => {
         claimLoan,
         isReady
     } = useMicroCredit();
+    const router = useRouter();
+    const {
+        amountBorrowedLabel,
+        amountBorrowedTooltip,
+        amountToPayLabel,
+        amountToPayTooltip,
+        interestRateLabel,
+        interestRateTooltip,
+        loanDurationLabel,
+        loanDurationTooltip,
+        totalAmountDueLabel,
+        totalAmountDueTooltip,
+        typeRateLabel,
+        typeRateTooltip
+    } = data[viewName].data;
+
+    const monthlyInterestRate = (dailyInterest: number) => {
+        return ((Math.pow(1 + dailyInterest / 100, 30) - 1) * 100).toFixed(2);
+    };
 
     const loanData = [
         {
-            label: 'Total loan amount',
-            tooltip:
-                'This is total loan amount approved and initially deposited in your wallet.',
+            label: amountBorrowedLabel,
+            tooltip: amountBorrowedTooltip,
             value: `${loan.amountBorrowed}cUSD`
         },
         {
-            label: 'Total loan to pay',
-            tooltip:
-                'This is total loan amount approved and initially deposited in your wallet.',
+            label: amountToPayLabel,
+            tooltip: amountToPayTooltip,
             value: `${loan.currentDebt + loan.amountRepayed}cUSD`
         },
+        // {
+        //     label: 'Monthly installments',
+        //     tooltip:
+        //         'This is total loan amount approved and initially deposited in your wallet.',
+        //     value: '40cUSD'
+        // },
         {
-            label: 'Monthly installments',
-            tooltip:
-                'This is total loan amount approved and initially deposited in your wallet.',
-            value: '40cUSD'
-        },
-        {
-            label: 'Term lenght',
-            tooltip:
-                'This is total loan amount approved and initially deposited in your wallet.',
+            label: loanDurationLabel,
+            tooltip: loanDurationTooltip,
             value: '6 months'
         },
         {
-            label: 'Daily Interest rate',
-            tooltip:
-                'This is total loan amount approved and initially deposited in your wallet.',
-            value: `${loan.dailyInterest}%`
+            label: interestRateLabel,
+            tooltip: interestRateTooltip,
+            value: `${loan.dailyInterest}% Daily / ${monthlyInterestRate(
+                loan.dailyInterest
+            )}% Monthly`
         },
         {
-            label: 'Type of rate',
-            tooltip:
-                'This is total loan amount approved and initially deposited in your wallet.',
+            label: typeRateLabel,
+            tooltip: typeRateTooltip,
             value: 'FIXED'
         },
         {
-            label: 'Total amount due',
-            tooltip:
-                'This is total loan amount approved and initially deposited in your wallet.',
+            label: totalAmountDueLabel,
+            tooltip: totalAmountDueTooltip,
             value: `${loan.currentDebt}cUSD`
         }
     ];
@@ -67,9 +83,15 @@ const MicroCredit = (props: any) => {
     useEffect(() => {
         const getLoans = async () => {
             if (!!auth.user.address) {
-                const activeLoanId = await getActiveLoanId(auth.user.address.toString());
+                const activeLoanId = await getActiveLoanId(
+                    auth.user.address.toString()
+                );
 
-                setLoanId(activeLoanId);
+                if (activeLoanId === -1) {
+                    router.push('/');
+                } else {
+                    setLoanId(activeLoanId);
+                }
             }
         };
 
@@ -84,12 +106,12 @@ const MicroCredit = (props: any) => {
 
     return (
         <ViewContainer isLoading={!isReady}>
-            <Alert
+            {/* <Alert
                 warning
                 icon="alertTriangle"
                 mb={1.5}
                 message={'This is a warning'}
-            />
+            /> */}
             <Display g900 medium>
                 {'MicroCredit'}
             </Display>

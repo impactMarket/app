@@ -1,23 +1,23 @@
-import { Box, Display, Text } from '@impact-market/ui';
+import { Box, Display } from '@impact-market/ui';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
+import RichText from '../../libs/Prismic/components/RichText';
 
 const LoanCompleted = (props: any) => {
     const { data, overviewData } = props;
-    /* title, description, from prismic */
-    const { cardImage } = data;  
+    const {
+        completedLoanTitle,
+        completedLoanDescription,
+        completedLoanImage
+    } = data;
 
     return (
         <Box flex fDirection={{ sm: 'row', xs: 'column' }}>
             <Box style={{ flexBasis: '50%' }} center order={{ sm: 0, xs: 1 }}>
                 <Display g800 medium>
-                    {/* {title} */}
-                    {'Congratulations!'}
+                    {completedLoanTitle}
                 </Display>
-                <Text small mt={0.5}>
-                    {/* {description} */}
-                    {'You have successfully paid off your entire loan. 🥳'}
-                </Text>
+                <RichText content={completedLoanDescription} small mt={0.5} />
 
                 <LoanOverview overviewData={overviewData} />
             </Box>
@@ -29,7 +29,7 @@ const LoanCompleted = (props: any) => {
                 flex
                 order={{ sm: 1, xs: 0 }}
             >
-                <Image {...cardImage} radius={0.5} w="100%" mb={1} />
+                <Image {...completedLoanImage} radius={0.5} w="100%" mb={1} />
             </Box>
         </Box>
     );
