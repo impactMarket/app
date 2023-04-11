@@ -45,22 +45,28 @@ const LoanOverview = (props: any) => {
                 </Box>
             </a>
             <Box mt={1}>
-                {overviewData.map(({ label, highlight = false, value, tooltip }: any) => (
-                    <Box flex fLayout="between" mb={0.5}>
-                        <Box flex fLayout="center start">
-                            <Text small g500 {...(highlight && { e500: true })}>
-                                {label}
-                            </Text>
-                            <Tooltip content={tooltip}>
-                                <Icon icon="infoCircle" g500 ml={0.3} />
-                            </Tooltip>
-                        </Box>
+                {overviewData.map(
+                    ({ label, highlight = false, value, tooltip }: any) => (
+                        <Box flex fLayout="between" mb={0.5}>
+                            <Box flex fLayout="center start">
+                                <Text
+                                    small
+                                    g500
+                                    {...(highlight && { e500: true })}
+                                >
+                                    {label}
+                                </Text>
+                                <Tooltip content={tooltip}>
+                                    <Icon icon="infoCircle" g500 ml={0.3} />
+                                </Tooltip>
+                            </Box>
 
-                        <Text small semibold g900>
-                            {value}
-                        </Text>
-                    </Box>
-                ))}
+                            <Text small semibold g900 maxW="50%" tAlign="end">
+                                {value}
+                            </Text>
+                        </Box>
+                    )
+                )}
             </Box>
         </CleanCard>
     );

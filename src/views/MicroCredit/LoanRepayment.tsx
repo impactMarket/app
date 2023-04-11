@@ -9,14 +9,14 @@ import {
     toast
 } from '@impact-market/ui';
 import { localeFormat } from '../../utils/currencies';
-import { mq } from 'styled-gen'
+import { mq } from 'styled-gen';
 import { useCUSDBalance, useMicroCredit } from '@impact-market/utils';
 import { useState } from 'react';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
-import styled, { css }  from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const BorderWrapper = styled(Box)`
     padding: 0.6rem;
@@ -28,7 +28,8 @@ const ActionWrapper = styled(Box)`
     ${mq.phone(css`
         flex-direction: column;
 
-        > .approve, .repay {
+        > .approve,
+        .repay {
             width: 100%;
         }
 
@@ -40,7 +41,8 @@ const ActionWrapper = styled(Box)`
     ${mq.tabletLandscape(css`
         flex-direction: row;
 
-        > .approve, .repay {
+        > .approve,
+        .repay {
             width: auto;
         }
 
@@ -111,7 +113,16 @@ const LoanRepayment = (props: any) => {
                 <Display g800 medium>
                     {repayLoanTitle}
                 </Display>
-                <RichText content={repayLoanDescription} g500 small mt={0.5} variables={{currentDebt: loan.currentDebt, totalToPay: loan.currentDebt}} />
+                <RichText
+                    content={repayLoanDescription}
+                    g500
+                    small
+                    mt={0.5}
+                    variables={{
+                        currentDebt: loan.currentDebt,
+                        totalToPay: loan.currentDebt
+                    }}
+                />
 
                 <LoanOverview overviewData={overviewData} />
 
@@ -162,21 +173,31 @@ const LoanRepayment = (props: any) => {
 
                 <Box mt={2}>
                     <Text g500 small>
-                        {!approved &&
-                            'Click Approve Transaction and check your wallet. Troubleshoot if needed.'}
+                        {!approved && (
+                            <>
+                                {'Click Approve Transaction and check your wallet. '}
+                                <a
+                                    href="https://support.impactmarket.com/"
+                                    target="_blank"
+                                    rel="noopener noreferrer"
+                                >
+                                    {'Troubleshoot if needed.'}
+                                </a>
+                            </>
+                        )}
 
                         {approved && 'Transaction approved. You can repay now.'}
                     </Text>
                 </Box>
                 <ActionWrapper mt={1.5} flex fLayout="center" fWrap="wrap">
                     <Button
-                        className='approve'
+                        className="approve"
                         h={3.8}
                         onClick={handleApprove}
                         isLoading={isLoadingApprove}
                         disabled={approved || +amount === 0}
                     >
-                        {approved && <Icon icon="checkCircle" mr={.5} />}
+                        {approved && <Icon icon="checkCircle" mr={0.5} />}
                         <Text large medium>
                             {!approved ? `Approve Transaction` : `Approved`}
                         </Text>
@@ -189,7 +210,7 @@ const LoanRepayment = (props: any) => {
                         mr={0.3}
                     />
                     <Button
-                        className='repay'
+                        className="repay"
                         h={3.8}
                         onClick={repay}
                         isLoading={isLoadingRepay}

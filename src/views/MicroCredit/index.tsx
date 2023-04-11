@@ -55,12 +55,12 @@ const MicroCredit = (props: any) => {
         {
             label: amountBorrowedLabel,
             tooltip: amountBorrowedTooltip,
-            value: `${loan.amountBorrowed}cUSD`
+            value: `${loan.amountBorrowed} cUSD`
         },
         {
             label: amountToPayLabel,
             tooltip: amountToPayTooltip,
-            value: `${loan.currentDebt + loan.amountRepayed}cUSD`
+            value: `${(loan.currentDebt + loan.amountRepayed).toFixed(4)} cUSD`
         },
         // {
         //     label: 'Monthly installments',
@@ -88,13 +88,13 @@ const MicroCredit = (props: any) => {
         {
             label: monthlyInstalementsLabel,
             tooltip: monthlyInstalementsTooltip,
-            value: `${loan.amountRepayed}cUSD`
+            value: `${loan.amountRepayed} cUSD`
         },
         {
             highlight: true,
             label: totalAmountDueLabel,
             tooltip: totalAmountDueTooltip,
-            value: `${loan.currentDebt}cUSD`,
+            value: `${loan.currentDebt} cUSD`
         }
     ];
 
