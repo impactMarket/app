@@ -31,7 +31,16 @@ const BeneficiaryAlerts = () => {
         },
     });
 
-    const { community: { hasFunds }, fundsRemainingDays, isReady, isClaimable } = useBeneficiary(
+    const {
+        isReady,
+        beneficiary: {
+            fundsRemainingDays,
+            isClaimable,
+            community: {
+                hasFunds
+            }
+        }
+    } = useBeneficiary(
         auth?.user?.beneficiary?.community
     );
 
