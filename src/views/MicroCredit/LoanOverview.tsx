@@ -1,5 +1,5 @@
 import { Box, Card, Icon, Text } from '@impact-market/ui';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Tooltip from '../../components/Tooltip';
 import styled from 'styled-components';
 
@@ -17,8 +17,12 @@ const CleanCard = styled(Card)`
 `;
 
 const LoanOverview = (props: any) => {
-    const { overviewData } = props;
-    const [active, setActive] = useState(true);
+    const { overviewData, open = false } = props;
+    const [active, setActive] = useState(open);
+
+    useEffect(() => {
+        setActive(open);
+    }, [open]);
 
     const handleClick = () => {
         const overviewElement = document.querySelector('.overview');
@@ -33,7 +37,7 @@ const LoanOverview = (props: any) => {
     };
 
     return (
-        <CleanCard className="overview active">
+        <CleanCard className={`overview ${open ? 'active' : ''}`}>
             <a>
                 <Box flex fLayout="center">
                     <div className="clicked-element" onClick={handleClick}>

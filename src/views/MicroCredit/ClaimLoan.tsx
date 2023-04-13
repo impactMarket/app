@@ -105,7 +105,7 @@ const ClaimLoan = (props: any) => {
                     message={'This offer expires in 1 week.'}
                     mt={1.5}
                 />
-                <LoanOverview overviewData={overviewData} />
+                <LoanOverview overviewData={overviewData} open />
 
                 <Box fLayout="start" flex mb={1.2} mt={1.2}>
                     <Box mr={0.6}>

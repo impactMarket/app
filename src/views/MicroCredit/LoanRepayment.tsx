@@ -41,9 +41,8 @@ const ActionWrapper = styled(Box)`
     ${mq.tabletLandscape(css`
         flex-direction: row;
 
-        > .approve,
-        .repay {
-            width: auto;
+        > .approve {
+            flex: 1;
         }
 
         > svg {
@@ -53,7 +52,7 @@ const ActionWrapper = styled(Box)`
 `;
 
 const LoanRepayment = (props: any) => {
-    const { data, overviewData, repayLoan, loanId, loan } = props;
+    const { data, isOverviewOpen, overviewData, repayLoan, loanId, loan } = props;
     const balanceCUSD = useCUSDBalance();
     const { approve } = useMicroCredit();
     const formattedBalance = localeFormat(balanceCUSD, {
@@ -76,6 +75,7 @@ const LoanRepayment = (props: any) => {
 
             if (response.status) {
                 toast.success(<Message id="generatedSuccess" />);
+                setAmount('');
                 setApproved(false);
             }
         } catch (error) {
@@ -124,7 +124,7 @@ const LoanRepayment = (props: any) => {
                     }}
                 />
 
-                <LoanOverview overviewData={overviewData} />
+                <LoanOverview overviewData={overviewData} open={isOverviewOpen}/>
 
                 <Box mt={1.25}>
                     <BorderWrapper>
@@ -197,7 +197,7 @@ const LoanRepayment = (props: any) => {
                         isLoading={isLoadingApprove}
                         disabled={approved || +amount === 0}
                     >
-                        {approved && <Icon icon="checkCircle" mr={0.5} />}
+                        <Icon icon="checkCircle" mr={0.5} />
                         <Text large medium>
                             {!approved ? `Approve Transaction` : `Approved`}
                         </Text>

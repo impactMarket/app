@@ -12,6 +12,7 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
     const [loanId, setLoanId] = useState(0);
+    const [isOverviewOpen, setIsOverviewOpen] = useState(false);
     const auth = useSelector(selectCurrentUser);
     const {
         getActiveLoanId,
@@ -118,6 +119,10 @@ const MicroCredit = (props: any) => {
         getLoans();
     }, []);
 
+    useEffect(() => {
+        setIsOverviewOpen(loan.startDate === 0);
+    }, [isReady]);
+
     const loanNotClaimed = loan.amountBorrowed > 0 && loan.startDate === 0;
     const loanOnGoing =
         loan.amountBorrowed > 0 && loan.startDate > 0 && loan.currentDebt > 0;
@@ -148,6 +153,7 @@ const MicroCredit = (props: any) => {
                 {loanOnGoing && (
                     <LoanRepayment
                         data={data[viewName].data}
+                        isOverviewOpen={isOverviewOpen}
                         loan={loan}
                         repayLoan={repayLoan}
                         loanId={loanId}
