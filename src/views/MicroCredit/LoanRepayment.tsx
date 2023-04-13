@@ -16,6 +16,7 @@ import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
+import processTransactionError from '../../utils/processTransactionError';
 import styled, { css } from 'styled-components';
 
 const BorderWrapper = styled(Box)`
@@ -80,6 +81,7 @@ const LoanRepayment = (props: any) => {
             }
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'repay_loan');
             toast.error(<Message id="errorOccurred" />);
         }
 
@@ -101,6 +103,7 @@ const LoanRepayment = (props: any) => {
             }
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'approve_loan');
             toast.error(<Message id="errorOccurred" />);
         }
 
