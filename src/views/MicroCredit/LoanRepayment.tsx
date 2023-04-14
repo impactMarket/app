@@ -16,6 +16,7 @@ import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
+import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled, { css } from 'styled-components';
 
@@ -53,7 +54,14 @@ const ActionWrapper = styled(Box)`
 `;
 
 const LoanRepayment = (props: any) => {
-    const { data, isOverviewOpen, overviewData, repayLoan, loanId, loan } = props;
+    const {
+        data,
+        isOverviewOpen,
+        overviewData,
+        repayLoan,
+        loanId,
+        loan
+    } = props;
     const balanceCUSD = useCUSDBalance();
     const { approve } = useMicroCredit();
     const formattedBalance = localeFormat(balanceCUSD, {
@@ -89,9 +97,8 @@ const LoanRepayment = (props: any) => {
     };
 
     const handleApprove = async () => {
-        const token = '0x874069Fa1Eb16D44d622F2e0Ca25eeA172369bC1';
-
         setIsLoadingApprove(true);
+        const token = config.cUSDAddress;
 
         try {
             toast.success(<Message id="approveTransaction" />);
@@ -127,7 +134,10 @@ const LoanRepayment = (props: any) => {
                     }}
                 />
 
-                <LoanOverview overviewData={overviewData} open={isOverviewOpen}/>
+                <LoanOverview
+                    overviewData={overviewData}
+                    open={isOverviewOpen}
+                />
 
                 <Box mt={1.25}>
                     <BorderWrapper>
