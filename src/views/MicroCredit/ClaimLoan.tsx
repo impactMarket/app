@@ -17,6 +17,7 @@ import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
+import processTransactionError from '../../utils/processTransactionError';
 import styled from 'styled-components';
 
 const CenteredAlert = styled(Alert)`
@@ -78,6 +79,7 @@ const ClaimLoan = (props: any) => {
             }
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'claim_loan');
             toast.error(<Message id="errorOccurred" />);
         }
 
