@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 /* eslint-disable no-nested-ternary */
 import {
     Accordion,
@@ -169,6 +168,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
             });
 
             toggleLoadingButton(false);
+            toggleClaim(false);
 
             toast.success(<Message id="successfullyClaimedUbi" />);
         } catch (error: any) {
@@ -196,19 +196,39 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         }, 300);
     };
 
-    const cardType = isClaimable ? (hasFunds ? 2 : 1) : 0;
-    const cardIcon =
-        cardType === 0 ? 'clock' : cardType === 1 ? 'alertCircle' : 'coinStack';
-    const cardIconState =
-        cardType === 0
-            ? { warning: true }
-            : cardType === 1
-            ? { error: true }
-            : { success: true };
-    const cardTitle = view.data.claimCardStates[cardType].title;
-    const cardMessage = view.data.claimCardStates[cardType].text;
-    const cardImage = view.data.claimCardStates[cardType].image;
+    const [cardType, setCardType] = useState(0);
+    const [cardIcon, setCardIcon] = useState('clock');
+    const [cardIconState, setCardIconState] = useState({ warning: true }) as any;
+    const [cardTitle, setCardTitle] = useState('');
+    const [cardMessage, setCardMessage] = useState('');
+    const [cardImage, setCardImage] = useState('') as any;
     const claimAmountDisplay = currencyFormat(claimAmount, localeCurrency);
+    
+    useEffect(() => {
+        if (isClaimable || claimAllowed) {
+            if (hasFunds) {
+                setCardType(2)
+            } else {
+                setCardType(1)
+            }
+        } else {
+            setCardType(0);
+        }
+    }, [isClaimable, hasFunds, claimAllowed]);
+
+    useEffect(() => {
+        setCardIcon(cardType === 0 ? 'clock' : cardType === 1 ? 'alertCircle' : 'coinStack');
+        setCardIconState(
+            cardType === 0
+                ? { warning: true }
+                : cardType === 1
+                ? { error: true }
+                : { success: true }
+        );
+        setCardTitle(view.data.claimCardStates[cardType].title);
+        setCardMessage(view.data.claimCardStates[cardType].text);
+        setCardImage(view.data.claimCardStates[cardType].image);
+    }, [cardType])
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
@@ -296,7 +316,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                         <Text g900 large medium>
                                             {cardTitle}
                                         </Text>
-                                        {!isClaimable && (
+                                        {(!isClaimable && !claimAllowed) && (
                                             <RichText
                                                 content={cardMessage}
                                                 g500
@@ -307,7 +327,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                                 }}
                                             />
                                         )}
-                                        {(isClaimable || claimAllowed) &&
+                                        {(isClaimable || claimAllowed) && 
                                             hasFunds && (
                                                 <RichText
                                                     content={cardMessage}
@@ -322,10 +342,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                                             12
                                                     }}
                                                 />
-                                            )}
+                                        )}
                                     </Box>
                                     <Box margin="0 auto" maxW={22}>
-                                        {!isClaimable && (
+                                        {(!isClaimable && !claimAllowed) && (
                                             <Countdown
                                                 date={new Date(claimCooldown)}
                                                 onEnd={allowClaim}
@@ -344,7 +364,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                                     <String id="claim" /> ~
                                                     {claimAmountDisplay}
                                                 </Button>
-                                            )}
+                                        )}
                                     </Box>
                                 </Grid>
                             </Box>

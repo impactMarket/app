@@ -31,7 +31,6 @@ const BeneficiaryAlerts = () => {
         },
     });
 
-
     const {
         isReady,
         beneficiary: {
