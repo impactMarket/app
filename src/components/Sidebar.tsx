@@ -2,6 +2,8 @@ import {
     Avatar,
     Box,
     CircledIcon,
+    Icon,
+    Select,
     Sidebar as SidebarBase,
     SidebarMenuGroup,
     SidebarMenuItem,
@@ -9,11 +11,13 @@ import {
     SidebarUserButton,
     openModal
 } from '@impact-market/ui';
+import { checkCookies, getCookie, setCookies } from 'cookies-next';
 import { formatAddress } from '../utils/formatAddress';
 import { getImage } from '../utils/images';
 import { getNotifications } from '../state/slices/notifications';
 import { getUserMenu } from './UserMenu'
 import { getUserName } from '../utils/users';
+import { languagesOptions } from 'src/utils/languages';
 import { selectCurrentUser } from '../state/slices/auth';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
@@ -23,7 +27,10 @@ import Link from 'next/link';
 import React, { useEffect, useState } from 'react';
 import String from '../libs/Prismic/components/String';
 import extractFromData from '../libs/Prismic/helpers/extractFromData';
+import langConfig from 'locales.config';
+import styled from 'styled-components';
 import useWallet from '../hooks/useWallet';
+
 
 type User = {
     address?: string;
@@ -179,9 +186,10 @@ const SidebarMobileActions = (props: { user?: User }) => {
 }
 
 const Sidebar = () => {
-    const { asPath, push } = useRouter();
+    const { asPath, locale, push, replace } = useRouter();
     const { user } = useSelector(selectCurrentUser);
     const { notifications } = useSelector(getNotifications);
+    const { address } = useWallet();
 
     const [data, setData] = useState<MenusState | undefined>();
 
@@ -216,7 +224,7 @@ const Sidebar = () => {
             footerMenu,
             menus
         })
-    }, [asPath, user, notifications]);
+    }, [asPath, user, notifications, locale]);
 
     const footerMenu = () => {
         const userBeneficiary = user?.roles?.includes('beneficiary')
@@ -231,6 +239,60 @@ const Sidebar = () => {
         }
 
         return data?.footerMenu
+    }
+
+    const LanguageSelect = () => {
+        // Styles
+        const LanguageSelectStyled = styled(Box)`
+            > div {
+                > a {
+                    box-shadow: none;
+
+                    > div {
+                        overflow: unset;
+                    }
+                }
+
+                > div {
+                    top: -190px;
+                }
+            }
+        `;
+
+        const browserLanguage = navigator.language.split('-')[0];
+
+        const expiryDate = new Date();
+
+        expiryDate.setTime(expiryDate.getTime()+(30*24*60*60*1000));
+
+        useEffect(() => {
+            if(!checkCookies('LOCALE')) {                
+                setCookies('LOCALE', browserLanguage, { expires: expiryDate, path: '/' });
+                replace(asPath, undefined, { locale: browserLanguage })
+            }
+            if (getCookie('LOCALE') !== locale) {
+                replace(asPath, undefined, { locale: getCookie('LOCALE').toString() })
+            }
+        }, [])
+    
+        const changeLanguage = (data: string) => {
+            setCookies('LOCALE', data, { expires: expiryDate, path: '/' });
+            replace(asPath, undefined, { locale: data })
+        };
+
+        return (
+            <LanguageSelectStyled flex fLayout="center start" mt={0.25} pl={0.75}>
+                <Icon icon="website" w={1.5} h={1.5} g500/>
+                <Select
+                    onChange={changeLanguage}
+                    options={languagesOptions}
+                    optionsSearchPlaceholder="language"
+                    value={getCookie('LOCALE')?.toString()}
+                    renderLabel={() => langConfig.find(({ shortCode }) => shortCode === locale)?.label}
+                    w="100%"
+                />
+            </LanguageSelectStyled>
+        )
     }
     
     return (
@@ -256,9 +318,10 @@ const Sidebar = () => {
             )}
             {!!data?.footerMenu?.length && (
                 <SidebarMenuGroup mt="auto">
-                        {footerMenu()?.map((item, index) => item?.isVisible && (
-                            <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
-                        ))}
+                    {footerMenu()?.map((item, index) => item?.isVisible && (
+                        <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
+                    ))}
+                    {!address && <LanguageSelect/>}
                 </SidebarMenuGroup>
             )}
         </SidebarBase>

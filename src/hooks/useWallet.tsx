@@ -2,7 +2,7 @@ import { Alfajores, Mainnet } from 'react-celo-impactmarket';
 import { AppContext } from '../components/WrapperProvider';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
-import { setCookies } from 'cookies-next';
+import { removeCookies, setCookies } from 'cookies-next';
 import { setCredentials } from '../state/slices/auth';
 import { useCreateUserMutation } from '../api/user';
 import { useDispatch } from 'react-redux';
@@ -46,6 +46,7 @@ const useWallet = () => {
 
             expiryDate.setTime(expiryDate.getTime()+(30*24*60*60*1000));
             setCookies('AUTH_TOKEN', payload.token, { expires: expiryDate, path: '/' });
+            removeCookies('LOCALE', { path: '/' });
 
             if (!!callback) {
                 await callback();
