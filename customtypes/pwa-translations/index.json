@@ -810,6 +810,13 @@
         },
         "type": "Text"
       },
+      "string-loanRepaymentHistory": {
+        "config": {
+          "label": "loanRepaymentHistory",
+          "placeholder": "Loan Repayment History"
+        },
+        "type": "Text"
+      },
       "string-love": {
         "config": {
           "label": "love",
@@ -1097,6 +1104,13 @@
         },
         "type": "Text"
       },
+      "string-payed": {
+        "config": {
+          "label": "payed",
+          "placeholder": "Payed"
+        },
+        "type": "Text"
+      },
       "string-pending": {
         "config": {
           "label": "pending",
@@ -1227,6 +1241,13 @@
         "config": {
           "label": "removed",
           "placeholder": "Removed"
+        },
+        "type": "Text"
+      },
+      "string-repaymentLoan": {
+        "config": {
+          "label": "repaymentLoan",
+          "placeholder": "Repayment of Loan"
         },
         "type": "Text"
       },

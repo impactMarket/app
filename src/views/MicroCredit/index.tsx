@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
 import LoanRepayment from './LoanRepayment';
+// import RepaymentHistory from './RepaymentHistory';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const MicroCredit = (props: any) => {
@@ -141,7 +142,7 @@ const MicroCredit = (props: any) => {
                 {'MicroCredit'}
             </Display>
             <Box></Box>
-            <Card mt="2rem" padding={{ sm: '4rem', xs: '1rem' }}>
+            <Card mt="2rem" mb="2rem" padding={{ sm: '4rem', xs: '1rem' }}>
                 {loanNotClaimed && (
                     <ClaimLoan
                         data={data[viewName].data}
@@ -167,7 +168,7 @@ const MicroCredit = (props: any) => {
                     />
                 )}
             </Card>
-            <Box padding="2rem" />
+            {/* <RepaymentHistory /> */}
         </ViewContainer>
     );
 };
