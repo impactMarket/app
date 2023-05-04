@@ -25,11 +25,13 @@ export const format = (date: any, formatString: string = 'PP') =>
     dateFnsFormat(date, formatString, { locale: getLocale() });
 
 export const dateHelpers = {
-    ago: (date: string | Date) => (formatDistanceToNowStrict(new Date(date), { addSuffix: true })),
+    ago: (date: number | string | Date) => (formatDistanceToNowStrict(new Date(date as number * 1000), { addSuffix: true })),
 
     compact: (date: string | Date) => (date ? format(new Date(date), 'MMM d, y') : ''),
 
     complete: (date: number) => (date ? format(new Date(fromUnixTime(date)), `MMM d, y • H:m`) : ''),
+    
+    secondsToMonth: (date: number) => (date ? Number(date) / 2592000 : ''),
 
     unix: (date: number) => (date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : '')
 };
