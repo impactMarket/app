@@ -15,7 +15,7 @@ import { checkCookies, getCookie, setCookies } from 'cookies-next';
 import { formatAddress } from '../utils/formatAddress';
 import { getImage } from '../utils/images';
 import { getNotifications } from '../state/slices/notifications';
-import { getUserMenu } from './UserMenu'
+import { getUserMenu } from './UserMenu';
 import { getUserName } from '../utils/users';
 import { languagesOptions } from 'src/utils/languages';
 import { selectCurrentUser } from '../state/slices/auth';
@@ -31,22 +31,21 @@ import langConfig from 'locales.config';
 import styled from 'styled-components';
 import useWallet from '../hooks/useWallet';
 
-
 type User = {
     address?: string;
     ambassador?: {
         community?: string;
         state: number;
-    },
+    };
     avatarMediaPath?: string;
     beneficiary?: {
         community?: string;
         state: number;
-    },
+    };
     councilMember?: {
         community?: string;
         state: number;
-    },
+    };
     currency?: string;
     deleteProcess: boolean;
     firstName?: string;
@@ -54,39 +53,39 @@ type User = {
     manager?: {
         community?: string;
         state: number;
-    },
+    };
     roles: any;
-}
+};
 
 type MenusState = {
-    commonMenu?: SidebarMenuItemProps[],
-    flags?: any
-    footerMenu?: SidebarMenuItemProps[],
-    menus?: SidebarMenuItemProps[][],
-}
+    commonMenu?: SidebarMenuItemProps[];
+    flags?: any;
+    footerMenu?: SidebarMenuItemProps[];
+    menus?: SidebarMenuItemProps[][];
+};
 
 const getUserType = (user: User) => {
     if (user?.roles?.includes('manager')) {
         return 'manager';
-    };
+    }
     if (user?.roles?.includes('pendingManager')) {
         return 'pending-manager';
-    };
+    }
     if (user?.roles?.includes('beneficiary')) {
         return 'beneficiary';
-    };
+    }
     if (user?.roles?.includes('ambassador')) {
         return 'ambassador';
-    };
+    }
     if (user?.roles?.includes('councilMember')) {
         return 'council-member';
-    };
+    }
 
     return 'donor';
-}
+};
 
 const ConnectButton = (props: any) => {
-    const { push } = useRouter()
+    const { push } = useRouter();
     const [isConnecting, setIsConnecting] = useState(false);
 
     const { connect } = useWallet();
@@ -95,18 +94,24 @@ const ConnectButton = (props: any) => {
         setIsConnecting(true);
 
         await connect();
-        
+
         setIsConnecting(false);
 
-        push('/')
-    }    
+        push('/');
+    };
 
     return (
-        <Button {...props} icon="coins" isLoading={isConnecting} onClick={handleConnectClick} secondary>
+        <Button
+            {...props}
+            icon="coins"
+            isLoading={isConnecting}
+            onClick={handleConnectClick}
+            secondary
+        >
             <String id="connectWallet" />
         </Button>
-    )
-}
+    );
+};
 
 const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
     const { url, ...forwardProps } = props;
@@ -114,28 +119,37 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
     const isModal = url?.startsWith('[modal]');
 
     if (isModal) {
-        return <SidebarMenuItem {...forwardProps} onClick={() => openModal(url.replace('[modal]', ''), forwardProps)} />
+        return (
+            <SidebarMenuItem
+                {...forwardProps}
+                onClick={() =>
+                    openModal(url.replace('[modal]', ''), forwardProps)
+                }
+            />
+        );
     }
 
     const isInternalLink = url?.startsWith('https:///') || url?.startsWith('/');
 
-    const Wrapper = isInternalLink ? Link : React.Fragment as any;
+    const Wrapper = isInternalLink ? Link : (React.Fragment as any);
     const wrapperProps = isInternalLink ? { href: url, passHref: true } : {};
-    const linkProps = isInternalLink ? { href: url } : { href: url, rel: 'noopener noreferrer', target: '_blank' }
+    const linkProps = isInternalLink
+        ? { href: url }
+        : { href: url, rel: 'noopener noreferrer', target: '_blank' };
 
     return (
         <Wrapper {...wrapperProps}>
             <SidebarMenuItem {...forwardProps} {...linkProps} />
         </Wrapper>
-    )
-}
+    );
+};
 
-const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
+const SidebarFooter = (props: { user?: User; isActive: boolean }) => {
     const { user } = props;
     const { address, wrongNetwork } = useWallet();
 
     useEffect(() => {
-        if(wrongNetwork) {
+        if (wrongNetwork) {
             openModal('wrongNetwork');
         }
     }, [wrongNetwork]);
@@ -143,11 +157,11 @@ const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
     if (user?.deleteProcess) {
         openModal('recoverAccount');
 
-        return(
+        return (
             <Box show={{ md: 'flex', xs: 'none' }}>
                 <ConnectButton fluid />
             </Box>
-        )
+        );
     }
 
     if (!address || !user) {
@@ -155,7 +169,7 @@ const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
             <Box show={{ md: 'flex', xs: 'none' }}>
                 <ConnectButton fluid />
             </Box>
-        )
+        );
     }
 
     return (
@@ -164,26 +178,51 @@ const SidebarFooter = (props: { user?: User, isActive: boolean }) => {
                 {...props}
                 address={formatAddress(address, [6, 4])}
                 name={getUserName(user)}
-                photo={{ url: user?.avatarMediaPath ? getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 }) : '' }}
+                photo={{
+                    url: user?.avatarMediaPath
+                        ? getImage({
+                              filePath: user?.avatarMediaPath,
+                              fit: 'cover',
+                              height: 40,
+                              width: 40
+                          })
+                        : ''
+                }}
             />
         </Link>
     );
-}
+};
 
 const SidebarMobileActions = (props: { user?: User }) => {
     const { user } = props;
     const { address } = useWallet();
+    const router = useRouter();
 
     if (!address) {
-        return <ConnectButton />
+        return <ConnectButton />;
     }
 
     if (!user?.avatarMediaPath) {
-        return <CircledIcon icon="user" />;
+        return (
+            <a onClick={() => router.push('/profile')}>
+                <CircledIcon icon="user" />;
+            </a>
+        );
     }
 
-    return <Avatar url={getImage({ filePath: user?.avatarMediaPath, fit: 'cover', height: 40, width: 40 })} />;
-}
+    return (
+        <a onClick={() => router.push('/profile')}>
+            <Avatar
+                url={getImage({
+                    filePath: user?.avatarMediaPath,
+                    fit: 'cover',
+                    height: 40,
+                    width: 40
+                })}
+            />
+        </a>
+    );
+};
 
 const Sidebar = () => {
     const { asPath, locale, push, replace } = useRouter();
@@ -200,21 +239,38 @@ const Sidebar = () => {
     const checkRoute = (route: string | undefined) =>
         typeof route === 'string' ? asPath.split('?')[0] === route : false;
 
-    const parseMenuItems = (items: any) => items?.map((item: any) => ({
-        isActive: checkRoute(item?.url as string),
-        ...item
-    })) as any;
+    const parseMenuItems = (items: any) =>
+        items?.map((item: any) => ({
+            isActive: checkRoute(item?.url as string),
+            ...item
+        })) as any;
 
     useEffect(() => {
-        const { commonMenu: commonMenuFromPrismic, footerMenu: footerMenuFromPrismic, userFooterMenu: userFooterMenuFromPrismic } = (extractFromConfig('aside') || {}) as any;
-        const { data: userConfigData } = userConfig?.find(({ uid }: any) => uid === getUserType(user)) || {};
-        const { items: menuItems, withCommon, withFooter } = (extractFromData(userConfigData, 'asideMenu') || {}) as any;
+        const {
+            commonMenu: commonMenuFromPrismic,
+            footerMenu: footerMenuFromPrismic,
+            userFooterMenu: userFooterMenuFromPrismic
+        } = (extractFromConfig('aside') || {}) as any;
+        const { data: userConfigData } =
+            userConfig?.find(({ uid }: any) => uid === getUserType(user)) || {};
+        const { items: menuItems, withCommon, withFooter } = (extractFromData(
+            userConfigData,
+            'asideMenu'
+        ) || {}) as any;
 
-        const menus = menuItems?.map(({ items }: any) => parseMenuItems(items)) as SidebarMenuItemProps[][];
+        const menus = menuItems?.map(({ items }: any) =>
+            parseMenuItems(items)
+        ) as SidebarMenuItemProps[][];
 
-        const commonMenu = (withCommon ? parseMenuItems(commonMenuFromPrismic) : []) as SidebarMenuItemProps[];
-        const footerCommonMenu = (withFooter ? parseMenuItems(footerMenuFromPrismic) : []) as SidebarMenuItemProps[];
-        const footerUserMenu = (withFooter && !!user ? parseMenuItems(userFooterMenuFromPrismic) : []) as SidebarMenuItemProps[];
+        const commonMenu = (withCommon
+            ? parseMenuItems(commonMenuFromPrismic)
+            : []) as SidebarMenuItemProps[];
+        const footerCommonMenu = (withFooter
+            ? parseMenuItems(footerMenuFromPrismic)
+            : []) as SidebarMenuItemProps[];
+        const footerUserMenu = (withFooter && !!user
+            ? parseMenuItems(userFooterMenuFromPrismic)
+            : []) as SidebarMenuItemProps[];
 
         const footerMenu = [...footerCommonMenu, ...footerUserMenu];
 
@@ -223,23 +279,25 @@ const Sidebar = () => {
             flags: notifications,
             footerMenu,
             menus
-        })
+        });
     }, [asPath, user, notifications, locale]);
 
     const footerMenu = () => {
-        const userBeneficiary = user?.roles?.includes('beneficiary')
-        const removeReportFromArr = data?.footerMenu?.filter((item: any) => item?.uid !== "reportSuspiciousActivity")
+        const userBeneficiary = user?.roles?.includes('beneficiary');
+        const removeReportFromArr = data?.footerMenu?.filter(
+            (item: any) => item?.uid !== 'reportSuspiciousActivity'
+        );
 
         if (userBeneficiary) {
-            return data?.footerMenu
+            return data?.footerMenu;
         }
 
         if (!userBeneficiary) {
-            return removeReportFromArr
+            return removeReportFromArr;
         }
 
-        return data?.footerMenu
-    }
+        return data?.footerMenu;
+    };
 
     const LanguageSelect = () => {
         // Styles
@@ -263,69 +321,120 @@ const Sidebar = () => {
 
         const expiryDate = new Date();
 
-        expiryDate.setTime(expiryDate.getTime()+(30*24*60*60*1000));
+        expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
         useEffect(() => {
-            if(!checkCookies('LOCALE')) {                
-                setCookies('LOCALE', browserLanguage, { expires: expiryDate, path: '/' });
-                replace(asPath, undefined, { locale: browserLanguage })
+            if (!checkCookies('LOCALE')) {
+                setCookies('LOCALE', browserLanguage, {
+                    expires: expiryDate,
+                    path: '/'
+                });
+                replace(asPath, undefined, { locale: browserLanguage });
             }
             if (getCookie('LOCALE') !== locale) {
-                replace(asPath, undefined, { locale: getCookie('LOCALE').toString() })
+                replace(asPath, undefined, {
+                    locale: getCookie('LOCALE').toString()
+                });
             }
-        }, [])
-    
+        }, []);
+
         const changeLanguage = (data: string) => {
             setCookies('LOCALE', data, { expires: expiryDate, path: '/' });
-            replace(asPath, undefined, { locale: data })
+            replace(asPath, undefined, { locale: data });
         };
 
         return (
-            <LanguageSelectStyled flex fLayout="center start" mt={0.25} pl={0.75}>
-                <Icon icon="website" w={1.5} h={1.5} g500/>
+            <LanguageSelectStyled
+                flex
+                fLayout="center start"
+                mt={0.25}
+                pl={0.75}
+            >
+                <Icon icon="website" w={1.5} h={1.5} g500 />
                 <Select
                     onChange={changeLanguage}
                     options={languagesOptions}
                     optionsSearchPlaceholder="language"
                     value={getCookie('LOCALE')?.toString()}
-                    renderLabel={() => langConfig.find(({ shortCode }) => shortCode === locale)?.label}
+                    renderLabel={() =>
+                        langConfig.find(({ shortCode }) => shortCode === locale)
+                            ?.label
+                    }
                     w="100%"
                 />
             </LanguageSelectStyled>
-        )
-    }
-    
+        );
+    };
+
     return (
         <SidebarBase
-            footer={<SidebarFooter isActive={checkRoute('/profile')} user={user} />}
+            footer={
+                <SidebarFooter isActive={checkRoute('/profile')} user={user} />
+            }
             handleLogoClick={() => push('/')}
             isLoading={!data}
             mobileActions={<SidebarMobileActions user={user} />}
         >
             {!!menu?.length && (
                 <SidebarMenuGroup>
-                    {menu?.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
-                    ))}
+                    {menu?.map(
+                        (item, index) =>
+                            item?.isVisible && (
+                                <MenuItem
+                                    {...item}
+                                    flag={
+                                        data?.flags?.find(
+                                            (elem: any) => elem.key === item.uid
+                                        )?.value || 0
+                                    }
+                                    key={index}
+                                />
+                            )
+                    )}
                 </SidebarMenuGroup>
-            )}             
+            )}
             {!!data?.commonMenu?.length && (
-                <SidebarMenuGroup isCollapsible={!!data?.menus?.length} title={!!data?.menus?.length ? 'impactMarket' : undefined}>
-                    {data?.commonMenu.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
-                    ))}
+                <SidebarMenuGroup
+                    isCollapsible={!!data?.menus?.length}
+                    title={!!data?.menus?.length ? 'impactMarket' : undefined}
+                >
+                    {data?.commonMenu.map(
+                        (item, index) =>
+                            item?.isVisible && (
+                                <MenuItem
+                                    {...item}
+                                    flag={
+                                        data?.flags?.find(
+                                            (elem: any) => elem.key === item.uid
+                                        )?.value || 0
+                                    }
+                                    key={index}
+                                />
+                            )
+                    )}
                 </SidebarMenuGroup>
             )}
             {!!data?.footerMenu?.length && (
                 <SidebarMenuGroup mt="auto">
-                    {footerMenu()?.map((item, index) => item?.isVisible && (
-                        <MenuItem {...item} flag={data?.flags?.find((elem: any) => elem.key === item.uid)?.value || 0} key={index}/>
-                    ))}
-                    {!address && <LanguageSelect/>}
+                    {footerMenu()?.map(
+                        (item, index) =>
+                            item?.isVisible && (
+                                <MenuItem
+                                    {...item}
+                                    flag={
+                                        data?.flags?.find(
+                                            (elem: any) => elem.key === item.uid
+                                        )?.value || 0
+                                    }
+                                    key={index}
+                                />
+                            )
+                    )}
+                    {!address && <LanguageSelect />}
                 </SidebarMenuGroup>
             )}
         </SidebarBase>
-    )
+    );
 };
 
 export default Sidebar;
