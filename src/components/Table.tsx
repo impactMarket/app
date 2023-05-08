@@ -54,7 +54,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
     const [sortKey, setSortKey] = useState({}) as any;
 
     const { t } = useTranslations();
-    const {update, getByKey } = useFilters();
+    const { update, getByKey } = useFilters();
     const page = getByKey('page') ? +getByKey('page') : 0;
     const actualPage = page - 1 >= 0 ? page - 1 : 0;
     const [itemOffset, setItemOffset] = useState(
@@ -78,11 +78,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
         ...callbackProps
     });
 
-    const activeTab = !!data?.count
-        ? Object.keys(data?.count)[+getByKey('state')]
-        : 'beneficiaries';
-
-    const activeCount = !!data?.count ? data?.count[activeTab] : 0;
+    const activeCount = data?.count ?? 0;
 
     // If data comes from thegraph
     const [thegraphData, setThegraphData] = useState(null);
@@ -96,9 +92,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
     }, [itemOffset, asPath, thegraph]);
 
     useEffect(() => {
-        const page = getByKey('page')
-            ? +getByKey('page')
-            : 0;
+        const page = getByKey('page') ? +getByKey('page') : 0;
         const actualPage = page - 1 >= 0 ? page - 1 : 0;
 
         setItemOffset(actualPage * itemsPerPage || 0);
@@ -109,7 +103,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
     }, [getByKey('state')]);
 
     useEffect(() => {
-        setCurrentPage(page - 1);
+        page > 0 && setCurrentPage(page - 1);
     }, [getByKey('page')]);
 
     const handlePageClick = (event: any, direction?: number) => {
