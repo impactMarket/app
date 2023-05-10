@@ -1668,10 +1668,10 @@
   resolved "https://registry.npmjs.org/@humanwhocodes/object-schema/-/object-schema-1.2.1.tgz"
   integrity sha512-ZnQMnLV4e7hDlUvw8H+U8ASL02SS2Gn6+9Ac3wGGLIe7+je2AeAOxPY+izIPJDfFDb7eDjev0Us8MO1iFRN8hA==
 
-"@impact-market/ui@1.5.4":
-  version "1.5.4"
-  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.4.tgz#1c8e4baf20971d56a6291dc05e556ddaa37fcdce"
-  integrity sha512-bjhc8bj1/72ty6xuSsbFoF2wAFsHrmtlNs0g/SQJIas3rYWc2oDk1/vWp1xoBgRTMmr0A0+vuEhr8rX9lcvy+A==
+"@impact-market/ui@1.5.5":
+  version "1.5.5"
+  resolved "https://registry.yarnpkg.com/@impact-market/ui/-/ui-1.5.5.tgz#5132e11a9368f36e8a2b4afb79632063fcfc0649"
+  integrity sha512-xxnVF81NRGRDF4eQLWVA7OTxOpe5yoVyXS2/5Nrm5vhdeL78fAKSCPKr+OnBV+62xmOY/Gt6n5384N/+k5DETQ==
   dependencies:
     polished "^4.1.4"
     react-circle-flags "^0.0.17"

@@ -205,7 +205,7 @@ const SidebarMobileActions = (props: { user?: User }) => {
     if (!user?.avatarMediaPath) {
         return (
             <a onClick={() => router.push('/profile')}>
-                <CircledIcon icon="user" />;
+                <CircledIcon icon="user" />
             </a>
         );
     }
