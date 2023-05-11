@@ -50,6 +50,10 @@ type User = {
     deleteProcess: boolean;
     firstName?: string;
     lastName?: string;
+    loanManager?: {
+        community?: string;
+        state: number;
+    },
     manager?: {
         community?: string;
         state: number;
@@ -79,7 +83,10 @@ const getUserType = (user: User) => {
     }
     if (user?.roles?.includes('councilMember')) {
         return 'council-member';
-    }
+    };
+    if (user?.roles?.includes('loanManager')) {
+        return 'loan-manager';
+    };
 
     return 'donor';
 };

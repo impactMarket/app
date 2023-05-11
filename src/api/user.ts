@@ -9,27 +9,28 @@ export interface User {
 
 export interface PutPostUser {
     address?: string;
-    phone?: string;
-    language?: string;
-    currency?: string;
-    pushNotificationToken?: string;
-    username?: string;
-    gender?: string;
-    year?: number;
-    children?: number;
-    overwrite?: boolean;
-    recover?: boolean;
-    email?: string;
-    firstName?: string;
-    lastName?: string;
     age?: number;
-    bio?: string;
-    country?: string;
+    ambassador?: any;
     avatarMediaPath?: string;
     beneficiary?: any;
-    manager?: any;
+    bio?: string;
+    children?: number;
     councilMember?: any;
-    ambassador?: any;
+    country?: string;
+    currency?: string;
+    email?: string;
+    firstName?: string;
+    gender?: string;
+    language?: string;
+    lastName?: string;
+    loanManager?: any;
+    manager?: any;
+    overwrite?: boolean;
+    phone?: string;
+    pushNotificationToken?: string;
+    recover?: boolean;
+    username?: string;
+    year?: number;
 }
 
 interface PreSigned {

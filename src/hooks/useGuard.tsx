@@ -1,5 +1,5 @@
-import { ambassadorRoutes, beneficiaryRoutes, borrowerRoutes, councilMemberRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
-import { getUserTypes, userAmbassador, userBeneficiary, userCouncilMember, userManager } from '../utils/users';
+import { ambassadorRoutes, beneficiaryRoutes, borrowerRoutes, councilMemberRoutes, loanManagerRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
+import { getUserTypes, userAmbassador, userBeneficiary, userCouncilMember, userLoanManager, userManager } from '../utils/users';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useEffect, useState } from 'react';
@@ -63,10 +63,9 @@ const useGuard = (options: UseGuardType) => {
                         userPaths = userPaths.concat(ambassadorRoutes);
                     }
 
-
-                    // Ambassador type - include the respective Paths
-                    if(type?.includes(userAmbassador)) {
-                        userPaths = userPaths.concat(ambassadorRoutes);
+                    // Loan Manager type - include the respective Paths
+                    if(type?.includes(userLoanManager)) {
+                        userPaths = userPaths.concat(loanManagerRoutes);
                     }
 
                     if(type?.includes(userCouncilMember)) {

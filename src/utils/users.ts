@@ -10,6 +10,7 @@ export const userDonor = 'donor';
 export const userManager = 'manager';
 export const userBeneficiary = 'beneficiary';
 export const userCouncilMember = 'councilMember';
+export const userLoanManager = 'loanManager';
 
 
 export const getUserTypes = (user: PutPostUser) => {
@@ -19,6 +20,7 @@ export const getUserTypes = (user: PutPostUser) => {
     if(user?.manager) types.push(userManager);
     if(user?.councilMember) types.push(userCouncilMember);
     if(user?.ambassador) types.push(userAmbassador);
+    if(user?.loanManager) types.push(userLoanManager);
 
     return types;
 };
