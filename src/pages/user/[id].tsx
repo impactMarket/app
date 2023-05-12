@@ -1,7 +1,7 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import BeneficiaryDetail from '../../../views/BeneficiaryDetail';
-import Prismic from '../../../libs/Prismic/Prismic';
+import Prismic from '../../libs/Prismic/Prismic';
+import User from '../../views/User';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = () => {
     return {
@@ -15,15 +15,15 @@ export const getStaticProps: GetStaticProps = async ({
     previewData
 }) => {
     const clientOptions = previewData as ClientConfig;
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-manager-beneficiary' });
+    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-user' });
 
     return {
         props: {
             data,
-            view: 'managerBeneficiary',
+            view: 'user',
             withPreview: !!previewData
         }
     };
 };
 
-export default BeneficiaryDetail;
+export default User;

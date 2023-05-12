@@ -74,7 +74,7 @@ const getColumns = () => {
         {
             minWidth: 8,
             render: (data: any) => (
-                <TextLink onClick={() => router.push(`/manager/beneficiaries/${data.address}`)} p500>
+                <TextLink onClick={() => router.push(`/user/${data.address}`)} p500>
                     <String id="open" />
                 </TextLink>
             ),

@@ -15,7 +15,7 @@ export const demoRoutes: Routes = [];
 
 export const beneficiaryRoutes: Routes = ['/beneficiary', ...laePrivateRoutes];
 
-export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/manager/beneficiaries/[id]', '/manager/managers', ...laePrivateRoutes];
+export const managerRoutes: Routes = ['/manager', '/manager/beneficiaries', '/manager/managers', '/user/[id]', ...laePrivateRoutes];
 
 export const ambassadorRoutes: Routes = ['/requests', '/ambassador', '/ambassador/reports', '/communities/edit/[id]', '/manager/beneficiaries'];
 
@@ -23,4 +23,4 @@ export const councilMemberRoutes: Routes = ['/communities/edit/[id]'];
 
 export const borrowerRoutes: Routes = ['/microcredit'];
 
-export const loanManagerRoutes: Routes = ['/microcredit-manager'];
+export const loanManagerRoutes: Routes = ['/microcredit-manager', '/user/[id]'];
