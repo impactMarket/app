@@ -74,7 +74,7 @@ const getColumns = () => {
                 </Text>
             ),
             sortable: true,
-            title: "Loan",
+            title: t('loan'),
             value: 'loan',
             width: '15%'
         },
@@ -83,14 +83,32 @@ const getColumns = () => {
             render: (data: any) => {
                 return (
                     <Text g900 small>
-                        {dateHelpers.secondsToMonth(data?.loans?.period)} Months
+                        {`${dateHelpers.secondsToMonth(data?.loans?.period)} ${t('months')}`}
                     </Text>
                 )
             },
             sortable: true,
-            title: "Maturity",
+            title: t('maturity'),
             value: 'maturity',
             width: '10%'
+        },
+        {
+            minWidth: 8,
+            render: (data: any) => {
+                return (
+                    <Text g900 small>
+                        {data?.loans?.lastRepaymentAmount ?
+                            `${data?.loans?.lastRepaymentAmount?.slice(0, 5) } cUSD`
+                        :
+                            t('none')
+                        }
+                    </Text>
+                )
+            },
+            sortable: true,
+            title: t('lastRepayment'),
+            value: 'lastRepayment',
+            width: '15%'
         },
         {
             minWidth: 8,
@@ -100,14 +118,14 @@ const getColumns = () => {
                         {data?.loans?.lastRepayment ? 
                             dateHelpers.ago(data?.loans?.lastRepayment)
                         :
-                            'None'
+                            '--'
                         }
                     </Text>
                 )
             },
             sortable: true,
-            title: "Last Repayment",
-            value: 'lastRepayment',
+            title: t('lastRepaymentDate'),
+            value: 'lastRepaymentDate',
             width: '15%'
         },
         {
@@ -123,9 +141,9 @@ const getColumns = () => {
                         <Box flex fLayout="center start" style={{ gap: "0.2rem" }}>
                             <ProgressBar 
                                 progress={progress}
-                                success={progress > 50}
-                                warning={progress > 20 && progress <= 50}
-                                error={progress > 0 && progress <= 20}
+                                success={progress > 66}
+                                warning={progress > 33 && progress <= 66}
+                                error={progress > 0 && progress <= 33}
                                 w="100%"
                             />
                             <Text g700 style={{ fontSize: "0.75rem", lineHeight: "inherit" }}>{parseInt(progress.toString(), 10)}%</Text>
@@ -135,7 +153,7 @@ const getColumns = () => {
                 )
             },
             sortable: true,
-            title: "Current Debt",
+            title: t('currentDebt'),
             value: 'currentDebt',
             width: '15%'
         },
@@ -143,7 +161,7 @@ const getColumns = () => {
             minWidth: 8,
             render: (data: any) => (
                 <TextLink onClick={() => router.push(`/user/${data.address}`)} p500>
-                    <Text small>Open Profile</Text>
+                    <Text small>{t('openProfile')}</Text>
                 </TextLink>
             ),
             width: '10%'

@@ -14,6 +14,10 @@ const TableWrapper = styled(Box)`
     > div > div {
         overflow-y: hidden;
     }
+
+    td {
+        padding: 1rem 1.5rem;
+    }
     
     th {
         a {
