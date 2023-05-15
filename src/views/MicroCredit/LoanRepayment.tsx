@@ -209,7 +209,9 @@ const LoanRepayment = (props: any) => {
                         h={3.8}
                         onClick={handleApprove}
                         isLoading={isLoadingApprove}
-                        disabled={approved || +amount === 0}
+                        disabled={approved || amount.length === 0}
+                        // this is temporary!
+                        // disabled={approved || +amount === 0}
                     >
                         <Icon icon="checkCircle" mr={0.5} />
                         <Text large medium>

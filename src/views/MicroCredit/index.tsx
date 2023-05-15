@@ -1,7 +1,7 @@
 import { Box, Card, Display, ViewContainer } from '@impact-market/ui';
+import { LoanStatus, useMicroCredit } from '@impact-market/utils';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useEffect, useState } from 'react';
-import { useMicroCredit } from '@impact-market/utils';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
@@ -73,7 +73,7 @@ const MicroCredit = (props: any) => {
         {
             label: loanDurationLabel,
             tooltip: loanDurationTooltip,
-            value: `${convertToDate(loan.period)}`
+            value: `${convertToDate(loan.period.toString())}`
         },
         {
             label: interestRateLabel,
@@ -124,12 +124,6 @@ const MicroCredit = (props: any) => {
         setIsOverviewOpen(loan.startDate === 0);
     }, [isReady]);
 
-    const loanNotClaimed = loan.amountBorrowed > 0 && loan.startDate === 0;
-    const loanOnGoing =
-        loan.amountBorrowed > 0 && loan.startDate > 0 && loan.currentDebt > 0;
-    const LoanPaymentCompleted =
-        loan.amountBorrowed > 0 && loan.startDate > 0 && loan.currentDebt === 0;
-
     return (
         <ViewContainer isLoading={!isReady}>
             {/* <Alert
@@ -143,7 +137,7 @@ const MicroCredit = (props: any) => {
             </Display>
             <Box></Box>
             <Card mt="2rem" mb="2rem" padding={{ sm: '4rem', xs: '1rem' }}>
-                {loanNotClaimed && (
+                {loan.loanStatus === LoanStatus.PENDING_CLAIM && (
                     <ClaimLoan
                         data={data[viewName].data}
                         loan={loan}
@@ -151,7 +145,7 @@ const MicroCredit = (props: any) => {
                         overviewData={loanData}
                     />
                 )}
-                {loanOnGoing && (
+                {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
                     <LoanRepayment
                         data={data[viewName].data}
                         isOverviewOpen={isOverviewOpen}
@@ -161,7 +155,7 @@ const MicroCredit = (props: any) => {
                         overviewData={loanData}
                     />
                 )}
-                {LoanPaymentCompleted && (
+                {loan.loanStatus === LoanStatus.LOAN_FULL_REPAID && (
                     <LoanCompleted
                         data={data[viewName].data}
                         overviewData={loanData}
