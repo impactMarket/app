@@ -2,6 +2,7 @@ import { Box, Card, Icon, Text } from '@impact-market/ui';
 import { useEffect, useState } from 'react';
 import Tooltip from '../../components/Tooltip';
 import styled from 'styled-components';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const CleanCard = styled(Card)`
     box-shadow: none;
@@ -18,6 +19,7 @@ const CleanCard = styled(Card)`
 
 const LoanOverview = (props: any) => {
     const { overviewData, open = false } = props;
+    const { t } = useTranslations();
     const [active, setActive] = useState(open);
 
     useEffect(() => {
@@ -42,7 +44,7 @@ const LoanOverview = (props: any) => {
                 <Box flex fLayout="center">
                     <div className="clicked-element" onClick={handleClick}>
                         <Text small p500 semibold>
-                            {'Loan Overview'}
+                            {t('loanOverview')}
                         </Text>
                     </div>
                     <Icon icon={active ? 'chevronUp' : 'chevronDown'} p500 />

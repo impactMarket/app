@@ -73,7 +73,7 @@ const MicroCredit = (props: any) => {
         {
             label: loanDurationLabel,
             tooltip: loanDurationTooltip,
-            value: `${convertToDate(loan.period)}`
+            value: `${convertToDate(loan.period.toString())}`
         },
         {
             label: interestRateLabel,
@@ -96,7 +96,7 @@ const MicroCredit = (props: any) => {
             highlight: true,
             label: totalAmountDueLabel,
             tooltip: totalAmountDueTooltip,
-            value: `${loan.currentDebt} cUSD`
+            value: `${loan.currentDebt.toFixed(3)} cUSD`
         }
     ];
 

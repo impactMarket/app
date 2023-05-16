@@ -49,6 +49,7 @@ const ClaimLoan = (props: any) => {
         claimLoanTitle,
         claimLoanDescription,
         claimLoanImage,
+        claimLoanExpiry,
         consent1: consentText1,
         consent2: consentText2
     } = data;
@@ -104,7 +105,7 @@ const ClaimLoan = (props: any) => {
                     warning
                     icon="alertTriangle"
                     mb={1.5}
-                    message={'This offer expires in 1 week.'}
+                    message={claimLoanExpiry}
                     mt={1.5}
                 />
                 <LoanOverview overviewData={overviewData} open />

@@ -19,6 +19,7 @@ import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled, { css } from 'styled-components';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const BorderWrapper = styled(Box)`
     padding: 0.6rem;
@@ -62,13 +63,14 @@ const LoanRepayment = (props: any) => {
         loanId,
         loan
     } = props;
+    const { t } = useTranslations();
     const balanceCUSD = useCUSDBalance();
     const { approve } = useMicroCredit();
     const formattedBalance = localeFormat(balanceCUSD, {
         maximumFractionDigits: 6,
         maximumSignificantDigits: 6
     });
-    const { repayLoanTitle, repayLoanDescription, repayLoanImage } = data;
+    const { repayLoanTitle, repayLoanDescription, repayLoanImage, repayLoanButton, repayLoanApproveTip, repayLoanReady, repayLoanApproveLabel, repayLoanApprovedLabel, repayLoanAmountToPay  } = data;
 
     const [amount, setAmount] = useState('');
     const [approved, setApproved] = useState(false);
@@ -129,9 +131,9 @@ const LoanRepayment = (props: any) => {
                     small
                     mt={0.5}
                     variables={{
-                        currentDebt: loan.currentDebt,
-                        debtAccrues: loan.currentDebt * loan.dailyInterest,
-                        totalToPay: loan.currentDebt
+                        currentDebt: loan.currentDebt.toFixed(3),
+                        debtAccrues: (loan.currentDebt * loan.dailyInterest).toFixed(3),
+                        totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
 
@@ -157,7 +159,7 @@ const LoanRepayment = (props: any) => {
                                         setAmount(e.target.value);
                                     }
                                 }}
-                                placeholder={'Enter amount to pay'}
+                                placeholder={repayLoanAmountToPay}
                                 rules={{ required: true }}
                                 style={{ fontSize: '1rem' }}
                                 type="number"
@@ -182,28 +184,17 @@ const LoanRepayment = (props: any) => {
                 </Box>
 
                 <Text g500 small mt={0.4}>
-                    {`Balance: ${formattedBalance} cUSD`}
+                    {`${t('balance')}: ${formattedBalance} cUSD`}
                 </Text>
 
-                <Box mt={2}>
-                    <Text g500 small>
-                        {!approved && (
-                            <>
-                                {'Click Approve Transaction and check your wallet. '}
-                                <a
-                                    href="https://support.impactmarket.com/"
-                                    target="_blank"
-                                    rel="noopener noreferrer"
-                                >
-                                    {'Troubleshoot if needed.'}
-                                </a>
-                            </>
-                        )}
+                <Box mt={2} mb={1.5}>
+                    {!approved && (
+                        <RichText content={repayLoanApproveTip} g500 small />
+                    )}
 
-                        {approved && 'Transaction approved. You can repay now.'}
-                    </Text>
+                    {approved && repayLoanReady}
                 </Box>
-                <ActionWrapper mt={1.5} flex fLayout="center" fWrap="wrap">
+                <ActionWrapper flex fLayout="center" fWrap="wrap">
                     <Button
                         className="approve"
                         h={3.8}
@@ -213,7 +204,7 @@ const LoanRepayment = (props: any) => {
                     >
                         <Icon icon="checkCircle" mr={0.5} />
                         <Text large medium>
-                            {!approved ? `Approve Transaction` : `Approved`}
+                            {!approved ? repayLoanApproveLabel : repayLoanApprovedLabel}
                         </Text>
                     </Button>
                     <Icon
@@ -229,10 +220,9 @@ const LoanRepayment = (props: any) => {
                         onClick={repay}
                         isLoading={isLoadingRepay}
                         disabled={!approved}
-                        mt={0.3}
                     >
                         <Text large medium>
-                            {`Repay`}
+                            {repayLoanButton}
                         </Text>
                     </Button>
                 </ActionWrapper>
