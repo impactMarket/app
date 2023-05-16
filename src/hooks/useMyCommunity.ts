@@ -1,20 +1,14 @@
-import React, { useEffect } from 'react';
-
-import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 
-import { ViewContainer } from '@impact-market/ui';
 import { selectCurrentUser } from '../state/slices/auth';
 import config from '../../config';
-import useCommunities from '../hooks/useCommunities';
-import useCommunity from '../hooks/useCommunity';
+import useCommunities from './useCommunities';
+import useCommunity from './useCommunity';
 
 const fetcher = (url: string, headers: any | {}) =>
     fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
-const MyCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
-    const { isLoading } = props;
-    const router = useRouter();
+export default function useMyCommunity() {
     const { user } = useSelector(selectCurrentUser);
 
     const filters = {
@@ -23,7 +17,7 @@ const MyCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     //  Pending Manager / Community
-    const { communities, loadingCommunities } = useCommunities(
+    const { communities } = useCommunities(
         filters,
         fetcher
     );
@@ -34,7 +28,7 @@ const MyCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
     )[0];
 
     //  Community already accepted
-    const { community, loadingCommunity } = useCommunity(
+    const { community } = useCommunity(
         user?.manager
             ? user?.manager?.community
             : user?.beneficiary && user?.beneficiary?.community,
@@ -51,17 +45,5 @@ const MyCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
             : '/communities?type=all';
     }
 
-    useEffect(() => {
-        if (communities?.data?.rows?.length) {
-            router.push(path);
-        }
-    }, [communities, pendingCommunity]);
-
-    return (
-        <ViewContainer
-            isLoading={isLoading || loadingCommunities || loadingCommunity}
-        />
-    );
-};
-
-export default MyCommunity;
+    return { path };
+}
