@@ -96,7 +96,7 @@ const MicroCredit = (props: any) => {
             highlight: true,
             label: totalAmountDueLabel,
             tooltip: totalAmountDueTooltip,
-            value: `${loan.currentDebt} cUSD`
+            value: `${loan.currentDebt.toFixed(3)} cUSD`
         }
     ];
 

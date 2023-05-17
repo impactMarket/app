@@ -9,7 +9,14 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
 
     if (levelId) {
         const { data } = useSWR<
-            { data: {  completedToday: boolean, lessons: any[], rewardAvailable: boolean, totalPoints: number, } },
+            {
+                data: {
+                    completedToday: boolean;
+                    lessons: any[];
+                    rewardAvailable: boolean;
+                    totalPoints: number;
+                };
+            },
             string
         >(`/learn-and-earn/levels/${levelId}`, fetcher);
 
@@ -47,6 +54,6 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
         completedToday: true,
         data: lessons,
         rewardAvailable: false,
-        totalPoints: 0,
+        totalPoints: 0
     };
 }
