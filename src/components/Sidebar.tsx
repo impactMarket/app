@@ -29,6 +29,7 @@ import String from '../libs/Prismic/components/String';
 import extractFromData from '../libs/Prismic/helpers/extractFromData';
 import langConfig from 'locales.config';
 import styled from 'styled-components';
+import useMyCommunity from '../hooks/useMyCommunity';
 import useWallet from '../hooks/useWallet';
 
 type User = {
@@ -123,26 +124,36 @@ const ConnectButton = (props: any) => {
 const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
     const { url, ...forwardProps } = props;
 
-    const isModal = url?.startsWith('[modal]');
+    const isMyCommunity = url?.startsWith('/mycommunity');
+
+    let newUrl = url;
+
+    if (isMyCommunity) {
+        const { path } = useMyCommunity();
+        
+        newUrl = path;
+    }
+
+    const isModal = newUrl?.startsWith('[modal]');
 
     if (isModal) {
         return (
             <SidebarMenuItem
                 {...forwardProps}
                 onClick={() =>
-                    openModal(url.replace('[modal]', ''), forwardProps)
+                    openModal(newUrl.replace('[modal]', ''), forwardProps)
                 }
             />
         );
     }
 
-    const isInternalLink = url?.startsWith('https:///') || url?.startsWith('/');
+    const isInternalLink = newUrl?.startsWith('https:///') || newUrl?.startsWith('/');
 
     const Wrapper = isInternalLink ? Link : (React.Fragment as any);
-    const wrapperProps = isInternalLink ? { href: url, passHref: true } : {};
+    const wrapperProps = isInternalLink ? { href: newUrl, passHref: true } : {};
     const linkProps = isInternalLink
-        ? { href: url }
-        : { href: url, rel: 'noopener noreferrer', target: '_blank' };
+        ? { href: newUrl }
+        : { href: newUrl, rel: 'noopener noreferrer', target: '_blank' };
 
     return (
         <Wrapper {...wrapperProps}>
