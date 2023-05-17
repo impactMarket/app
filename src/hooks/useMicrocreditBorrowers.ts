@@ -11,7 +11,7 @@ export default function useMicrocreditBorrowers(filters?: any[], itemsPerPage?: 
     }).then((res) => res.json());
 
     const { data, mutate, error } = useSWR(
-        `/microcredit/borrowers?${!!filters.length ? filters.map((filter: any) => filter).join('&') : ''}`,
+        `/microcredit/borrowers?${!!filters?.length ? filters?.map((filter: any) => filter).join('&') : ''}`,
         fetcher
     );
 

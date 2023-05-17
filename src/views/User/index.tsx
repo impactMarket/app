@@ -2,9 +2,10 @@
 import { Avatar, Box, CircledIcon, Display, DropdownMenu, Label, Tab, TabList, TabPanel, Tabs, Text, TextLink, ViewContainer, toast } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
-import { getUserName, userManager } from '../../utils/users';
+import { getUserName } from '../../utils/users';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetUserByIdMutation } from '../../api/user';
+import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
@@ -12,10 +13,13 @@ import React, { useEffect, useState } from 'react';
 import StateButtons from './StateButtons';
 import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
+import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
+const User: React.FC<{ isLoading?: boolean }> = props => {
     const { isLoading } = props;
+    const { extractFromView } = usePrismicData();
+    const { noMicrocreditDataFound } = extractFromView('microcredit') as any;
     const [loadingUser, toggleLoadingUser] = useState(true);
     const [user, setUser] = useState({}) as any;
 
@@ -24,12 +28,11 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
     const { t } = useTranslations();
     const [getUser] = useGetUserByIdMutation();
 
-    // Check if current User has access to this page
-    if(!auth?.type?.includes(userManager)) {
-        router.push('/');
+    const { borrowers } = useMicrocreditBorrowers(['limit=999']);
 
-        return null;
-    }
+    const hasAddress = !!auth?.user?.manager?.community && !!user?.beneficiary?.community
+    const userIsManager = (auth?.user?.manager?.community === user?.beneficiary?.community) && hasAddress;
+    const userIsBorrower = borrowers?.find((borrower: any) => borrower?.address === user?.address);
 
     useEffect(() => {
         const init = async () => {
@@ -46,7 +49,7 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
 
                 toggleLoadingUser(false);
 
-                router.push('/manager/beneficiaries');
+                router.push('/');
 
                 return false;
             }
@@ -97,41 +100,58 @@ const BeneficiaryDetail: React.FC<{ isLoading?: boolean }> = props => {
                         />
                     </Box>
                 </Box>
-                <Box mt={{ sm: 0, xs: 1 }}>
-                    <StateButtons beneficiary={user} community={auth?.user?.manager?.community} />
-                </Box>
+                {userIsManager && (
+                    <Box mt={{ sm: 0, xs: 1 }}>
+                        <StateButtons beneficiary={user} community={auth?.user?.manager?.community} />
+                    </Box>
+                )}
             </Box>
             <Box mt={0.5}>
                 <Tabs>
-                    { /* TODO: finish the info for the 3 tabs */ }
                     <TabList>
-                        <Tab title={t('transactions')} />
-                        <Tab title={t('actions')} />
-                        <Tab title={t('ubi')} />
+                        {userIsManager && (
+                            <>
+                                <Tab title={t('transactions')} />
+                                <Tab title={t('actions')} />
+                                <Tab title={t('ubi')} />
+                            </>
+                        )}
+                        {userIsBorrower && <Tab title="Microcredit" />}
                     </TabList>
-                    <TabPanel>
-                        <Box column fLayout="center" flex h="60vh">
-                            <CircledIcon icon="forbidden" medium />
-                            <Text g500 medium mt={1}><String id="noTransactionsFound" /></Text>
-                        </Box>
-                    </TabPanel>
-                    <TabPanel>
-                        <Box column fLayout="center" flex h="60vh">
-                            <CircledIcon icon="forbidden" medium />
-                            <Text g500 medium mt={1}><String id="noActionsFound" /></Text>
-                        </Box>
-                    </TabPanel>
-                    <TabPanel>
-                        <Box column fLayout="center" flex h="60vh">
-                            <CircledIcon icon="forbidden" medium />
-
-                            <Text g500 medium mt={1}><String id="noRecordsFounds" /></Text>
-                        </Box>
-                    </TabPanel>
+                    
+                    {userIsManager && (
+                        <>
+                            <TabPanel>
+                                <Box column fLayout="center" flex h="60vh">
+                                    <CircledIcon icon="forbidden" medium />
+                                    <Text g500 medium mt={1}><String id="noTransactionsFound" /></Text>
+                                </Box>
+                            </TabPanel><TabPanel>
+                                <Box column fLayout="center" flex h="60vh">
+                                    <CircledIcon icon="forbidden" medium />
+                                    <Text g500 medium mt={1}><String id="noActionsFound" /></Text>
+                                </Box>
+                            </TabPanel><TabPanel>
+                                <Box column fLayout="center" flex h="60vh">
+                                    <CircledIcon icon="forbidden" medium />
+                                    <Text g500 medium mt={1}><String id="noRecordsFounds" /></Text>
+                                </Box>
+                            </TabPanel>
+                        </>
+                    )}
+                    
+                    {userIsBorrower && (
+                        <TabPanel>
+                            <Box column fLayout="center" flex h="60vh">
+                                <CircledIcon icon="forbidden" medium />
+                                <Text g500 medium mt={1}>{noMicrocreditDataFound}</Text>
+                            </Box>
+                        </TabPanel>    
+                    )}
                 </Tabs>
             </Box>
         </ViewContainer>
     );
 };
 
-export default BeneficiaryDetail;
+export default User;

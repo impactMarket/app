@@ -1,9 +1,10 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Avatar, Box, CircledIcon, DropdownMenu, ProgressBar, Text, toast } from '@impact-market/ui';
+import { Avatar, Box, CircledIcon, DropdownMenu, ProgressBar, Text, TextLink, toast } from '@impact-market/ui';
 import { dateHelpers } from '../../helpers/dateHelpers'
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
+import { useRouter } from 'next/router';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import Table from './Table';
@@ -16,6 +17,7 @@ const itemsPerPage = 7;
 
 const getColumns = () => {
     const { t } = useTranslations();
+    const router = useRouter();
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
@@ -136,16 +138,16 @@ const getColumns = () => {
             title: "Current Debt",
             value: 'currentDebt',
             width: '15%'
+        },
+        {
+            minWidth: 8,
+            render: (data: any) => (
+                <TextLink onClick={() => router.push(`/user/${data.address}`)} p500>
+                    <Text small>Open Profile</Text>
+                </TextLink>
+            ),
+            width: '10%'
         }
-        // {
-        //     minWidth: 8,
-        //     render: (data: any) => (
-        //         <TextLink onClick={() => router.push(`/manager/beneficiaries/${data.address}`)} p500>
-        //             <Text small>Open Profile</Text>
-        //         </TextLink>
-        //     ),
-        //     width: '10%'
-        // }
     ];
 };
 
