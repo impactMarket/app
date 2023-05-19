@@ -16,10 +16,10 @@ export const getStaticProps: GetStaticProps = async ({
     params
 }) => {
     const clientOptions = previewData as ClientConfig;
-    
-   const { lesson } = params;
 
-   const prismicLesson = await Prismic.getLessonByUID({ lang, lesson });
+    const { lesson } = params;
+
+    const prismicLesson = await Prismic.getLessonByUID({ lang, lesson });
 
     const data = await Prismic.getByTypes({
         clientOptions,
@@ -27,28 +27,28 @@ export const getStaticProps: GetStaticProps = async ({
         types: 'pwa-view-learn-and-earn'
     });
 
-//    if (!prismicLesson) {
-//     return {
-//       redirect: {
-//         destination: "/learn-and-earn",
-//       },
-//       props: {}
-//     }
-//   }
+    //    if (!prismicLesson) {
+    //     return {
+    //       redirect: {
+    //         destination: "/learn-and-earn",
+    //       },
+    //       props: {}
+    //     }
+    //   }
 
-   return {
-    props: {
-        data,
-        fallback: '',
-        lang,
-        params,
-        prismic: {
-            prismicLesson
-        },
-        view: 'pwa-view-learn-and-earn',
-        // withPreview: !!previewData
-    }
-};
+    return {
+        props: {
+            data,
+            fallback: '',
+            lang,
+            params,
+            prismic: {
+                prismicLesson
+            },
+            view: 'pwa-view-learn-and-earn'
+            // withPreview: !!previewData
+        }
+    };
 };
 
 export default Lesson;

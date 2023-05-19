@@ -1,9 +1,15 @@
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
-import { AppContainer, DesignSystemProvider, ModalManager, Toaster, ViewContainer } from '@impact-market/ui';
+import {
+    AppContainer,
+    DesignSystemProvider,
+    ModalManager,
+    Toaster,
+    ViewContainer
+} from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
 import { addNotification } from '../state/slices/notifications';
-import { checkCookies, getCookie } from 'cookies-next';
+import { getCookie, hasCookie } from 'cookies-next';
 import { setRates } from '../state/slices/rates';
 import { setSignature, setToken } from '../state/slices/auth';
 import { store } from '../state/store';
@@ -14,19 +20,18 @@ import GoogleAnalytics from '../components/GoogleAnalytics';
 import React, { useEffect } from 'react';
 import SEO from '../components/SEO';
 import Sidebar from '../components/Sidebar';
-import WrapperProvider  from '../components/WrapperProvider';
+import WrapperProvider from '../components/WrapperProvider';
 import config from '../../config';
 import modals from '../modals';
 import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
-
 
 const { baseUrl, graphUrl } = config;
 
 const apolloClient = new ApolloClient({
     cache: new InMemoryCache(),
     uri: graphUrl
-  });
+});
 
 const InnerApp = (props: AppProps) => {
     const { Component, pageProps } = props;
@@ -45,8 +50,7 @@ const InnerApp = (props: AppProps) => {
                 const rates = await getRates().unwrap();
 
                 store.dispatch(setRates(rates));
-            }
-            catch (error) {
+            } catch (error) {
                 console.log(error);
             }
         };
@@ -57,22 +61,24 @@ const InnerApp = (props: AppProps) => {
     useEffect(() => {
         const getFlags = async () => {
             try {
-                const numberOfUnreadNotifications = await getUnreadNotifications().unwrap();
+                const numberOfUnreadNotifications =
+                    await getUnreadNotifications().unwrap();
 
-                store.dispatch(addNotification({
-                    notification: {
-                        key: 'notifications',
-                        value: numberOfUnreadNotifications?.data || 0
-                    }
-                }))
-
+                store.dispatch(
+                    addNotification({
+                        notification: {
+                            key: 'notifications',
+                            value: numberOfUnreadNotifications?.data || 0
+                        }
+                    })
+                );
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
 
         getFlags();
-    }, [])
+    }, []);
 
     const Content = Component as any;
 
@@ -95,24 +101,24 @@ const App = (props: AppProps) => {
 
     const { data, meta = {}, view } = pageProps;
 
-    if(!view) {
+    if (!view) {
         const ErrorContent = ErrorPage as any;
 
         return <ErrorContent statusCode={404} />;
     }
 
-    if(checkCookies('AUTH_TOKEN')) {
+    if (hasCookie('AUTH_TOKEN')) {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
 
-    if (checkCookies('SIGNATURE')) {
+    if (hasCookie('SIGNATURE')) {
         store.dispatch(
             setSignature({
                 message: getCookie('MESSAGE').toString(),
-                signature: getCookie('SIGNATURE').toString(),
+                signature: getCookie('SIGNATURE').toString()
             })
         );
-    };
+    }
 
     return (
         <PrismicDataProvider data={data} url={url} view={view}>

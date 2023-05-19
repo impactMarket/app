@@ -17,7 +17,7 @@ const AddCommunityPage = ({ setRequestsCount, requestsCount }: any) => {
     const { update, getByKey } = useFilters();
     const [changed, setChanged] = useState<Date>(new Date());
     const [ready, setReady] = useState(false);
-    
+
     // Pagination
     const [offset, setItemOffset] = useState(0);
     const [totalCount, setTotalCount] = useState(0);
@@ -26,7 +26,7 @@ const AddCommunityPage = ({ setRequestsCount, requestsCount }: any) => {
 
     // On page load, check if there's a page or orderBy in the url and save it to state
     useEffect(() => {
-        if(!!getByKey('page')) {
+        if (!!getByKey('page')) {
             const page = getByKey('page') as any;
 
             setItemOffset((page - 1) * limit);
@@ -103,7 +103,13 @@ const AddCommunityPage = ({ setRequestsCount, requestsCount }: any) => {
                     <Box>
                         <Box mt={2}>
                             {communities.rows.map((community, index) => (
-                                <Community data={community} key={index} {...community} requestsCount={requestsCount} setRequestsCount={setRequestsCount}/>
+                                <Community
+                                    data={community}
+                                    key={index}
+                                    {...community}
+                                    requestsCount={requestsCount}
+                                    setRequestsCount={setRequestsCount}
+                                />
                             ))}
                         </Box>
                     </Box>
@@ -116,7 +122,7 @@ const AddCommunityPage = ({ setRequestsCount, requestsCount }: any) => {
                         pageCount={pageCount}
                         pb={4}
                         previousIcon="arrowLeft"
-                        previousLabel="Previous" 
+                        previousLabel="Previous"
                     />
                 </Box>
             )}

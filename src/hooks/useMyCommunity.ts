@@ -17,10 +17,7 @@ export default function useMyCommunity() {
     };
 
     //  Pending Manager / Community
-    const { communities } = useCommunities(
-        filters,
-        fetcher
-    );
+    const { communities } = useCommunities(filters, fetcher);
 
     const pendingCommunity = communities?.data?.rows?.filter(
         (community: { requestByAddress: string }) =>

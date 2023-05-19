@@ -6,25 +6,24 @@ export type Rate = {
     rate: number | null;
 };
 interface RatesState {
-    rates: Rate[]
-};
+    rates: Rate[];
+}
 
 const slice = createSlice({
     initialState: {
-        rates: [{
-            currency: null,
-            rate: null
-        }] 
+        rates: [
+            {
+                currency: null,
+                rate: null
+            }
+        ]
     } as RatesState,
     name: 'rates',
     reducers: {
-        setRates: (
-            state,
-            action: PayloadAction<Rate[]>
-        ) => {
+        setRates: (state, action: PayloadAction<Rate[]>) => {
             // console.log('setRates', action);
             state.rates = action.payload;
-        },
+        }
     }
 });
 

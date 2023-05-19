@@ -35,7 +35,11 @@ const SuccessModal = () => {
                 />
             </Box>
             <Box mt="1.25rem">
-                <RichText content={modals.data.laeSuccessLessonDescription} medium g500 />
+                <RichText
+                    content={modals.data.laeSuccessLessonDescription}
+                    medium
+                    g500
+                />
             </Box>
             <Button fluid gray xl onClick={() => closeModal()} mt="2rem">
                 <String id="continue" />

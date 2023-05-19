@@ -55,14 +55,8 @@ const ActionWrapper = styled(Box)`
 `;
 
 const LoanRepayment = (props: any) => {
-    const {
-        data,
-        isOverviewOpen,
-        overviewData,
-        repayLoan,
-        loanId,
-        loan
-    } = props;
+    const { data, isOverviewOpen, overviewData, repayLoan, loanId, loan } =
+        props;
     const { t } = useTranslations();
     const balanceCUSD = useCUSDBalance();
     const { approve } = useMicroCredit();
@@ -70,7 +64,17 @@ const LoanRepayment = (props: any) => {
         maximumFractionDigits: 6,
         maximumSignificantDigits: 6
     });
-    const { repayLoanTitle, repayLoanDescription, repayLoanImage, repayLoanButton, repayLoanApproveTip, repayLoanReady, repayLoanApproveLabel, repayLoanApprovedLabel, repayLoanAmountToPay  } = data;
+    const {
+        repayLoanTitle,
+        repayLoanDescription,
+        repayLoanImage,
+        repayLoanButton,
+        repayLoanApproveTip,
+        repayLoanReady,
+        repayLoanApproveLabel,
+        repayLoanApprovedLabel,
+        repayLoanAmountToPay
+    } = data;
 
     const [amount, setAmount] = useState('');
     const [approved, setApproved] = useState(false);
@@ -132,7 +136,9 @@ const LoanRepayment = (props: any) => {
                     mt={0.5}
                     variables={{
                         currentDebt: loan.currentDebt.toFixed(3),
-                        debtAccrues: (loan.currentDebt * loan.dailyInterest).toFixed(3),
+                        debtAccrues: (
+                            loan.currentDebt * loan.dailyInterest
+                        ).toFixed(3),
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
@@ -208,7 +214,9 @@ const LoanRepayment = (props: any) => {
                     >
                         <Icon icon="checkCircle" mr={0.5} />
                         <Text large medium>
-                            {!approved ? repayLoanApproveLabel : repayLoanApprovedLabel}
+                            {!approved
+                                ? repayLoanApproveLabel
+                                : repayLoanApprovedLabel}
                         </Text>
                     </Button>
                     <Icon

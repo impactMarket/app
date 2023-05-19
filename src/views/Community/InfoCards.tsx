@@ -15,12 +15,15 @@ const InfoCards = ({ data, show }: any) => {
         incrementInterval = 0,
         baseInterval = 0,
         maxTranche = 0,
-        minTranche= 0 
+        minTranche = 0
     } = data;
     const auth = useSelector(selectCurrentUser);
     const user = auth?.user;
-    const showAmbassadorMetrics = !!minTranche && !!maxTranche && user?.ambassador?.communities.some( (x: any) => x === data.id );
-    
+    const showAmbassadorMetrics =
+        !!minTranche &&
+        !!maxTranche &&
+        user?.ambassador?.communities.some((x: any) => x === data.id);
+
     const language = auth?.user?.language || 'en-US';
     const currency = auth?.user?.currency || 'USD';
     const localeCurrency = new Intl.NumberFormat(language, {
@@ -53,7 +56,11 @@ const InfoCards = ({ data, show }: any) => {
                         text={`${currencyFormat(
                             claimAmount,
                             localeCurrency
-                        )} / ${ baseInterval === DAILY_BASE_INTERVAL ? t('day') : t('week')}`}
+                        )} / ${
+                            baseInterval === DAILY_BASE_INTERVAL
+                                ? t('day')
+                                : t('week')
+                        }`}
                     />
                 )}
                 {(!!maxClaim || maxClaim === 0) && (
@@ -61,24 +68,29 @@ const InfoCards = ({ data, show }: any) => {
                         icon="check"
                         label="maxPerBeneficiary"
                         text={currencyFormat(maxClaim, localeCurrency)}
-                        tooltip={currencyFormat(data?.decreaseStep, localeCurrency)}
+                        tooltip={currencyFormat(
+                            data?.decreaseStep,
+                            localeCurrency
+                        )}
                     />
                 )}
                 {(!!incrementInterval || incrementInterval === 0) && (
                     <InfoCard
                         icon="clock"
                         label="timeIncrement"
-                        text={`${(parseFloat((incrementInterval / 12).toFixed(2)))} ${t('minutes')}`}
+                        text={`${parseFloat(
+                            (incrementInterval / 12).toFixed(2)
+                        )} ${t('minutes')}`}
                     />
                 )}
                 {(!!showAmbassadorMetrics || showAmbassadorMetrics === 0) && (
-                        //  Only show tranche min/max to community's ambassador
-                        <InfoCard
-                            icon="coins"
-                            label="trancheMinMax"
-                            text={`${minTranche}/${maxTranche}`}
-                        />
-                    )}
+                    //  Only show tranche min/max to community's ambassador
+                    <InfoCard
+                        icon="coins"
+                        label="trancheMinMax"
+                        text={`${minTranche}/${maxTranche}`}
+                    />
+                )}
             </Grid>
         )
     );

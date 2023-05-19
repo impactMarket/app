@@ -16,7 +16,7 @@ import { useYupValidationResolver, yup } from '../../helpers/yup';
 import FormActions from '../Profile/FormActions';
 import Input from '../../components/Input';
 import Message from '../../libs/Prismic/components/Message';
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 // import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -28,18 +28,23 @@ const schema = yup.object().shape({
         .integer()
         .min(0)
         .max(100000)
-        .nullable(true)
+        .nullable()
 });
 
-const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries, isLocked }: any) => {
+const CommunityManagementForm = ({
+    isLoading,
+    communityAddress,
+    maxBeneficiaries,
+    isLocked
+}: any) => {
     // const { t } = useTranslations();
     const { extractFromView } = usePrismicData();
-    const { 
-        communityManagement, 
-        communityParameters, 
-        maxNumberBeneficiaries, 
-        lockCommunity: lockCommunityTitle, 
-        lockedCommunityHint, 
+    const {
+        communityManagement,
+        communityParameters,
+        maxNumberBeneficiaries,
+        lockCommunity: lockCommunityTitle,
+        lockedCommunityHint,
         maxBeneficiariesUpdated,
         maxBeneficiariesUpdateError,
         lockedCommunitySuccess,
@@ -47,7 +52,8 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
         unlockCommunitySuccess,
         unlockCommunityError
     } = extractFromView('formSections') as any;
-    const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } = useAmbassador();
+    const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } =
+        useAmbassador();
     const {
         handleSubmit,
         reset,
@@ -65,7 +71,7 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
 
     useEffect(() => {
         setValue('lock', isLocked);
-        setValue('maxBeneficiaries', maxBeneficiaries); 
+        setValue('maxBeneficiaries', maxBeneficiaries);
     }, [isLocked, maxBeneficiaries]);
 
     const handleCancel = (e: any) => {
@@ -78,7 +84,7 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
             const transactionChain: any = [];
             let transactionFailed = false;
 
-            toast.info(<Message id="approveTransaction"/>);
+            toast.info(<Message id="approveTransaction" />);
             if (dirtyFields.maxBeneficiaries) {
                 transactionChain.push(
                     updateMaxBeneficiaries(
@@ -151,12 +157,7 @@ const CommunityManagementForm = ({ isLoading, communityAddress, maxBeneficiaries
                         margin="1.25 0"
                         show={{ sm: 'none', xs: 'block' }}
                     />
-                    <RichText
-                        content={communityManagement}
-                        g700
-                        medium
-                        small
-                    />
+                    <RichText content={communityManagement} g700 medium small />
                     <RichText
                         content={communityParameters}
                         g500

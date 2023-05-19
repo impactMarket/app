@@ -5,11 +5,8 @@ import RichText from '../../libs/Prismic/components/RichText';
 
 const LoanCompleted = (props: any) => {
     const { data, overviewData } = props;
-    const {
-        completedLoanTitle,
-        completedLoanDescription,
-        completedLoanImage
-    } = data;
+    const { completedLoanTitle, completedLoanDescription, completedLoanImage } =
+        data;
 
     return (
         <Box flex fDirection={{ sm: 'row', xs: 'column' }}>
@@ -17,7 +14,12 @@ const LoanCompleted = (props: any) => {
                 <Display g800 medium>
                     {completedLoanTitle}
                 </Display>
-                <RichText content={completedLoanDescription} small mt={0.5} g500 />
+                <RichText
+                    content={completedLoanDescription}
+                    small
+                    mt={0.5}
+                    g500
+                />
 
                 <LoanOverview overviewData={overviewData} />
             </Box>

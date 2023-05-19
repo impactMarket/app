@@ -17,8 +17,11 @@ import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-
-const EditCommunity: React.FC<{ ambassadorAddress: string, community: Community, contract: Contract }> = props => {
+const EditCommunity: React.FC<{
+    ambassadorAddress: string;
+    community: Community;
+    contract: Contract;
+}> = (props) => {
     const { ambassadorAddress, community, contract } = props;
     const [maxBeneficiaries, setMaxBeneficiaries] = useState(0);
     const [isLocked, setIsLocked] = useState(false);
@@ -45,7 +48,7 @@ const EditCommunity: React.FC<{ ambassadorAddress: string, community: Community,
         description: '',
         incrementInterval: 0,
         maxBeneficiaries: 0,
-        maxClaim: '',
+        maxClaim: ''
     });
 
     useEffect(() => {
@@ -64,7 +67,7 @@ const EditCommunity: React.FC<{ ambassadorAddress: string, community: Community,
                 } else {
                     setIsLocked(null);
                     setMaxBeneficiaries(null);
-                }                
+                }
             } catch (error) {
                 console.log(error);
 
@@ -87,12 +90,15 @@ const EditCommunity: React.FC<{ ambassadorAddress: string, community: Community,
 
     useEffect(() => {
         setFormFields({
-            baseInterval: contract?.baseInterval === 17280 ? t('day').toLowerCase() : t('week').toLowerCase() || '',
+            baseInterval:
+                contract?.baseInterval === 17280
+                    ? t('day').toLowerCase()
+                    : t('week').toLowerCase() || '',
             claimAmount: contract?.claimAmount || '',
             description: community?.description || '',
             incrementInterval: contract?.incrementInterval || 0,
             maxBeneficiaries: maxBeneficiaries || 0,
-            maxClaim: contract?.maxClaim || '',
+            maxClaim: contract?.maxClaim || ''
         });
 
         Object.entries(formFields).forEach(([name, value]: any) =>
@@ -156,7 +162,9 @@ const EditCommunity: React.FC<{ ambassadorAddress: string, community: Community,
                     />
                 )}
 
-                {!!auth?.user?.ambassador && isLocked !== null && maxBeneficiaries !== null &&
+                {!!auth?.user?.ambassador &&
+                    isLocked !== null &&
+                    maxBeneficiaries !== null &&
                     ambassadorAddress?.toLowerCase() ===
                         auth?.user?.address?.toLowerCase() && (
                         <CommunityManagementForm
@@ -166,8 +174,7 @@ const EditCommunity: React.FC<{ ambassadorAddress: string, community: Community,
                             maxBeneficiaries={maxBeneficiaries}
                             reset={() => reset(formFields)}
                         />
-                    )
-                }
+                    )}
             </Box>
         </>
     );

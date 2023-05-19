@@ -4,9 +4,10 @@ import isObject from 'lodash/isObject';
 const useFilters = () => {
     const { pathname, push, query } = useRouter();
 
-    const callback = (query: any) => push({ pathname, query }, undefined, {
-        shallow: true
-    })
+    const callback = (query: any) =>
+        push({ pathname, query }, undefined, {
+            shallow: true
+        });
 
     /**
      * Clear one or more fields
@@ -20,7 +21,7 @@ const useFilters = () => {
         arrKeys.forEach((key: string) => delete shallowQuery?.[key]);
 
         return callback(shallowQuery);
-    }
+    };
 
     /**
      * Check if a field or an array of fields matches
@@ -32,11 +33,17 @@ const useFilters = () => {
         if (Array.isArray(query?.[key])) {
             const arr = query?.[key] as string[];
 
-            return Array.isArray(value) ? value.reduce((result, current) => result ? arr.includes(current?.toString()) : result, true) : !!arr.includes(value as any);
+            return Array.isArray(value)
+                ? value.reduce(
+                      (result, current) =>
+                          result ? arr.includes(current?.toString()) : result,
+                      true
+                  )
+                : !!arr.includes(value as any);
         }
 
         return query?.[key] === value;
-    }
+    };
 
     /**
      * Return all values from a given key
@@ -45,12 +52,11 @@ const useFilters = () => {
      */
     const getByKey = (key: string) => query?.[key];
 
-
     /**
      * Return all values from a given key
      * @returns {string[]} Returns multiple selected values
      */
-     const getAllQueryParams = () => query;
+    const getAllQueryParams = () => query;
 
     /**
      * Updates the url parameters
@@ -58,7 +64,10 @@ const useFilters = () => {
      * @param {string | string[]} value A value to add to url parameters
      * @returns {Callback} just returns the callback (push function result)
      */
-    const update = (nameOrObject: string | Object, value?: string | string[] | number | number[]) => {
+    const update = (
+        nameOrObject: string | Object,
+        value?: string | string[] | number | number[]
+    ) => {
         const shallowQuery = { ...query };
 
         if (isObject(nameOrObject)) {
@@ -70,7 +79,10 @@ const useFilters = () => {
             [nameOrObject]: value
         };
 
-        if (!queryExtra?.[nameOrObject]?.toString() || !value?.toString()?.length) {
+        if (
+            !queryExtra?.[nameOrObject]?.toString() ||
+            !value?.toString()?.length
+        ) {
             delete queryExtra?.[nameOrObject];
         }
 

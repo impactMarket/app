@@ -1,5 +1,5 @@
 import { Box, Pagination, Row, Spinner } from '@impact-market/ui';
-import { useCelo } from 'react-celo-impactmarket';
+import { useAccount } from 'wagmi';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import Proposal from './Proposal';
 import React, { useEffect, useState } from 'react';
@@ -27,8 +27,9 @@ export interface ProposalType {
 }
 
 const ProposalsPage = () => {
-    const { address } = useCelo();
-    const {proposalCount, getProposals, isReady, quorumVotes} = useImpactMarketCouncil();
+    const { address } = useAccount();
+    const { proposalCount, getProposals, isReady, quorumVotes } =
+        useImpactMarketCouncil();
     const [proposals, setProposals] = useState<ProposalType[]>([]);
     const [loading, setLoading] = useState(false);
     const { update, getByKey } = useFilters();
@@ -42,7 +43,7 @@ const ProposalsPage = () => {
 
     // On page load, check if there's a page or orderBy in the url and save it to state
     useEffect(() => {
-        if(!!getByKey('page')) {
+        if (!!getByKey('page')) {
             const page = getByKey('page') as any;
 
             setItemOffset((page - 1) * itemsPerPage);
@@ -59,24 +60,26 @@ const ProposalsPage = () => {
                 if (isReady) {
                     setLoading(true);
 
-                    const proposalsRequest = await getProposals(itemsPerPage, itemOffset, address || undefined);
+                    const proposalsRequest = await getProposals(
+                        itemsPerPage,
+                        itemOffset,
+                        address || undefined
+                    );
 
                     setProposals(proposalsRequest);
 
-                    setLoading(false);     
+                    setLoading(false);
                 }
-                
             } catch (error) {
-
                 console.log(error);
             }
-        }
+        };
 
-        if(ready) {
+        if (ready) {
             getProposalsMethod();
         }
     }, [itemOffset, isReady, ready, changed]);
-    
+
     const handlePageClick = (event: any, direction?: number) => {
         if (event.selected >= 0) {
             const newOffset = (event.selected * itemsPerPage) % proposalCount;
@@ -112,9 +115,12 @@ const ProposalsPage = () => {
                     <Box>
                         {proposalCount > 0 &&
                             proposals.map((p, index) => (
-                                <Proposal data={p} key={index} quorum={quorumVotes} />
-                            ))
-                        }
+                                <Proposal
+                                    data={p}
+                                    key={index}
+                                    quorum={quorumVotes}
+                                />
+                            ))}
                     </Box>
                     <Pagination
                         currentPage={currentPage}

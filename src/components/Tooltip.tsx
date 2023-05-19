@@ -34,12 +34,9 @@ const Tooltip = (props: TooltipProps) => {
             disabled={disabledTooltip}
             placement="bottom"
         >
-            <div>
-                {children}
-            </div>
+            <div>{children}</div>
         </StyledTippy>
     );
-   
 };
 
 export default Tooltip;

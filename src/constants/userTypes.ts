@@ -4,7 +4,7 @@ const types = {
     councilMember: 'councilMember',
     demo: 'demo',
     donor: 'donor',
-    manager: 'manager',
+    manager: 'manager'
 };
 
 export type UserTypesType = keyof typeof types;

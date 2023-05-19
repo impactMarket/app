@@ -23,11 +23,19 @@ const getColumns = () => {
             minWidth: 14,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
-                    {!!data.avatarMediaPath ? 
-                        <Avatar extrasmall url={getImage({ filePath: data.avatarMediaPath, fit: 'cover', height: 32, width: 32 })} />  
-                        : 
+                    {!!data.avatarMediaPath ? (
+                        <Avatar
+                            extrasmall
+                            url={getImage({
+                                filePath: data.avatarMediaPath,
+                                fit: 'cover',
+                                height: 32,
+                                width: 32
+                            })}
+                        />
+                    ) : (
                         <CircledIcon icon="user" small />
-                    }
+                    )}
                     <Box pl={0.75}>
                         {(!!data.firstName || !!data.lastName) && (
                             <Text g800 semibold small>
@@ -35,7 +43,7 @@ const getColumns = () => {
                             </Text>
                         )}
                         <Text p500 small>
-                            {formatAddress(data.address, [6,5])}
+                            {formatAddress(data.address, [6, 5])}
                         </Text>
                     </Box>
                 </Box>
@@ -49,7 +57,13 @@ const getColumns = () => {
             render: (data: any) => (
                 // TODO: check if date is correct and add correct locale
                 <Text g500 small>
-                    {data.since ? new Date(data.since * 1000).toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+                    {data.since
+                        ? new Date(data.since * 1000).toLocaleString('en-US', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                          })
+                        : ''}
                 </Text>
             ),
             sortable: true,
@@ -64,7 +78,7 @@ const getColumns = () => {
                     <Text g500 small>
                         {data?.claimedFormatted}
                     </Text>
-                )
+                );
             },
             sortable: true,
             title: t('claimed'),
@@ -74,7 +88,10 @@ const getColumns = () => {
         {
             minWidth: 8,
             render: (data: any) => (
-                <TextLink onClick={() => router.push(`/user/${data.address}`)} p500>
+                <TextLink
+                    onClick={() => router.push(`/user/${data.address}`)}
+                    p500
+                >
                     <String id="open" />
                 </TextLink>
             ),
@@ -83,37 +100,43 @@ const getColumns = () => {
     ];
 };
 
-const BeneficiariesList: React.FC<{ community: any, lastActivity: number }> = props => {
+const BeneficiariesList: React.FC<{ community: any; lastActivity: number }> = (
+    props
+) => {
     const { community, lastActivity } = props;
     const { getByKey } = useFilters();
 
-    const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, { variables: { 
-        address: community?.contractAddress?.toLowerCase(), 
-        lastActivity_lt: lastActivity
-    }});
+    const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, {
+        variables: {
+            address: community?.contractAddress?.toLowerCase(),
+            lastActivity_lt: lastActivity
+        }
+    });
 
-    const totalInactiveBeneficiaries = inactiveBeneficiaries?.data ? Object.keys(inactiveBeneficiaries?.data?.beneficiaryEntities).length : 0
+    const totalInactiveBeneficiaries = inactiveBeneficiaries?.data
+        ? Object.keys(inactiveBeneficiaries?.data?.beneficiaryEntities).length
+        : 0;
 
-    const thegraphData: any[] = []
+    const thegraphData: any[] = [];
 
     // Clone object to make it extensible
     if (!!inactiveBeneficiaries?.data) {
         inactiveBeneficiaries?.data?.beneficiaryEntities?.map((row: any) => {
-            const rowClone = JSON.parse(JSON.stringify(row))
-            
-            thegraphData.push(rowClone)
-        })    
+            const rowClone = JSON.parse(JSON.stringify(row));
+
+            thegraphData.push(rowClone);
+        });
     }
 
     return (
         <Table
             columns={getColumns()}
-            count={getByKey('state') === "3" && totalInactiveBeneficiaries}
+            count={getByKey('state') === '3' && totalInactiveBeneficiaries}
             itemsPerPage={itemsPerPage}
             mt={1.25}
             pb={6}
             prefix={`${community?.id}/beneficiaries`}
-            thegraph={getByKey('state') === "3" && thegraphData}
+            thegraph={getByKey('state') === '3' && thegraphData}
         />
     );
 };

@@ -1,5 +1,21 @@
-import { ambassadorRoutes, beneficiaryRoutes, borrowerRoutes, councilMemberRoutes, loanManagerRoutes, managerRoutes, privateRoutes, publicRoutes } from '../utils/routes';
-import { getUserTypes, userAmbassador, userBeneficiary, userCouncilMember, userLoanManager, userManager } from '../utils/users';
+import {
+    ambassadorRoutes,
+    beneficiaryRoutes,
+    borrowerRoutes,
+    councilMemberRoutes,
+    loanManagerRoutes,
+    managerRoutes,
+    privateRoutes,
+    publicRoutes
+} from '../utils/routes';
+import {
+    getUserTypes,
+    userAmbassador,
+    userBeneficiary,
+    userCouncilMember,
+    userLoanManager,
+    userManager
+} from '../utils/users';
 import { selectCurrentUser, setType, setUser } from '../state/slices/auth';
 import { store } from '../state/store';
 import { useEffect, useState } from 'react';
@@ -10,7 +26,7 @@ import langConfig from '../../locales.config';
 
 type UseGuardType = {
     withPreview?: boolean;
-}
+};
 
 const useGuard = (options: UseGuardType) => {
     const { withPreview } = options || {};
@@ -25,10 +41,14 @@ const useGuard = (options: UseGuardType) => {
     const { asPath, locale, push } = router;
 
     useEffect(() => {
-        const userLang = langConfig.find(({ code, shortCode }) => auth?.user?.language === code || auth?.user?.language === shortCode)?.shortCode;
+        const userLang = langConfig.find(
+            ({ code, shortCode }) =>
+                auth?.user?.language === code ||
+                auth?.user?.language === shortCode
+        )?.shortCode;
 
         if (locale !== userLang && !withPreview) {
-            push(asPath, asPath, { locale: userLang })
+            push(asPath, asPath, { locale: userLang });
         }
     }, [auth?.user?.language, locale]);
 
@@ -38,7 +58,7 @@ const useGuard = (options: UseGuardType) => {
                 // Build available User Paths based on his type
                 let userPaths = [...publicRoutes];
 
-                if(auth?.token) {
+                if (auth?.token) {
                     const user = await getUser().unwrap();
                     const type = getUserTypes(user);
 
@@ -49,26 +69,26 @@ const useGuard = (options: UseGuardType) => {
                     userPaths = userPaths.concat(privateRoutes);
 
                     // Beneficiary type - include the respective Paths
-                    if(type?.includes(userBeneficiary)) {
+                    if (type?.includes(userBeneficiary)) {
                         userPaths = userPaths.concat(beneficiaryRoutes);
                     }
 
                     // Manager type - include the respective Paths
-                    if(type?.includes(userManager)) {
+                    if (type?.includes(userManager)) {
                         userPaths = userPaths.concat(managerRoutes);
                     }
 
                     // Ambassador type - include the respective Paths
-                    if(type?.includes(userAmbassador)) {
+                    if (type?.includes(userAmbassador)) {
                         userPaths = userPaths.concat(ambassadorRoutes);
                     }
 
                     // Loan Manager type - include the respective Paths
-                    if(type?.includes(userLoanManager)) {
+                    if (type?.includes(userLoanManager)) {
                         userPaths = userPaths.concat(loanManagerRoutes);
                     }
 
-                    if(type?.includes(userCouncilMember)) {
+                    if (type?.includes(userCouncilMember)) {
                         userPaths = userPaths.concat(councilMemberRoutes);
                     }
                 }
@@ -76,11 +96,10 @@ const useGuard = (options: UseGuardType) => {
                 // TEMPORARY
                 userPaths = userPaths.concat(borrowerRoutes);
 
-                if(!userPaths.includes(router.pathname)) {
+                if (!userPaths.includes(router.pathname)) {
                     setAuthorized(false);
                     router.push('/');
-                }
-                else {
+                } else {
                     setAuthorized(true);
                 }
 

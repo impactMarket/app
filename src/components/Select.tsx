@@ -1,5 +1,12 @@
-import { Select as BaseSelect, SelectProps as BaseSelectProps, Box, CountryFlag, Icon, Text } from '@impact-market/ui';
-import { Controller } from "react-hook-form";
+import {
+    Select as BaseSelect,
+    SelectProps as BaseSelectProps,
+    Box,
+    CountryFlag,
+    Icon,
+    Text
+} from '@impact-market/ui';
+import { Controller } from 'react-hook-form';
 import React, { useState } from 'react';
 import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
@@ -10,7 +17,7 @@ type Partial<BaseSelectProps> = {
 
 type SelectProps = {
     callback?: Function;
-    control?: any; 
+    control?: any;
     disabled?: boolean;
     initialValue?: any;
     isMultiple?: boolean;
@@ -21,17 +28,32 @@ type SelectProps = {
     showFlag?: boolean;
 };
 
-const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
-    const { callback, control, disabled, initialValue, isMultiple, label, placeholder, name, rules, showFlag, ...forwardProps } = props;
+const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
+    const {
+        callback,
+        control,
+        disabled,
+        initialValue,
+        isMultiple,
+        label,
+        placeholder,
+        name,
+        rules,
+        showFlag,
+        ...forwardProps
+    } = props;
 
-    const newValue = isMultiple && initialValue && !Array.isArray(initialValue) ? [initialValue]: initialValue;
+    const newValue =
+        isMultiple && initialValue && !Array.isArray(initialValue)
+            ? [initialValue]
+            : initialValue;
     const [value, setValue] = useState(newValue || '');
     const { t } = useTranslations();
     const { getByKey } = useFilters();
 
     const clearLabel = () => {
         const textProps = getByKey('country') ? { p600: true } : { g400: true };
-    
+
         return (
             <Text medium {...textProps}>
                 {t('clear')}...
@@ -50,7 +72,9 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
     const renderLabelWithIcon = (label: string, value: string) => {
         return (
             <Box fLayout="center start" flex>
-                {showFlag && <CountryFlag countryCode={value} height={1.2} mr={0.5} />}
+                {showFlag && (
+                    <CountryFlag countryCode={value} height={1.2} mr={0.5} />
+                )}
                 <Text g900>{label || value}</Text>
             </Box>
         );
@@ -60,11 +84,15 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
         if (selected?.label) {
             return renderLabelWithIcon(selected?.label, selected?.value);
         }
-    
+
         if (Array.isArray(selected) && selected.length) {
-            return <Text g900>{t('selected')} ({selected.length})</Text>;
+            return (
+                <Text g900>
+                    {t('selected')} ({selected.length})
+                </Text>
+            );
         }
-    
+
         return <Text g500>{placeholder || t('selectAnOption')}</Text>;
     };
 
@@ -80,7 +108,11 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
     const renderInput = (field?: any) => {
         return (
             <>
-                { label && <Text g700 mb={0.375} medium small>{label}</Text> }
+                {label && (
+                    <Text g700 mb={0.375} medium small>
+                        {label}
+                    </Text>
+                )}
                 <BaseSelect
                     clearLabel={clearLabel}
                     disabled={disabled}
@@ -90,28 +122,27 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = props => {
                     renderLabel={renderLabel}
                     renderOption={renderOption}
                     value={value}
-                    {...field} 
+                    {...field}
                     {...forwardProps}
                 />
             </>
         );
-    }
-    
+    };
+
     return (
         <>
-            { 
-                control ?
+            {control ? (
                 <Controller
                     control={control}
                     name={name}
                     render={({ field }) => renderInput(field)}
                     rules={rules}
                 />
-                :
+            ) : (
                 renderInput()
-            }
+            )}
         </>
-    )
-}
+    );
+};
 
 export default Select;

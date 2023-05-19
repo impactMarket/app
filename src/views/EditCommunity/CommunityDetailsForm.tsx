@@ -97,14 +97,14 @@ const CommunityDetailsForm = ({
                     ...body,
                     gps: {
                         latitude: data?.location?.gps?.lat || 0,
-                        longitude: data?.location?.gps?.lng || 0,
+                        longitude: data?.location?.gps?.lng || 0
                     }
                 };
 
-                res = await editPendingCommunity({
+                res = (await editPendingCommunity({
                     body: pendingCommunityBody,
                     id: community.id
-                }).unwrap() as any;
+                }).unwrap()) as any;
             }
 
             if (!!res.error) {

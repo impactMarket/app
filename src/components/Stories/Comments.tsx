@@ -6,14 +6,14 @@ import {
     Input,
     Row,
     Text,
-    toast,
+    toast
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { usePostCommentMutation } from '../../api/story';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import { useSWRConfig } from 'swr'
+import { useSWRConfig } from 'swr';
 import { useSelector } from 'react-redux';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
@@ -26,7 +26,7 @@ const Comments = (props: any) => {
     const { t } = useTranslations();
     const { modals } = usePrismicData();
     const auth = useSelector(selectCurrentUser);
-    const { mutate } = useSWRConfig()
+    const { mutate } = useSWRConfig();
 
     const {
         control,
@@ -42,10 +42,10 @@ const Comments = (props: any) => {
     const [postComment] = usePostCommentMutation();
 
     const onSubmit: SubmitHandler<any> = async (data) => {
-        try {      
-            //  If comment is only spaces (no characters) show error    
+        try {
+            //  If comment is only spaces (no characters) show error
             if (data?.comment?.trim().length === 0) {
-                toast.error(t('writeValidComment'))
+                toast.error(t('writeValidComment'));
             } else {
                 const postRequest: any = await postComment({
                     body: {
@@ -54,15 +54,15 @@ const Comments = (props: any) => {
                     id: story?.id,
                     token: auth?.token
                 });
-    
-                if(postRequest?.error) {
+
+                if (postRequest?.error) {
                     toast.error(t('maximumCharactersExceeded'));
                 } else {
-                    mutate(`/stories/${story?.id}/comments`)
+                    mutate(`/stories/${story?.id}/comments`);
                     toast.success(t('commentAdded'));
-                    setOpenNewComment(false)
+                    setOpenNewComment(false);
                 }
-            }                     
+            }
         } catch (error) {
             toast.error(t('error'));
             console.log(error);
@@ -83,21 +83,26 @@ const Comments = (props: any) => {
     const [characters, setCharacters] = useState(TEXT_LIMIT.toString());
 
     const handleChange = (e: any) => {
-        e.target.value.length < TEXT_LIMIT ?
-            setCharacters((TEXT_LIMIT - e.target.value.length).toString())
-        :
-            setCharacters('0')
+        e.target.value.length < TEXT_LIMIT
+            ? setCharacters((TEXT_LIMIT - e.target.value.length).toString())
+            : setCharacters('0');
     };
 
     return (
         <>
-            {openNewComment && 
+            {openNewComment && (
                 <Box>
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Box mt={1.25}>
                             <Input
                                 control={control}
-                                hint={errors?.message ? t('requiredField') : t('countCharactersLeft', { count: characters })}
+                                hint={
+                                    errors?.message
+                                        ? t('requiredField')
+                                        : t('countCharactersLeft', {
+                                              count: characters
+                                          })
+                                }
                                 placeholder={t('writeComment')}
                                 rows={3}
                                 rules={{ required: true }}
@@ -113,30 +118,53 @@ const Comments = (props: any) => {
                                 <Button gray onClick={handleCancel} w="100%">
                                     <RichText
                                         content={
-                                            modals?.data?.createStoryCancelButtonLabel
+                                            modals?.data
+                                                ?.createStoryCancelButtonLabel
                                         }
                                     />
                                 </Button>
                             </Col>
 
                             <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
-                                <Button isLoading={isSubmitting} type="submit" w="100%">
-                                    <RichText
-                                        content={t('comment')}
-                                    />
+                                <Button
+                                    isLoading={isSubmitting}
+                                    type="submit"
+                                    w="100%"
+                                >
+                                    <RichText content={t('comment')} />
                                 </Button>
                             </Col>
                         </Row>
-                    </form> 
+                    </form>
                 </Box>
-            }
-            <Box fDirection="column" fLayout="start" flex mt={1.5} overflow={{ phone: "unset", tablet: "auto" }}>
+            )}
+            <Box
+                fDirection="column"
+                fLayout="start"
+                flex
+                mt={1.5}
+                overflow={{ phone: 'unset', tablet: 'auto' }}
+            >
                 {comments?.rows?.map((comment: any, key: number) => (
                     <Box fLayout="center" flex inlineFlex key={key} mb={1}>
-                        <Avatar extrasmall url={getImage({ filePath: comment?.user?.avatarMediaPath, fit: 'cover' })} />
+                        <Avatar
+                            extrasmall
+                            url={getImage({
+                                filePath: comment?.user?.avatarMediaPath,
+                                fit: 'cover'
+                            })}
+                        />
                         <Box ml={0.5}>
                             <Text g700 semibold small>
-                                {`${comment?.user?.firstName ? comment?.user?.firstName : 'Unidentified User'} ${comment?.user?.lastName ? comment?.user?.lastName : ''}`}
+                                {`${
+                                    comment?.user?.firstName
+                                        ? comment?.user?.firstName
+                                        : 'Unidentified User'
+                                } ${
+                                    comment?.user?.lastName
+                                        ? comment?.user?.lastName
+                                        : ''
+                                }`}
                             </Text>
                             <Box>
                                 <Text g500 regular small>
@@ -147,7 +175,7 @@ const Comments = (props: any) => {
                     </Box>
                 ))}
             </Box>
-         </>
+        </>
     );
 };
 

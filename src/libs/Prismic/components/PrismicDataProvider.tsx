@@ -39,9 +39,11 @@ type UsePrismicDataOptions = {
 
 export const usePrismicData = (options: UsePrismicDataOptions = {}) => {
     const { list } = options;
-    const { data, view: viewNameFromContext, url } = React.useContext(
-        PrismicDataContext
-    );
+    const {
+        data,
+        view: viewNameFromContext,
+        url
+    } = React.useContext(PrismicDataContext);
     const viewName =
         !!viewNameFromContext &&
         `view${viewNameFromContext
@@ -53,13 +55,8 @@ export const usePrismicData = (options: UsePrismicDataOptions = {}) => {
         {}
     ) as any;
 
-    const {
-        config,
-        modals,
-        userConfig,
-        translations,
-        ...forwardData
-    } = parsedKeysObject || {};
+    const { config, modals, userConfig, translations, ...forwardData } =
+        parsedKeysObject || {};
 
     const view = forwardData?.[viewName] || {};
 

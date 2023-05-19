@@ -12,15 +12,16 @@ import { useGetCommunityMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import Content from '../../components/Stories/Content'
+import Content from '../../components/Stories/Content';
 import React, { useEffect, useState } from 'react';
-import Slider from '../../components/Slider/Slider'
+import Slider from '../../components/Slider/Slider';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
 
 const OpenStory: React.FC = () => {
-    const { handleClose, SingleRequest, setStories, loveStoryById } = useModal();
+    const { handleClose, SingleRequest, setStories, loveStoryById } =
+        useModal();
     const [story, setStory] = useState(SingleRequest?.data);
     const [community, setCommunity] = useState<any>({});
     const {} = usePrismicData();
@@ -41,7 +42,9 @@ const OpenStory: React.FC = () => {
             try {
                 setLoading(true);
 
-                const communityRequest: any = await getCommunity(story?.community?.id).unwrap();
+                const communityRequest: any = await getCommunity(
+                    story?.community?.id
+                ).unwrap();
 
                 setCommunity(communityRequest);
 
@@ -60,7 +63,9 @@ const OpenStory: React.FC = () => {
             setStory({
                 ...story,
                 engagement: {
-                    loves: !story?.engagement?.userLoved ? story?.engagement?.loves + 1 : story?.engagement?.loves - 1,
+                    loves: !story?.engagement?.userLoved
+                        ? story?.engagement?.loves + 1
+                        : story?.engagement?.loves - 1,
                     userLoved: !story?.engagement?.userLoved
                 }
             });
@@ -75,7 +80,7 @@ const OpenStory: React.FC = () => {
             if (!auth?.user) {
                 clear('id');
                 handleClose();
-                await connect(() => onLoveStoryFunction(id));
+                await connect();
             } else {
                 onLoveStoryFunction(id);
             }
@@ -87,8 +92,10 @@ const OpenStory: React.FC = () => {
     const removeIndexById = () => {
         setStories((oldStories: { count: number; list: Story[] }) => ({
             count: oldStories.count--,
-            list: oldStories.list.filter((story) => story?.id.toString() !== filterId)})
-        );
+            list: oldStories.list.filter(
+                (story) => story?.id.toString() !== filterId
+            )
+        }));
     };
 
     const renderStory = () => {
@@ -97,21 +104,51 @@ const OpenStory: React.FC = () => {
         if (story?.isDeletable) {
             items.unshift({
                 icon: 'trash',
-                onClick: () => openModal('deleteStory', {removeIndexById, setStories, story, storyId: story?.id}),
+                onClick: () =>
+                    openModal('deleteStory', {
+                        removeIndexById,
+                        setStories,
+                        story,
+                        storyId: story?.id
+                    }),
                 title: t('deletePost')
             });
         } else {
             items.unshift({
                 icon: 'sad',
-                onClick: () => openModal('reportStory', {removeIndexById, setStories, story, storyId: story?.id}),
-                title: t('reportAsInappropriate')});
-        }        
+                onClick: () =>
+                    openModal('reportStory', {
+                        removeIndexById,
+                        setStories,
+                        story,
+                        storyId: story?.id
+                    }),
+                title: t('reportAsInappropriate')
+            });
+        }
 
         return (
             <>
-                <Row h="100%" margin={0} maxH="100%" pb={0} pr={{sm: 0.5, xs: 0}} w="100%">
-                    <Col bTopLeftRadius={{sm: 0, xs: 0.5}} bTopRightRadius={{sm: 0, xs: 0.5}} bgColor="g100" colSize={{sm: 7, xs: 12}} fLayout="center" flex  h={{sm: "100%", xs: "50%"}}  padding={0} style={{overflow: "hidden", position:'relative'}}> 
-                        <Slider slides={story?.storyMedia}/>
+                <Row
+                    h="100%"
+                    margin={0}
+                    maxH="100%"
+                    pb={0}
+                    pr={{ sm: 0.5, xs: 0 }}
+                    w="100%"
+                >
+                    <Col
+                        bTopLeftRadius={{ sm: 0, xs: 0.5 }}
+                        bTopRightRadius={{ sm: 0, xs: 0.5 }}
+                        bgColor="g100"
+                        colSize={{ sm: 7, xs: 12 }}
+                        fLayout="center"
+                        flex
+                        h={{ sm: '100%', xs: '50%' }}
+                        padding={0}
+                        style={{ overflow: 'hidden', position: 'relative' }}
+                    >
+                        <Slider slides={story?.storyMedia} />
                     </Col>
                     <Content
                         community={community}
@@ -126,7 +163,17 @@ const OpenStory: React.FC = () => {
     };
 
     return (
-        <ModalWrapper h={{ phone: "unset", tablet: "100%" }} maxH={{ phone: "unset", tablet: "100%" }} onCloseButton={() => {handleClose(); clear('id')}} padding={{sm: 1, xs: 0}} pb={0.5} w="100%">
+        <ModalWrapper
+            h={{ phone: 'unset', tablet: '100%' }}
+            maxH={{ phone: 'unset', tablet: '100%' }}
+            onCloseButton={() => {
+                handleClose();
+                clear('id');
+            }}
+            padding={{ sm: 1, xs: 0 }}
+            pb={0.5}
+            w="100%"
+        >
             {loading ? (
                 <Row fLayout="center" h="50vh" mt={2}>
                     <Spinner isActive />

@@ -22,11 +22,11 @@ const RemoveCommunity = () => {
     const { user } = useSelector(selectCurrentUser);
     const { removeCommunity } = useImpactMarketCouncil();
     const { handleClose, community, thegraphData } = useModal();
-    const [isLoading, setIsLoading ] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);
     const { modals } = usePrismicData();
 
     // Check if current User has access to this modal
-    if(!user.councilMember) {
+    if (!user.councilMember) {
         router.push('/communities');
 
         return null;
@@ -36,7 +36,7 @@ const RemoveCommunity = () => {
         try {
             setIsLoading(true);
 
-            toast.info(<Message id="approveTransaction"/>);
+            toast.info(<Message id="approveTransaction" />);
 
             await removeCommunity({
                 communityAddress: community?.contractAddress,
@@ -55,14 +55,14 @@ const RemoveCommunity = () => {
             });
 
             setIsLoading(false);
-            toast.success( modals?.data?.removeCommunitySuccess);
+            toast.success(modals?.data?.removeCommunitySuccess);
 
             handleClose();
         } catch (error) {
             console.log(error);
-            
+
             setIsLoading(false);
-            toast.error( modals?.data?.removeCommunityError);
+            toast.error(modals?.data?.removeCommunityError);
         }
     };
 
@@ -72,13 +72,13 @@ const RemoveCommunity = () => {
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
             <CircledIcon icon="alertTriangle" large error />
             <RichText
-                content={ modals?.data?.removeCommunityTitle}
+                content={modals?.data?.removeCommunityTitle}
                 large
                 mt={1.25}
                 semibold
             />
             <RichText
-                content={ modals?.data?.removeCommunityDescription}
+                content={modals?.data?.removeCommunityDescription}
                 g500
                 mt={0.5}
                 small
@@ -87,16 +87,20 @@ const RemoveCommunity = () => {
                 <Col colSize={{ sm: 6, xs: 6 }} pr={0.5}>
                     <Button gray onClick={() => handleClose()} w="100%">
                         <RichText
-                            content={
-                                modals?.data?.createStoryCancelButtonLabel
-                            }
+                            content={modals?.data?.createStoryCancelButtonLabel}
                         />
                     </Button>
                 </Col>
 
                 <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
-                    <Button isLoading={isLoading} onClick={handleRemove} w="100%" error icon="trash">
-                        <String id="removeCommunity"/>
+                    <Button
+                        isLoading={isLoading}
+                        onClick={handleRemove}
+                        w="100%"
+                        error
+                        icon="trash"
+                    >
+                        <String id="removeCommunity" />
                     </Button>
                 </Col>
             </Row>

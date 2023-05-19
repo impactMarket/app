@@ -29,7 +29,7 @@ const config = {
     /*
      * Network jSON RPC
      */
-    useTestNet: process.env.NEXT_PUBLIC_TESTNET === "true",
+    useTestNet: process.env.NEXT_PUBLIC_TESTNET === 'true',
 
     /*
      * Images URL
@@ -100,11 +100,16 @@ const config = {
      * Feature flag for learn and earn
      */
     enableLearnEarn: process.env.NEXT_PUBLIC_ENABLE_LEARN_EARN,
-    
+
     /**
      * Support URL
      */
-    supportURL: process.env.NEXT_PUBLIC_SUPPORT_URL
+    supportURL: process.env.NEXT_PUBLIC_SUPPORT_URL,
+
+    /**
+     * WalletConnect project id, mandatory for WalletConnect v2
+     */
+    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!
 };
 
 export default config;

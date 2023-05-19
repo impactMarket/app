@@ -11,12 +11,14 @@ const countries: {
     };
 } = countriesJSON;
 
-export const countriesOptions = Object.entries(countries).map(([key, value]: any) => ({ label: value.name, value: key }));
+export const countriesOptions = Object.entries(countries).map(
+    ([key, value]: any) => ({ label: value.name, value: key })
+);
 
 export function getCountryFromPhoneNumber(pnumber: string) {
     const phoneNumber = parsePhoneNumber(pnumber);
 
-    if(phoneNumber?.country) {
+    if (phoneNumber?.country) {
         const { emoji, name } = countries[phoneNumber.country];
 
         return `${emoji} ${name}`;

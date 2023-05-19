@@ -8,11 +8,11 @@ interface NotificationsList {
 interface Notification {
     key: string;
     value: number;
-};
+}
 
 const slice = createSlice({
     initialState: {
-       notifications: []
+        notifications: []
     } as NotificationsList,
     name: 'notifications',
     reducers: {
@@ -24,16 +24,19 @@ const slice = createSlice({
         },
         markAsRead: (
             state,
-            action: PayloadAction<{ key: string, reduce: number }>
+            action: PayloadAction<{ key: string; reduce: number }>
         ) => {
-            const found = state.notifications.findIndex((n: Notification) => n.key === action.payload.key);
+            const found = state.notifications.findIndex(
+                (n: Notification) => n.key === action.payload.key
+            );
 
-            if(found > -1) {
-                const diff = state.notifications[found].value - action.payload.reduce;
+            if (found > -1) {
+                const diff =
+                    state.notifications[found].value - action.payload.reduce;
 
                 state.notifications[found].value = diff > 0 ? diff : 0;
             }
-        },
+        }
     }
 });
 

@@ -8,7 +8,11 @@ export const getStaticProps: GetStaticProps = async ({
     previewData
 }) => {
     const clientOptions = previewData as ClientConfig;
-    const data = await Prismic.getByTypes({ clientOptions, lang, types: 'pwa-view-microcredit' });
+    const data = await Prismic.getByTypes({
+        clientOptions,
+        lang,
+        types: 'pwa-view-microcredit'
+    });
 
     return {
         props: {

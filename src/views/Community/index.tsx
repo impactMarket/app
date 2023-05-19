@@ -10,10 +10,10 @@ import {
     useGetPendingCommunitiesMutation,
     useUpdateReviewMutation
 } from '../../api/community';
-import useAmbassador from "../../hooks/useAmbassador";
-import useContract from "../../hooks/useContract";
-import useMerchants from "../../hooks/useMerchants";
-import usePromoter from "../../hooks/usePromoter";
+import useAmbassador from '../../hooks/useAmbassador';
+import useContract from '../../hooks/useContract';
+import useMerchants from '../../hooks/useMerchants';
+import usePromoter from '../../hooks/usePromoter';
 
 import CommunityDetails from './CommunityDetails';
 import Dashboard from './Dashboard';
@@ -21,53 +21,65 @@ import Header from './Header';
 import Message from '../../libs/Prismic/components/Message';
 import RolesTabs from './RolesTabs';
 
-const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
+const fetcher = (url: string, headers: any | {}) =>
+    fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
 //  Get community data from thegraph
 //  Temporarily removing non existent fields from the query
 const communityQuery = gql`
-query communityQuery($id: String!, $todayDayId: Int, $daysBefore: Int) {
-    communityEntity(id: $id) {
-        id
-        beneficiaries
-        claimAmount
-        maxClaim
-        incrementInterval
-        decreaseStep
-        baseInterval
-    }
-    communityDailyEntities(where: {community: $id, dayId_lte: $todayDayId, dayId_gte: $daysBefore} orderBy: dayId, orderDirection: asc) {
-        beneficiaries
-        claimed
-        claims
-        contributions {
-            amount
+    query communityQuery($id: String!, $todayDayId: Int, $daysBefore: Int) {
+        communityEntity(id: $id) {
+            id
+            beneficiaries
+            claimAmount
+            maxClaim
+            incrementInterval
+            decreaseStep
+            baseInterval
         }
-        contributors
-        dayId
-        fundingRate
-        reach
-        transactions
-        volume
+        communityDailyEntities(
+            where: {
+                community: $id
+                dayId_lte: $todayDayId
+                dayId_gte: $daysBefore
+            }
+            orderBy: dayId
+            orderDirection: asc
+        ) {
+            beneficiaries
+            claimed
+            claims
+            contributions {
+                amount
+            }
+            contributors
+            dayId
+            fundingRate
+            reach
+            transactions
+            volume
+        }
     }
-}
 `;
 
 const daysInterval = 30;
 
-const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props) => {
+const Community: React.FC<{ isLoading?: boolean; communityData: any }> = (
+    props
+) => {
     const { communityData, isLoading } = props;
 
     const [communityId] = useState(communityData.id);
-    const [community, setCommunity]= useState(communityData) as any;
-    const [claimsLocation, setClaimsLocation]= useState({}) as any;
+    const [community, setCommunity] = useState(communityData) as any;
+    const [claimsLocation, setClaimsLocation] = useState({}) as any;
 
     const { data } = useQuery(communityQuery, {
-        variables: { 
-            daysBefore: Math.floor(new Date().getTime()/1000/86400) - daysInterval,
-            id: communityData?.contractAddress?.toLowerCase(), 
-            todayDayId: Math.floor(new Date().getTime()/1000/86400)
-        },
+        variables: {
+            daysBefore:
+                Math.floor(new Date().getTime() / 1000 / 86400) - daysInterval,
+            id: communityData?.contractAddress?.toLowerCase(),
+            todayDayId: Math.floor(new Date().getTime() / 1000 / 86400)
+        }
     });
 
     const [loading, setLoading] = useState(true);
@@ -77,8 +89,11 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     });
 
     //  Get Ambassador
-    const { ambassador, loadingAmbassador } = useAmbassador(community?.id, fetcher);
-    
+    const { ambassador, loadingAmbassador } = useAmbassador(
+        community?.id,
+        fetcher
+    );
+
     //  Get Promoter
     const { promoter, loadingPromoter } = usePromoter(community?.id, fetcher);
 
@@ -86,7 +101,10 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     const { contract, loadingContract } = useContract(community?.id, fetcher);
 
     //  Get Merchants
-    const { merchants, loadingMerchants } = useMerchants(community?.id, fetcher);
+    const { merchants, loadingMerchants } = useMerchants(
+        community?.id,
+        fetcher
+    );
 
     const [updateReview] = useUpdateReviewMutation();
     const [getCommunity] = useGetCommunityMutation();
@@ -96,19 +114,25 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
     useEffect(() => {
         const getData = async () => {
             try {
-                setLoading(true)
+                setLoading(true);
 
                 //  Get calims location
-                const claimsLocation = await getClaimsLocation(community?.id).unwrap();
+                const claimsLocation = await getClaimsLocation(
+                    community?.id
+                ).unwrap();
 
                 if (community.status === 'pending') {
-                    const response = await getPendingCommunities({limit: null, offset: 0}).unwrap();
+                    const response = await getPendingCommunities({
+                        limit: null,
+                        offset: 0
+                    }).unwrap();
 
                     const foundResults = response?.rows.filter((row: any) => {
-                        return row.id === community.id
-                    })
+                        return row.id === community.id;
+                    });
 
-                    if (foundResults.length > 0) setCommunity({...community, isPendingProposal: true});
+                    if (foundResults.length > 0)
+                        setCommunity({ ...community, isPendingProposal: true });
                 }
 
                 setClaimsLocation(claimsLocation);
@@ -116,18 +140,18 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
 
-        getData()
+        getData();
     }, []);
-    
+
     //  Update community review state and get new data
     const functionUpdateReview = async (review: string) => {
         try {
             setButtonLoading({
-                button:review,
-                state:true
-            })
+                button: review,
+                state: true
+            });
 
             await updateReview({
                 body: {
@@ -141,32 +165,39 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
             setCommunity(community.data);
 
             setButtonLoading({
-                button:'',
-                state:false
-            })
+                button: '',
+                state: false
+            });
 
-            toast.success(<Message id="communityState" variables={{ review }} />);
-
+            toast.success(
+                <Message id="communityState" variables={{ review }} />
+            );
         } catch (error) {
             console.log(error);
 
-            toast.error(<Message id="errorOcurred"/>);
+            toast.error(<Message id="errorOcurred" />);
 
             setButtonLoading({
-                button:'',
-                state:false
-            })
+                button: '',
+                state: false
+            });
 
             return false;
         }
 
         setButtonLoading({
-            button:'',
-            state:false
-        })
+            button: '',
+            state: false
+        });
     };
 
-    const loadingData = loading || isLoading || loadingMerchants || loadingAmbassador || loadingPromoter || loadingContract;
+    const loadingData =
+        loading ||
+        isLoading ||
+        loadingMerchants ||
+        loadingAmbassador ||
+        loadingPromoter ||
+        loadingContract;
 
     return (
         <ViewContainer isLoading={loadingData}>
@@ -186,18 +217,20 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any; }> = (props
                 //  If community exists in thegraph (it has contract address) get the data from thegraph.
                 //  If not, get from API
                 ambassador={ambassador}
-                community={ !!data?.communityEntity ? data?.communityEntity : contract }
+                community={
+                    !!data?.communityEntity ? data?.communityEntity : contract
+                }
                 communityId={community.id}
                 merchants={merchants}
-                requestedCommunity={!(!!data?.communityEntity)}
+                requestedCommunity={!!!data?.communityEntity}
                 status={communityData?.status}
             />
-            {community?.status !== 'pending' &&
-                <Dashboard 
+            {community?.status !== 'pending' && (
+                <Dashboard
                     data={data?.communityDailyEntities}
                     daysInterval={daysInterval}
                 />
-            }    
+            )}
         </ViewContainer>
     );
 };

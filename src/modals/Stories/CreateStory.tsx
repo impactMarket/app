@@ -59,20 +59,28 @@ const CreateStory = () => {
 
             const images = Array.from(data?.img);
 
-            const uploadedFiles = await Promise.all(images.map(async (file: any) => {
-                const type = file?.type?.split('/')[1] || '';
-                const preSigned = await getPreSigned(type).unwrap();
+            const uploadedFiles = await Promise.all(
+                images.map(async (file: any) => {
+                    const type = file?.type?.split('/')[1] || '';
+                    const preSigned = await getPreSigned(type).unwrap();
 
-                if (!preSigned?.uploadURL) {
-                    return null
-                }
+                    if (!preSigned?.uploadURL) {
+                        return null;
+                    }
 
-                await fetch(preSigned?.uploadURL, { body: file, method: 'PUT' });
+                    await fetch(preSigned?.uploadURL, {
+                        body: file,
+                        method: 'PUT'
+                    });
 
-                return preSigned.filePath;
-            }));
+                    return preSigned.filePath;
+                })
+            );
 
-            const storyMedia = uploadedFiles.reduce((result, item) => item ? [...result, item] : result, []);
+            const storyMedia = uploadedFiles.reduce(
+                (result, item) => (item ? [...result, item] : result),
+                []
+            );
 
             payload = {
                 ...payload,
@@ -81,16 +89,20 @@ const CreateStory = () => {
 
             const postRequest: any = await createStory(payload);
 
-            if(postRequest?.error) {
-                toast.error(<RichText content={modals.data.createStoryError}/>);
+            if (postRequest?.error) {
+                toast.error(
+                    <RichText content={modals.data.createStoryError} />
+                );
             } else {
-                toast.success(<RichText content={modals.data.createStorySuccess}/>);
+                toast.success(
+                    <RichText content={modals.data.createStorySuccess} />
+                );
             }
 
             setRefreshStories((refreshStory: boolean) => !refreshStory);
             handleClose();
         } catch (error) {
-            toast.error(<RichText content={modals.data.createStoryError}/>);
+            toast.error(<RichText content={modals.data.createStoryError} />);
             console.log(error);
         }
     };
@@ -113,17 +125,17 @@ const CreateStory = () => {
 
     const handleInputChange = (event: any) => {
         const { files } = event?.target || {};
-        const imagesArray = []
+        const imagesArray = [];
 
         for (let i = 0; i < files?.length; i++) {
-            imagesArray?.push(files[i])
+            imagesArray?.push(files[i]);
         }
 
-        imagesArray?.map(image => {
+        imagesArray?.map((image) => {
             const imgUrl = URL.createObjectURL(image);
 
-            return setImageFiles(imageFiles => [...imageFiles, imgUrl]);
-        })
+            return setImageFiles((imageFiles) => [...imageFiles, imgUrl]);
+        });
     };
 
     const handleClick = () => {
@@ -135,7 +147,9 @@ const CreateStory = () => {
     const clearFile = (image: any) => {
         inputRef.current.value = '';
         //  Remove image from array
-        setImageFiles(imageFile => imageFile.filter(imageUrl => imageUrl !== image ))
+        setImageFiles((imageFile) =>
+            imageFile.filter((imageUrl) => imageUrl !== image)
+        );
     };
 
     return (
@@ -164,7 +178,7 @@ const CreateStory = () => {
                         placeholder={t('writeSomethingHere')}
                         rows={6}
                         rules={{ required: true }}
-                        withError={errors?.message}
+                        withError={!!errors?.message}
                     />
                 </Box>
                 <>

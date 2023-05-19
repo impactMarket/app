@@ -12,9 +12,9 @@ export const currencies: {
     };
 } = currenciesJSON;
 
-export const currenciesOptions = Object.entries(
-    currencies
-).map(([key, value]: any) => ({ label: value.name, value: key }));
+export const currenciesOptions = Object.entries(currencies).map(
+    ([key, value]: any) => ({ label: value.name, value: key })
+);
 
 export const localeFormat = (value: number, options: any = {}) => {
     const auth = useSelector(selectCurrentUser);
@@ -54,13 +54,15 @@ export const currencyFormat = (
 };
 
 export function getCurrencySymbol(currency: string) {
-    return (currenciesJSON as {
-        [key: string]: {
-            symbol: string;
-            name: string;
-            symbol_native: string;
-        };
-    })[currency?.toUpperCase()]?.symbol;
+    return (
+        currenciesJSON as {
+            [key: string]: {
+                symbol: string;
+                name: string;
+                symbol_native: string;
+            };
+        }
+    )[currency?.toUpperCase()]?.symbol;
 }
 
 export const convertCurrency = (

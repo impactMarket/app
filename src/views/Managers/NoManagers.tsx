@@ -6,13 +6,13 @@ import String from '../../libs/Prismic/components/String';
 const NoManagers: React.FC = () => {
     return (
         <Box column fLayout="center" flex h="80vh">
-            <CircledIcon icon="userCross" info medium /> 
+            <CircledIcon icon="userCross" info medium />
             <Text center g900 medium mt={1}>
                 <String id="noManagersFound" />
-            </Text> 
+            </Text>
             <Message center g500 id="communityHasntOnboarded" mt={0.25} small />
         </Box>
     );
 };
- 
+
 export default NoManagers;

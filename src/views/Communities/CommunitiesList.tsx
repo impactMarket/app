@@ -9,12 +9,8 @@ import useFilters from '../../hooks/useFilters';
 const CommunitiesList = (props: any) => {
     const { communitiesTabs, filters } = props;
     const { update, getByKey } = useFilters();
-    const {
-        communities,
-        loadingCommunities,
-        pageCount,
-        itemsPerPage
-    } = useCommunities(filters);
+    const { communities, loadingCommunities, pageCount, itemsPerPage } =
+        useCommunities(filters);
     const [currentPage, setCurrentPage] = useState<number>(
         +getByKey('page') || 0
     );

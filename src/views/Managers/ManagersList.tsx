@@ -18,11 +18,19 @@ const getColumns = () => {
             minWidth: 14,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
-                    {!!data.avatarMediaPath ? 
-                        <Avatar extrasmall url={getImage({ filePath: data.avatarMediaPath, fit: 'cover', height: 32, width: 32 })} />  
-                        : 
+                    {!!data.avatarMediaPath ? (
+                        <Avatar
+                            extrasmall
+                            url={getImage({
+                                filePath: data.avatarMediaPath,
+                                fit: 'cover',
+                                height: 32,
+                                width: 32
+                            })}
+                        />
+                    ) : (
                         <CircledIcon icon="user" small />
-                    }
+                    )}
                     <Box pl={0.75}>
                         {(!!data.firstName || !!data.lastName) && (
                             <Text g800 semibold small>
@@ -30,13 +38,13 @@ const getColumns = () => {
                             </Text>
                         )}
                         <Text p500 small>
-                            {formatAddress(data.address, [6,5])}
+                            {formatAddress(data.address, [6, 5])}
                         </Text>
                     </Box>
                 </Box>
             ),
             title: t('manager'),
-            value: 'name', 
+            value: 'name',
             width: '50%'
         },
         {
@@ -44,7 +52,13 @@ const getColumns = () => {
             render: (data: any) => (
                 // TODO: check if date is correct and add correct locale
                 <Text g500 small>
-                    {data.since ? new Date(data.since * 1000).toLocaleString('en-US', { day: 'numeric', month: 'short', year: 'numeric' }) : ''}
+                    {data.since
+                        ? new Date(data.since * 1000).toLocaleString('en-US', {
+                              day: 'numeric',
+                              month: 'short',
+                              year: 'numeric'
+                          })
+                        : ''}
                 </Text>
             ),
             sortable: true,
@@ -65,7 +79,7 @@ const getColumns = () => {
     ];
 };
 
-const ManagersList: React.FC<{ community: string }> = props => {
+const ManagersList: React.FC<{ community: string }> = (props) => {
     const { community } = props;
 
     return (
