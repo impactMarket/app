@@ -1,25 +1,30 @@
 import { Box, Display, Tab, TabList, Tabs, ViewContainer } from '@impact-market/ui';
+import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import BorrowersList from './BorrowersList';
 import React from 'react';
 import RichText from 'src/libs/Prismic/components/RichText';
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
-const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
+const MicrocreditManager: React.FC<{ isLoading?: boolean; }> = (props) => {
     const { isLoading } = props;
+    const { t } = useTranslations();
+    const { extractFromView } = usePrismicData();
+    const { title, content } = extractFromView('heading') as any;
 
     return (
         <ViewContainer isLoading={isLoading}>
             <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout="start between" flex>
                 <Box>
                     <Display g900  medium>
-                        Microcredit Manager
+                        {title}
                     </Display>
-                    <RichText content="Overall view of all Microcredit programs being deployed right now and managed by you." g500 mt={0.25} />
+                    <RichText content={content} g500 mt={0.25} />
                 </Box>
             </Box>
             <Tabs>
                 <TabList>
                     <Tab
-                        title="Repayments"
+                        title={t('repayments')}
                     />
                 </TabList>
             </Tabs>
