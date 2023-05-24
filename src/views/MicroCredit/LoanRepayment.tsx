@@ -192,7 +192,9 @@ const LoanRepayment = (props: any) => {
                         <RichText content={repayLoanApproveTip} g500 small />
                     )}
 
-                    {approved && repayLoanReady}
+                    {approved && (
+                        <RichText content={repayLoanReady} g500 small />
+                    )}
                 </Box>
                 <ActionWrapper flex fLayout="center" fWrap="wrap">
                     <Button
