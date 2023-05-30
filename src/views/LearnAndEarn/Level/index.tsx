@@ -16,7 +16,6 @@ import RichText from '../../../libs/Prismic/components/RichText';
 import String from '../../../libs/Prismic/components/String';
 import Tooltip from '../../../components/Tooltip';
 import config from '../../../../config';
-import useFilters from '../../../hooks/useFilters';
 import useLessons from '../../../hooks/learn-and-earn/useLessons';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
@@ -35,17 +34,23 @@ const Level = (props: any) => {
     const { level, lessons, categories } = prismic;
     const { title, category } = level.data;
     const { t } = useTranslations();
-    const { instructions, thresholdTooltip } = view.data;
+    const {
+        instructions,
+        thresholdTooltip,
+        onlyBeneficiariesTooltip,
+        noRewardsTooltip,
+        noRewardsTooltipTitle,
+        totalPoints: totalPointsLabel,
+        startLesson: startLessonLabel
+    } = view.data;
     const { text: tooltip } = thresholdTooltip[0];
     const auth = useSelector(selectCurrentUser);
-    const { getByKey } = useFilters();
-    const levelId = getByKey('levelId') || '';
     const {
         data: lessonsData,
         totalPoints,
         completedToday,
-        rewardAvailable
-    } = useLessons(lessons, levelId, auth);
+        rewardAvailable = true
+    } = useLessons(lessons, level?.id, auth);
     const router = useRouter();
 
     const startLesson = async (lessonId: number, uid: string) => {
@@ -68,9 +73,7 @@ const Level = (props: any) => {
             const response = await res.json();
 
             if (response?.success) {
-                router.push(
-                    `/${lang}/learn-and-earn/${params.level}/${uid}?id=${lessonId}&levelId=${levelId}`
-                );
+                router.push(`/${lang}/learn-and-earn/${params.level}/${uid}`);
             } else {
                 console.log('error');
             }
@@ -82,9 +85,7 @@ const Level = (props: any) => {
     const isLAEUSer = auth?.user?.roles?.some((r: string) =>
         ['beneficiary', 'manager'].includes(r)
     );
-    const tooltipText = !isLAEUSer
-        ? 'Learn&Earn lessons are ONLY available for impactMarket UBI beneficiaries.'
-        : tooltip;
+    const tooltipText = !isLAEUSer ? onlyBeneficiariesTooltip : tooltip;
     const buttonDisabled = isLAEUSer && !completedToday;
 
     return (
@@ -98,8 +99,8 @@ const Level = (props: any) => {
                     <Alert
                         error
                         icon="alertCircle"
-                        message="There are no rewards available for this level."
-                        title="No rewards available"
+                        message={noRewardsTooltip}
+                        title={noRewardsTooltipTitle}
                     />
                 </Box>
             )}
@@ -116,7 +117,7 @@ const Level = (props: any) => {
                     <RichText content={instructions} g500 />
 
                     <Box margin="1rem 0">
-                        <RichText content={'Total Points'} g500 small />
+                        <RichText content={totalPointsLabel} g500 small />
 
                         <Display g900 medium bold>
                             {totalPoints}
@@ -165,7 +166,7 @@ const Level = (props: any) => {
                                                     }
                                                     onClick={() =>
                                                         router.push(
-                                                            `/${lang}/learn-and-earn/${params.level}/${item.uid}?id=${item.backendId}&levelId=${levelId}`
+                                                            `/${lang}/learn-and-earn/${params.level}/${item.uid}`
                                                         )
                                                     }
                                                 >
@@ -193,12 +194,12 @@ const Level = (props: any) => {
                                                         }
                                                         onClick={() =>
                                                             startLesson(
-                                                                item.backendId,
+                                                                item.id,
                                                                 item.uid
                                                             )
                                                         }
                                                     >
-                                                        {'Start Lesson'}
+                                                        {startLessonLabel}
                                                     </Button>
                                                 </Tooltip>
                                             )}

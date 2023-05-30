@@ -17,7 +17,6 @@ import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled from 'styled-components';
-import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const CardsGrid = styled(Grid)`
@@ -35,27 +34,18 @@ const RewardsButton = styled(Button)`
 `;
 
 const Metrics = (props: any) => {
-    const {
-        amount = false,
-        levelId = false,
-        signature: signatures = false
-    } = props.claimRewards;
+    const { metrics } = props;
+    const { amount = false, levelId = false, signature: signatures = false } =
+        metrics?.claimRewards?.[0] || {};
+
     const auth = useSelector(selectCurrentUser);
     const { claimRewardForLevels } = useLearnAndEarn();
     const [isLoading, setIsLoading] = useState(false);
     const { t } = useTranslations();
 
-    const fetcher = (url: string) =>
-        fetch(config.baseApiUrl + url, {
-            headers: { Authorization: `Bearer ${auth.token}` }
-        }).then((res) => res.json());
-
-    const { data } = useSWR(`/learn-and-earn`, fetcher);
-    const totals = data?.data;
-
     const totalData = [
-        { ...totals?.level, label: t('levelsCompleted') },
-        { ...totals?.lesson, label: t('lessonsCompleted') }
+        { ...metrics?.level, label: t('levelsCompleted') },
+        { ...metrics?.lesson, label: t('lessonsCompleted') }
     ];
 
     const hasRewards = amount && levelId && signatures;
@@ -64,6 +54,12 @@ const Metrics = (props: any) => {
     const claimRewards = async () => {
         setIsLoading(true);
         let response;
+
+        const {
+            amount = false,
+            levelId = false,
+            signature: signatures = false
+        } = metrics?.claimRewards[0];
 
         try {
             response = await claimRewardForLevels(

@@ -40,7 +40,8 @@ const LearnAndEarn = (props: any) => {
         headingTitle: heading,
         headingContent: content,
         claimAvailable = null,
-        claimDisabled = null
+        claimDisabled = null,
+        onlyBeneficiariesTooltip
     } = view.data;
 
     const { levels, categories } = prismic;
@@ -61,6 +62,44 @@ const LearnAndEarn = (props: any) => {
             update('state', 'started');
         }
     }, [data]);
+
+    const Progress = () => {
+        let metrics = {
+            claimRewards: {
+                amount: false,
+                levelId: false,
+                signature: false
+            },
+            lesson: {
+                completed: 0,
+                total: 0
+            },
+            level: {
+                completed: 0,
+                total: 0
+            }
+        };
+
+        if (auth.token) {
+            const fetcher = (url: string) =>
+                fetch(config.baseApiUrl + url, {
+                    headers: { Authorization: `Bearer ${auth.token}` }
+                }).then((res) => res.json());
+            const { data: laeData } = useSWR(`/learn-and-earn`, fetcher);
+
+            metrics = {
+                ...metrics,
+                ...laeData?.data
+            };
+        }
+
+        return (
+            <Metrics
+                metrics={metrics}
+                copy={{ failed: claimDisabled, success: claimAvailable }}
+            />
+        );
+    };
 
     const filteredData = data
         .filter((item: any) => item.title.toLowerCase().indexOf(search) !== -1)
@@ -84,12 +123,6 @@ const LearnAndEarn = (props: any) => {
         setCurrentPage(page);
         update({ page });
     };
-
-    const fetcher = (url: string) =>
-        fetch(config.baseApiUrl + url, {
-            headers: { Authorization: `Bearer ${auth.token}` }
-        }).then((res) => res.json());
-    const { data: laeData } = useSWR(`/learn-and-earn`, fetcher);
 
     const totalPages = (items: number) => {
         const pages = Math.floor(items / ITEMS_PER_PAGE);
@@ -158,12 +191,7 @@ const LearnAndEarn = (props: any) => {
                 </Box>
             </Box>
 
-            {auth.type && (
-                <Metrics
-                    claimRewards={laeData?.data?.claimRewards[0] ?? {}}
-                    copy={{ failed: claimDisabled, success: claimAvailable }}
-                />
-            )}
+            {<Progress />}
             <Tabs defaultIndex={0}>
                 <TabList>
                     {TabItems.map((el: string) => (
@@ -202,9 +230,9 @@ const LearnAndEarn = (props: any) => {
                 </Box>
 
                 <Alert
-                    icon="infoCircle" 
+                    icon="infoCircle"
                     mb={1}
-                    title={'Learn&Earn courses are ONLY available for impactMarket UBI beneficiaries.'}
+                    title={onlyBeneficiariesTooltip}
                 />
 
                 <LevelsTable

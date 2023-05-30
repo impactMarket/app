@@ -7,7 +7,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
             headers: { Authorization: `Bearer ${auth.token}` }
         }).then((res) => res.json());
 
-    if (levelId) {
+    if (auth.token) {
         const { data } = useSWR<
             {
                 data: {
@@ -45,7 +45,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
                 levelId && mergedLessons
                     ? mergedLessons.filter((e: any) => e)
                     : lessons,
-            rewardAvailable: data?.data?.rewardAvailable || false,
+            rewardAvailable: data?.data?.rewardAvailable || true,
             totalPoints: data?.data?.totalPoints || 0
         };
     }
@@ -53,7 +53,7 @@ export default function useLessons(lessons: any, levelId: any, auth: any) {
     return {
         completedToday: true,
         data: lessons,
-        rewardAvailable: false,
+        rewardAvailable: true,
         totalPoints: 0
     };
 }
