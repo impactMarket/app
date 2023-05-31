@@ -18,17 +18,17 @@ const TableWrapper = styled(Box)`
     td {
         padding: 1rem 1.5rem;
     }
-    
+
     th {
         a {
             cursor: default;
         }
-        
+
         svg {
             display: none;
         }
     }
-`
+`;
 
 type Partial<BaseTableProps> = {
     [P in keyof BaseTableProps]?: BaseTableProps[P];
@@ -39,15 +39,13 @@ type TableProps = {
     callback?: Function;
     callbackProps?: Object;
     count?: number;
+    itemsPerPage?: number;
     loadingBorrowers: boolean;
     page: number;
-    pageCount: number;
     prefix: any;
     refresh?: Date;
     setItemOffset: Function;
 };
-
-const itemsPerPage = 6;
 
 const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
     const {
@@ -56,9 +54,9 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
         callbackProps,
         columns,
         count,
+        itemsPerPage,
         loadingBorrowers,
         page,
-        pageCount,
         prefix: data,
         refresh,
         setItemOffset,
@@ -71,14 +69,10 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
     const { update, getByKey } = useFilters();
     const [currentPage, setCurrentPage] = useState(actualPage);
     const router = useRouter();
-    const {
-        asPath
-    } = router;
+    const { asPath } = router;
 
     useEffect(() => {
-        const page = getByKey('page')
-            ? +getByKey('page')
-            : 0;
+        const page = getByKey('page') ? +getByKey('page') : 0;
         const actualPage = page - 1 >= 0 ? page - 1 : 0;
 
         setItemOffset(actualPage * itemsPerPage || 0);
@@ -90,22 +84,21 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
 
     const handlePageClick = (event: any, direction?: number) => {
         if (event.selected >= 0) {
-            const newOffset =
-                (event.selected * itemsPerPage) % pageCount;
+            const newOffset = (event.selected * itemsPerPage) % (count || 0);
 
             setItemOffset(newOffset);
             setCurrentPage(event.selected);
             update('page', event.selected + 1);
         } else if (direction === 1 && currentPage > 0) {
             const newPage = currentPage - 1;
-            const newOffset = (newPage * itemsPerPage) % pageCount;
+            const newOffset = (newPage * itemsPerPage) % (count || 0);
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
             update('page', newPage + 1);
-        } else if (direction === 2 && currentPage < pageCount - 1) {
+        } else if (direction === 2 && currentPage < count / itemsPerPage - 1) {
             const newPage = currentPage + 1;
-            const newOffset = (newPage * itemsPerPage) % pageCount;
+            const newOffset = (newPage * itemsPerPage) % (count || 0);
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
@@ -125,7 +118,7 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
                         handlePageClick={handlePageClick}
                         nextIcon="arrowRight"
                         nextLabel={t('next')}
-                        pageCount={pageCount}
+                        pageCount={Math.ceil(count / itemsPerPage) || 0}
                         previousIcon="arrowLeft"
                         previousLabel={t('previous')}
                     />
