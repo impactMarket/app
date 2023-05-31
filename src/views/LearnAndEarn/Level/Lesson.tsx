@@ -9,7 +9,7 @@ import {
     Text,
     ViewContainer,
     openModal,
-    toast,
+    toast
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
@@ -35,20 +35,23 @@ const QUIZ_LENGTH = 3;
 const Lesson = (props: any) => {
     const { prismic, lang, params } = props;
     const { prismicLesson } = prismic;
-    const { tutorial: content, questions, sponsor, readTime } = prismicLesson;
+    const {
+        tutorial: content,
+        questions,
+        sponsor,
+        readTime,
+        id
+    } = prismicLesson;
     const { t } = useTranslations();
     const { viewLearnAndEarn } = usePrismicData().data as any;
-    const { startQuiz, completeContent } = viewLearnAndEarn.data;
+    const { startQuiz, completeContent, sponsored } = viewLearnAndEarn.data;
     const { update, getByKey } = useFilters();
     const [currentPage, setCurrentPage] = useState(
         getByKey('page') ? +getByKey('page') : 0
     );
     const [isQuiz, setIsQuiz] = useState(false);
     const auth = useSelector(selectCurrentUser);
-    const lessonId = getByKey('id') ? +getByKey('id') : null;
-    const levelId = +getByKey('levelId') || null;
     const router = useRouter();
-
     const [progress, setProgress] = useState([currentPage]);
     const [userAnswers, setUserAnswers] = useState(initialAnswers);
 
@@ -115,15 +118,12 @@ const Lesson = (props: any) => {
     };
 
     return (
-        //  Add support to style prop -> style={{ minHeight: '100vh'}}
-        <ViewContainer> 
+        <ViewContainer>
             {!isQuiz && (
                 <Box
                     as="a"
                     onClick={() =>
-                        router.push(
-                            `/${lang}/learn-and-earn/${params.level}?levelId=${levelId}`
-                        )
+                        router.push(`/${lang}/learn-and-earn/${params.level}`)
                     }
                 >
                     <Label
@@ -139,11 +139,7 @@ const Lesson = (props: any) => {
 
             <Box flex>
                 <RichText content={readTime} g500 small />
-                <RichText
-                    content={` - Beginner - Sponsored by `}
-                    g500
-                    small
-                />
+                <RichText content={` - ${sponsored} `} g500 small />
 
                 <RichText content={sponsor} g500 small />
             </Box>
@@ -216,11 +212,7 @@ const Lesson = (props: any) => {
                 )}
 
                 {!canGotoQuiz && currentPage + 1 === content.length && (
-                    <Text
-                        pt="1rem"
-                        g500
-                        small
-                    >
+                    <Text pt="1rem" g500 small>
                         <RichText content={completeContent} />
                     </Text>
                 )}
@@ -237,9 +229,7 @@ const Lesson = (props: any) => {
                                 const answers = userAnswers
                                     .reduce((next: any, current: any) => {
                                         return [
-                                            current.findIndex(
-                                                (el: any) => el
-                                            ),
+                                            current.findIndex((el: any) => el),
                                             ...next
                                         ];
                                     }, [])
@@ -250,13 +240,12 @@ const Lesson = (props: any) => {
                                     {
                                         body: JSON.stringify({
                                             answers,
-                                            lesson: lessonId
+                                            lesson: id
                                         }),
                                         headers: {
                                             Accept: 'application/json',
                                             Authorization: `Bearer ${auth.token}`,
-                                            'Content-Type':
-                                                'application/json'
+                                            'Content-Type': 'application/json'
                                         },
                                         method: 'PUT'
                                     }
@@ -276,7 +265,7 @@ const Lesson = (props: any) => {
                                     openModal('laeSuccessLesson', {
                                         onClose: () =>
                                             router.push(
-                                                `/${lang}/learn-and-earn/${params.level}?levelId=${levelId}`
+                                                `/${lang}/learn-and-earn/${params.level}`
                                             )
                                     });
                                 } else {

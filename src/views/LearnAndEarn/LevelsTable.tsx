@@ -22,11 +22,9 @@ const LevelsTable = (props: any) => {
     const { data, categories, pageStart, pageEnd, lang } = props;
     const router = useRouter();
     const auth = useSelector(selectCurrentUser);
-    const isLAEUser = auth?.type?.some((r: any) => ['beneficiary', 'manager'].includes(r)) ?? false;
-
-    const isEligible = !auth?.type
-        ? false
-        : isLAEUser;
+    const isLAEUser =
+        auth?.type?.some((r: any) => ['beneficiary', 'manager'].includes(r)) ??
+        false;
 
     return (
         <>
@@ -37,20 +35,20 @@ const LevelsTable = (props: any) => {
                             <ClickableCard
                                 heading={elem?.title || ''}
                                 content={`${elem?.totalLessons} lessons`}
-                                image={elem.data?.image?.url}
+                                image={elem?.data?.image?.url}
                                 label={categories[elem?.category]?.title}
                                 onClick={() =>
                                     router.push(
-                                        `/${lang}/learn-and-earn/${elem?.uid}${
-                                            elem?.id && isEligible
-                                                ? `?levelId=${elem?.id}`
-                                                : ''
-                                        }`
+                                        `/${lang}/learn-and-earn/${elem?.uid}`
                                     )
                                 }
                             >
                                 <Button fluid secondary xl>
-                                    {ctaText(elem.status, elem.totalReward, isLAEUser)}
+                                    {ctaText(
+                                        elem?.status,
+                                        elem?.data?.reward,
+                                        isLAEUser
+                                    )}
                                 </Button>
                             </ClickableCard>
                         );

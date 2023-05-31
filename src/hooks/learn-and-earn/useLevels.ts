@@ -5,7 +5,23 @@ import useSWR from 'swr';
 
 export default function useLevels(levels: any) {
     const auth = useSelector(selectCurrentUser);
-    let data = [];
+
+    let data = Object.values(levels).map((item: any) => {
+        return {
+            ...item,
+            id: null,
+            status: 'available',
+            totalLessons: item?.lessons?.length,
+            totalReward: item?.data?.reward
+        };
+    });
+
+    if (!auth.token) {
+        return {
+            data,
+            levelsLoading: false
+        };
+    }
 
     const fetcher = (url: string) =>
         fetch(config.baseApiUrl + url, {
@@ -26,38 +42,21 @@ export default function useLevels(levels: any) {
 
             if (levels[item.prismicId]) {
                 apiLevel = levels[item.prismicId];
-            } else {
-                const found = Object.values(levels).filter((elem: any) => {
-                    return elem.alternate_languages.find(
-                        (it: any) => it.id === item.prismicId
-                    );
-                });
-
-                const transaltedLevel = found.pop() as Object;
-
-                apiLevel = transaltedLevel ?? null;
             }
 
             return !!apiLevel
                 ? {
                       ...apiLevel,
-                      ...levelData
+                      ...levelData,
+                      totalReward: item?.data?.reward
                   }
                 : null;
         });
-    } else {
-        data = Object.values(levels).map((item: any) => {
-            return {
-                ...item,
-                id: null,
-                status: 'available',
-                totalLessons: item?.lessons?.length,
-                totalReward: item?.data?.reward
-            };
-        });
     }
 
-    const finalLevels = !config.useTestNet ? data.filter((item: any) => item?.data?.is_live) : data;
+    const finalLevels = !config.useTestNet
+        ? data.filter((item: any) => item?.data?.is_live)
+        : data;
     const levelsLoading = !data && !error;
 
     return {
