@@ -35,8 +35,11 @@ const RewardsButton = styled(Button)`
 
 const Metrics = (props: any) => {
     const { metrics } = props;
-    const { amount = false, levelId = false, signature: signatures = false } =
-        metrics?.claimRewards?.[0] || {};
+    const {
+        amount = false,
+        levelId = false,
+        signature: signatures = false
+    } = metrics?.claimRewards?.[0] || {};
 
     const auth = useSelector(selectCurrentUser);
     const { claimRewardForLevels } = useLearnAndEarn();
@@ -96,6 +99,7 @@ const Metrics = (props: any) => {
 
     return (
         <CardsGrid
+            {...({} as any)}
             colSpan={1}
             cols={{ lg: 3, md: 1, sm: 3, xs: 1 }}
             margin="1.5rem -.75rem"

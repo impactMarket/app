@@ -156,6 +156,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = (props) => {
 
     return (
         <ViewContainer
+            {...({} as any)}
             isLoading={
                 !isReady ||
                 isLoading ||

@@ -1,5 +1,6 @@
-import { Box, Card, Display, ViewContainer } from '@impact-market/ui';
+import { Box, Card, Display, Label, ViewContainer } from '@impact-market/ui';
 import { LoanStatus, useMicroCredit } from '@impact-market/utils';
+import { dateHelpers } from '../../helpers/dateHelpers';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useEffect, useState } from 'react';
 import { useRouter } from 'next/router';
@@ -8,6 +9,8 @@ import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
 import LoanRepayment from './LoanRepayment';
 // import RepaymentHistory from './RepaymentHistory';
+import String from '../../libs/Prismic/components/String';
+import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 // import LoanRejected from './LoanRejected';
 // import InfoAccordion from './InfoAccordion';
@@ -20,12 +23,15 @@ const MicroCredit = (props: any) => {
     const { getActiveLoanId, loan, repayLoan, claimLoan, isReady } =
         useMicroCredit();
     const router = useRouter();
+    const { getByKey } = useFilters();
     const { t } = useTranslations();
     const {
         amountBorrowedLabel,
         amountBorrowedTooltip,
         amountToPayLabel,
         amountToPayTooltip,
+        headingContractTitle,
+        headingTitle,
         interestRateLabel,
         interestRateTooltip,
         loanDurationLabel,
@@ -40,14 +46,6 @@ const MicroCredit = (props: any) => {
 
     const monthlyInterestRate = (dailyInterest: number) => {
         return ((Math.pow(1 + dailyInterest / 100, 30) - 1) * 100).toFixed(2);
-    };
-
-    const convertToDate = (timeframeInSeconds: string) => {
-        const seconds = Number(timeframeInSeconds);
-        const secondsInMonth = 2592000;
-        const result = seconds / secondsInMonth;
-
-        return `${result} months`;
     };
 
     const loanData = [
@@ -70,7 +68,7 @@ const MicroCredit = (props: any) => {
         {
             label: loanDurationLabel,
             tooltip: loanDurationTooltip,
-            value: `${convertToDate(loan.period.toString())}`
+            value: `${dateHelpers.secondsToMonth(loan.period)} months`
         },
         {
             label: interestRateLabel,
@@ -101,7 +99,7 @@ const MicroCredit = (props: any) => {
         const getLoans = async () => {
             if (!!auth?.user?.address) {
                 const activeLoanId = await getActiveLoanId(
-                    auth.user.address.toString()
+                    auth?.user?.address?.toString()
                 );
 
                 if (activeLoanId === -1) {
@@ -122,18 +120,30 @@ const MicroCredit = (props: any) => {
     }, [isReady]);
 
     return (
-        <ViewContainer isLoading={!isReady}>
+        <ViewContainer {...({} as any)} isLoading={!isReady}>
             {/* <Alert
                 warning
                 icon="alertTriangle"
                 mb={1.5}
                 message={'This is a warning'}
             /> */}
+            {getByKey('contractAddress') && (
+                <Box as="a" onClick={() => router.back()}>
+                    <Label
+                        content={<String id="back" />}
+                        icon="arrowLeft"
+                        mb={0.625}
+                        bgColor="transparent"
+                    />
+                </Box>
+            )}
             <Display g900 medium>
-                {'MicroCredit'}
+                {getByKey('contractAddress')
+                    ? headingContractTitle
+                    : headingTitle}
             </Display>
             <Box></Box>
-            <Card mt="2rem" mb="2rem" padding={{ sm: '2.5rem', xs: '1rem' }}>
+            <Card mt="2rem" mb="2rem" padding={0}>
                 {loan.loanStatus === LoanStatus.PENDING_CLAIM && (
                     <ClaimLoan
                         data={data[viewName].data}
@@ -164,7 +174,6 @@ const MicroCredit = (props: any) => {
                         data={data[viewName].data}
                     />
                 )} */}
-
             </Card>
             {/* {loan.loanStatus ===   && (
                 <InfoAccordion

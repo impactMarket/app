@@ -228,7 +228,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box pb={5}>
                 <Row>
                     <Col colSize={{ sm: 6, xs: 12 }}>
@@ -238,6 +238,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
                             </Display>
                         )}
                         <DropdownMenu
+                            {...({} as any)}
                             icon="chevronDown"
                             items={[
                                 {

@@ -118,7 +118,7 @@ const Lesson = (props: any) => {
     };
 
     return (
-        <ViewContainer>
+        <ViewContainer {...({} as any)}>
             {!isQuiz && (
                 <Box
                     as="a"

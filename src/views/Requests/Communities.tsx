@@ -6,7 +6,7 @@ import CommunityCard from '../../components/CommunityCard';
 import String from '../../libs/Prismic/components/String';
 
 const Communities = ({ communities }: any) => (
-    <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }}>
+    <Grid {...({} as any)} colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }}>
         {communities?.data?.count === 0 ? (
             <String id="noCommunities" />
         ) : (

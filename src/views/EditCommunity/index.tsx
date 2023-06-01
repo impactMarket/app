@@ -55,6 +55,7 @@ const EditCommunityIndex: React.FC<{ isLoading?: boolean }> = (props) => {
 
     return (
         <ViewContainer
+            {...({} as any)}
             isLoading={isLoading || loadingCommunity || loadingAmbassador}
         >
             {community?.status === 'valid' ? (

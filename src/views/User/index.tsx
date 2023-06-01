@@ -84,7 +84,7 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     return (
-        <ViewContainer isLoading={isLoading || loadingUser}>
+        <ViewContainer {...({} as any)} isLoading={isLoading || loadingUser}>
             <TextLink fLayout="center start" flex onClick={() => router.back()}>
                 <Label content={<String id="back" />} icon="arrowLeft" ml={0} />
             </TextLink>
@@ -122,6 +122,7 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
                             </Display>
                         )}
                         <DropdownMenu
+                            {...({} as any)}
                             icon="chevronDown"
                             items={[
                                 {

@@ -24,7 +24,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { signature } = useSelector(selectCurrentUser);
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box
                 fDirection={{ sm: 'row', xs: 'column' }}
                 fLayout="start between"

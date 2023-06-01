@@ -88,7 +88,7 @@ const Reports: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     return (
-        <ViewContainer isLoading={isLoading || loadingReports}>
+        <ViewContainer {...({} as any)} isLoading={isLoading || loadingReports}>
             <Box as="a" onClick={() => router.push('/ambassador')}>
                 <Label content={<String id="back" />} icon="arrowLeft" />
             </Box>
@@ -129,6 +129,7 @@ const Reports: React.FC<{ isLoading?: boolean }> = (props) => {
                                             </Link>
                                             <Box>
                                                 <DropdownMenu
+                                                    {...({} as any)}
                                                     icon="chevronDown"
                                                     items={[
                                                         {

@@ -62,7 +62,7 @@ const ManagersGrid = ({
 
     return (
         <>
-            <Grid cols={{ sm: 3, xs: 1 }}>
+            <Grid {...({} as any)} cols={{ sm: 3, xs: 1 }}>
                 {loadingManagers &&
                     [1, 2, 3].map((key: number) => (
                         <Card key={key}>

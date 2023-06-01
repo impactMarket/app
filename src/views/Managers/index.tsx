@@ -78,6 +78,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
 
     return (
         <ViewContainer
+            {...({} as any)}
             isLoading={
                 isLoading || loadingCommunity || communityManagers?.loading
             }

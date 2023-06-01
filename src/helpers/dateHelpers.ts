@@ -44,6 +44,9 @@ export const dateHelpers = {
 
     secondsToMonth: (date: number) => (date ? Number(date) / 2592000 : ''),
 
+    simple: (date: number) =>
+        date ? format(new Date(fromUnixTime(date)), 'dd/MM/yyyy') : '',
+
     unix: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : ''
 };

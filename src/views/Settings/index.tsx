@@ -63,7 +63,7 @@ const Settings: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box>
                 <Display g900 medium>
                     {title}

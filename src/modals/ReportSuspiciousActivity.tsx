@@ -138,6 +138,7 @@ const ReportSuspiciousActivity = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Box mt={0.5}>
                             <DropdownMenu
+                                {...({} as any)}
                                 asButton
                                 headerProps={{
                                     fLayout: 'center between'

@@ -28,7 +28,7 @@ const LevelsTable = (props: any) => {
 
     return (
         <>
-            <Grid colSpan={1.5} cols={{ lg: 3, xs: 1 }}>
+            <Grid {...({} as any)} colSpan={1.5} cols={{ lg: 3, xs: 1 }}>
                 {data &&
                     data.slice(pageStart, pageEnd).map((elem: any) => {
                         return (

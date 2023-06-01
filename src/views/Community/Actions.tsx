@@ -80,6 +80,7 @@ const Actions = ({
                     user?.address?.toLowerCase() && (
                     <Box>
                         <DropdownMenu
+                            {...({} as any)}
                             asButton
                             items={[
                                 {

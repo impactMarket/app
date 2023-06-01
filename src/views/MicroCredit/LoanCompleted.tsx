@@ -9,7 +9,11 @@ const LoanCompleted = (props: any) => {
         data;
 
     return (
-        <Box flex fDirection={{ sm: 'row', xs: 'column' }}>
+        <Box
+            flex
+            fDirection={{ sm: 'row', xs: 'column' }}
+            padding={{ sm: '4rem', xs: '1rem' }}
+        >
             <Box style={{ flexBasis: '50%' }} center order={{ sm: 0, xs: 1 }}>
                 <Display g800 medium>
                     {completedLoanTitle}

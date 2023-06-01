@@ -40,7 +40,12 @@ const CommunitiesList = (props: any) => {
     return (
         <Tabs defaultIndex={getByKey('type') === 'myCommunities' ? 1 : 0}>
             {loadingCommunities ? (
-                <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }} mt="1.3rem">
+                <Grid
+                    {...({} as any)}
+                    colSpan={1.5}
+                    cols={{ lg: 4, sm: 2, xs: 1 }}
+                    mt="1.3rem"
+                >
                     {[...Array(itemsPerPage)].map((key: number) => (
                         <CommunityCard community={{}} isLoading key={key} />
                     ))}
@@ -49,7 +54,11 @@ const CommunitiesList = (props: any) => {
                 communitiesTabs.map((key: number) => (
                     <TabPanel key={key}>
                         <>
-                            <Grid colSpan={1.5} cols={{ lg: 4, sm: 2, xs: 1 }}>
+                            <Grid
+                                {...({} as any)}
+                                colSpan={1.5}
+                                cols={{ lg: 4, sm: 2, xs: 1 }}
+                            >
                                 {communities?.data?.count === 0 ? (
                                     <String id="noCommunities" />
                                 ) : (

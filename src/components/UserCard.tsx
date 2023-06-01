@@ -51,6 +51,7 @@ const UserCard = ({ community, data, requestedCommunity }: any) => {
                     {data?.address && (
                         <Box fLayout="center start" inlineFlex>
                             <DropdownMenu
+                                {...({} as any)}
                                 icon="chevronDown"
                                 items={[
                                     {

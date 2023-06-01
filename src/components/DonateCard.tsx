@@ -216,6 +216,7 @@ const DonateCard = (props: DonateCardProps) => {
             />
             <Box center>
                 <DropdownMenu
+                    {...({} as any)}
                     icon="chevronDown"
                     items={[
                         {

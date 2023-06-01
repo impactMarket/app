@@ -79,7 +79,7 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
     }, [prismic]);
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Row>
                 <Alerts />
                 {cards?.map(

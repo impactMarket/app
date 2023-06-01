@@ -119,7 +119,11 @@ const Dashboard = ({ data: thegraphData, daysInterval }: any) => {
                                 />
                             )}
 
-                            <Grid cols={{ md: 3, xs: 1 }} mt={1}>
+                            <Grid
+                                {...({} as any)}
+                                cols={{ md: 3, xs: 1 }}
+                                mt={1}
+                            >
                                 {/* Each Chart */}
                                 {row?.items?.map((item, chartKey) => (
                                     <Box key={chartKey}>

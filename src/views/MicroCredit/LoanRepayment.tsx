@@ -85,7 +85,7 @@ const LoanRepayment = (props: any) => {
         setIsLoadingRepay(true);
 
         try {
-            toast.success(<Message id="connectWallet" />);
+            toast.info(<Message id="connectWallet" />);
             const response = await repayLoan(loanId, amount);
 
             if (response.status) {
@@ -107,7 +107,7 @@ const LoanRepayment = (props: any) => {
         const token = config.cUSDAddress;
 
         try {
-            toast.success(<Message id="approveTransaction" />);
+            toast.info(<Message id="approveTransaction" />);
             const response = await approve(token, amount);
 
             if (response.status) {
@@ -124,7 +124,11 @@ const LoanRepayment = (props: any) => {
     };
 
     return (
-        <Box flex fDirection={{ sm: 'row', xs: 'column' }}>
+        <Box
+            flex
+            fDirection={{ sm: 'row', xs: 'column' }}
+            padding={{ sm: '4rem', xs: '1rem' }}
+        >
             <Box style={{ flexBasis: '50%' }} center order={{ sm: 0, xs: 1 }}>
                 <Display g800 medium>
                     {repayLoanTitle}
