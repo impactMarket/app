@@ -3,31 +3,34 @@ import { useSelector } from 'react-redux';
 import config from '../../config';
 import useSWR from 'swr';
 
-export default function useMicrocreditBorrowers(filters?: any[], itemsPerPage?: number) {
+export default function useMicrocreditBorrowers(filters?: any[]) {
     const auth = useSelector(selectCurrentUser);
+    const { signature, message } = useSelector(selectCurrentUser);
 
-    const fetcher = (url: string) => fetch(config.baseApiUrl + url, {
-        headers: { Authorization: `Bearer ${auth.token}` }
-    }).then((res) => res.json());
+    const fetcher = (url: string) =>
+        fetch(config.baseApiUrl + url, {
+            headers: {
+                Authorization: `Bearer ${auth.token}`,
+                message,
+                signature
+            }
+        }).then((res) => res.json());
 
     const { data, mutate, error } = useSWR(
-        `/microcredit/borrowers?${!!filters?.length ? filters?.map((filter: any) => filter).join('&') : ''}`,
+        `/microcredit/borrowers?${
+            !!filters?.length
+                ? filters?.map((filter: any) => filter).join('&')
+                : ''
+        }`,
         fetcher
     );
-
-    const { data: allBorrowers } = useSWR(
-        `/microcredit/borrowers?limit=999`,
-        fetcher
-    );
-
-    const pageCount = Math.ceil(allBorrowers?.data?.length / itemsPerPage);
 
     const loadingBorrowers = !data && !error;
 
     return {
-        borrowers: data?.data,
+        borrowers: data?.data?.rows,
+        count: data?.data?.count,
         loadingBorrowers,
-        mutate,
-        pageCount
+        mutate
     };
 }
