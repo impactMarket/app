@@ -10,6 +10,7 @@ import LoanRepayment from './LoanRepayment';
 import LoanRejected from './LoanRejected';
 // import RepaymentHistory from './RepaymentHistory';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import InfoAccordion from './InfoAccordion';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
@@ -137,7 +138,7 @@ const MicroCredit = (props: any) => {
                 {'MicroCredit'}
             </Display>
             <Box></Box>
-            <Card mt="2rem" mb="2rem" padding={{ sm: '4rem', xs: '1rem' }}>
+            <Card mt="2rem" mb="2rem" padding={{ sm: '2.5rem', xs: '1rem' }}>
                 {loan.loanStatus === LoanStatus.PENDING_CLAIM && (
                     <ClaimLoan
                         data={data[viewName].data}
@@ -146,7 +147,7 @@ const MicroCredit = (props: any) => {
                         overviewData={loanData}
                     />
                 )}
-                {/* {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
+             {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
                     <LoanRepayment
                         data={data[viewName].data}
                         isOverviewOpen={isOverviewOpen}
@@ -155,20 +156,23 @@ const MicroCredit = (props: any) => {
                         loanId={loanId}
                         overviewData={loanData}
                     />
-                )} */}
+                )} 
                 {loan.loanStatus === LoanStatus.LOAN_FULL_REPAID && (
                     <LoanCompleted
                         data={data[viewName].data}
                         overviewData={loanData}
                     />
                 )}
-                {loan.loanStatus === LoanStatus.LOAN_CLAIMED  && (
+                {loan.loanStatus === LoanStatus.LOAN_REJECTED  && (
                     <LoanRejected
                         data={data[viewName].data}
                         overviewData={loanData}
                     />
                 )}
             </Card>
+            {loan.loanStatus === LoanStatus.LOAN_REJECTED  && (
+                <InfoAccordion/>
+            )}
             {/* <RepaymentHistory /> */}
         </ViewContainer>
     );
