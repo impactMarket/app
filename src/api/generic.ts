@@ -3,7 +3,7 @@ import { emptySplitApi } from './index';
 
 // Define a service using a base URL and expected endpoints
 export const genericApi = emptySplitApi.injectEndpoints({
-    endpoints: builder => ({
+    endpoints: (builder) => ({
         // getExchangeRates: builder.query<{ data: Rate[] }, void>({
         //     query: () => `exchange-rates`
         // }),

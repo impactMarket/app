@@ -1,13 +1,15 @@
-import { GetStaticPaths, GetStaticProps } from "next"
+import { GetStaticPaths, GetStaticProps } from 'next';
 
-import { ClientConfig } from "@prismicio/client"
+import { ClientConfig } from '@prismicio/client';
 
-import Community from "../../views/Community"
-import Prismic from "../../libs/Prismic/Prismic"
+import Community from '../../views/Community';
+import Prismic from '../../libs/Prismic/Prismic';
 import config from '../../../config';
 
 export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
-    const res = await fetch(`${config.baseApiUrl}/communities?status=valid&limit=5`);
+    const res = await fetch(
+        `${config.baseApiUrl}/communities?status=valid&limit=5`
+    );
     const data = await res.json();
 
     //  Create dynamic page for each locale
@@ -31,8 +33,11 @@ export const getStaticPaths: GetStaticPaths = async ({ locales }) => {
     };
 };
 
-export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData, params }) => {
-
+export const getStaticProps: GetStaticProps = async ({
+    locale: lang,
+    previewData,
+    params
+}) => {
     // Prismic
     const clientOptions = previewData as ClientConfig;
 
@@ -43,9 +48,11 @@ export const getStaticProps: GetStaticProps = async ({ locale: lang, previewData
     });
 
     //  Dynamic pages
-    const { id } = params
-    const res = await fetch(`${config.baseApiUrl}/communities/${id}?state=base`)
-    const community = await res.json()
+    const { id } = params;
+    const res = await fetch(
+        `${config.baseApiUrl}/communities/${id}?state=base`
+    );
+    const community = await res.json();
 
     return {
         props: {

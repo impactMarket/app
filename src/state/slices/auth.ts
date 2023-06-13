@@ -1,10 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-// import type { User } from '../../api/user';
-
-// type User = {
-//     id: number;
-// };
 
 type User = any;
 
@@ -25,55 +20,49 @@ const slice = createSlice({
     } as AuthState,
     name: 'auth',
     reducers: {
-        removeCredentials: (
-            state
-        ) => {
-            // console.log('removeCredentials', action);
+        removeCredentials: (state) => {
             state.user = null;
             state.token = null;
             state.type = null;
         },
         setCredentials: (
             state,
-            action: PayloadAction<{ user: User; token: string, type: string[] }>
+            action: PayloadAction<{ user: User; token: string; type: string[] }>
         ) => {
-            // console.log('setCredentials', action);
             state.user = action.payload.user;
             state.token = action.payload.token;
             state.type = action.payload.type;
         },
         setSignature: (
             state,
-            action: PayloadAction<{ signature: string; message: string; }>
+            action: PayloadAction<{ signature: string; message: string }>
         ) => {
             state.signature = action.payload.signature;
             state.message = action.payload.message;
         },
-        setToken: (
-            state,
-            action: PayloadAction<{ token: string }>
-        ) => {
+        setToken: (state, action: PayloadAction<{ token: string }>) => {
             // console.log('setToken', action);
             state.token = action.payload.token;
         },
-        setType: (
-            state,
-            action: PayloadAction<{ type: string[] }>
-        ) => {
+        setType: (state, action: PayloadAction<{ type: string[] }>) => {
             // console.log('setType', action);
             state.type = action.payload.type;
         },
-        setUser: (
-            state,
-            action: PayloadAction<{ user: User }>
-        ) => {
+        setUser: (state, action: PayloadAction<{ user: User }>) => {
             // console.log('setUser', action);
             state.user = action.payload.user;
         }
     }
 });
 
-export const { setCredentials, removeCredentials, setSignature, setToken, setType, setUser } = slice.actions;
+export const {
+    setCredentials,
+    removeCredentials,
+    setSignature,
+    setToken,
+    setType,
+    setUser
+} = slice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.auth;
 

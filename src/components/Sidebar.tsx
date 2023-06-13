@@ -11,8 +11,8 @@ import {
     SidebarUserButton,
     openModal
 } from '@impact-market/ui';
-import { checkCookies, getCookie, setCookies } from 'cookies-next';
 import { formatAddress } from '../utils/formatAddress';
+import { getCookie, hasCookie, setCookie } from 'cookies-next';
 import { getImage } from '../utils/images';
 import { getNotifications } from '../state/slices/notifications';
 import { getUserMenu } from './UserMenu';
@@ -54,7 +54,7 @@ type User = {
     loanManager?: {
         community?: string;
         state: number;
-    },
+    };
     manager?: {
         community?: string;
         state: number;
@@ -84,10 +84,10 @@ const getUserType = (user: User) => {
     }
     if (user?.roles?.includes('councilMember')) {
         return 'council-member';
-    };
+    }
     if (user?.roles?.includes('loanManager')) {
         return 'loan-manager';
-    };
+    }
 
     return 'donor';
 };
@@ -130,7 +130,7 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
 
     if (isMyCommunity) {
         const { path } = useMyCommunity();
-        
+
         newUrl = path;
     }
 
@@ -147,7 +147,8 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
         );
     }
 
-    const isInternalLink = newUrl?.startsWith('https:///') || newUrl?.startsWith('/');
+    const isInternalLink =
+        newUrl?.startsWith('https:///') || newUrl?.startsWith('/');
 
     const Wrapper = isInternalLink ? Link : (React.Fragment as any);
     const wrapperProps = isInternalLink ? { href: newUrl, passHref: true } : {};
@@ -271,24 +272,27 @@ const Sidebar = () => {
         } = (extractFromConfig('aside') || {}) as any;
         const { data: userConfigData } =
             userConfig?.find(({ uid }: any) => uid === getUserType(user)) || {};
-        const { items: menuItems, withCommon, withFooter } = (extractFromData(
-            userConfigData,
-            'asideMenu'
-        ) || {}) as any;
+        const {
+            items: menuItems,
+            withCommon,
+            withFooter
+        } = (extractFromData(userConfigData, 'asideMenu') || {}) as any;
 
         const menus = menuItems?.map(({ items }: any) =>
             parseMenuItems(items)
         ) as SidebarMenuItemProps[][];
 
-        const commonMenu = (withCommon
-            ? parseMenuItems(commonMenuFromPrismic)
-            : []) as SidebarMenuItemProps[];
-        const footerCommonMenu = (withFooter
-            ? parseMenuItems(footerMenuFromPrismic)
-            : []) as SidebarMenuItemProps[];
-        const footerUserMenu = (withFooter && !!user
-            ? parseMenuItems(userFooterMenuFromPrismic)
-            : []) as SidebarMenuItemProps[];
+        const commonMenu = (
+            withCommon ? parseMenuItems(commonMenuFromPrismic) : []
+        ) as SidebarMenuItemProps[];
+        const footerCommonMenu = (
+            withFooter ? parseMenuItems(footerMenuFromPrismic) : []
+        ) as SidebarMenuItemProps[];
+        const footerUserMenu = (
+            withFooter && !!user
+                ? parseMenuItems(userFooterMenuFromPrismic)
+                : []
+        ) as SidebarMenuItemProps[];
 
         const footerMenu = [...footerCommonMenu, ...footerUserMenu];
 
@@ -298,7 +302,7 @@ const Sidebar = () => {
             footerMenu,
             menus
         });
-    }, [asPath, user, notifications, locale]);
+    }, [asPath, user, notifications, locale, address]);
 
     const footerMenu = () => {
         const userBeneficiary = user?.roles?.includes('beneficiary');
@@ -342,23 +346,23 @@ const Sidebar = () => {
         expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
         useEffect(() => {
-            if (!checkCookies('LOCALE')) {
-                setCookies('LOCALE', browserLanguage, {
+            if (!hasCookie('LOCALE')) {
+                setCookie('LOCALE', browserLanguage, {
                     expires: expiryDate,
                     path: '/'
                 });
-                replace(asPath, undefined, { locale: browserLanguage });
+                replace('/', undefined, { locale: browserLanguage });
             }
             if (getCookie('LOCALE') !== locale) {
-                replace(asPath, undefined, {
+                replace('/', undefined, {
                     locale: getCookie('LOCALE').toString()
                 });
             }
         }, []);
 
         const changeLanguage = (data: string) => {
-            setCookies('LOCALE', data, { expires: expiryDate, path: '/' });
-            replace(asPath, undefined, { locale: data });
+            setCookie('LOCALE', data, { expires: expiryDate, path: '/' });
+            replace(asPath, '/', { locale: data });
         };
 
         return (

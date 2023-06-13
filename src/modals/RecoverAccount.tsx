@@ -10,7 +10,7 @@ import {
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { getUserTypes } from '../utils/users';
 import { selectCurrentUser, setCredentials } from '../state/slices/auth';
-import { setCookies } from 'cookies-next';
+import { setCookie } from 'cookies-next';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRecoverAccountMutation } from '../api/user';
@@ -22,18 +22,15 @@ const RecoverAccount = () => {
     const { user } = useSelector(selectCurrentUser);
     const { disconnect } = useWallet();
     const dispatch = useDispatch();
-    
+
     const { handleClose } = useModal();
     const { modals } = usePrismicData();
-    const {
-        control,
-        handleSubmit,
-    } = useForm();
+    const { control, handleSubmit } = useForm();
     const { isSubmitting } = useFormState({
         control
     });
 
-    const [recoverAccount] = useRecoverAccountMutation();    
+    const [recoverAccount] = useRecoverAccountMutation();
 
     const onSubmit: SubmitHandler<any> = async () => {
         try {
@@ -44,28 +41,36 @@ const RecoverAccount = () => {
 
             const payload: any = await recoverAccount(content);
 
-            if(payload?.error) {
-                toast.error(<RichText content="Error"/>);
+            if (payload?.error) {
+                toast.error(<RichText content="Error" />);
             } else {
-
-                dispatch(setCredentials({ 
-                    token: payload?.data.token, 
-                    type: getUserTypes(payload?.data),
-                    user: { ...payload?.data }
-                }));
+                dispatch(
+                    setCredentials({
+                        token: payload?.data.token,
+                        type: getUserTypes(payload?.data),
+                        user: { ...payload?.data }
+                    })
+                );
 
                 // Create cookie to save Auth Token
                 const expiryDate = new Date();
 
-                expiryDate.setTime(expiryDate.getTime()+(30*24*60*60*1000));
-                setCookies('AUTH_TOKEN', payload?.data.token, { expires: expiryDate, path: '/' });
+                expiryDate.setTime(
+                    expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000
+                );
+                setCookie('AUTH_TOKEN', payload?.data.token, {
+                    expires: expiryDate,
+                    path: '/'
+                });
 
-                toast.success(<RichText content={modals?.data?.recoverAccountRecovered}/>);
+                toast.success(
+                    <RichText content={modals?.data?.recoverAccountRecovered} />
+                );
 
-                handleClose()
+                handleClose();
             }
         } catch (error) {
-            toast.error(<RichText content="Error"/>);
+            toast.error(<RichText content="Error" />);
             console.log(error);
         }
     };
@@ -74,12 +79,11 @@ const RecoverAccount = () => {
         try {
             await disconnect();
 
-            handleClose()
-        }
-        catch(e) {
+            handleClose();
+        } catch (e) {
             console.log(e);
         }
-    }
+    };
 
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
@@ -100,9 +104,7 @@ const RecoverAccount = () => {
                 <Col colSize={{ sm: 6, xs: 6 }} pr={0.5}>
                     <Button gray onClick={handleCancel} w="100%">
                         <RichText
-                            content={
-                                modals?.data?.createStoryCancelButtonLabel
-                            }
+                            content={modals?.data?.createStoryCancelButtonLabel}
                         />
                     </Button>
                 </Col>
@@ -110,9 +112,7 @@ const RecoverAccount = () => {
                     <form onSubmit={handleSubmit(onSubmit)}>
                         <Button isLoading={isSubmitting} type="submit" w="100%">
                             <RichText
-                                content={
-                                    modals?.data?.recoverAccountRecover
-                                }
+                                content={modals?.data?.recoverAccountRecover}
                             />
                         </Button>
                     </form>

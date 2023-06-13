@@ -8,9 +8,8 @@ const extractFromData = (
         return splitKey
             ? {
                   ...result,
-                  [`${splitKey.charAt(0).toLowerCase()}${splitKey.slice(
-                      1
-                  )}`]: data[key]
+                  [`${splitKey.charAt(0).toLowerCase()}${splitKey.slice(1)}`]:
+                      data[key]
               }
             : result;
     }, {});

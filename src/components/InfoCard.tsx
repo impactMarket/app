@@ -17,10 +17,10 @@ const Tooltip = styled.div`
     width: max-content;
     z-index: 1;
 
-    .tooltip ::after{
+    .tooltip ::after {
         background-color: #ffffff;
         box-shadow: -0.1rem -0.1rem 0rem -0.08rem rgb(16 24 40 / 10%);
-        content: "";
+        content: '';
         height: 0.8rem;
         left: 50%;
         position: absolute;
@@ -28,7 +28,7 @@ const Tooltip = styled.div`
         transform: translateX(-50%) rotate(45deg);
         width: 0.8rem;
     }
-`
+`;
 
 interface Props {
     label: string;
@@ -40,37 +40,40 @@ interface Props {
 const InfoCard: React.FC<Props> = (props) => {
     const { label, icon, text, tooltip } = props;
     const { view } = usePrismicData();
-    const [tooltipOpen, setTooltipOpen] = useState(false)
+    const [tooltipOpen, setTooltipOpen] = useState(false);
 
     return (
         <Card flex h="100%">
             <Box fDirection="column" fLayout="between" flex w="100%">
-                <Box fLayout="center start" inlineFlex mb={0.3} >
+                <Box fLayout="center start" inlineFlex mb={0.3}>
                     <Box>
                         <Text g500 regular small>
                             <String id={label} />
                         </Text>
                     </Box>
-                    {tooltip &&
-                        <Box ml={0.5} onMouseEnter={() => setTooltipOpen(true)} onMouseLeave={() => setTooltipOpen(false)} style={{cursor:'pointer', position:'relative'}}>
-                            <Icon
-                                g500
-                                icon="infoCircle"
-                            />
-                            {tooltipOpen &&
+                    {tooltip && (
+                        <Box
+                            ml={0.5}
+                            onMouseEnter={() => setTooltipOpen(true)}
+                            onMouseLeave={() => setTooltipOpen(false)}
+                            style={{ cursor: 'pointer', position: 'relative' }}
+                        >
+                            <Icon g500 icon="infoCircle" />
+                            {tooltipOpen && (
                                 <Tooltip>
                                     <Card className="tooltip">
                                         <RichText
-                                            content={view.data.messageDecreaseStep}
+                                            content={
+                                                view.data.messageDecreaseStep
+                                            }
                                             g700
                                             variables={{ value: tooltip }}
                                         />
                                     </Card>
                                 </Tooltip>
-                                
-                            }
+                            )}
                         </Box>
-                    }         
+                    )}
                 </Box>
                 <Box fLayout="end between" flex>
                     <Box>

@@ -9,26 +9,25 @@ export interface Story {
     isDetetable: boolean;
     createdAt?: Date;
     community: {
-      id: number;
-      name: string;
-      coverMediaPath?: string;
-      city: string;
-      country: string;
+        id: number;
+        name: string;
+        coverMediaPath?: string;
+        city: string;
+        country: string;
     };
-  engagement: {
-    loves?: number;
-    userLoved?: boolean;
-    userReported?: boolean;
-
+    engagement: {
+        loves?: number;
+        userLoved?: boolean;
+        userReported?: boolean;
     };
-};
+}
 
 interface PostStory {
     readonly communityId: number;
     storyMediaPath?: string;
     storyMedia?: any;
     message?: string;
-};
+}
 
 interface PreSigned {
     filePath?: string;
@@ -38,7 +37,7 @@ interface PreSigned {
         id?: number;
         url?: string;
         width?: number;
-    }
+    };
     uploadURL?: string;
 }
 
@@ -51,11 +50,11 @@ interface PostComment {
     body: any;
     id: any;
     token: any;
-};
+}
 
 // Define a service using a base URL and expected endpoints
 export const storyApi = emptySplitApi.injectEndpoints({
-    endpoints: builder => ({
+    endpoints: (builder) => ({
         createStory: builder.mutation<Story, PostStory>({
             query: (body: any) => ({
                 body,
@@ -77,7 +76,8 @@ export const storyApi = emptySplitApi.injectEndpoints({
                 method: 'GET',
                 url: `stories/count?groupBy=country`
             }),
-            transformResponse: (response: { data: CountryWithStory[] }) => response.data
+            transformResponse: (response: { data: CountryWithStory[] }) =>
+                response.data
         }),
         // Get Countries with stories
         getPreSigned: builder.mutation<PreSigned, void>({
@@ -87,14 +87,19 @@ export const storyApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: PreSigned }) => response.data
         }),
-        getStories: builder.mutation<{count: number, data: Story[], success: boolean}, {filters: string, limit: number, offset: number}>({
-            query: ({filters, limit, offset}) => ({
+        getStories: builder.mutation<
+            { count: number; data: Story[]; success: boolean },
+            { filters: string; limit: number; offset: number }
+        >({
+            query: ({ filters, limit, offset }) => ({
                 method: 'GET',
-                url: `stories?${!!filters ? `${filters}` : ''}${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
-            }),
+                url: `stories?${!!filters ? `${filters}` : ''}${
+                    !!limit ? `&limit=${limit}` : ''
+                }${!!offset ? `&offset=${offset}` : ''}`
+            })
         }),
         getStoryById: builder.mutation<Story, string>({
-            query: id => `stories/${id}`
+            query: (id) => `stories/${id}`
         }),
         loveStory: builder.mutation<Story, number>({
             query: (id: number) => ({
@@ -103,17 +108,21 @@ export const storyApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: Story }) => response.data
         }),
-        postComment: builder.mutation<PostComment, { body: any, id: any, token: any}>({
-            query: ({body, id, token}) => ({
+        postComment: builder.mutation<
+            PostComment,
+            { body: any; id: any; token: any }
+        >({
+            query: ({ body, id, token }) => ({
                 body,
                 headers: { Authorization: `Bearer ${token}` },
                 method: 'POST',
                 url: `/stories/${id}/comments`
             }),
-            transformResponse: (response: { data: PostComment }) => response.data
+            transformResponse: (response: { data: PostComment }) =>
+                response.data
         }),
-        reportStory: builder.mutation<Story, {body:any, id: number}>({
-            query: ({body, id}) => ({
+        reportStory: builder.mutation<Story, { body: any; id: number }>({
+            query: ({ body, id }) => ({
                 body,
                 method: 'PUT',
                 url: `stories/inapropriate/${id}`
@@ -125,7 +134,7 @@ export const storyApi = emptySplitApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { 
+export const {
     useGetStoryByIdMutation,
     useGetCountriesWithStoriesMutation,
     useGetPreSignedMutation,
@@ -134,5 +143,5 @@ export const {
     useLoveStoryMutation,
     useReportStoryMutation,
     useDeleteStoryMutation,
-    usePostCommentMutation 
+    usePostCommentMutation
 } = storyApi;

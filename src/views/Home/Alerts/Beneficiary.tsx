@@ -10,15 +10,16 @@ import config from '../../../../config';
 import useCommunity from '../../../hooks/useCommunity';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
-const fetcher = (url: string, headers: any | {}) => fetch(config.baseApiUrl + url, headers).then((res) => res.json());
+const fetcher = (url: string, headers: any | {}) =>
+    fetch(config.baseApiUrl + url, headers).then((res) => res.json());
 
 //  Get increment interval from thegraph
 const communityQuery = gql`
-query communityQuery($id: String!) {
-    communityEntity(id: $id) {
-        incrementInterval
+    query communityQuery($id: String!) {
+        communityEntity(id: $id) {
+            incrementInterval
+        }
     }
-}
 `;
 
 const BeneficiaryAlerts = () => {
@@ -26,9 +27,9 @@ const BeneficiaryAlerts = () => {
     const { t } = useTranslations();
 
     const { data: queryInterval } = useQuery(communityQuery, {
-        variables: { 
-            id: auth?.user?.beneficiary?.community?.toLowerCase(), 
-        },
+        variables: {
+            id: auth?.user?.beneficiary?.community?.toLowerCase()
+        }
     });
 
     const {
@@ -36,59 +37,106 @@ const BeneficiaryAlerts = () => {
         beneficiary: {
             fundsRemainingDays,
             isClaimable,
-            community: {
-                hasFunds
-            }
+            community: { hasFunds }
         }
-    } = useBeneficiary(
-        auth?.user?.beneficiary?.community
-    );
+    } = useBeneficiary(auth?.user?.beneficiary?.community);
 
-    const { community } = useCommunity(auth?.user?.beneficiary?.community, fetcher);
+    const { community } = useCommunity(
+        auth?.user?.beneficiary?.community,
+        fetcher
+    );
 
     // If the User hasn't already accepted the Community Rules, show the modal
     useEffect(() => {
-        if(!auth?.user?.beneficiaryRules) {
+        if (!auth?.user?.beneficiaryRules) {
             openModal('welcomeBeneficiary', {
                 communityImage: community?.coverImage,
                 communityName: community?.name
             });
         }
-    }, [])
+    }, []);
 
     const openUbi = () => (
         <Link href="/beneficiary" passHref>
-            <Button icon="plus">
-                {t('claimUbi')}
-            </Button>
+            <Button icon="plus">{t('claimUbi')}</Button>
         </Link>
-    )
+    );
 
     return (
-        <> 
-            {isReady &&
+        <>
+            {isReady && (
                 <>
-                    {(fundsRemainingDays <= 3 && fundsRemainingDays > 0) && !auth?.user?.roles.includes('manager') &&
-                        <Alert icon="alertTriangle" mb={1} message={<Message id="communityFundsWillRunOut" medium small variables={{ count: fundsRemainingDays, timeUnit: t("days").toLowerCase() }} />} warning />
-                    }
-                    {!hasFunds && !auth?.user?.roles.includes('manager') &&
-                        <Alert error icon="alertCircle" mb={1} message={<Message id="communityFundsHaveRunOut" medium small/>} />
-                    }
-                    {!auth?.user?.active &&
-                        <Alert error icon="key" mb={1} message={<Message id="yourAccountHasBeenLocked" medium small />} />
-                    }
-                    {(isClaimable && hasFunds) && 
-                        <Alert 
-                            button={openUbi()} 
-                            icon="coinStack" 
-                            mb={1} 
-                            message={<Message id="claimUbiDescription" small g800 variables={{ time: queryInterval?.communityEntity?.incrementInterval / 12 }} />}
+                    {fundsRemainingDays <= 3 &&
+                        fundsRemainingDays > 0 &&
+                        !auth?.user?.roles.includes('manager') && (
+                            <Alert
+                                icon="alertTriangle"
+                                mb={1}
+                                message={
+                                    <Message
+                                        id="communityFundsWillRunOut"
+                                        medium
+                                        small
+                                        variables={{
+                                            count: fundsRemainingDays,
+                                            timeUnit: t('days').toLowerCase()
+                                        }}
+                                    />
+                                }
+                                warning
+                            />
+                        )}
+                    {!hasFunds && !auth?.user?.roles.includes('manager') && (
+                        <Alert
+                            error
+                            icon="alertCircle"
+                            mb={1}
+                            message={
+                                <Message
+                                    id="communityFundsHaveRunOut"
+                                    medium
+                                    small
+                                />
+                            }
+                        />
+                    )}
+                    {!auth?.user?.active && (
+                        <Alert
+                            error
+                            icon="key"
+                            mb={1}
+                            message={
+                                <Message
+                                    id="yourAccountHasBeenLocked"
+                                    medium
+                                    small
+                                />
+                            }
+                        />
+                    )}
+                    {isClaimable && hasFunds && (
+                        <Alert
+                            button={openUbi()}
+                            icon="coinStack"
+                            mb={1}
+                            message={
+                                <Message
+                                    id="claimUbiDescription"
+                                    small
+                                    g800
+                                    variables={{
+                                        time:
+                                            queryInterval?.communityEntity
+                                                ?.incrementInterval / 12
+                                    }}
+                                />
+                            }
                             title={<Message id="claimUbi" medium small g800 />}
                         />
-                    }
+                    )}
                 </>
-            }
-        </>       
+            )}
+        </>
     );
 };
 

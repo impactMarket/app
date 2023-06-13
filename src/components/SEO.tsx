@@ -33,9 +33,18 @@ const getMetaData: any = (metaData: any) =>
         if (metaName === 'image') {
             return [
                 ...meta,
-                { content: metaValue?.url || metaValue, property: `og:${metaName}` },
-                { content: metaValue?.url || metaValue, property: `og:${metaName}:secure_url` },
-                { content: metaValue?.url || metaValue, name: `twitter:${metaName}` }
+                {
+                    content: metaValue?.url || metaValue,
+                    property: `og:${metaName}`
+                },
+                {
+                    content: metaValue?.url || metaValue,
+                    property: `og:${metaName}:secure_url`
+                },
+                {
+                    content: metaValue?.url || metaValue,
+                    name: `twitter:${metaName}`
+                }
             ];
         }
 
@@ -52,7 +61,10 @@ const getMetaData: any = (metaData: any) =>
         }
 
         if (metaName === 'url') {
-            return [...meta, { content: metaValue, property: `og:${metaName}` }];
+            return [
+                ...meta,
+                { content: metaValue, property: `og:${metaName}` }
+            ];
         }
 
         return [
@@ -66,19 +78,26 @@ const getMetaData: any = (metaData: any) =>
 const SEO = (props: SeoProps) => {
     const { extractFromConfig, extractFromView, url } = usePrismicData();
 
-    const metaFromConfig = pickBy(extractFromConfig('seo') as MetaProps, prop =>
+    const metaFromConfig = pickBy(
+        extractFromConfig('seo') as MetaProps,
+        (prop) =>
+            typeof prop === 'string' ? !isEmpty(prop) : !isEmpty(prop?.url)
+    ) as MetaProps;
+
+    const metaFromPage = pickBy(extractFromView('seo') as MetaProps, (prop) =>
         typeof prop === 'string' ? !isEmpty(prop) : !isEmpty(prop?.url)
     ) as MetaProps;
 
-    const metaFromPage = pickBy(extractFromView('seo') as MetaProps, prop =>
+    const metaFromProps = pickBy(props?.meta, (prop) =>
         typeof prop === 'string' ? !isEmpty(prop) : !isEmpty(prop?.url)
     ) as MetaProps;
 
-    const metaFromProps = pickBy(props?.meta, prop =>
-        typeof prop === 'string' ? !isEmpty(prop) : !isEmpty(prop?.url)
-    ) as MetaProps;
-
-    const mergedMeta = { ...metaFromConfig, ...metaFromPage, ...metaFromProps, url } as MetaProps;
+    const mergedMeta = {
+        ...metaFromConfig,
+        ...metaFromPage,
+        ...metaFromProps,
+        url
+    } as MetaProps;
 
     const metaArr = getMetaData(mergedMeta) as MetaArray;
 

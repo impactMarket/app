@@ -8,7 +8,7 @@ import {
     toast
 } from '@impact-market/ui';
 import { dateHelpers } from '../../helpers/dateHelpers';
-import { handleKnownErrors } from "../../helpers/handleKnownErrors";
+import { handleKnownErrors } from '../../helpers/handleKnownErrors';
 import styled from 'styled-components';
 
 import DonateCard from '../../components/DonateCard';
@@ -41,11 +41,33 @@ const Divider = styled.hr`
     border: 1px solid ${colors.g200};
 `;
 
-const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) => {
-    const { gps = {}, contractAddress = null, status = '', state = {}, isPendingProposal = false, communitySocialMedia = [] } = community || {};
-    const { contributed = 0, contributors = 0, beneficiaries = '0', baseInterval = 0 } = state || {};
+const CommunityDetails = ({
+    community,
+    data,
+    claimsLocation,
+    promoter
+}: any) => {
+    const {
+        gps = {},
+        contractAddress = null,
+        status = '',
+        state = {},
+        isPendingProposal = false,
+        communitySocialMedia = []
+    } = community || {};
+    const {
+        contributed = 0,
+        contributors = 0,
+        beneficiaries = '0',
+        baseInterval = 0
+    } = state || {};
     const { maxClaim = 0, claimAmount = 0 } = data || {};
-    const { description = '', logoMediaPath = '', name = '', socialMedia = [] } = promoter || {};
+    const {
+        description = '',
+        logoMediaPath = '',
+        name = '',
+        socialMedia = []
+    } = promoter || {};
     const { user } = useSelector(selectCurrentUser);
     const { address, connect } = useWallet();
     const [hasNoProposal, setHasNoProposal] = useState(isPendingProposal);
@@ -53,37 +75,38 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
     const isCouncilMember = user?.roles.includes('councilMember');
     const claims = claimsLocation?.length ? claimsLocation : [gps];
     const googleApiKey = config.googlePlacesKey;
-    const [translatedText, setTranslatedText] = useState('')
+    const [translatedText, setTranslatedText] = useState('');
 
     //  Translate description
     useEffect(() => {
         const translateDescription = async () => {
             try {
-                const translation = await translate(community?.description, user?.language, { googleApiKey })
-                
-                setTranslatedText(translation?.translatedText)
+                const translation = await translate(
+                    community?.description,
+                    user?.language,
+                    { googleApiKey }
+                );
+
+                setTranslatedText(translation?.translatedText);
             } catch (error) {
-                console.log(error)
+                console.log(error);
             }
-        }
+        };
 
         translateDescription();
-    }, [])
+    }, []);
 
     const handleConnect = async () => {
         try {
             await connect();
         } catch (error) {
-            toast.error(
-                <Message id="errorOccurred" />
-            );
+            toast.error(<Message id="errorOccurred" />);
         }
     };
 
     const addProposal = async () => {
         try {
-
-            toast.info(<Message id="approveTransaction"/>);
+            toast.info(<Message id="approveTransaction" />);
             await addCommunity({
                 ...generateCommunityProposal(community, data),
                 claimAmount: toToken(claimAmount, { EXPONENTIAL_AT: 25 }),
@@ -92,14 +115,10 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
 
             setHasNoProposal(false);
 
-            toast.success(
-                <Message id="generatedSuccess" />
-            );
+            toast.success(<Message id="generatedSuccess" />);
         } catch (error) {
             handleKnownErrors(error);
-            toast.error(
-                <Message id="generatedError" />
-            );
+            toast.error(<Message id="generatedError" />);
         }
     };
 
@@ -110,10 +129,11 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
         };
 
         const contribute = {
-            action: () => openModal('contribute', {
-                contractAddress,
-                value: null
-            }),
+            action: () =>
+                openModal('contribute', {
+                    contractAddress,
+                    value: null
+                }),
             type: 'contribute'
         };
 
@@ -122,7 +142,8 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
             type: 'connectWallet'
         };
 
-        const loggedAction = status === 'pending' && hasNoProposal && isCouncilMember
+        const loggedAction =
+            status === 'pending' && hasNoProposal && isCouncilMember
                 ? generateProposal
                 : contribute;
 
@@ -180,11 +201,18 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                         </Box>
                     </Col>
                 </Row>
-                <InfoCards data={{...data, baseInterval}} show={{ sm: 'flex', xs: 'none' }} />
+                <InfoCards
+                    data={{ ...data, baseInterval }}
+                    show={{ sm: 'flex', xs: 'none' }}
+                />
             </CommunityWrapper>
 
-            <Row mt={{sm: 1, xs: 2}}>
-                <Col colSize={{ sm: 8, xs: 12 }} order={{ sm: 0, xs: 2 }} pr={{ sm: 2, xs: 1 }}>
+            <Row mt={{ sm: 1, xs: 2 }}>
+                <Col
+                    colSize={{ sm: 8, xs: 12 }}
+                    order={{ sm: 0, xs: 2 }}
+                    pr={{ sm: 2, xs: 1 }}
+                >
                     <Trim
                         g800
                         large
@@ -194,7 +222,7 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                         pt={0}
                         rows={4}
                     />
-                     <Box fWrap="wrap" flex margin="1.5rem 0">
+                    <Box fWrap="wrap" flex margin="1.5rem 0">
                         <SocialLinks socials={communitySocialMedia} />
                     </Box>
 
@@ -214,9 +242,20 @@ const CommunityDetails = ({ community, data, claimsLocation, promoter }: any) =>
                     </Box>
                 </Col>
 
-                <Col colSize={{ sm: 4, xs: 12 }} fDirection={{ xs: 'column' }} flex pl={{ sm: 0 }}>
-                    <InfoCards data={{...data, baseInterval}} show={{ sm: 'none', xs: 'flex' }} />
-                    {(status !== 'pending' || (status === 'pending' && hasNoProposal && isCouncilMember)) && (
+                <Col
+                    colSize={{ sm: 4, xs: 12 }}
+                    fDirection={{ xs: 'column' }}
+                    flex
+                    pl={{ sm: 0 }}
+                >
+                    <InfoCards
+                        data={{ ...data, baseInterval }}
+                        show={{ sm: 'none', xs: 'flex' }}
+                    />
+                    {(status !== 'pending' ||
+                        (status === 'pending' &&
+                            hasNoProposal &&
+                            isCouncilMember)) && (
                         <DonateCard
                             backers={contributors}
                             beneficiariesNumber={beneficiaries.toString()}

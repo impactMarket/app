@@ -26,13 +26,21 @@ type Inputs = {
 const ReportStory = () => {
     const [showSuccess, setShowSuccess] = useState<number>(0);
     const [reportStory] = useReportStoryMutation();
-    const { handleClose, storyId, removeIndexById, story, setStories } = useModal();
+    const { handleClose, storyId, removeIndexById, story, setStories } =
+        useModal();
     const { modals } = usePrismicData();
     const { t } = useTranslations();
-    const { control, reset, handleSubmit, formState: {} } = useForm<Inputs>();
-    const { isSubmitting, isSubmitSuccessful } = useFormState({control});
+    const {
+        control,
+        reset,
+        handleSubmit,
+        formState: {}
+    } = useForm<Inputs>();
+    const { isSubmitting, isSubmitSuccessful } = useFormState({ control });
     const storyTypes = modals?.data?.reportStoryTypes;
-    const reportOptions = Object.entries(storyTypes).map(([key, value]: any) => ({ label: value.type, value: key }));
+    const reportOptions = Object.entries(storyTypes).map(
+        ([key, value]: any) => ({ label: value.type, value: key })
+    );
     const { getByKey } = useFilters();
 
     const onSubmit: SubmitHandler<any> = async (data) => {
@@ -43,17 +51,20 @@ const ReportStory = () => {
             });
 
             removeIndexById();
-        
+
             setShowSuccess(1);
 
-            if(reportRequest?.error) {
-                toast.error(<RichText content={modals.data.reportStoryError}/>);
+            if (reportRequest?.error) {
+                toast.error(
+                    <RichText content={modals.data.reportStoryError} />
+                );
             } else {
-                toast.success(<RichText content={modals.data.reportStorySuccess}/>);
+                toast.success(
+                    <RichText content={modals.data.reportStorySuccess} />
+                );
             }
-
         } catch (e) {
-            toast.error(<RichText content={modals.data.reportStoryError}/>);
+            toast.error(<RichText content={modals.data.reportStoryError} />);
             console.log(e);
         }
     };
@@ -65,12 +76,12 @@ const ReportStory = () => {
     }, [isSubmitSuccessful]);
 
     const handleCancel = () => {
-        if(getByKey('id')) {
-            openModal('openStory', { setStories, story, storyId: story.id })
+        if (getByKey('id')) {
+            openModal('openStory', { setStories, story, storyId: story.id });
         } else {
             handleClose();
         }
-    }
+    };
 
     return (
         <>
@@ -78,10 +89,25 @@ const ReportStory = () => {
                 <ModalWrapper maxW={25} padding={1.5} w="100%">
                     <Box center>
                         <CircledIcon icon="checkCircle" large success />
-                        <RichText content={modals.data.reportSuccessTitle} g900 large medium mt={1.25} />
-                        <RichText content={modals.data.reportSuccessContent} g500 mt={0.5} small />
+                        <RichText
+                            content={modals.data.reportSuccessTitle}
+                            g900
+                            large
+                            medium
+                            mt={1.25}
+                        />
+                        <RichText
+                            content={modals.data.reportSuccessContent}
+                            g500
+                            mt={0.5}
+                            small
+                        />
                         <Button fluid="xs" gray mt={2} onClick={handleClose}>
-                            <RichText content={modals.data.reportSuccessCloseButtonLabel} />
+                            <RichText
+                                content={
+                                    modals.data.reportSuccessCloseButtonLabel
+                                }
+                            />
                         </Button>
                     </Box>
                 </ModalWrapper>
@@ -89,19 +115,50 @@ const ReportStory = () => {
                 <ModalWrapper maxW={32} padding={1.5} w="100%">
                     <Box>
                         <CircledIcon icon="sad" large warning />
-                        <RichText content={modals.data.reportStoryTitle} g900 large medium mt={1.25} />
-                        <RichText content={modals.data.reportStoryContent} g500 mt={0.5} small />
+                        <RichText
+                            content={modals.data.reportStoryTitle}
+                            g900
+                            large
+                            medium
+                            mt={1.25}
+                        />
+                        <RichText
+                            content={modals.data.reportStoryContent}
+                            g500
+                            mt={0.5}
+                            small
+                        />
                         <form onSubmit={handleSubmit(onSubmit)}>
-                            <Select control={control} isMultiple={false} mt={1.25} name="reportAs" options={reportOptions} />
+                            <Select
+                                control={control}
+                                isMultiple={false}
+                                mt={1.25}
+                                name="reportAs"
+                                options={reportOptions}
+                            />
                             <Row mt={1}>
                                 <Col colSize={{ sm: 6, xs: 6 }} pr={0.5}>
-                                    <Button gray onClick={handleCancel} type="button" w="100%">
-                                        <RichText content={modals.data.reportStoryCancelButtonLabel} />
+                                    <Button
+                                        gray
+                                        onClick={handleCancel}
+                                        type="button"
+                                        w="100%"
+                                    >
+                                        <RichText
+                                            content={
+                                                modals.data
+                                                    .reportStoryCancelButtonLabel
+                                            }
+                                        />
                                     </Button>
                                 </Col>
 
                                 <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
-                                    <Button isLoading={isSubmitting} type="submit" w="100%">
+                                    <Button
+                                        isLoading={isSubmitting}
+                                        type="submit"
+                                        w="100%"
+                                    >
                                         <Text>{t('report')}</Text>
                                     </Button>
                                 </Col>

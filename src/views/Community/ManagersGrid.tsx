@@ -37,7 +37,7 @@ const ManagersGrid = ({
         setUpdateState([...updateState, key]);
 
         try {
-            toast.info(<Message id="approveTransaction"/>);
+            toast.info(<Message id="approveTransaction" />);
             const { status } = await removeManager(community?.id, address);
 
             if (status) {

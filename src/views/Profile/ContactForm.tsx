@@ -1,19 +1,23 @@
 import { Box } from '@impact-market/ui';
 import { emailRegExp, phoneRegExp } from '../../helpers/regex';
 import { selectCurrentUser } from '../../state/slices/auth';
-import { useForm, useFormState } from "react-hook-form";
+import { useForm, useFormState } from 'react-hook-form';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import { useYupValidationResolver, yup } from '../../helpers/yup';
 import FormActions from './FormActions';
 import Input from '../../components/Input';
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const schema = yup.object().shape({
     email: yup.string().matches(emailRegExp).email(),
-    phone: yup.string().matches(phoneRegExp).nullable(true).transform((_, val) => val === '' ? null : val)
+    phone: yup
+        .string()
+        .matches(phoneRegExp)
+        .nullable()
+        .transform((_, val) => (val === '' ? null : val))
 });
 
 const Form = ({ onSubmit }: any) => {
@@ -23,17 +27,25 @@ const Form = ({ onSubmit }: any) => {
     const { extractFromView } = usePrismicData();
     const { contactTooltip } = extractFromView('formSections') as any;
 
-    const { handleSubmit, reset, control, getValues, formState: { errors } } = useForm({
+    const {
+        handleSubmit,
+        reset,
+        control,
+        getValues,
+        formState: { errors }
+    } = useForm({
         defaultValues: {
             email: auth?.user?.email || '',
             phone: auth?.user?.phone || ''
         },
         resolver: useYupValidationResolver(schema)
     });
-    const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
+    const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({
+        control
+    });
 
     useEffect(() => {
-        if(isSubmitSuccessful) {
+        if (isSubmitSuccessful) {
             reset(getValues());
         }
     }, [isSubmitSuccessful]);
@@ -41,13 +53,13 @@ const Form = ({ onSubmit }: any) => {
     const handleCancel = (e: any) => {
         e.preventDefault();
         reset();
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box pl={1.5} pr={1.5}>
                 <Box mb={1.5}>
-                    <Input 
+                    <Input
                         control={control}
                         hint={errors?.email ? t('errorEmail') : ''}
                         label={t('email')}
@@ -55,26 +67,29 @@ const Form = ({ onSubmit }: any) => {
                         withError={!!errors?.email}
                     />
                 </Box>
-                { /* TODO: finish phone field (like it is in the design) */ }
+                {/* TODO: finish phone field (like it is in the design) */}
                 <Box mb={1.5}>
-                    <Input 
+                    <Input
                         control={control}
                         hint={errors?.phone ? t('errorPhoneNumber') : ''}
                         label={t('phoneNumber')}
                         name="phone"
                         withError={!!errors?.phone}
                         wrapperProps={{
-                            maxW: { sm: "50%", xs: "100%" }
-                        }} 
+                            maxW: { sm: '50%', xs: '100%' }
+                        }}
                     />
                 </Box>
                 <RichText content={contactTooltip} g500 regular small />
             </Box>
-            {
-                isDirty && !isSubmitSuccessful && <FormActions handleCancel={handleCancel} isSubmitting={isSubmitting} />
-            }
+            {isDirty && !isSubmitSuccessful && (
+                <FormActions
+                    handleCancel={handleCancel}
+                    isSubmitting={isSubmitting}
+                />
+            )}
         </form>
     );
-}
+};
 
 export default Form;

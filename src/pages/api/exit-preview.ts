@@ -5,7 +5,8 @@ const exitHandler = (req: NextApiRequest, res: NextApiResponse) => {
     res.clearPreviewData();
 
     const queryObject = url.parse(req.url || '', true).query;
-    const redirectUrl = queryObject && queryObject.currentUrl ? queryObject.currentUrl : '/';
+    const redirectUrl =
+        queryObject && queryObject.currentUrl ? queryObject.currentUrl : '/';
 
     res.writeHead(307, { Location: redirectUrl });
     res.end();

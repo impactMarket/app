@@ -3,8 +3,8 @@ import { getCountryNameFromInitials } from '../utils/countries';
 import useSWR from 'swr';
 
 interface CountryOption {
-    label: string,
-    value: number
+    label: string;
+    value: number;
 }
 
 export default function useCommunitiesCountries(status: string, fetcher?: any) {
@@ -13,16 +13,17 @@ export default function useCommunitiesCountries(status: string, fetcher?: any) {
         fetcher
     );
 
-    const communitiesCountries = data?.data.map((row: { country: string }) => ({
-        label: getCountryNameFromInitials(row.country),
-        value: row.country
-    }))
-    .sort((a: CountryOption, b: CountryOption) => {
-        const labelA = a.label.toUpperCase();
-        const labelB = b.label.toUpperCase();
+    const communitiesCountries = data?.data
+        .map((row: { country: string }) => ({
+            label: getCountryNameFromInitials(row.country),
+            value: row.country
+        }))
+        .sort((a: CountryOption, b: CountryOption) => {
+            const labelA = a.label.toUpperCase();
+            const labelB = b.label.toUpperCase();
 
-        return (labelA < labelB) ? -1 : (labelA > labelB) ? 1 : 0;
-    });
+            return labelA < labelB ? -1 : labelA > labelB ? 1 : 0;
+        });
 
     const loadingCountries = !data && !error;
 

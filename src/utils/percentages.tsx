@@ -1,6 +1,6 @@
 export const formatPercentage = (number: number) => {
     return new Intl.NumberFormat('default', {
         maximumFractionDigits: 0,
-        style: 'percent'  
+        style: 'percent'
     }).format(number);
 };

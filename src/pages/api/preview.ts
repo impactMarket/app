@@ -2,7 +2,6 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import client from '../../libs/Prismic/client';
 import linkResolver from '../../libs/Prismic/linkResolver';
 
-
 type Data =
     | {
           ref: string | string[];

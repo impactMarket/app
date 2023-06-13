@@ -14,7 +14,13 @@ const CanBeRendered = (props: CanBeRenderedProps) => {
     const { children, types } = props;
 
     const auth = useSelector(selectCurrentUser);
-    const authorized = useMemo(() => address && auth?.user && auth?.type?.some(value => types.includes(value as UserTypesType)), [address, auth, types]);
+    const authorized = useMemo(
+        () =>
+            address &&
+            auth?.user &&
+            auth?.type?.some((value) => types.includes(value as UserTypesType)),
+        [address, auth, types]
+    );
 
     if (!types.length) {
         return <>{children}</>;
@@ -24,8 +30,7 @@ const CanBeRendered = (props: CanBeRenderedProps) => {
         return null;
     }
 
-
     return <>{children}</>;
-}
+};
 
 export default CanBeRendered;

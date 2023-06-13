@@ -1,5 +1,5 @@
 import * as yup from 'yup';
-import { useCallback } from "react";
+import { useCallback } from 'react';
 
 yup.setLocale({
     number: {
@@ -33,7 +33,7 @@ const useYupValidationResolver = (schema: any) =>
                             ...allErrors,
                             [currentError.path]: {
                                 message: currentError.message,
-                                type: currentError.type ?? "validation"
+                                type: currentError.type ?? 'validation'
                             }
                         }),
                         {}
@@ -41,7 +41,8 @@ const useYupValidationResolver = (schema: any) =>
                     values: {}
                 };
             }
-        }, [schema]
+        },
+        [schema]
     );
 
 export { useYupValidationResolver, yup };

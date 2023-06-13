@@ -1,5 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Avatar, Box, CircledIcon, Display, DropdownMenu, Label, Tab, TabList, TabPanel, Tabs, Text, TextLink, ViewContainer, toast } from '@impact-market/ui';
+import {
+    Avatar,
+    Box,
+    CircledIcon,
+    Display,
+    DropdownMenu,
+    Label,
+    Tab,
+    TabList,
+    TabPanel,
+    Tabs,
+    Text,
+    TextLink,
+    ViewContainer,
+    toast
+} from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
@@ -16,7 +31,7 @@ import config from '../../../config';
 import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const User: React.FC<{ isLoading?: boolean }> = props => {
+const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { extractFromView } = usePrismicData();
     const { noMicrocreditDataFound } = extractFromView('microcredit') as any;
@@ -30,9 +45,14 @@ const User: React.FC<{ isLoading?: boolean }> = props => {
 
     const { borrowers } = useMicrocreditBorrowers(['limit=999']);
 
-    const hasAddress = !!auth?.user?.manager?.community && !!user?.beneficiary?.community
-    const userIsManager = (auth?.user?.manager?.community === user?.beneficiary?.community) && hasAddress;
-    const userIsBorrower = borrowers?.find((borrower: any) => borrower?.address === user?.address);
+    const hasAddress =
+        !!auth?.user?.manager?.community && !!user?.beneficiary?.community;
+    const userIsManager =
+        auth?.user?.manager?.community === user?.beneficiary?.community &&
+        hasAddress;
+    const userIsBorrower = borrowers?.find(
+        (borrower: any) => borrower?.address === user?.address
+    );
 
     useEffect(() => {
         const init = async () => {
@@ -43,8 +63,7 @@ const User: React.FC<{ isLoading?: boolean }> = props => {
                 setUser(data);
 
                 toggleLoadingUser(false);
-            }
-            catch (error) {
+            } catch (error) {
                 console.log(error);
 
                 toggleLoadingUser(false);
@@ -62,20 +81,40 @@ const User: React.FC<{ isLoading?: boolean }> = props => {
         navigator?.clipboard.writeText(user?.address);
 
         toast.success(<Message id="copiedAddress" />);
-    }
+    };
 
     return (
         <ViewContainer isLoading={isLoading || loadingUser}>
-            <TextLink fLayout="center start"  flex onClick={() => router.back()}>
+            <TextLink fLayout="center start" flex onClick={() => router.back()}>
                 <Label content={<String id="back" />} icon="arrowLeft" ml={0} />
             </TextLink>
-            <Box fDirection={{ sm: 'row', xs: 'column' }} fLayout="start between" flex mt={1.5}>
+            <Box
+                fDirection={{ sm: 'row', xs: 'column' }}
+                fLayout="start between"
+                flex
+                mt={1.5}
+            >
                 <Box fLayout="center start" flex>
-                    {!!user?.avatarMediaPath ? 
-                        <Avatar mr={1.375} small url={getImage({ filePath: user.avatarMediaPath, fit: 'cover', height: 66, width: 66 })} />  
-                        : 
-                        <CircledIcon h={4.125} icon="user" large mr={1.375} w={4.125} />
-                    }
+                    {!!user?.avatarMediaPath ? (
+                        <Avatar
+                            mr={1.375}
+                            small
+                            url={getImage({
+                                filePath: user.avatarMediaPath,
+                                fit: 'cover',
+                                height: 66,
+                                width: 66
+                            })}
+                        />
+                    ) : (
+                        <CircledIcon
+                            h={4.125}
+                            icon="user"
+                            large
+                            mr={1.375}
+                            w={4.125}
+                        />
+                    )}
                     <Box column flex>
                         {(!!user?.firstName || !!user?.lastName) && (
                             <Display g900 mb={0.25} medium>
@@ -87,7 +126,13 @@ const User: React.FC<{ isLoading?: boolean }> = props => {
                             items={[
                                 {
                                     icon: 'open',
-                                    onClick: () => window.open(config.explorerUrl?.replace('#USER#', user?.address)),
+                                    onClick: () =>
+                                        window.open(
+                                            config.explorerUrl?.replace(
+                                                '#USER#',
+                                                user?.address
+                                            )
+                                        ),
                                     title: t('openInExplorer')
                                 },
                                 {
@@ -102,7 +147,10 @@ const User: React.FC<{ isLoading?: boolean }> = props => {
                 </Box>
                 {userIsManager && (
                     <Box mt={{ sm: 0, xs: 1 }}>
-                        <StateButtons beneficiary={user} community={auth?.user?.manager?.community} />
+                        <StateButtons
+                            beneficiary={user}
+                            community={auth?.user?.manager?.community}
+                        />
                     </Box>
                 )}
             </Box>
@@ -118,35 +166,45 @@ const User: React.FC<{ isLoading?: boolean }> = props => {
                         )}
                         {userIsBorrower && <Tab title="Microcredit" />}
                     </TabList>
-                    
+
                     {userIsManager && (
                         <>
                             <TabPanel>
                                 <Box column fLayout="center" flex h="60vh">
                                     <CircledIcon icon="forbidden" medium />
-                                    <Text g500 medium mt={1}><String id="noTransactionsFound" /></Text>
+                                    <Text g500 medium mt={1}>
+                                        <String id="noTransactionsFound" />
+                                    </Text>
                                 </Box>
-                            </TabPanel><TabPanel>
+                            </TabPanel>
+                            <TabPanel>
                                 <Box column fLayout="center" flex h="60vh">
                                     <CircledIcon icon="forbidden" medium />
-                                    <Text g500 medium mt={1}><String id="noActionsFound" /></Text>
+                                    <Text g500 medium mt={1}>
+                                        <String id="noActionsFound" />
+                                    </Text>
                                 </Box>
-                            </TabPanel><TabPanel>
+                            </TabPanel>
+                            <TabPanel>
                                 <Box column fLayout="center" flex h="60vh">
                                     <CircledIcon icon="forbidden" medium />
-                                    <Text g500 medium mt={1}><String id="noRecordsFounds" /></Text>
+                                    <Text g500 medium mt={1}>
+                                        <String id="noRecordsFounds" />
+                                    </Text>
                                 </Box>
                             </TabPanel>
                         </>
                     )}
-                    
+
                     {userIsBorrower && (
                         <TabPanel>
                             <Box column fLayout="center" flex h="60vh">
                                 <CircledIcon icon="forbidden" medium />
-                                <Text g500 medium mt={1}>{noMicrocreditDataFound}</Text>
+                                <Text g500 medium mt={1}>
+                                    {noMicrocreditDataFound}
+                                </Text>
                             </Box>
-                        </TabPanel>    
+                        </TabPanel>
                     )}
                 </Tabs>
             </Box>

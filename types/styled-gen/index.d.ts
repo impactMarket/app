@@ -15,7 +15,11 @@ declare module 'styled-gen' {
 
     function upTo(bp: Breakpoint, style: string | FlattenSimpleInterpolation);
     function from(bp: Breakpoint, style: string | FlattenSimpleInterpolation);
-    function between(bp1: Breakpoint, bp2: Breakpoint, style: string | FlattenSimpleInterpolation);
+    function between(
+        bp1: Breakpoint,
+        bp2: Breakpoint,
+        style: string | FlattenSimpleInterpolation
+    );
     function mqFunction(style: string | FlattenSimpleInterpolation);
 
     export const ease = {
@@ -46,7 +50,7 @@ declare module 'styled-gen' {
     } as const;
 
     type EaseKeysType = keyof typeof ease;
-    type EaseValuesType = typeof ease[EaseKeysType];
+    type EaseValuesType = (typeof ease)[EaseKeysType];
     type EaseType = EaseKeysType | EaseValuesType | string;
 
     export const mq = {
@@ -62,6 +66,12 @@ declare module 'styled-gen' {
 
     export function generateProps(props: any): any;
     export function importFonts(props: any): any;
-    export function transitions(cssProps: string | string[], duration: number | string, ease: EaseType);
-    export function variations(variationsObject: { [key: string]: string | FlattenSimpleInterpolation }): any;
+    export function transitions(
+        cssProps: string | string[],
+        duration: number | string,
+        ease: EaseType
+    );
+    export function variations(variationsObject: {
+        [key: string]: string | FlattenSimpleInterpolation;
+    }): any;
 }

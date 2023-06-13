@@ -16,7 +16,9 @@ export default function useSuspiciousReports(
         }).then((res) => res.json());
 
     const { data, error } = useSWR(
-        `/users/report?${communityId ? `community=${communityId}` : ''}${ !!limit ? `&limit=${limit}` : '' }${!!offset ? `&offset=${offset}` : ''}`,
+        `/users/report?${communityId ? `community=${communityId}` : ''}${
+            !!limit ? `&limit=${limit}` : ''
+        }${!!offset ? `&offset=${offset}` : ''}`,
         fetcher
     );
 

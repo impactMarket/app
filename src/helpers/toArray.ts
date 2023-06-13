@@ -1,6 +1,6 @@
 const toArray = (value: any[] | any) => {
     if (!value) {
-        return []
+        return [];
     }
 
     if (Array.isArray(value)) {

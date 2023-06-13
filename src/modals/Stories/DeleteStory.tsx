@@ -20,11 +20,16 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const DeleteStory = () => {
     const [deleteStory] = useDeleteStoryMutation();
-    const { handleClose, removeIndexById, storyId, story, setStories } = useModal();
+    const { handleClose, removeIndexById, storyId, story, setStories } =
+        useModal();
     const { modals } = usePrismicData();
     const { t } = useTranslations();
-    const { control, reset, formState: {} } = useForm();
-    const { isSubmitting, isSubmitSuccessful } = useFormState({control});
+    const {
+        control,
+        reset,
+        formState: {}
+    } = useForm();
+    const { isSubmitting, isSubmitSuccessful } = useFormState({ control });
 
     const { getByKey } = useFilters();
 
@@ -33,17 +38,20 @@ const DeleteStory = () => {
             const deleteRequest: any = await deleteStory(storyId);
 
             removeIndexById();
-          
+
             handleClose();
 
-            if(deleteRequest?.error) {
-                toast.error(<RichText content={modals.data.deleteStoryError}/>);
+            if (deleteRequest?.error) {
+                toast.error(
+                    <RichText content={modals.data.deleteStoryError} />
+                );
             } else {
-                toast.success(<RichText content={modals.data.deleteStorySuccess}/>);
+                toast.success(
+                    <RichText content={modals.data.deleteStorySuccess} />
+                );
             }
-
         } catch (e) {
-            toast.error(<RichText content={modals.data.deleteStoryError}/>);
+            toast.error(<RichText content={modals.data.deleteStoryError} />);
             console.log(e);
         }
     };
@@ -55,28 +63,48 @@ const DeleteStory = () => {
     }, [isSubmitSuccessful]);
 
     const handleCancel = () => {
-        if(getByKey('id')) {
-            openModal('openStory', {setStories, story});
+        if (getByKey('id')) {
+            openModal('openStory', { setStories, story });
         } else {
             handleClose();
         }
-    }
+    };
 
     return (
         <ModalWrapper maxW={32} padding={1.5} w="100%">
             <Box>
                 <CircledIcon icon="sad" large warning />
-                <RichText content={modals.data.deleteStoryTitle} g900 large medium mt={1.25} />
-                <RichText content={modals.data.deleteStoryContent} g500 mt={0.5} small />
+                <RichText
+                    content={modals.data.deleteStoryTitle}
+                    g900
+                    large
+                    medium
+                    mt={1.25}
+                />
+                <RichText
+                    content={modals.data.deleteStoryContent}
+                    g500
+                    mt={0.5}
+                    small
+                />
                 <Row mt={1}>
                     <Col colSize={{ sm: 6, xs: 6 }} pr={0.5}>
                         <Button gray onClick={() => handleCancel()} w="100%">
-                            <RichText content={modals.data.deleteStoryCancelButtonLabel} />
+                            <RichText
+                                content={
+                                    modals.data.deleteStoryCancelButtonLabel
+                                }
+                            />
                         </Button>
                     </Col>
 
                     <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
-                        <Button error isLoading={isSubmitting}onClick={onSubmit} w="100%">
+                        <Button
+                            error
+                            isLoading={isSubmitting}
+                            onClick={onSubmit}
+                            w="100%"
+                        >
                             <Text>{t('delete')}</Text>
                         </Button>
                     </Col>

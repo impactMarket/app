@@ -74,7 +74,10 @@ const Managers = ({
                 <TabList>
                     <Tab title={'Active'} number={managersActive?.length} />
 
-                    <Tab title={t('removed')} number={managersRemoved?.length} />
+                    <Tab
+                        title={t('removed')}
+                        number={managersRemoved?.length}
+                    />
                 </TabList>
 
                 <TabPanel>

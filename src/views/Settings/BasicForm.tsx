@@ -2,9 +2,9 @@ import { Box, Button, Col, Row } from '@impact-market/ui';
 import { currenciesOptions } from '../../utils/currencies';
 import { languagesOptions } from '../../utils/languages';
 import { selectCurrentUser } from '../../state/slices/auth';
-import { useForm, useFormState } from "react-hook-form";
+import { useForm, useFormState } from 'react-hook-form';
 import { useSelector } from 'react-redux';
-import React, { useEffect } from "react";
+import React, { useEffect } from 'react';
 import Select from '../../components/Select';
 import String from '../../libs/Prismic/components/String';
 import langConfig from '../../../locales.config';
@@ -17,13 +17,19 @@ const Form = ({ onSubmit }: any) => {
     const { handleSubmit, reset, control, getValues } = useForm({
         defaultValues: {
             currency: auth?.user?.currency,
-            language: langConfig.find(({ code, shortCode }) => auth?.user?.language === code || auth?.user?.language === shortCode)?.shortCode
+            language: langConfig.find(
+                ({ code, shortCode }) =>
+                    auth?.user?.language === code ||
+                    auth?.user?.language === shortCode
+            )?.shortCode
         }
     });
-    const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({ control });
+    const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({
+        control
+    });
 
     useEffect(() => {
-        if(isSubmitSuccessful) {
+        if (isSubmitSuccessful) {
             reset(getValues());
         }
     }, [isSubmitSuccessful]);
@@ -31,12 +37,12 @@ const Form = ({ onSubmit }: any) => {
     const handleCancel = (e: any) => {
         e.preventDefault();
         reset();
-    }
+    };
 
     return (
         <form onSubmit={handleSubmit(onSubmit)}>
             <Box mb={1.5}>
-                { /* TODO: missing country flags in Currencies select */ }
+                {/* TODO: missing country flags in Currencies select */}
                 <Select
                     control={control}
                     isMultiple={false}
@@ -56,23 +62,33 @@ const Form = ({ onSubmit }: any) => {
                     withOptionsSearch
                 />
             </Box>
-            {
-                isDirty && !isSubmitSuccessful &&
+            {isDirty && !isSubmitSuccessful && (
                 <Box mt={0.875}>
-                    <Row >
+                    <Row>
                         <Col colSize={12} right>
-                            <Button default disabled={isSubmitting} gray mr={0.75} onClick={(e: any) => handleCancel(e)}>
+                            <Button
+                                default
+                                disabled={isSubmitting}
+                                gray
+                                mr={0.75}
+                                onClick={(e: any) => handleCancel(e)}
+                            >
                                 <String id="cancel" />
                             </Button>
-                            <Button default disabled={isSubmitting} isLoading={isSubmitting} type="submit">
+                            <Button
+                                default
+                                disabled={isSubmitting}
+                                isLoading={isSubmitting}
+                                type="submit"
+                            >
                                 <String id="saveChanges" />
                             </Button>
                         </Col>
                     </Row>
                 </Box>
-            }
+            )}
         </form>
     );
-}
+};
 
 export default Form;

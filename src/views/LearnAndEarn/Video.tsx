@@ -3,7 +3,7 @@ import { Box } from '@impact-market/ui';
 import React from 'react';
 import styled from 'styled-components';
 
-import { ReactPlayerProps } from "react-player/types/lib";
+import { ReactPlayerProps } from 'react-player/types/lib';
 import { default as _ReactPlayer } from 'react-player/lazy';
 const ReactPlayer = _ReactPlayer as unknown as React.FC<ReactPlayerProps>;
 
@@ -45,9 +45,9 @@ const Video = (props: VideoSectionSliceType) => {
     const { primary } = props;
     const { video, width, height } = primary;
     const { embed_url } = video;
-    const w = width ? {width} : {};
-    const h = height ? {height} : {};
-    const dimensions = {...w, ...h};
+    const w = width ? { width } : {};
+    const h = height ? { height } : {};
+    const dimensions = { ...w, ...h };
 
     return (
         <>

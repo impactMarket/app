@@ -8,7 +8,11 @@ import {
     Text,
     ViewContainer
 } from '@impact-market/ui';
-import { getCommunityBeneficiaries, getCommunityEntities, getCommunityEntity } from '../../graph/community';
+import {
+    getCommunityBeneficiaries,
+    getCommunityEntities,
+    getCommunityEntity
+} from '../../graph/community';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunitiesMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -22,7 +26,6 @@ import RichText from '../../libs/Prismic/components/RichText';
 import Select from '../../components/Select';
 import ShimmerEffect from '../../components/ShimmerEffect';
 import String from '../../libs/Prismic/components/String';
-import useBeneficiariesCount from '../../hooks/useBeneficiariesCount';
 import useFilters from '../../hooks/useFilters';
 import useSuspiciousReports from '../../hooks/useSuspiciousReports';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -44,27 +47,48 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     const { view } = usePrismicData();
     const auth = useSelector(selectCurrentUser);
     const { update, getByKey } = useFilters();
-    const isNotViewAll = !(getByKey('view') === 'myCommunities' || !getByKey('view'));
+    const isNotViewAll = !(
+        getByKey('view') === 'myCommunities' || !getByKey('view')
+    );
     const { t } = useTranslations();
     const language = auth?.user?.language || 'en-US';
-    const [ activitySortDesc, setActivitySortDesc ] = useState(true);
+    const [activitySortDesc, setActivitySortDesc] = useState(true);
 
-    const communityEntity = useQuery(getCommunityEntity, { variables: { address: getByKey('view')?.toString().toLowerCase() } });
-    const { data: communityEntities, loading: entitiesLoading } = useQuery(getCommunityEntities, { variables: { ids: auth?.user?.ambassador?.communities, orderDirection: activitySortDesc ? 'desc' : 'asc' } });
+    const communityEntity = useQuery(getCommunityEntity, {
+        variables: { address: getByKey('view')?.toString().toLowerCase() }
+    });
+    const { data: communityEntities, loading: entitiesLoading } = useQuery(
+        getCommunityEntities,
+        {
+            variables: {
+                ids: auth?.user?.ambassador?.communities,
+                orderDirection: activitySortDesc ? 'desc' : 'asc'
+            }
+        }
+    );
 
-    let communityBeneficiaries;
-    
-    if (getByKey('view') === 'myCommunities' || !getByKey('view')) {
-        communityBeneficiaries = [getCommunityBeneficiaries, { ids: auth?.user?.ambassador?.communities }];
-    } else {
-        communityBeneficiaries = [getCommunityBeneficiaries, { ids: [getByKey('view')?.toString().toLowerCase()] }];
-    };
+    const { data: beneficiariesCount, loading: beneficiariesLoading } =
+        useQuery(getCommunityBeneficiaries, {
+            variables: {
+                ids:
+                    getByKey('view') === 'myCommunities' || !getByKey('view')
+                        ? auth?.user?.ambassador?.communities
+                        : [getByKey('view')?.toString().toLowerCase()]
+            }
+        });
 
-    const { beneficiariesCount, loading: beneficiariesLoading } = useBeneficiariesCount(communityBeneficiaries);
+    const totalBeneficiaries = beneficiariesCount?.communityEntities?.reduce(
+        (acc: any, el: any) => acc + el.beneficiaries,
+        0
+    );
 
-    const community: any = myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view'));
+    const community: any = myCommunities.find(
+        (el: any) => getByKey('view') && el.value === getByKey('view')
+    );
 
-    const { data, loadingReports } = useSuspiciousReports(community ? community.id : null);
+    const { data, loadingReports } = useSuspiciousReports(
+        community ? community.id : null
+    );
 
     useEffect(() => {
         const getSuspiciousActivitiesReportsMethod = async () => {
@@ -77,16 +101,21 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
 
                 const myCommunities = communities?.data?.rows?.map(
                     (el: any) => {
-                        return { 
+                        return {
                             currency: el.currency,
                             id: el.id,
                             label: el.name,
-                            value: el.contractAddress 
+                            value: el.contractAddress
                         };
                     }
                 );
 
-                setCurrentCommunity(myCommunities.find((el: any) => getByKey('view') && el.value === getByKey('view')));
+                setCurrentCommunity(
+                    myCommunities.find(
+                        (el: any) =>
+                            getByKey('view') && el.value === getByKey('view')
+                    )
+                );
 
                 setMyCommunities(myCommunities);
 
@@ -105,14 +134,18 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
             number: data?.count || '--',
             title: <String id="reportedSuspiciousActivity" />,
             type: 'SuspiciousReports',
-            url: `/ambassador/reports?community=${currentCommunity ? currentCommunity.id : ''}`
+            url: `/ambassador/reports?community=${
+                currentCommunity ? currentCommunity.id : ''
+            }`
         },
         {
             loading: beneficiariesLoading,
-            number: beneficiariesCount,
+            number: totalBeneficiaries,
             title: 'Beneficiaries',
             type: 'Beneficiaries',
-            url: `/manager/beneficiaries?community=${currentCommunity ? currentCommunity.id : ''}&state=0`
+            url: `/manager/beneficiaries?community=${
+                currentCommunity ? currentCommunity.id : ''
+            }&state=0`
         }
     ];
 
@@ -139,18 +172,24 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                             small
                             style={{ alignItems: 'center' }}
                         >
-                            <ShimmerEffect isLoading={card.loading} style={{ height: '2rem', width: '20%' }}>
+                            <ShimmerEffect
+                                isLoading={card?.loading}
+                                style={{ height: '2rem', width: '20%' }}
+                            >
                                 {card.number}
                             </ShimmerEffect>
                         </Display>
                     </Box>
-                    {(isNotViewAll || !isNotViewAll && card.type === 'SuspiciousReports') &&
+                    {(isNotViewAll ||
+                        (!isNotViewAll &&
+                            card.type === 'SuspiciousReports')) && (
                         <Box w="100%">
                             <Divider />
                             <Box fLayout="end" flex pl={1.5} pr={1.5}>
                                 <Link href={card.url}>{t('viewAll')}</Link>
                             </Box>
-                        </Box>}
+                        </Box>
+                    )}
                 </Card>
             </Box>
         );
@@ -171,7 +210,9 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                 <Box pr={{ sm: 0.75, xs: 0 }} w={{ sm: '50%', xs: '100%' }}>
                     <Select
                         callback={(value: any) => {
-                            const gotoCommunity: any =  myCommunities.find((el: any) => el.value === value);
+                            const gotoCommunity: any = myCommunities.find(
+                                (el: any) => el.value === value
+                            );
 
                             setCurrentCommunity(gotoCommunity);
                             update({ view: value });
@@ -187,13 +228,27 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                         ]}
                     />
                 </Box>
-                <Grid cols={{md: 4, sm: 2, xs: 1}} fWrap="wrap" flex pt={1}>
+                <Grid cols={{ md: 4, sm: 2, xs: 1 }} fWrap="wrap" flex pt={1}>
                     {cards.map((el, key) => (
                         <Col key={key}>{renderCard(el)}</Col>
                     ))}
                 </Grid>
-                {!currentCommunity && <Activity activitySort={activitySortDesc} data={communityEntities?.communityEntities} loading={entitiesLoading} myCommunities={myCommunities} setActivitySort={setActivitySortDesc}/>}
-                {currentCommunity && <ProgressBar communityEntity={communityEntity?.data?.communityEntity} currency={currentCommunity?.currency} language={language} />}
+                {!currentCommunity && (
+                    <Activity
+                        activitySort={activitySortDesc}
+                        data={communityEntities?.communityEntities}
+                        loading={entitiesLoading}
+                        myCommunities={myCommunities}
+                        setActivitySort={setActivitySortDesc}
+                    />
+                )}
+                {currentCommunity && (
+                    <ProgressBar
+                        communityEntity={communityEntity?.data?.communityEntity}
+                        currency={currentCommunity?.currency}
+                        language={language}
+                    />
+                )}
             </Grid>
         </ViewContainer>
     );

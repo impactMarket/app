@@ -2,7 +2,7 @@ import { gql } from '@apollo/client';
 
 export const getCommunityBeneficiaries = gql`
     query getCommunityBeneficiaries($address: String!) {
-        beneficiaryEntities(where: {community: $address}) {
+        beneficiaryEntities(where: { community: $address }) {
             id
             state
         }
@@ -11,7 +11,7 @@ export const getCommunityBeneficiaries = gql`
 
 export const getCommunityManagers = gql`
     query getCommunityManagers($address: String!) {
-        managerEntities(where: {community: $address}) {
+        managerEntities(where: { community: $address }) {
             id
             state
         }
