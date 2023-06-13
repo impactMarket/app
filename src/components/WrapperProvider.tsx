@@ -52,7 +52,23 @@ const WrapperProvider = (props: WithChildrenProps) => {
             <WagmiConfig config={wagmiConfig}>
                 <KitWrapper>{children}</KitWrapper>
             </WagmiConfig>
-            <Web3Modal projectId={projectId} ethereumClient={ethereumClient} />
+            <Web3Modal
+                projectId={projectId}
+                ethereumClient={ethereumClient}
+                mobileWallets={[
+                    {
+                        id: 'libera',
+                        links: {
+                            native: 'libera://',
+                            universal: 'https://liberawallet.com'
+                        },
+                        name: 'Libera',
+                    }
+                ]}
+                walletImages={{
+                    libera: 'https://imagedelivery.net/_aTEfDRm7z3tKgu9JhfeKA/9485d17f-c413-47fe-ebee-a876a9dc9100/lg'
+                }}
+            />
         </>
     );
 };
