@@ -7,6 +7,7 @@ import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
 import LoanRepayment from './LoanRepayment';
+import LoanRejected from './LoanRejected';
 // import RepaymentHistory from './RepaymentHistory';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -145,7 +146,7 @@ const MicroCredit = (props: any) => {
                         overviewData={loanData}
                     />
                 )}
-                {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
+                {/* {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
                     <LoanRepayment
                         data={data[viewName].data}
                         isOverviewOpen={isOverviewOpen}
@@ -154,9 +155,15 @@ const MicroCredit = (props: any) => {
                         loanId={loanId}
                         overviewData={loanData}
                     />
-                )}
+                )} */}
                 {loan.loanStatus === LoanStatus.LOAN_FULL_REPAID && (
                     <LoanCompleted
+                        data={data[viewName].data}
+                        overviewData={loanData}
+                    />
+                )}
+                {loan.loanStatus === LoanStatus.LOAN_CLAIMED  && (
+                    <LoanRejected
                         data={data[viewName].data}
                         overviewData={loanData}
                     />
