@@ -26,7 +26,6 @@ import RichText from '../../libs/Prismic/components/RichText';
 import Select from '../../components/Select';
 import ShimmerEffect from '../../components/ShimmerEffect';
 import String from '../../libs/Prismic/components/String';
-import useBeneficiariesCount from '../../hooks/useBeneficiariesCount';
 import useFilters from '../../hooks/useFilters';
 import useSuspiciousReports from '../../hooks/useSuspiciousReports';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -68,24 +67,20 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     );
 
-    let communityBeneficiaries;
+    const { data: beneficiariesCount, loading: beneficiariesLoading } =
+        useQuery(getCommunityBeneficiaries, {
+            variables: {
+                ids:
+                    getByKey('view') === 'myCommunities' || !getByKey('view')
+                        ? auth?.user?.ambassador?.communities
+                        : [getByKey('view')?.toString().toLowerCase()]
+            }
+        });
 
-    if (getByKey('view') === 'myCommunities' || !getByKey('view')) {
-        communityBeneficiaries = [
-            getCommunityBeneficiaries,
-            { ids: auth?.user?.ambassador?.communities }
-        ];
-    } else {
-        communityBeneficiaries = [
-            getCommunityBeneficiaries,
-            { ids: [getByKey('view')?.toString().toLowerCase()] }
-        ];
-    }
-
-    const {
-        beneficiariesCount,
-        loading: beneficiariesLoading
-    } = useBeneficiariesCount(communityBeneficiaries);
+    const totalBeneficiaries = beneficiariesCount?.communityEntities?.reduce(
+        (acc: any, el: any) => acc + el.beneficiaries,
+        0
+    );
 
     const community: any = myCommunities.find(
         (el: any) => getByKey('view') && el.value === getByKey('view')
@@ -145,7 +140,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
         },
         {
             loading: beneficiariesLoading,
-            number: beneficiariesCount,
+            number: totalBeneficiaries,
             title: 'Beneficiaries',
             type: 'Beneficiaries',
             url: `/manager/beneficiaries?community=${
@@ -178,7 +173,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                             style={{ alignItems: 'center' }}
                         >
                             <ShimmerEffect
-                                isLoading={card.loading}
+                                isLoading={card?.loading}
                                 style={{ height: '2rem', width: '20%' }}
                             >
                                 {card.number}

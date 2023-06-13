@@ -181,9 +181,8 @@ const Lesson = (props: any) => {
                                             false,
                                             false
                                         ];
-                                        temp[currentPage][idx] = !temp[
-                                            currentPage
-                                        ][idx];
+                                        temp[currentPage][idx] =
+                                            !temp[currentPage][idx];
                                         setUserAnswers(temp);
                                     }}
                                 >

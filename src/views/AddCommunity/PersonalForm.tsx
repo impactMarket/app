@@ -34,9 +34,8 @@ const PersonalForm: React.FC<{
         'formSections'
     ) as any;
 
-    const [profilePictureThumbnail, setProfilePictureThumbnail] = useState(
-        null
-    );
+    const [profilePictureThumbnail, setProfilePictureThumbnail] =
+        useState(null);
 
     const handleProfilePicture = (event: any) => {
         if (event?.length > 0) {

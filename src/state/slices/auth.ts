@@ -1,10 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
 import type { RootState } from '../store';
-// import type { User } from '../../api/user';
-
-// type User = {
-//     id: number;
-// };
 
 type User = any;
 
@@ -26,7 +21,6 @@ const slice = createSlice({
     name: 'auth',
     reducers: {
         removeCredentials: (state) => {
-            // console.log('removeCredentials', action);
             state.user = null;
             state.token = null;
             state.type = null;
@@ -35,7 +29,6 @@ const slice = createSlice({
             state,
             action: PayloadAction<{ user: User; token: string; type: string[] }>
         ) => {
-            // console.log('setCredentials', action);
             state.user = action.payload.user;
             state.token = action.payload.token;
             state.type = action.payload.type;

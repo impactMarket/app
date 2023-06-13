@@ -55,14 +55,8 @@ const ActionWrapper = styled(Box)`
 `;
 
 const LoanRepayment = (props: any) => {
-    const {
-        data,
-        isOverviewOpen,
-        overviewData,
-        repayLoan,
-        loanId,
-        loan
-    } = props;
+    const { data, isOverviewOpen, overviewData, repayLoan, loanId, loan } =
+        props;
     const { t } = useTranslations();
     const balanceCUSD = useCUSDBalance();
     const { approve } = useMicroCredit();

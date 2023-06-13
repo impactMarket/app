@@ -22,8 +22,11 @@ const serializer: SerializerFunction = ({
     type,
     ...options
 }) => {
-    const { components = {}, serializerProps = {}, variables = {} } =
-        options || ({} as SerializerOptions);
+    const {
+        components = {},
+        serializerProps = {},
+        variables = {}
+    } = options || ({} as SerializerOptions);
     const forwardProps = serializerProps?.[type] || {};
 
     if (type === 'hyperlink') {

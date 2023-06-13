@@ -164,7 +164,7 @@ const ReportSuspiciousActivity = () => {
                                 }
                                 rows={6}
                                 rules={{ required: true }}
-                                withError={errors?.message}
+                                withError={!!errors?.message}
                             />
                         </Box>
 

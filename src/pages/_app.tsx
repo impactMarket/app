@@ -9,7 +9,7 @@ import {
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider } from 'react-redux';
 import { addNotification } from '../state/slices/notifications';
-import { checkCookies, getCookie } from 'cookies-next';
+import { getCookie, hasCookie } from 'cookies-next';
 import { setRates } from '../state/slices/rates';
 import { setSignature, setToken } from '../state/slices/auth';
 import { store } from '../state/store';
@@ -61,7 +61,8 @@ const InnerApp = (props: AppProps) => {
     useEffect(() => {
         const getFlags = async () => {
             try {
-                const numberOfUnreadNotifications = await getUnreadNotifications().unwrap();
+                const numberOfUnreadNotifications =
+                    await getUnreadNotifications().unwrap();
 
                 store.dispatch(
                     addNotification({
@@ -106,11 +107,11 @@ const App = (props: AppProps) => {
         return <ErrorContent statusCode={404} />;
     }
 
-    if (checkCookies('AUTH_TOKEN')) {
+    if (hasCookie('AUTH_TOKEN')) {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
 
-    if (checkCookies('SIGNATURE')) {
+    if (hasCookie('SIGNATURE')) {
         store.dispatch(
             setSignature({
                 message: getCookie('MESSAGE').toString(),

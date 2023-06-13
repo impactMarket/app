@@ -33,8 +33,10 @@ export const getStaticProps: GetStaticProps = async ({
             data,
             fallback: {
                 '/claims-location': claimsArray,
-                '/communities/count?groupBy=country&status=valid': communitiesCountries,
-                '/communities?ambassadorAddress=&country=&limit=8&name=&offset=0&orderBy=bigger:DESC&status=valid': communities
+                '/communities/count?groupBy=country&status=valid':
+                    communitiesCountries,
+                '/communities?ambassadorAddress=&country=&limit=8&name=&offset=0&orderBy=bigger:DESC&status=valid':
+                    communities
             },
             view: 'communities',
             withPreview: !!previewData

@@ -28,7 +28,7 @@ const schema = yup.object().shape({
         .integer()
         .min(0)
         .max(100000)
-        .nullable(true)
+        .nullable()
 });
 
 const CommunityManagementForm = ({
@@ -52,11 +52,8 @@ const CommunityManagementForm = ({
         unlockCommunitySuccess,
         unlockCommunityError
     } = extractFromView('formSections') as any;
-    const {
-        lockCommunity,
-        unlockCommunity,
-        updateMaxBeneficiaries
-    } = useAmbassador();
+    const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } =
+        useAmbassador();
     const {
         handleSubmit,
         reset,

@@ -1,4 +1,4 @@
-import { removeCookies } from 'cookies-next';
+import { deleteCookie } from 'cookies-next';
 import { removeCredentials, setSignature } from '../state/slices/auth';
 import { useDispatch } from 'react-redux';
 
@@ -7,9 +7,9 @@ const useCache = () => {
 
     const cacheClear = () => {
         dispatch(removeCredentials());
-        removeCookies('AUTH_TOKEN', { path: '/' });
-        removeCookies('SIGNATURE', { path: '/' });
-        removeCookies('MESSAGE', { path: '/' });
+        deleteCookie('AUTH_TOKEN', { path: '/' });
+        deleteCookie('SIGNATURE', { path: '/' });
+        deleteCookie('MESSAGE', { path: '/' });
 
         dispatch(
             setSignature({
@@ -17,8 +17,6 @@ const useCache = () => {
                 signature: null
             })
         );
-
-        localStorage.removeItem('walletconnect');
 
         return true;
     };

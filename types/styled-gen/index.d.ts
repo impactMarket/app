@@ -50,7 +50,7 @@ declare module 'styled-gen' {
     } as const;
 
     type EaseKeysType = keyof typeof ease;
-    type EaseValuesType = typeof ease[EaseKeysType];
+    type EaseValuesType = (typeof ease)[EaseKeysType];
     type EaseType = EaseKeysType | EaseValuesType | string;
 
     export const mq = {

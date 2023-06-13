@@ -36,7 +36,7 @@ export const getBeneficiaries = gql`
 `;
 
 export const getCommunityBeneficiaries = gql`
-    query getBeneficiaries($ids: [String]) {
+    query getCommunityBeneficiaries($ids: [String]) {
         communityEntities(where: { id_in: $ids }) {
             beneficiaries
         }

@@ -1,5 +1,4 @@
 /* eslint-disable no-nested-ternary */
-/* eslint-disable react-hooks/rules-of-hooks */
 import {
     Box,
     Button,
@@ -12,7 +11,6 @@ import {
 } from '@impact-market/ui';
 import { getCommunityBeneficiaries } from '../../graph/user';
 import { getInactiveBeneficiaries } from '../../graph/community';
-import { request } from 'graphql-request';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
@@ -24,9 +22,7 @@ import NoBeneficiaries from './NoBeneficiaries';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
-import config from '../../../config';
 import useFilters from '../../hooks/useFilters';
-import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 import { useGetCommunityMutation } from '../../api/community';
@@ -63,26 +59,21 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
         return null;
     }
 
-    const fetcher = (query: string) =>
-        request(config.graphUrl, query, variables);
-
-    const variables = { address: '' };
-
-    if (auth?.type?.includes(userAmbassador) && getByKey('community')) {
-        variables.address =
-            community.contractAddress !== undefined
-                ? community.contractAddress.toLowerCase()
-                : '';
-    } else if (auth?.type?.includes(userManager)) {
-        variables.address = auth?.user?.manager?.community;
-    }
-
-    const { data, error, mutate } = useSWR(
-        [getCommunityBeneficiaries, variables],
-        fetcher
+    const { data: beneficiariesCount, loading } = useQuery(
+        getCommunityBeneficiaries,
+        {
+            variables: {
+                address:
+                    auth?.type?.includes(userAmbassador) &&
+                    getByKey('community')
+                        ? community.contractAddress !== undefined
+                            ? community.contractAddress.toLowerCase()
+                            : ''
+                        : auth?.type?.includes(userManager) &&
+                          auth?.user?.manager?.community
+            }
+        }
     );
-
-    const loadingCommunity = !data && !error;
 
     useEffect(() => {
         const init = async () => {
@@ -117,16 +108,14 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
 
     // States -> 0: Added, 1: Removed, 2: Blocked
     const beneficiariesStateLength = (state: number) => {
-        return data?.beneficiaryEntities?.filter(
+        return beneficiariesCount?.beneficiaryEntities?.filter(
             (elem: any) => elem.state === state
         )?.length;
     };
 
     return (
         <ViewContainer
-            isLoading={
-                isLoading || loadingCommunity || inactiveBeneficiaries?.loading
-            }
+            isLoading={isLoading || loading || inactiveBeneficiaries?.loading}
         >
             <Box
                 fDirection={{ sm: 'row', xs: 'column' }}
@@ -139,18 +128,16 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
                     </Display>
                     <RichText content={content} g500 mt={0.25} />
                 </Box>
-                {data?.beneficiaryEntities?.length > 0 && (
+                {beneficiariesCount?.beneficiaryEntities?.length > 0 && (
                     <Button
                         icon="plus"
                         mt={{ sm: 0, xs: 1 }}
                         onClick={() =>
                             openModal('addBeneficiary', {
-                                activeBeneficiariesLength: beneficiariesStateLength(
-                                    0
-                                ),
+                                activeBeneficiariesLength:
+                                    beneficiariesStateLength(0),
                                 maxBeneficiaries:
-                                    communityDataFromHook?.maxBeneficiaries,
-                                mutate
+                                    communityDataFromHook?.maxBeneficiaries
                             })
                         }
                     >
@@ -158,7 +145,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
                     </Button>
                 )}
             </Box>
-            {data?.beneficiaryEntities?.length > 0 && !loadingCommunity ? (
+            {beneficiariesCount?.beneficiaryEntities?.length > 0 && !loading ? (
                 <Box mt={0.5}>
                     <Tabs defaultIndex={+getByKey('state')}>
                         <TabList>

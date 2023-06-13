@@ -17,13 +17,8 @@ const MicroCredit = (props: any) => {
     const [loanId, setLoanId] = useState(0);
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);
     const auth = useSelector(selectCurrentUser);
-    const {
-        getActiveLoanId,
-        loan,
-        repayLoan,
-        claimLoan,
-        isReady
-    } = useMicroCredit();
+    const { getActiveLoanId, loan, repayLoan, claimLoan, isReady } =
+        useMicroCredit();
     const router = useRouter();
     const { t } = useTranslations();
     const {

@@ -178,7 +178,7 @@ const CreateStory = () => {
                         placeholder={t('writeSomethingHere')}
                         rows={6}
                         rules={{ required: true }}
-                        withError={errors?.message}
+                        withError={!!errors?.message}
                     />
                 </Box>
                 <>

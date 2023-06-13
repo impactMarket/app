@@ -10,7 +10,7 @@ import {
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { getUserTypes } from '../utils/users';
 import { selectCurrentUser, setCredentials } from '../state/slices/auth';
-import { setCookies } from 'cookies-next';
+import { setCookie } from 'cookies-next';
 import { useDispatch, useSelector } from 'react-redux';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRecoverAccountMutation } from '../api/user';
@@ -58,7 +58,7 @@ const RecoverAccount = () => {
                 expiryDate.setTime(
                     expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000
                 );
-                setCookies('AUTH_TOKEN', payload?.data.token, {
+                setCookie('AUTH_TOKEN', payload?.data.token, {
                     expires: expiryDate,
                     path: '/'
                 });

@@ -11,6 +11,7 @@ type ProgressBarProps = {
     minValue?: number;
     state: Object;
     title?: React.ReactNode;
+    progress?: number;
 };
 
 const ProgressBar: React.FC<ProgressBarProps & BaseProgressBarProps> = (

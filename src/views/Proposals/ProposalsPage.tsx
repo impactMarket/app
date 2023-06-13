@@ -1,5 +1,5 @@
 import { Box, Pagination, Row, Spinner } from '@impact-market/ui';
-import { useCelo } from 'react-celo-impactmarket';
+import { useAccount } from 'wagmi';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import Proposal from './Proposal';
 import React, { useEffect, useState } from 'react';
@@ -27,13 +27,9 @@ export interface ProposalType {
 }
 
 const ProposalsPage = () => {
-    const { address } = useCelo();
-    const {
-        proposalCount,
-        getProposals,
-        isReady,
-        quorumVotes
-    } = useImpactMarketCouncil();
+    const { address } = useAccount();
+    const { proposalCount, getProposals, isReady, quorumVotes } =
+        useImpactMarketCouncil();
     const [proposals, setProposals] = useState<ProposalType[]>([]);
     const [loading, setLoading] = useState(false);
     const { update, getByKey } = useFilters();

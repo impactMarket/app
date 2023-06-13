@@ -165,7 +165,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     const onloveStory = async (id: number, index: number) => {
         try {
             if (!auth?.user) {
-                await connect(() => onLoveStoryFunction(id, index));
+                await connect();
             } else {
                 onLoveStoryFunction(id, index);
             }
