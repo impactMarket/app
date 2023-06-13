@@ -2154,10 +2154,12 @@
     styled-gen "^1.4.8"
     styled-reset "^4.3.4"
 
-"@impact-market/utils@4.0.0-beta.5":
-  version "4.0.0-beta.5"
-  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-4.0.0-beta.5.tgz#b0d0ce2ca6c403702541c650e87cc21fd75ad5b4"
-  integrity sha512-FGggsw/9ke2WH5k541JzvvVzf84Cjpfab3fvw9McWsn26AZXYKVbxOWHl8cRf5woKGQHgmNaDnlRip8FIqTmQA==
+"@impact-market/utils@3.4.1":
+  version "3.4.1"
+  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-3.4.1.tgz#ea7a19a7d450118b0b1b1311c3fdf9dbac92caab"
+  integrity sha512-Bt6toq6KJ3kBUllYMM+XHVYQ3z9rGhnW+2m9vzIzXxgX0A/bToNccXYDcKMslbO40eip0kl8IJv8aHQO/S4eDw==
+  dependencies:
+    "@celo/connect" "3.2.0"
 
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"

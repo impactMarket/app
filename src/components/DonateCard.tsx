@@ -37,20 +37,6 @@ interface DonateCardProps {
     action: () => void;
 }
 
-// const BoxWrapper = styled.div`
-//     Button {
-//         background: white;
-//         border: 1px solid ${colors.p500};
-//         color: ${colors.p500};
-//         width: 100%;
-
-//         p {
-//             display: flex;
-//             align-items: center;
-//         }
-//     }
-// `;
-
 const DonateCard = (props: DonateCardProps) => {
     const {
         raised,
@@ -151,25 +137,6 @@ const DonateCard = (props: DonateCardProps) => {
                     </Text>
                 </Button>
             </Box>
-            {/* 
-            Temporarily hide the ramp feature to donate
-
-            <BoxWrapper>
-                <Text flex g500 mt={0.5} small style={{justifyContent: 'center'}}>
-                    <String id="or" />
-                </Text>
-                <Button
-                    mt={0.5}
-                    onClick={triggerRamp}
-                    p50
-                    secondary
-                >
-                    <Text medium w="100%">
-                        Fiat · Revolut · Apple Pay
-                    </Text>
-                </Button>
-            </BoxWrapper>
-            */}
             {!!campaignUrl && (
                 <Box tAlign="center">
                     <Text g500 mt={0.5} small>

@@ -56,7 +56,7 @@ export const editCommunitySchema = yup.object().shape({
         .integer()
         .min(0)
         .max(100000)
-        .nullable(true),
+        .nullable(),
     maxClaim: yup
         .number()
         .moreThan(
@@ -79,7 +79,7 @@ export const addCommunitySchema = yup.object().shape({
         .integer()
         .min(0)
         .max(100000)
-        .nullable(true),
+        .nullable(),
     maxClaim: yup
         .number()
         .moreThan(

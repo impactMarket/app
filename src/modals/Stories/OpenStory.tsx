@@ -20,12 +20,8 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
 
 const OpenStory: React.FC = () => {
-    const {
-        handleClose,
-        SingleRequest,
-        setStories,
-        loveStoryById
-    } = useModal();
+    const { handleClose, SingleRequest, setStories, loveStoryById } =
+        useModal();
     const [story, setStory] = useState(SingleRequest?.data);
     const [community, setCommunity] = useState<any>({});
     const {} = usePrismicData();

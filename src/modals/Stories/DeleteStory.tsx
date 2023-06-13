@@ -20,13 +20,8 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const DeleteStory = () => {
     const [deleteStory] = useDeleteStoryMutation();
-    const {
-        handleClose,
-        removeIndexById,
-        storyId,
-        story,
-        setStories
-    } = useModal();
+    const { handleClose, removeIndexById, storyId, story, setStories } =
+        useModal();
     const { modals } = usePrismicData();
     const { t } = useTranslations();
     const {
