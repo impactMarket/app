@@ -163,16 +163,17 @@ const MicroCredit = (props: any) => {
                         overviewData={loanData}
                     />
                 )}
-                {loan.loanStatus === LoanStatus.LOAN_REJECTED  && (
+                
+                {/* {loan.loanStatus === LoanStatus.LOAN_REJECTED  && (
                     <LoanRejected
                         data={data[viewName].data}
                         overviewData={loanData}
                     />
-                )}
+                )} */}
             </Card>
-            {loan.loanStatus === LoanStatus.LOAN_REJECTED  && (
+            {/* {loan.loanStatus === LoanStatus.LOAN_REJECTED  && (
                 <InfoAccordion/>
-            )}
+            )} */}
             {/* <RepaymentHistory /> */}
         </ViewContainer>
     );
