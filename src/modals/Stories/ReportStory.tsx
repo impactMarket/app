@@ -26,13 +26,8 @@ type Inputs = {
 const ReportStory = () => {
     const [showSuccess, setShowSuccess] = useState<number>(0);
     const [reportStory] = useReportStoryMutation();
-    const {
-        handleClose,
-        storyId,
-        removeIndexById,
-        story,
-        setStories
-    } = useModal();
+    const { handleClose, storyId, removeIndexById, story, setStories } =
+        useModal();
     const { modals } = usePrismicData();
     const { t } = useTranslations();
     const {
@@ -43,9 +38,9 @@ const ReportStory = () => {
     } = useForm<Inputs>();
     const { isSubmitting, isSubmitSuccessful } = useFormState({ control });
     const storyTypes = modals?.data?.reportStoryTypes;
-    const reportOptions = Object.entries(
-        storyTypes
-    ).map(([key, value]: any) => ({ label: value.type, value: key }));
+    const reportOptions = Object.entries(storyTypes).map(
+        ([key, value]: any) => ({ label: value.type, value: key })
+    );
     const { getByKey } = useFilters();
 
     const onSubmit: SubmitHandler<any> = async (data) => {

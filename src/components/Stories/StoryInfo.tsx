@@ -99,14 +99,8 @@ const GridStyled = styled.div`
 `;
 
 const StoryInfo = (props: any) => {
-    const {
-        comments,
-        handleClose,
-        story,
-        onloveStory,
-        items,
-        onComment
-    } = props;
+    const { comments, handleClose, story, onloveStory, items, onComment } =
+        props;
     const { clear } = useFilters();
     const router = useRouter();
 

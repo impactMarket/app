@@ -23,8 +23,9 @@ const Prismic = {
         clientOptions = {},
         lang: langCode = defaultLang
     }: any) => {
-        const lang = langConfig.find(({ shortCode }) => shortCode === langCode)
-            ?.code;
+        const lang = langConfig.find(
+            ({ shortCode }) => shortCode === langCode
+        )?.code;
 
         const api = await client(clientOptions);
 

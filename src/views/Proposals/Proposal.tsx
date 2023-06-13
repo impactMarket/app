@@ -262,11 +262,12 @@ const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
                     )}
                 </CanBeRendered>
 
-                {proposals.status !== 'active' && proposals.status !== 'ready' && (
-                    <Col pb={0} pr={0}>
-                        <Label content={t('voteHasEnded')} />
-                    </Col>
-                )}
+                {proposals.status !== 'active' &&
+                    proposals.status !== 'ready' && (
+                        <Col pb={0} pr={0}>
+                            <Label content={t('voteHasEnded')} />
+                        </Col>
+                    )}
 
                 <Col flex maxW="100%" pb={0} pl={1} pt={1}>
                     {proposals.userVoted === 1 && (

@@ -32,10 +32,8 @@ const Manager: React.FC<{ isLoading?: boolean }> = (props) => {
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
-    const {
-        activeBeneficiariesTooltip,
-        inactiveBeneficiariesTooltip
-    } = extractFromView('cards') as any;
+    const { activeBeneficiariesTooltip, inactiveBeneficiariesTooltip } =
+        extractFromView('cards') as any;
 
     const auth = useSelector(selectCurrentUser);
     const router = useRouter();

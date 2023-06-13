@@ -61,7 +61,8 @@ const InnerApp = (props: AppProps) => {
     useEffect(() => {
         const getFlags = async () => {
             try {
-                const numberOfUnreadNotifications = await getUnreadNotifications().unwrap();
+                const numberOfUnreadNotifications =
+                    await getUnreadNotifications().unwrap();
 
                 store.dispatch(
                     addNotification({
@@ -106,7 +107,7 @@ const App = (props: AppProps) => {
         return <ErrorContent statusCode={404} />;
     }
 
-    if (checkCookies('AUTH_TOKEN')) {
+    if (hasCookie('AUTH_TOKEN')) {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
 
