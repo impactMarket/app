@@ -15,6 +15,7 @@ import React from 'react';
 import RichText from 'src/libs/Prismic/components/RichText';
 import Signature from 'src/components/Signature';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
+import RequestTab from './RequestTab';
 
 const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
@@ -22,7 +23,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
     const { signature } = useSelector(selectCurrentUser);
-
+   
     return (
         <ViewContainer isLoading={isLoading}>
             <Box
@@ -42,10 +43,16 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                 <Tabs>
                     <TabList>
                         <Tab title={t('repayments')} />
+                        <Tab title={'Borrowers'} />
                     </TabList>
                     <TabPanel>
                         <Box mt={0.5}>
                             <BorrowersList />
+                        </Box>
+                    </TabPanel>
+                    <TabPanel>
+                        <Box mt={0.5}>
+                            <RequestTab  />
                         </Box>
                     </TabPanel>
                 </Tabs>
