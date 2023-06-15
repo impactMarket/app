@@ -141,7 +141,7 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
             <SidebarMenuItem
                 {...forwardProps}
                 onClick={() =>
-                    openModal(newUrl.replace('[modal]', ''), forwardProps)
+                    openModal(newUrl?.replace('[modal]', ''), forwardProps)
                 }
             />
         );
