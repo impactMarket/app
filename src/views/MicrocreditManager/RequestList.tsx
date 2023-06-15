@@ -7,7 +7,8 @@ import {
     ProgressBar,
     Text,
     TextLink,
-    toast
+    toast,
+    colors
 } from '@impact-market/ui';
 import { currencyFormat } from 'src/utils/currencies';
 import { dateHelpers } from '../../helpers/dateHelpers';
@@ -49,6 +50,17 @@ const getColumns = () => {
             minWidth: 14,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
+                    <Box style={{
+                        width: '1.5rem',
+                        height: '1.5rem',
+                        borderRadius: '5px',
+                        backgroundColor: colors.p50
+                        }} 
+                        pr={0.75}
+                        mr={0.75}
+                    >
+                        
+                    </Box>
                     {!!data.avatarMediaPath ? (
                         <Avatar
                             extrasmall
