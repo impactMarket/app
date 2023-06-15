@@ -121,10 +121,10 @@ const CommmunityInfo = (props: any) => {
                                 title: t('copyAddress')
                             }
                         ]}
-                        title={formatAddress(
-                            community?.contractAddress,
-                            [6, 4]
-                        )}
+                        title={formatAddress(community?.contractAddress, [
+                            6,
+                            4
+                        ])}
                         wrapperProps={{ mt: 0.25 }}
                     />
                 </Col>

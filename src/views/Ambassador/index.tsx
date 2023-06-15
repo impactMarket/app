@@ -67,20 +67,24 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     );
 
-    const { data: beneficiariesCount, loading: beneficiariesLoading } =
-        useQuery(getCommunityBeneficiaries, {
-            variables: {
-                ids:
-                    getByKey('view') === 'myCommunities' || !getByKey('view')
-                        ? auth?.user?.ambassador?.communities
-                        : [getByKey('view')?.toString().toLowerCase()]
-            }
-        });
+    let communityBeneficiaries;
 
-    const totalBeneficiaries = beneficiariesCount?.communityEntities?.reduce(
-        (acc: any, el: any) => acc + el.beneficiaries,
-        0
-    );
+    if (getByKey('view') === 'myCommunities' || !getByKey('view')) {
+        communityBeneficiaries = [
+            getCommunityBeneficiaries,
+            { ids: auth?.user?.ambassador?.communities }
+        ];
+    } else {
+        communityBeneficiaries = [
+            getCommunityBeneficiaries,
+            { ids: [getByKey('view')?.toString().toLowerCase()] }
+        ];
+    }
+
+    const {
+        beneficiariesCount,
+        loading: beneficiariesLoading
+    } = useBeneficiariesCount(communityBeneficiaries);
 
     const community: any = myCommunities.find(
         (el: any) => getByKey('view') && el.value === getByKey('view')
@@ -173,7 +177,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                             style={{ alignItems: 'center' }}
                         >
                             <ShimmerEffect
-                                isLoading={card?.loading}
+                                isLoading={card.loading}
                                 style={{ height: '2rem', width: '20%' }}
                             >
                                 {card.number}

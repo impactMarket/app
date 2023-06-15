@@ -76,8 +76,10 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     }, [review, itemOffset, asPath]);
 
     //  Filter countries and tabs numbers
-    const { data: reviewsByCountryCount, loadingCountries: numbersLoading } =
-        useCommunitiesReviewsByCountry('pending', fetcher);
+    const {
+        data: reviewsByCountryCount,
+        loadingCountries: numbersLoading
+    } = useCommunitiesReviewsByCountry('pending', fetcher);
 
     //  Handle Pagination
     const handlePageClick = (event: any, direction?: number) => {

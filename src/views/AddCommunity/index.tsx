@@ -55,8 +55,11 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
     const [getUserPreSigned] = useGetPreSignedMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
-    const [addCommunityInfo, setAddCommunityInfo, removeAddCommunityInfo] =
-        useLocalStorage('add-community-info', undefined);
+    const [
+        addCommunityInfo,
+        setAddCommunityInfo,
+        removeAddCommunityInfo
+    ] = useLocalStorage('add-community-info', undefined);
     const unsavedChanges =
         addCommunityInfo?.address === auth?.user?.address
             ? addCommunityInfo

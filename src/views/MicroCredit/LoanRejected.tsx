@@ -18,9 +18,9 @@ const LoanRejected = (props: any) => {
         <Box fLayout="start" flex fDirection={{ sm: 'row', xs: 'column' }}>
             <Box flex fDirection={{ sm: 'row', xs: 'column' }}>
                 <Box
+                    style={{ flexBasis: '60%' }}
                     center
                     order={{ sm: 0, xs: 1 }}
-                    style={{ flexBasis: '60%' }}
                 >
                     <Image {...rejectedLoanImage} radius={0.5} w="95%" mb={1} />
                     <RichText content={rejectedLoanTitle} g800 medium />
@@ -33,12 +33,12 @@ const LoanRejected = (props: any) => {
                 </Box>
 
                 <Box
+                    ml={{ sm: '2rem', xs: 0 }}
+                    mb={{ sm: 0, xs: '1rem' }}
                     fLayout="start"
                     flex
                     fDirection={{ sm: 'column', xs: 'row' }}
                     order={{ sm: 1, xs: 0 }}
-                    ml={{ sm: '2rem', xs: 0 }}
-                    mb={{ sm: 0, xs: '1rem' }}
                     style={{
                         backgroundColor: colors.g100,
                         borderRadius: '0.5rem',

@@ -38,8 +38,10 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
     const [isLoadingCommunity, setIsLoadingCommunity] = useState(false);
     const [isAdded, setIsAdded] = useState(false);
     const [getCommunityContract] = useGetCommunityContractMutation();
-    const [communityContract, setCommunityContract] =
-        useState<CommunityContract>();
+    const [
+        communityContract,
+        setCommunityContract
+    ] = useState<CommunityContract>();
     const { view } = usePrismicData();
     const { t } = useTranslations();
 

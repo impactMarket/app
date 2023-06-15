@@ -13,8 +13,12 @@ const Alerts: React.FC<{
     hasFunds: boolean;
     requestFunds: Function;
 }> = (props) => {
-    const { canRequestFunds, fundsRemainingDays, hasFunds, requestFunds } =
-        props;
+    const {
+        canRequestFunds,
+        fundsRemainingDays,
+        hasFunds,
+        requestFunds
+    } = props;
     const [loading, setLoading] = useState(false);
     const [requestSuccess, setRequestSuccess] = useState(false);
     const [fundsReceived, setFundsReceived] = useState('0');

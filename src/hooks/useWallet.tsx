@@ -41,6 +41,14 @@ export const wagmiConfig = createConfig({
 export const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 const useWallet = () => {
+    const {
+        address,
+        connect: connectFromHook,
+        disconnect: disconnectFromHook,
+        isReady,
+        network: walletNetwork
+    } = React.useContext(AppContext);
+
     const dispatch = useDispatch();
     const { cacheClear } = useCache();
     const { chain: walletNetwork } = useNetwork();
@@ -49,86 +57,67 @@ const useWallet = () => {
 
     const [createUser, userConnection] = useCreateUserMutation();
 
-    const { open: connect } = useWeb3Modal();
-    const { disconnect } = useDisconnect();
-    const { address, isConnected } = useAccount();
+    const connect = async (callback?: Function) => {
+        if (localStorage.getItem('walletconnect')) {
+            localStorage.removeItem('walletconnect');
+        }
 
-    useEffect(() => {
-        const connectUser = async (callback?: Function) => {
-            if (!hasCookie('AUTH_TOKEN')) {
-                try {
-                    const payload = await createUser({
-                        address: getAddress(address)
-                    }).unwrap();
-
-                    dispatch(
-                        setCredentials({
-                            token: payload.token,
-                            type: getUserTypes(payload),
-                            user: { ...payload }
-                        })
-                    );
-
-                    // Create cookie to save Auth Token
-                    const expiryDate = new Date();
-
-                    expiryDate.setTime(
-                        expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000
-                    );
-                    setCookie('AUTH_TOKEN', payload.token, {
-                        expires: expiryDate,
-                        path: '/'
-                    });
-                    deleteCookie('LOCALE', { path: '/' });
-
-                    if (!!callback) {
-                        await callback();
-                    }
-
-                    return true;
-                } catch (error: any) {
-                    console.log('Error connecting to wallet!', error);
-
-                    if (error?.data?.error?.name === 'DELETION_PROCESS') {
-                        dispatch(
-                            setCredentials({
-                                token: '',
-                                type: [],
-                                user: {
-                                    deleteProcess: true,
-                                    recoverAddress: getAddress(address)
-                                }
-                            })
-                        );
-
-                        return true;
-                    }
-
-                    return false;
-                }
-            }
-        };
+        try {
+            const connector = await connectFromHook();
 
         const disconnectUser = async (callback?: Function) => {
             if (hasCookie('AUTH_TOKEN')) {
                 try {
                     cacheClear();
 
-                    if (!!callback) {
-                        await callback();
-                    }
+            dispatch(
+                setCredentials({
+                    token: payload.token,
+                    type: getUserTypes(payload),
+                    user: { ...payload }
+                })
+            );
 
                     return true;
                 } catch (error) {
                     console.log('Error disconnecting from wallet!\n', error);
 
-                    return false;
-                }
+            expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+            setCookies('AUTH_TOKEN', payload.token, {
+                expires: expiryDate,
+                path: '/'
+            });
+            removeCookies('LOCALE', { path: '/' });
+
+            if (!!callback) {
+                await callback();
             }
         };
 
-        if (isConnected && address) {
-            connectUser();
+            return true;
+        } catch (error: any) {
+            console.log('Error connecting to wallet!', error);
+
+            if (error?.data?.error?.name === 'DELETION_PROCESS') {
+                const connector = await connectFromHook();
+
+                dispatch(
+                    setCredentials({
+                        token: '',
+                        type: [],
+                        user: {
+                            deleteProcess: true,
+                            recoverAddress: getAddress(
+                                connector.kit.connection.config.from
+                            )
+                        }
+                    })
+                );
+
+                return true;
+            }
+
+            return false;
         }
 
         if (!isConnected && !address) {
@@ -140,6 +129,7 @@ const useWallet = () => {
         address,
         connect,
         disconnect,
+        isReady,
         userConnection,
         wrongNetwork
     };

@@ -18,7 +18,7 @@ const schema = yup.object().shape({
         .integer()
         .min(1)
         .max(150)
-        .nullable()
+        .nullable(true)
         .transform((_, val) => (val === '' ? null : Number(val))),
     firstName: yup.string().max(30),
     lastName: yup.string().max(30)
@@ -78,11 +78,17 @@ const Form = ({ onSubmit }: any) => {
                             hint={
                                 errors?.firstName
                                     ? t(
+<<<<<<< HEAD
                                         // @ts-ignore
                                           errors?.firstName?.message?.key
                                       )?.replace(
                                           '{{ value }}',
                                         // @ts-ignore
+=======
+                                          errors?.firstName?.message?.key
+                                      )?.replace(
+                                          '{{ value }}',
+>>>>>>> 18835b4 (Final touches rejected view)
                                           errors?.firstName?.message?.value
                                       )
                                     : ''
@@ -98,11 +104,17 @@ const Form = ({ onSubmit }: any) => {
                             hint={
                                 errors?.lastName
                                     ? t(
+<<<<<<< HEAD
                                         // @ts-ignore
                                           errors?.lastName?.message?.key
                                       )?.replace(
                                           '{{ value }}',
                                         // @ts-ignore
+=======
+                                          errors?.lastName?.message?.key
+                                      )?.replace(
+                                          '{{ value }}',
+>>>>>>> 18835b4 (Final touches rejected view)
                                           errors?.lastName?.message?.value
                                       )
                                     : ''
@@ -119,10 +131,15 @@ const Form = ({ onSubmit }: any) => {
                             control={control}
                             hint={
                                 errors?.age
+<<<<<<< HEAD
                                     // @ts-ignore
                                     ? t(errors?.age?.message?.key)?.replace(
                                           '{{ value }}',
                                           // @ts-ignore
+=======
+                                    ? t(errors?.age?.message?.key)?.replace(
+                                          '{{ value }}',
+>>>>>>> 18835b4 (Final touches rejected view)
                                           errors?.age?.message?.value
                                       )
                                     : ''

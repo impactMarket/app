@@ -13,8 +13,10 @@ const fetcher = (url: string, headers: any | {}) =>
 const Filters = ({ status }: any) => {
     const { t } = useTranslations();
     const { getByKey, update } = useFilters();
-    const { communitiesCountries, loadingCountries } =
-        useCommunitiesReviewsByCountry(status, fetcher);
+    const {
+        communitiesCountries,
+        loadingCountries
+    } = useCommunitiesReviewsByCountry(status, fetcher);
     const countries = getByKey('country')
         ? (getByKey('country') as string).split(';')
         : [];
