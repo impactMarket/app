@@ -50,7 +50,7 @@ const RequestTab: React.FC<{}> = () => {
                     }}
                 />
             {/*  */}
-            <Box mt={0.5}>
+            <Box m={0.5}>
                 <Card>
                     <Display>
                     My Awesome Title!
