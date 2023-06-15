@@ -56,8 +56,11 @@ const AddBeneficiary = () => {
     });
 
     const auth = useSelector(selectCurrentUser);
-    const { activeBeneficiariesLength, handleClose, maxBeneficiaries } =
-        useModal();
+    const {
+        activeBeneficiariesLength,
+        handleClose,
+        maxBeneficiaries
+    } = useModal();
     const { t } = useTranslations();
     const [beneficiaryAddress, setBeneficiaryAddress] = useState(null);
     const [isLoading, setIsLoading] = useState(false);

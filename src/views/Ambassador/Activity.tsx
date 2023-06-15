@@ -40,6 +40,8 @@ const getColumns = (myCommunities: any, activitySort: boolean) => {
                         community.value.toLowerCase() === data.id
                 );
 
+                console.log(communityData);
+
                 return (
                     <Box>
                         <Link
@@ -102,8 +104,18 @@ const Activity: React.FC<{
     myCommunities: any;
     setActivitySort: any;
 }> = (props) => {
+<<<<<<< HEAD
     const { activitySort, data, loading, myCommunities, setActivitySort } =
         props;
+=======
+    const {
+        activitySort,
+        data,
+        loading,
+        myCommunities,
+        setActivitySort
+    } = props;
+>>>>>>> 18835b4 (Final touches rejected view)
     const { t } = useTranslations();
 
     const handleSort = () => {

@@ -16,7 +16,7 @@ const schema = yup.object().shape({
     phone: yup
         .string()
         .matches(phoneRegExp)
-        .nullable()
+        .nullable(true)
         .transform((_, val) => (val === '' ? null : val))
 });
 

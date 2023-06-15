@@ -43,8 +43,9 @@ const AddManager = () => {
     const { t } = useTranslations();
     const [isLoading, setIsLoading] = useState(false);
 
-    const [managerIsValid, { loading: dataIsLoading }]: any =
-        useLazyQuery(managersQuery);
+    const [managerIsValid, { loading: dataIsLoading }]: any = useLazyQuery(
+        managersQuery
+    );
 
     const {
         handleSubmit,

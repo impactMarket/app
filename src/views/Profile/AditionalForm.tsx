@@ -16,7 +16,7 @@ const schema = yup.object().shape({
         .integer()
         .min(0)
         .max(20)
-        .nullable()
+        .nullable(true)
         .transform((_, val) => (val === '' ? null : Number(val)))
 });
 
@@ -63,10 +63,15 @@ const Form = ({ onSubmit }: any) => {
                     control={control}
                     hint={
                         errors?.children
+<<<<<<< HEAD
                             // @ts-ignore
                             ? t(errors?.children?.message?.key)?.replace(
                                   '{{ value }}',
                                 // @ts-ignore
+=======
+                            ? t(errors?.children?.message?.key)?.replace(
+                                  '{{ value }}',
+>>>>>>> 18835b4 (Final touches rejected view)
                                   errors?.children?.message?.value
                               )
                             : ''
