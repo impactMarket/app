@@ -1,7 +1,6 @@
 import { Box } from '@impact-market/ui';
 import Image from '../../libs/Prismic/components/Image';
 import RichText from '../../libs/Prismic/components/RichText';
-import { FilledImageFieldImage } from '@prismicio/types';
 import { colors } from '@impact-market/ui';
 
 const LoanRejected = (props: any) => {
@@ -15,16 +14,7 @@ const LoanRejected = (props: any) => {
         rejectedLoanQuest,
         rejectedLoanImage,
     } = data;
-    
 
-    // const rejectedLoanImage: FilledImageFieldImage = {
-    //     alt: "impactMarket - Loan Rejected",
-    //     dimensions: { width: 322, height: 243 },
-    //     url: "/rejectedLoan.png",
-    //     copyright: null
-    // };
-
-    
 
     return (
             <Box    
@@ -40,7 +30,13 @@ const LoanRejected = (props: any) => {
                 </Box>
                 
                 <Box
-                    style={{ flexBasis: '70%',backgroundColor: colors.g100, padding: '2rem', borderRadius: '0.5rem'   }}
+                    style={{ 
+                    flexBasis: '65%',
+                    backgroundColor: colors.g100,
+                    padding: '2rem', 
+                    borderRadius: '0.5rem',
+                    justifyContent: 'space-evenly',
+                   }}
                     ml={{ sm: '2rem', xs: 0 }}
                     mb={{ sm: 0, xs: '1rem' }}
                     fLayout="start"
@@ -48,12 +44,13 @@ const LoanRejected = (props: any) => {
                     fDirection={{ sm: 'column', xs: 'row'}}
                     order={{ sm: 1, xs: 0 }}
                 >
-                    <RichText content={rejectedLoanWhat} g900 extrasmall/>
-                        
-                    <RichText content={rejectedLoanErr} g500 extrasmall />
-                    <br/>
+                    <Box>
+                        <RichText mb={{sm: '0.2rem'}} content={rejectedLoanWhat} g900 small/>
+                        <RichText content={rejectedLoanErr} g500 extrasmall />
+                    </Box>
+                    
                     <RichText content={rejectedLoanRev} g500 extrasmall />
-                    <br/>
+                   
                     <RichText content={rejectedLoanQuest} g500 extrasmall />
                 </Box>
             </Box>
