@@ -7,7 +7,7 @@ import {
     ProgressBar,
     Text,
     TextLink,
-    toast,
+    toast
 } from '@impact-market/ui';
 import { currencyFormat } from 'src/utils/currencies';
 import { dateHelpers } from '../../helpers/dateHelpers';
@@ -24,13 +24,10 @@ import Table from './Table';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-
-
 const getColumns = () => {
     const { t } = useTranslations();
     const router = useRouter();
 
-    
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
 
@@ -108,11 +105,10 @@ const getColumns = () => {
             width: '35%'
         },
         {
-            
             minWidth: 10,
             render: (data: any) => {
                 const score = 734;
-                const progress = score/850 * 100;
+                const progress = (score / 850) * 100;
 
                 return (
                     <>
@@ -226,31 +222,25 @@ const getColumns = () => {
     ];
 };
 
-const RequestList = ( props: any ) => {
+const RequestList = (props: any) => {
     const {
-            borrowers, 
-            count ,
-            loadingBorrowers,
-            itemsPerPage,
-            setItemOffset,
-            page,
-            actualPage,
-        } = props;
+        borrowers,
+        count,
+        loadingBorrowers,
+        itemsPerPage,
+        setItemOffset,
+        page,
+        actualPage
+    } = props;
 
-    
-    
-
-
-    console.log("Borrowers",borrowers);
+    console.log('Borrowers', borrowers);
 
     return (
-
         <Table
             actualPage={actualPage}
             columns={getColumns()}
             itemsPerPage={itemsPerPage}
             loadingBorrowers={loadingBorrowers}
-            mt={1.25}
             page={page}
             count={count}
             pb={6}

@@ -62,7 +62,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
                             native: 'libera://',
                             universal: 'https://liberawallet.com'
                         },
-                        name: 'Libera',
+                        name: 'Libera'
                     }
                 ]}
                 walletImages={{

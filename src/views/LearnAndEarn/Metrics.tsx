@@ -35,8 +35,11 @@ const RewardsButton = styled(Button)`
 
 const Metrics = (props: any) => {
     const { metrics } = props;
-    const { amount = false, levelId = false, signature: signatures = false } =
-        metrics?.claimRewards?.[0] || {};
+    const {
+        amount = false,
+        levelId = false,
+        signature: signatures = false
+    } = metrics?.claimRewards?.[0] || {};
 
     const auth = useSelector(selectCurrentUser);
     const { claimRewardForLevels } = useLearnAndEarn();

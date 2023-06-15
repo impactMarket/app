@@ -23,7 +23,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
     const { signature } = useSelector(selectCurrentUser);
-   
+
     return (
         <ViewContainer isLoading={isLoading}>
             <Box
@@ -52,7 +52,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                     </TabPanel>
                     <TabPanel>
                         <Box mt={0.5}>
-                            <RequestTab  />
+                            <RequestTab />
                         </Box>
                     </TabPanel>
                 </Tabs>

@@ -78,11 +78,11 @@ const Form = ({ onSubmit }: any) => {
                             hint={
                                 errors?.firstName
                                     ? t(
-                                        // @ts-ignore
+                                          // @ts-ignore
                                           errors?.firstName?.message?.key
                                       )?.replace(
                                           '{{ value }}',
-                                        // @ts-ignore
+                                          // @ts-ignore
                                           errors?.firstName?.message?.value
                                       )
                                     : ''
@@ -98,11 +98,11 @@ const Form = ({ onSubmit }: any) => {
                             hint={
                                 errors?.lastName
                                     ? t(
-                                        // @ts-ignore
+                                          // @ts-ignore
                                           errors?.lastName?.message?.key
                                       )?.replace(
                                           '{{ value }}',
-                                        // @ts-ignore
+                                          // @ts-ignore
                                           errors?.lastName?.message?.value
                                       )
                                     : ''
@@ -119,8 +119,8 @@ const Form = ({ onSubmit }: any) => {
                             control={control}
                             hint={
                                 errors?.age
-                                    // @ts-ignore
-                                    ? t(errors?.age?.message?.key)?.replace(
+                                    ? // @ts-ignore
+                                      t(errors?.age?.message?.key)?.replace(
                                           '{{ value }}',
                                           // @ts-ignore
                                           errors?.age?.message?.value
