@@ -29,7 +29,7 @@ const config = {
     /*
      * Network jSON RPC
      */
-    useTestNet: process.env.NEXT_PUBLIC_TESTNET === "true",
+    useTestNet: process.env.NEXT_PUBLIC_TESTNET === 'true',
 
     /*
      * Images URL
@@ -100,7 +100,7 @@ const config = {
      * Feature flag for learn and earn
      */
     enableLearnEarn: process.env.NEXT_PUBLIC_ENABLE_LEARN_EARN,
-    
+
     /**
      * Support URL
      */

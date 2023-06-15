@@ -25,9 +25,7 @@ const slice = createSlice({
     } as AuthState,
     name: 'auth',
     reducers: {
-        removeCredentials: (
-            state
-        ) => {
+        removeCredentials: (state) => {
             // console.log('removeCredentials', action);
             state.user = null;
             state.token = null;
@@ -35,7 +33,7 @@ const slice = createSlice({
         },
         setCredentials: (
             state,
-            action: PayloadAction<{ user: User; token: string, type: string[] }>
+            action: PayloadAction<{ user: User; token: string; type: string[] }>
         ) => {
             // console.log('setCredentials', action);
             state.user = action.payload.user;
@@ -44,36 +42,34 @@ const slice = createSlice({
         },
         setSignature: (
             state,
-            action: PayloadAction<{ signature: string; message: string; }>
+            action: PayloadAction<{ signature: string; message: string }>
         ) => {
             state.signature = action.payload.signature;
             state.message = action.payload.message;
         },
-        setToken: (
-            state,
-            action: PayloadAction<{ token: string }>
-        ) => {
+        setToken: (state, action: PayloadAction<{ token: string }>) => {
             // console.log('setToken', action);
             state.token = action.payload.token;
         },
-        setType: (
-            state,
-            action: PayloadAction<{ type: string[] }>
-        ) => {
+        setType: (state, action: PayloadAction<{ type: string[] }>) => {
             // console.log('setType', action);
             state.type = action.payload.type;
         },
-        setUser: (
-            state,
-            action: PayloadAction<{ user: User }>
-        ) => {
+        setUser: (state, action: PayloadAction<{ user: User }>) => {
             // console.log('setUser', action);
             state.user = action.payload.user;
         }
     }
 });
 
-export const { setCredentials, removeCredentials, setSignature, setToken, setType, setUser } = slice.actions;
+export const {
+    setCredentials,
+    removeCredentials,
+    setSignature,
+    setToken,
+    setType,
+    setUser
+} = slice.actions;
 
 export const selectCurrentUser = (state: RootState) => state.auth;
 

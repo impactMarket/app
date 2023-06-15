@@ -10,7 +10,7 @@ const keysToCamel = (object: any | any[]) => {
     if (isPlainObject(object)) {
         const newObject = {} as { [key: string]: any | any[] };
 
-        Object.keys(object).forEach(key => {
+        Object.keys(object).forEach((key) => {
             newObject[kebabToCamel(key)] = keysToCamel(object[key]);
         });
 

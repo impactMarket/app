@@ -12,7 +12,7 @@ import {
     TextLink,
     openModal
 } from '@impact-market/ui';
-import { Pagination } from "../../components/Slider/SliderButtons";
+import { Pagination } from '../../components/Slider/SliderButtons';
 import {
     Story,
     useGetStoriesMutation,
@@ -42,7 +42,10 @@ interface storyListProps {
 }
 
 const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
-    const [stories, setStories] = useState<{ count: number; list: Story[] }>({ count: 0, list: [] });
+    const [stories, setStories] = useState<{ count: number; list: Story[] }>({
+        count: 0,
+        list: []
+    });
     const [offset, setOffset] = useState<number>();
     const [loadingStories, setLoadingStories] = useState(true);
     const [getStories] = useGetStoriesMutation();
@@ -74,29 +77,40 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     useEffect(() => {
         const getSingleStoryMethod = async () => {
             try {
-                if (getByKey('id')) {    
-                    const SingleRequest : any = await getSingleStory(filterId).unwrap();
+                if (getByKey('id')) {
+                    const SingleRequest: any = await getSingleStory(
+                        filterId
+                    ).unwrap();
 
-                    if(SingleRequest?.error) {
+                    if (SingleRequest?.error) {
                         clear('id');
                     } else {
-                        openModal('openStory', {SingleRequest, loveStoryById: () => loveStoryById(parseInt(filterId, 10)), setStories});
-                    }       
-                } 
+                        openModal('openStory', {
+                            SingleRequest,
+                            loveStoryById: () =>
+                                loveStoryById(parseInt(filterId, 10)),
+                            setStories
+                        });
+                    }
+                }
             } catch (error) {
                 clear('id');
             }
         };
 
-        getSingleStoryMethod(); 
-    }, [asPath])
-    
+        getSingleStoryMethod();
+    }, [asPath]);
+
     useEffect(() => {
         const getStoriesMethod = async () => {
             try {
                 setLoadingStories(true);
                 const filters = asPath.split('?')?.[1];
-                const { data, success, count } = await getStories({ filters, limit, offset }).unwrap();
+                const { data, success, count } = await getStories({
+                    filters,
+                    limit,
+                    offset
+                }).unwrap();
 
                 if (success) {
                     setStories({ count, list: stories.list.concat(data) });
@@ -168,7 +182,9 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                     return {
                         ...stories,
                         engagement: {
-                            loves: !stories?.engagement?.userLoved ? stories?.engagement?.loves + 1 : stories?.engagement?.loves - 1,
+                            loves: !stories?.engagement?.userLoved
+                                ? stories?.engagement?.loves + 1
+                                : stories?.engagement?.loves - 1,
                             userLoved: !stories?.engagement?.userLoved
                         }
                     };
@@ -177,14 +193,14 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                 return stories;
             })
         }));
-    }
+    };
 
     const removeIndexById = (id: number) => {
-        setStories((oldStories: {count: number; list: Story[]}) => ({
+        setStories((oldStories: { count: number; list: Story[] }) => ({
             count: oldStories.count--,
-            list: oldStories.list.filter((story) => story?.id !== id)})
-        )
-    }
+            list: oldStories.list.filter((story) => story?.id !== id)
+        }));
+    };
 
     const renderStory = (story: any, index: number) => {
         const items = [];
@@ -192,30 +208,53 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         if (story?.isDeletable) {
             items.unshift({
                 icon: 'trash',
-                onClick: () => openModal('deleteStory', { removeIndexById: () => removeIndexById(story?.id), storyId: story?.id }),
+                onClick: () =>
+                    openModal('deleteStory', {
+                        removeIndexById: () => removeIndexById(story?.id),
+                        storyId: story?.id
+                    }),
                 title: t('deletePost')
             });
         } else {
             items.unshift({
                 icon: 'sad',
-                onClick: () => openModal('reportStory', { removeIndexById: () => removeIndexById(story?.id), storyId: story?.id }),
+                onClick: () =>
+                    openModal('reportStory', {
+                        removeIndexById: () => removeIndexById(story?.id),
+                        storyId: story?.id
+                    }),
                 title: t('reportAsInappropriate')
             });
         }
 
         return (
             <Row fLayout="center" key={index}>
-                <Col colSize={{ sm: 10, xs: 11 }} padding={0} pb={1} >
+                <Col colSize={{ sm: 10, xs: 11 }} padding={0} pb={1}>
                     <Card mt={1} padding={0}>
-                        {story?.storyMedia && (  
-                            <Box onClick={() => update('id', story?.id)} pt="60%" style={{cursor: 'pointer', position: 'relative'}} w="100%">
-                                <Image alt="" src={story?.storyMedia[0]} style={{borderTopLeftRadius: '0.5rem', borderTopRightRadius: '0.5rem'}} />
-                                {story?.storyMedia?.length > 1 &&
+                        {story?.storyMedia && (
+                            <Box
+                                onClick={() => update('id', story?.id)}
+                                pt="60%"
+                                style={{
+                                    cursor: 'pointer',
+                                    position: 'relative'
+                                }}
+                                w="100%"
+                            >
+                                <Image
+                                    alt=""
+                                    src={story?.storyMedia[0]}
+                                    style={{
+                                        borderTopLeftRadius: '0.5rem',
+                                        borderTopRightRadius: '0.5rem'
+                                    }}
+                                />
+                                {story?.storyMedia?.length > 1 && (
                                     <Pagination
                                         currentSlide={1}
                                         slidesLength={story?.storyMedia?.length}
                                     />
-                                }             
+                                )}
                             </Box>
                         )}
                         <Row fLayout="between" mt={0.625} pl={1} pr={1}>
@@ -223,39 +262,126 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 <Row>
                                     <Box flex>
                                         <Box>
-                                            <Link href={`/communities/${story?.community?.id}`} passHref>
-                                                <Box h={3} pt="100%" style={{position: 'relative'}}  w={3}>
-                                                    <Image alt="" src={story?.community?.coverMediaPath} style={{borderRadius: "50%"}} />
+                                            <Link
+                                                href={`/communities/${story?.community?.id}`}
+                                                passHref
+                                            >
+                                                <Box
+                                                    h={3}
+                                                    pt="100%"
+                                                    style={{
+                                                        position: 'relative'
+                                                    }}
+                                                    w={3}
+                                                >
+                                                    <Image
+                                                        alt=""
+                                                        src={
+                                                            story?.community
+                                                                ?.coverMediaPath
+                                                        }
+                                                        style={{
+                                                            borderRadius: '50%'
+                                                        }}
+                                                    />
                                                 </Box>
                                             </Link>
                                         </Box>
                                         <Box ml={1} mr={1}>
-                                            <Box show={{ sm: 'flex', xs: 'none' }}>
-                                                <Link href={`/communities/${story?.community?.id}`} passHref>
+                                            <Box
+                                                show={{
+                                                    sm: 'flex',
+                                                    xs: 'none'
+                                                }}
+                                            >
+                                                <Link
+                                                    href={`/communities/${story?.community?.id}`}
+                                                    passHref
+                                                >
                                                     <TextLink>
                                                         <Text g700 semibold>
-                                                            {story?.community?.name}
+                                                            {
+                                                                story?.community
+                                                                    ?.name
+                                                            }
                                                         </Text>
                                                     </TextLink>
                                                 </Link>
                                             </Box>
-                                            <Box show={{ sm: 'none', xs: 'flex' }}>
-                                                <Link href={`/communities/${story?.community?.id}`} passHref>
+                                            <Box
+                                                show={{
+                                                    sm: 'none',
+                                                    xs: 'flex'
+                                                }}
+                                            >
+                                                <Link
+                                                    href={`/communities/${story?.community?.id}`}
+                                                    passHref
+                                                >
                                                     <TextLink>
-                                                        <Trim g700 semibold hideSeeMore rows={1} limit={20} message={story?.community?.name}/>
+                                                        <Trim
+                                                            g700
+                                                            semibold
+                                                            hideSeeMore
+                                                            rows={1}
+                                                            limit={20}
+                                                            message={
+                                                                story?.community
+                                                                    ?.name
+                                                            }
+                                                        />
                                                     </TextLink>
                                                 </Link>
                                             </Box>
                                             <Text as="div" g500 regular small>
-                                                <Box fLayout="center start" flex >
-                                                    <CountryFlag countryCode={story?.community?.country} height={1.2} mr={0.5} />
-                                                    <Box show={{ sm: 'flex', xs: 'none' }}>
+                                                <Box
+                                                    fLayout="center start"
+                                                    flex
+                                                >
+                                                    <CountryFlag
+                                                        countryCode={
+                                                            story?.community
+                                                                ?.country
+                                                        }
+                                                        height={1.2}
+                                                        mr={0.5}
+                                                    />
+                                                    <Box
+                                                        show={{
+                                                            sm: 'flex',
+                                                            xs: 'none'
+                                                        }}
+                                                    >
                                                         <Text>
-                                                            {story?.community?.city},{' '}{getCountryNameFromInitials(story?.community?.country)}
+                                                            {
+                                                                story?.community
+                                                                    ?.city
+                                                            }
+                                                            ,{' '}
+                                                            {getCountryNameFromInitials(
+                                                                story?.community
+                                                                    ?.country
+                                                            )}
                                                         </Text>
                                                     </Box>
-                                                    <Box show={{ sm: 'none', xs: 'flex' }}>
-                                                        <Trim hideSeeMore rows={1} limit={20} message={`${story?.community?.city}, ${getCountryNameFromInitials(story?.community?.country)}`}/>
+                                                    <Box
+                                                        show={{
+                                                            sm: 'none',
+                                                            xs: 'flex'
+                                                        }}
+                                                    >
+                                                        <Trim
+                                                            hideSeeMore
+                                                            rows={1}
+                                                            limit={20}
+                                                            message={`${
+                                                                story?.community
+                                                                    ?.city
+                                                            }, ${getCountryNameFromInitials(
+                                                                story?.community
+                                                                    ?.country
+                                                            )}`}
+                                                        />
                                                     </Box>
                                                 </Box>
                                             </Text>
@@ -266,16 +392,28 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             {story?.message && (
                                 <Box show={{ sm: 'none', xs: 'flex' }}>
                                     <Box>
-                                        <Trim g800 large limit={100} message={story?.message} pb={0} pt={0} rows={4} />
+                                        <Trim
+                                            g800
+                                            large
+                                            limit={100}
+                                            message={story?.message}
+                                            pb={0}
+                                            pt={0}
+                                            rows={4}
+                                        />
                                     </Box>
                                 </Box>
                             )}
-                            <Col colSize={{ sm: 3, xs: 12 }} right >
+                            <Col colSize={{ sm: 3, xs: 12 }} right>
                                 <Button
                                     fluid="xs"
                                     icon="coinStack"
-                                    mb={{sm: 0, xs: 1}}
-                                    onClick={() => router.push(`/communities/${story?.community?.id}?contribute`)}
+                                    mb={{ sm: 0, xs: 1 }}
+                                    onClick={() =>
+                                        router.push(
+                                            `/communities/${story?.community?.id}?contribute`
+                                        )
+                                    }
                                     reverse
                                 >
                                     <Text as="div" medium>
@@ -285,42 +423,88 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             </Col>
                         </Row>
                         <Box pl={1} pr={1}>
-                            <Divider mt={1.625} show={{ sm: 'flex', xs: 'none' }}/>
+                            <Divider
+                                mt={1.625}
+                                show={{ sm: 'flex', xs: 'none' }}
+                            />
                         </Box>
                         {story?.message && (
-                        <Box show={{ sm: 'flex', xs: 'none' }}>
-                            <Box pl={1} pr={1}>
-                                <Trim g800 large limit={256} message={story?.message} pb={0} pt={0} rows={4} />
+                            <Box show={{ sm: 'flex', xs: 'none' }}>
+                                <Box pl={1} pr={1}>
+                                    <Trim
+                                        g800
+                                        large
+                                        limit={256}
+                                        message={story?.message}
+                                        pb={0}
+                                        pt={0}
+                                        rows={4}
+                                    />
+                                </Box>
                             </Box>
-                        </Box>
                         )}
 
-                        <Box fLayout="start between" flex mt={{sm: 2, xs: 0}} pb={1} pl={1} pr={1}>
+                        <Box
+                            fLayout="start between"
+                            flex
+                            mt={{ sm: 2, xs: 0 }}
+                            pb={1}
+                            pl={1}
+                            pr={1}
+                        >
                             <Row fLayout="center start" margin={0} w="100%">
-                                <Col colSize={{ sm: 3, xs: 12}} padding={0}>
+                                <Col colSize={{ sm: 3, xs: 12 }} padding={0}>
                                     <Button
                                         fluid="xs"
                                         gray
-                                        icon={story?.engagement?.userLoved ? 'heartFilled' : 'heart'}
-                                        onClick={() => onloveStory(story?.id, index)}
-                                        sColor={story?.engagement?.userLoved ? 'e600' : ''}
+                                        icon={
+                                            story?.engagement?.userLoved
+                                                ? 'heartFilled'
+                                                : 'heart'
+                                        }
+                                        onClick={() =>
+                                            onloveStory(story?.id, index)
+                                        }
+                                        sColor={
+                                            story?.engagement?.userLoved
+                                                ? 'e600'
+                                                : ''
+                                        }
                                     >
                                         <Text as="div" g700 medium>
-                                            <String id={ story?.engagement?.userLoved ? 'loved' : 'love'} />
+                                            <String
+                                                id={
+                                                    story?.engagement?.userLoved
+                                                        ? 'loved'
+                                                        : 'love'
+                                                }
+                                            />
                                         </Text>
                                     </Button>
                                 </Col>
                                 {story?.engagement?.loves > 0 && (
-                                    <Col colSize={{ sm: 6, xs: 12 }} padding={0} pl={{ sm: 1, xs: 0}} pt={{ sm: 0, xs: 1}}>
+                                    <Col
+                                        colSize={{ sm: 6, xs: 12 }}
+                                        padding={0}
+                                        pl={{ sm: 1, xs: 0 }}
+                                        pt={{ sm: 0, xs: 1 }}
+                                    >
                                         <Text g600 regular small>
-                                            {story?.engagement?.loves}{' '}<String id="loves" /> 
+                                            {story?.engagement?.loves}{' '}
+                                            <String id="loves" />
                                         </Text>
                                     </Col>
                                 )}
                             </Row>
                             <CanBeRendered types={['beneficiary', 'manager']}>
-                                <Box pl={{sm: 0, xs: 1}}>
-                                    <DropdownMenu asButton icon="ellipsis" items={items} rtl wrapperProps={{ padding: 0.3 }} />
+                                <Box pl={{ sm: 0, xs: 1 }}>
+                                    <DropdownMenu
+                                        asButton
+                                        icon="ellipsis"
+                                        items={items}
+                                        rtl
+                                        wrapperProps={{ padding: 0.3 }}
+                                    />
                                 </Box>
                             </CanBeRendered>
                         </Box>
@@ -332,12 +516,14 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
 
     return (
         <div>
-            {!loadingStories && stories?.list?.length === 0 && <NoStoriesFound />}
+            {!loadingStories && stories?.list?.length === 0 && (
+                <NoStoriesFound />
+            )}
             {stories?.list.map((story: any, index: number) =>
                 renderStory(story, index)
             )}
             {(loadingStories || offset < stories?.count) && (
-                <div ref={sentryRef}> 
+                <div ref={sentryRef}>
                     <Row fLayout="center" h="50vh" pb={1} pt={1}>
                         <Spinner isActive />
                     </Row>

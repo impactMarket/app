@@ -12,7 +12,7 @@ const RepaymentHistory = () => {
         },
         {
             amount: 10.0,
-            timestamp: 1674827865 
+            timestamp: 1674827865
         },
         {
             amount: 20.5,
@@ -54,7 +54,9 @@ const RepaymentHistory = () => {
                                 {`+ ${amount} cUSD`}
                             </Text>
                         </Box>
-                        <Divider mb={idx++ === repaymentData.length ? '0' : ''} />
+                        <Divider
+                            mb={idx++ === repaymentData.length ? '0' : ''}
+                        />
                     </>
                 ))}
             </Box>

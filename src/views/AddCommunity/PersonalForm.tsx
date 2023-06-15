@@ -9,17 +9,37 @@ import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, user: PutPostUser, profilePicture: any, setProfilePicture: Function, submitCount: number }> = props => {
-    const { control, errors, isLoading, profilePicture, setProfilePicture, submitCount, user } = props;
+const PersonalForm: React.FC<{
+    control: any;
+    errors: any;
+    isLoading: boolean;
+    user: PutPostUser;
+    profilePicture: any;
+    setProfilePicture: Function;
+    submitCount: number;
+}> = (props) => {
+    const {
+        control,
+        errors,
+        isLoading,
+        profilePicture,
+        setProfilePicture,
+        submitCount,
+        user
+    } = props;
     const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
-    const { communityImageDescription, communityImageUpload } = extractFromView('formSections') as any;
+    const { communityImageDescription, communityImageUpload } = extractFromView(
+        'formSections'
+    ) as any;
 
-    const [profilePictureThumbnail, setProfilePictureThumbnail] = useState(null);
-    
+    const [profilePictureThumbnail, setProfilePictureThumbnail] = useState(
+        null
+    );
+
     const handleProfilePicture = (event: any) => {
-        if(event?.length > 0) {
+        if (event?.length > 0) {
             setProfilePicture(event[0]);
             setProfilePictureThumbnail(event[0]);
         }
@@ -29,19 +49,37 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
 
     return (
         <Box>
-            <Divider/>
-            {
-                !user?.avatarMediaPath &&
+            <Divider />
+            {!user?.avatarMediaPath && (
                 <Box>
-                    <Text g700 mb={0.25} medium small><String id="yourProfilePhoto" /></Text>
-                    <RichText content={communityImageDescription} g500 mb={0.5} small />
+                    <Text g700 mb={0.25} medium small>
+                        <String id="yourProfilePhoto" />
+                    </Text>
+                    <RichText
+                        content={communityImageDescription}
+                        g500
+                        mb={0.5}
+                        small
+                    />
                     <InputUpload
                         accept={['image/png', 'image/jpeg']}
                         control={control}
                         disabled={isLoading}
                         handleFiles={handleProfilePicture}
-                        hint={submitCount > 0 && !profilePicture ? t('fieldRequired') : ''}
-                        label={<RichText content={communityImageUpload} g500 regular small variables={{ height: 300, width: 300 }} />}
+                        hint={
+                            submitCount > 0 && !profilePicture
+                                ? t('fieldRequired')
+                                : ''
+                        }
+                        label={
+                            <RichText
+                                content={communityImageUpload}
+                                g500
+                                regular
+                                small
+                                variables={{ height: 300, width: 300 }}
+                            />
+                        }
                         multiple={false}
                         name="profileImg"
                         withError={submitCount > 0 && !profilePicture}
@@ -54,62 +92,85 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
                                 handleClick={(event: any) => {
                                     event.preventDefault();
                                     setProfilePicture(null);
-                                    setProfilePictureThumbnail(null)
+                                    setProfilePictureThumbnail(null);
                                 }}
                                 icon="trash"
-                                url={URL.createObjectURL(profilePictureThumbnail)}
+                                url={URL.createObjectURL(
+                                    profilePictureThumbnail
+                                )}
                                 w={10}
                             />
                         </Box>
                     )}
                 </Box>
-            }
-            {
-                (!user?.firstName || !user?.lastName) &&
+            )}
+            {(!user?.firstName || !user?.lastName) && (
                 <Row mt={!user?.avatarMediaPath ? 1.5 : 0}>
-                    {
-                        !user?.firstName &&
-                        <Col colSize={{ sm: 6, xs: 12 }} pb={{ sm: 0, xs: 0.75 }} pt={0}>
+                    {!user?.firstName && (
+                        <Col
+                            colSize={{ sm: 6, xs: 12 }}
+                            pb={{ sm: 0, xs: 0.75 }}
+                            pt={0}
+                        >
                             <Input
                                 control={control}
                                 disabled={isLoading}
                                 hint={
-                                    errors?.firstName?.message?.key ?
-                                    t(errors?.firstName?.message?.key)?.replace('{{ value }}', errors?.firstName?.message?.value) :
-                                    errors?.firstName ?
-                                    t('fieldRequired') :
-                                    ''
+                                    errors?.firstName?.message?.key
+                                        ? t(
+                                              errors?.firstName?.message?.key
+                                          )?.replace(
+                                              '{{ value }}',
+                                              errors?.firstName?.message?.value
+                                          )
+                                        : errors?.firstName
+                                        ? t('fieldRequired')
+                                        : ''
                                 }
                                 label={t('firstName')}
                                 name="firstName"
                                 withError={!!errors?.firstName}
                             />
                         </Col>
-                    }
-                    {
-                        !user?.lastName &&
-                        <Col colSize={{ sm: 6, xs: 12 }} pt={{ sm: 0, xs: 0.75 }}>
+                    )}
+                    {!user?.lastName && (
+                        <Col
+                            colSize={{ sm: 6, xs: 12 }}
+                            pt={{ sm: 0, xs: 0.75 }}
+                        >
                             <Input
                                 control={control}
                                 disabled={isLoading}
                                 hint={
-                                    errors?.lastName?.message?.key ?
-                                    t(errors?.lastName?.message?.key)?.replace('{{ value }}', errors?.lastName?.message?.value) :
-                                    errors?.lastName ?
-                                    t('fieldRequired') :
-                                    ''
+                                    errors?.lastName?.message?.key
+                                        ? t(
+                                              errors?.lastName?.message?.key
+                                          )?.replace(
+                                              '{{ value }}',
+                                              errors?.lastName?.message?.value
+                                          )
+                                        : errors?.lastName
+                                        ? t('fieldRequired')
+                                        : ''
                                 }
                                 label={t('lastName')}
                                 name="lastName"
                                 withError={!!errors?.lastName}
                             />
                         </Col>
-                    }
+                    )}
                 </Row>
-            }
-            {
-                !user?.email &&
-                <Box mt={!user?.avatarMediaPath || !user?.firstName || !user?.lastName ? 1.5 : 0}>
+            )}
+            {!user?.email && (
+                <Box
+                    mt={
+                        !user?.avatarMediaPath ||
+                        !user?.firstName ||
+                        !user?.lastName
+                            ? 1.5
+                            : 0
+                    }
+                >
                     <Input
                         control={control}
                         disabled={isLoading}
@@ -119,7 +180,7 @@ const PersonalForm: React.FC<{ control: any, errors: any, isLoading: boolean, us
                         withError={!!errors?.email}
                     />
                 </Box>
-            }
+            )}
         </Box>
     );
 };

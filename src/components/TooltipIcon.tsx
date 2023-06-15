@@ -14,10 +14,10 @@ const Tooltip = styled.div`
     width: max-content;
     z-index: 1;
 
-    .tooltip ::after{
+    .tooltip ::after {
         background-color: #ffffff;
         box-shadow: -0.1rem -0.1rem 0rem -0.08rem rgb(16 24 40 / 10%);
-        content: "";
+        content: '';
         height: 0.8rem;
         left: 50%;
         position: absolute;
@@ -25,7 +25,7 @@ const Tooltip = styled.div`
         transform: translateX(-50%) rotate(45deg);
         width: 0.8rem;
     }
-`
+`;
 
 interface Props {
     children: any;
@@ -34,15 +34,19 @@ interface Props {
 
 const TooltipIcon: React.FC<Props> = (props) => {
     const { children, variables } = props;
-    const [tooltipOpen, setTooltipOpen] = useState(false)
+    const [tooltipOpen, setTooltipOpen] = useState(false);
 
     return (
-        <Box ml={0.5} onMouseEnter={() => setTooltipOpen(true)} onMouseLeave={() => setTooltipOpen(false)} flex fLayout="center start" style={{cursor:'pointer', position:'relative'}}>
-            <Icon
-                g500
-                icon="infoCircle"
-            />
-            {tooltipOpen &&
+        <Box
+            ml={0.5}
+            onMouseEnter={() => setTooltipOpen(true)}
+            onMouseLeave={() => setTooltipOpen(false)}
+            flex
+            fLayout="center start"
+            style={{ cursor: 'pointer', position: 'relative' }}
+        >
+            <Icon g500 icon="infoCircle" />
+            {tooltipOpen && (
                 <Tooltip>
                     <Card className="tooltip">
                         <RichText
@@ -52,7 +56,7 @@ const TooltipIcon: React.FC<Props> = (props) => {
                         />
                     </Card>
                 </Tooltip>
-            }
+            )}
         </Box>
     );
 };

@@ -32,16 +32,26 @@ const serializer: SerializerFunction = ({
         const linkProps = { ...otherProps, ...forwardProps, href };
 
         return (
-            <TextLink key={key} {...linkProps}>{children}</TextLink>
+            <TextLink key={key} {...linkProps}>
+                {children}
+            </TextLink>
         );
     }
 
     // TODO use UI Image comp
     if (type === 'image') {
         return (
-            <Box style={{ position: 'relative'}}>
-                <Box style={{maxHeight: '100%', position: 'relative'}}>
-                    <img src={node.url} style={{maxWidth: '100%', position: 'relative', zIndex: 1}} width="100%" />
+            <Box style={{ position: 'relative' }}>
+                <Box style={{ maxHeight: '100%', position: 'relative' }}>
+                    <img
+                        src={node.url}
+                        style={{
+                            maxWidth: '100%',
+                            position: 'relative',
+                            zIndex: 1
+                        }}
+                        width="100%"
+                    />
                 </Box>
             </Box>
         );
@@ -65,7 +75,7 @@ const serializer: SerializerFunction = ({
             <Text as="div" {...forwardProps} g900 large semibold>
                 {parse(text)}
             </Text>
-        )
+        );
     }
 
     return null;

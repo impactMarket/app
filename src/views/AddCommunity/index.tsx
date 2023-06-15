@@ -1,14 +1,25 @@
 /* eslint-disable max-depth */
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Alert, Box, Button, Display, ViewContainer, openModal, toast } from '@impact-market/ui';
-import { SubmitHandler, useForm, useWatch } from "react-hook-form";
+import {
+    Alert,
+    Box,
+    Button,
+    Display,
+    ViewContainer,
+    openModal,
+    toast
+} from '@impact-market/ui';
+import { SubmitHandler, useForm, useWatch } from 'react-hook-form';
 import { addCommunitySchema } from '../../utils/communities';
 import { frequencyToNumber } from '@impact-market/utils';
 import { getCountryCurrency } from '../../utils/countries';
 import { selectCurrentUser, setUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
 import { toCamelCase } from '../../helpers/toCamelCase';
-import { useCreateCommunityMutation, useGetCommunityPreSignedMutation } from '../../api/community';
+import {
+    useCreateCommunityMutation,
+    useGetCommunityPreSignedMutation
+} from '../../api/community';
 import { useDispatch, useSelector } from 'react-redux';
 import { useGetPreSignedMutation, useUpdateUserMutation } from '../../api/user';
 import { useLocalStorage } from '../../hooks/useStorage';
@@ -23,7 +34,7 @@ import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import useWallet from '../../hooks/useWallet';
 
-const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
+const AddCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
     const auth = useSelector(selectCurrentUser);
     const language = auth?.user?.language || 'en-US';
     const { connect } = useWallet();
@@ -44,10 +55,24 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
     const [getUserPreSigned] = useGetPreSignedMutation();
     const [updateUser] = useUpdateUserMutation();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
-    const [addCommunityInfo, setAddCommunityInfo, removeAddCommunityInfo] = useLocalStorage('add-community-info', undefined);
-    const unsavedChanges = addCommunityInfo?.address === auth?.user?.address ? addCommunityInfo : null;
+    const [
+        addCommunityInfo,
+        setAddCommunityInfo,
+        removeAddCommunityInfo
+    ] = useLocalStorage('add-community-info', undefined);
+    const unsavedChanges =
+        addCommunityInfo?.address === auth?.user?.address
+            ? addCommunityInfo
+            : null;
 
-    const { handleSubmit, control, formState: { errors, submitCount }, getValues, reset, setValue } = useForm({
+    const {
+        handleSubmit,
+        control,
+        formState: { errors, submitCount },
+        getValues,
+        reset,
+        setValue
+    } = useForm({
         defaultValues: {
             baseInterval: '',
             claimAmount: '',
@@ -63,17 +88,15 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
 
     // On start, check if there is any saved info to load (only loads if there's at least one field not empty)
     useEffect(() => {
-        if(
+        if (
             unsavedChanges &&
-            (
-                !!unsavedChanges?.baseInterval ||
+            (!!unsavedChanges?.baseInterval ||
                 !!unsavedChanges?.claimAmount ||
                 !!unsavedChanges?.description ||
                 !!unsavedChanges?.incrementInterval ||
                 !!unsavedChanges?.location ||
                 !!unsavedChanges?.maxClaim ||
-                !!unsavedChanges?.name
-            )
+                !!unsavedChanges?.name)
         ) {
             openModal('reloadInfoAddCommunity', { reloadInfo });
         }
@@ -89,19 +112,24 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
         setValue('location', unsavedChanges?.location);
         setValue('maxClaim', unsavedChanges?.maxClaim);
         setValue('name', unsavedChanges?.name);
-    }
+    };
 
     // If the user has no Currency selected in the Settings, use the Currency based on the selected Country
     useEffect(() => {
-        if(!auth?.user?.currency && inputWatch?.location?.country) {
-            setCurrency(getCountryCurrency(inputWatch.location.country) || 'USD');
+        if (!auth?.user?.currency && inputWatch?.location?.country) {
+            setCurrency(
+                getCountryCurrency(inputWatch.location.country) || 'USD'
+            );
         }
     }, [inputWatch?.location]);
 
     // When changing any input, save everything to localStorage
     useEffect(() => {
-        if(isReady) {
-            setAddCommunityInfo({ address: auth?.user?.address, ...getValues() });
+        if (isReady) {
+            setAddCommunityInfo({
+                address: auth?.user?.address,
+                ...getValues()
+            });
         }
     }, [inputWatch]);
 
@@ -111,34 +139,50 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
             if (!auth?.user) {
                 try {
                     await connect();
-                } catch (error) { 
+                } catch (error) {
                     console.log(error);
                 }
             }
 
             if (auth?.user) {
-                openModal('confirmAddCommunity', { data, isSubmitting, language, onSubmit });
+                openModal('confirmAddCommunity', {
+                    data,
+                    isSubmitting,
+                    language,
+                    onSubmit
+                });
             }
         }
     };
 
     const updateUserDetails = async (data: any, updatedProfilePicture: any) => {
         return await updateUser({
-            avatarMediaPath: updatedProfilePicture?.filePath ? updatedProfilePicture?.filePath : auth?.user?.avatarMediaPath,
+            avatarMediaPath: updatedProfilePicture?.filePath
+                ? updatedProfilePicture?.filePath
+                : auth?.user?.avatarMediaPath,
             email: data.email ? data.email : auth?.user?.email,
             firstName: data.firstName ? data.firstName : auth?.user?.firstName,
             lastName: data.lastName ? data.lastName : auth?.user?.lastName
         }).unwrap();
-    }
+    };
 
-    const onSubmit = async (data: any, submitAuth: any, profilePicture: any) => {
+    const onSubmit = async (
+        data: any,
+        submitAuth: any,
+        profilePicture: any
+    ) => {
         try {
             setSubmitting(true);
 
             // Add user (If User filled his Personal info)
-            if (data?.firstName || data?.lastName || data?.email || profilePicture) {
+            if (
+                data?.firstName ||
+                data?.lastName ||
+                data?.email ||
+                profilePicture
+            ) {
                 const image = profilePicture?.type?.split('/')[1] || '';
-                let updatedProfilePicture
+                let updatedProfilePicture;
 
                 if (image) {
                     const preSigned = await getUserPreSigned(image).unwrap();
@@ -150,36 +194,41 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         });
 
                         if (result?.status === 200) {
-                            updatedProfilePicture = preSigned
+                            updatedProfilePicture = preSigned;
                         }
                     }
                 }
 
-                try {    
-                    const userResult = await updateUserDetails(data, updatedProfilePicture)
-    
+                try {
+                    const userResult = await updateUserDetails(
+                        data,
+                        updatedProfilePicture
+                    );
+
                     if (userResult) {
-                        dispatch(setUser({ user: { ...userResult }}));
+                        dispatch(setUser({ user: { ...userResult } }));
                     }
                 } catch (error: any) {
                     console.log(error);
                     toast.error(<Message id="errorOccurred" />);
-                } 
+                }
             }
 
             // Get city from City,Country dropdown
-            let city
+            let city;
 
-            if (data.location?.label?.includes('-')){
-                city = data.location?.label?.lastIndexOf('-')
+            if (data.location?.label?.includes('-')) {
+                city = data.location?.label?.lastIndexOf('-');
             }
-            if (data.location?.label?.includes(',')){
-                city = data.location?.label?.lastIndexOf(',')
+            if (data.location?.label?.includes(',')) {
+                city = data.location?.label?.lastIndexOf(',');
             }
 
             // Add Community
             const payload = {
-                city: data.location?.label?.substring(0, city)?.trim() || data.location?.label,
+                city:
+                    data.location?.label?.substring(0, city)?.trim() ||
+                    data.location?.label,
                 contractParams: {
                     baseInterval: frequencyToNumber(data.baseInterval),
                     claimAmount: data.claimAmount.toString(),
@@ -205,7 +254,9 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                 const type = communityImage.type?.split('/')[1] || '';
 
                 if (type) {
-                    const preSigned = await getCommunityPreSigned(type).unwrap();
+                    const preSigned = await getCommunityPreSigned(
+                        type
+                    ).unwrap();
 
                     if (preSigned?.uploadURL) {
                         await fetch(preSigned.uploadURL, {
@@ -219,14 +270,13 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                         }).unwrap();
 
                         if (result) {
-                            toast.success("Community added successfully!");
+                            toast.success('Community added successfully!');
                             router.push('/');
 
                             reset();
                             setCommunityImage(null);
                             removeAddCommunityInfo();
-                        }
-                        else {
+                        } else {
                             toast.error(<Message id="errorOccurred" />);
                         }
                     }
@@ -234,14 +284,17 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
             }
 
             setSubmitting(false);
-        }
-        catch(e: any) {
+        } catch (e: any) {
             console.log(e);
             setSubmitting(false);
 
-            toast.error(<Message id={toCamelCase(e.data?.error?.name, 'communityForm')} />);
+            toast.error(
+                <Message
+                    id={toCamelCase(e.data?.error?.name, 'communityForm')}
+                />
+            );
         }
-    }
+    };
 
     return (
         <ViewContainer isLoading={isLoading}>
@@ -252,16 +305,35 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                     warning
                 />
                 <Box fLayout="start between" fWrap="wrap" flex mt={2}>
-                    <Box column flex pr={{ sm: 2, xs: 0 }} w={{ sm: '75%', xs: '100%' }}>
+                    <Box
+                        column
+                        flex
+                        pr={{ sm: 2, xs: 0 }}
+                        w={{ sm: '75%', xs: '100%' }}
+                    >
                         <Display g900 medium>
                             {title}
                         </Display>
-                        { /* TODO: missing link to "learn how..." */ }
+                        {/* TODO: missing link to "learn how..." */}
                         <RichText content={content} g500 mt={0.25} />
                     </Box>
-                    <Box mt={{ sm: 0, xs: 1 }} tAlign={{ sm: 'right', xs: 'left' }} w={{ sm: '25%', xs: '100%' }}>
-                        <Button disabled={isSubmitting} icon="send" isLoading={isSubmitting} type="submit" w={{ sm: 'auto', xs: '100%' }}>
-                            {auth?.user ? <String id="submit" /> : <String id="connectWallet" />}
+                    <Box
+                        mt={{ sm: 0, xs: 1 }}
+                        tAlign={{ sm: 'right', xs: 'left' }}
+                        w={{ sm: '25%', xs: '100%' }}
+                    >
+                        <Button
+                            disabled={isSubmitting}
+                            icon="send"
+                            isLoading={isSubmitting}
+                            type="submit"
+                            w={{ sm: 'auto', xs: '100%' }}
+                        >
+                            {auth?.user ? (
+                                <String id="submit" />
+                            ) : (
+                                <String id="connectWallet" />
+                            )}
                         </Button>
                     </Box>
                 </Box>
@@ -276,7 +348,13 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = props => {
                     />
                 </Box>
                 <Box mt={1.25}>
-                    <ContractForm control={control} currency={currency} errors={errors} isLoading={isSubmitting} rates={rates} />
+                    <ContractForm
+                        control={control}
+                        currency={currency}
+                        errors={errors}
+                        isLoading={isSubmitting}
+                        rates={rates}
+                    />
                 </Box>
             </form>
         </ViewContainer>

@@ -11,7 +11,7 @@ import {
 } from '@impact-market/ui';
 import { SubmitHandler, useForm, useFormState } from 'react-hook-form';
 import { useAnonymousReportMutation } from '../api/user';
-import { useGetCommunityMutation } from '../api/community'
+import { useGetCommunityMutation } from '../api/community';
 import String from '../libs/Prismic/components/String';
 
 import { selectCurrentUser } from '../state/slices/auth';
@@ -27,9 +27,9 @@ const TEXT_LIMIT = 2000;
 const ReportSuspiciousActivity = () => {
     const { t } = useTranslations();
     const { user } = useSelector(selectCurrentUser);
-    
+
     const { handleClose } = useModal();
-    const [ success, setSuccess ] = useState(false)
+    const [success, setSuccess] = useState(false);
     const { modals } = usePrismicData();
     const {
         control,
@@ -40,10 +40,10 @@ const ReportSuspiciousActivity = () => {
     const { isSubmitting, isSubmitSuccessful } = useFormState({
         control
     });
- 
-    const [activityType, setActivityType] = useState("")
-    const [dropdownTitle, setDropdownTitle] = useState(t('selectActivityType'))
-    const [communityId, setCommunityId] = useState(0)
+
+    const [activityType, setActivityType] = useState('');
+    const [dropdownTitle, setDropdownTitle] = useState(t('selectActivityType'));
+    const [communityId, setCommunityId] = useState(0);
 
     const [anonymousReport] = useAnonymousReportMutation();
     const [getCommunity] = useGetCommunityMutation();
@@ -51,11 +51,11 @@ const ReportSuspiciousActivity = () => {
     useEffect(() => {
         const getCommunityFunc = async () => {
             try {
+                const community: any = await getCommunity(
+                    user?.beneficiary?.community
+                ).unwrap();
 
-                const community: any = await getCommunity(user?.beneficiary?.community).unwrap()
-
-                setCommunityId(community?.id)
-
+                setCommunityId(community?.id);
             } catch (error) {
                 console.log(error);
             }
@@ -66,11 +66,17 @@ const ReportSuspiciousActivity = () => {
 
     const dropdownItems = [
         {
-            onClick: () => { setActivityType('general'); setDropdownTitle(t('general')) },
+            onClick: () => {
+                setActivityType('general');
+                setDropdownTitle(t('general'));
+            },
             title: t('general')
         },
         {
-            onClick: () => { setActivityType('potential-fraud'); setDropdownTitle(t('potentialFraud')) },
+            onClick: () => {
+                setActivityType('potential-fraud');
+                setDropdownTitle(t('potentialFraud'));
+            },
             title: t('potentialFraud')
         }
     ];
@@ -85,13 +91,13 @@ const ReportSuspiciousActivity = () => {
 
             const postRequest: any = await anonymousReport(content);
 
-            if(postRequest?.error) {
-                toast.error(<RichText content="Error"/>);
+            if (postRequest?.error) {
+                toast.error(<RichText content="Error" />);
             } else {
-                setSuccess(true)
+                setSuccess(true);
             }
         } catch (error) {
-            toast.error(<RichText content="Error"/>);
+            toast.error(<RichText content="Error" />);
             console.log(error);
         }
     };
@@ -110,7 +116,7 @@ const ReportSuspiciousActivity = () => {
 
     return (
         <>
-            {!success ? 
+            {!success ? (
                 <ModalWrapper maxW={30.25} padding={1.5} w="100%">
                     <CircledIcon icon="sad" large warning />
                     <RichText
@@ -120,7 +126,11 @@ const ReportSuspiciousActivity = () => {
                         semibold
                     />
                     <RichText
-                        content={modals?.data?.reportSuspiciousActivitySomethingSuspicious[0]?.text}
+                        content={
+                            modals?.data
+                                ?.reportSuspiciousActivitySomethingSuspicious[0]
+                                ?.text
+                        }
                         g500
                         mt={0.5}
                         small
@@ -130,14 +140,14 @@ const ReportSuspiciousActivity = () => {
                             <DropdownMenu
                                 asButton
                                 headerProps={{
-                                    fLayout: "center between"
+                                    fLayout: 'center between'
                                 }}
                                 icon="chevronDown"
                                 items={dropdownItems}
                                 title={dropdownTitle}
                                 wrapperProps={{
-                                    mt:1,
-                                    w:"100%"
+                                    mt: 1,
+                                    w: '100%'
                                 }}
                             />
                         </Box>
@@ -147,7 +157,11 @@ const ReportSuspiciousActivity = () => {
                                 hint={errors?.message ? t('requiredField') : ''}
                                 limit={TEXT_LIMIT}
                                 name="message"
-                                placeholder={modals?.data?.reportSuspiciousActivityPotentialIlegalActivity[0]?.text}
+                                placeholder={
+                                    modals?.data
+                                        ?.reportSuspiciousActivityPotentialIlegalActivity[0]
+                                        ?.text
+                                }
                                 rows={6}
                                 rules={{ required: true }}
                                 withError={errors?.message}
@@ -159,17 +173,23 @@ const ReportSuspiciousActivity = () => {
                                 <Button gray onClick={handleCancel} w="100%">
                                     <RichText
                                         content={
-                                            modals?.data?.createStoryCancelButtonLabel
+                                            modals?.data
+                                                ?.createStoryCancelButtonLabel
                                         }
                                     />
                                 </Button>
                             </Col>
 
                             <Col colSize={{ sm: 6, xs: 6 }} pl={0.5}>
-                                <Button isLoading={isSubmitting} type="submit" w="100%">
+                                <Button
+                                    isLoading={isSubmitting}
+                                    type="submit"
+                                    w="100%"
+                                >
                                     <RichText
                                         content={
-                                            modals?.data?.createStoryConfirmButtonLabel
+                                            modals?.data
+                                                ?.createStoryConfirmButtonLabel
                                         }
                                     />
                                 </Button>
@@ -177,7 +197,7 @@ const ReportSuspiciousActivity = () => {
                         </Row>
                     </form>
                 </ModalWrapper>
-            :
+            ) : (
                 <ModalWrapper center maxW={25.25} padding={1.5} w="100%">
                     <CircledIcon icon="checkCircle" large success />
                     <RichText
@@ -189,16 +209,24 @@ const ReportSuspiciousActivity = () => {
                     />
                     <RichText
                         center
-                        content={modals?.data?.reportSuspiciousActivityThanks[0].text}
+                        content={
+                            modals?.data?.reportSuspiciousActivityThanks[0].text
+                        }
                         g500
                         mt={0.5}
                         small
                     />
-                    <Button gray mt={1.5} onClick={handleClose} type="button" w="100%">
+                    <Button
+                        gray
+                        mt={1.5}
+                        onClick={handleClose}
+                        type="button"
+                        w="100%"
+                    >
                         <String id="close" />
                     </Button>
                 </ModalWrapper>
-            }
+            )}
         </>
     );
 };

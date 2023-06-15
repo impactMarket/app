@@ -53,13 +53,8 @@ export const usePrismicData = (options: UsePrismicDataOptions = {}) => {
         {}
     ) as any;
 
-    const {
-        config,
-        modals,
-        userConfig,
-        translations,
-        ...forwardData
-    } = parsedKeysObject || {};
+    const { config, modals, userConfig, translations, ...forwardData } =
+        parsedKeysObject || {};
 
     const view = forwardData?.[viewName] || {};
 

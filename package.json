@@ -86,5 +86,9 @@
   },
   "resolutions": {
     "@celo/contractkit": "3.2.0"
-  }
+  },
+  "main": "index.js",
+  "repository": "git@github.com:impactMarket/app.git",
+  "author": "Marco Aurelio Salazar <90633967+marcusats@users.noreply.github.com>",
+  "license": "MIT"
 }

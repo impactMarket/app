@@ -41,27 +41,29 @@ interface PreSigned {
         id?: number;
         url?: string;
         width?: number;
-    }
+    };
     uploadURL?: string;
 }
 
 export interface Notification {
     count: number;
-    rows: [{
-        id: number;
-        userId: number;
-        type: number;
-        params: {
-            userAddress: string;
-            contentId: number;
-        };
-        read: boolean;
-        createdAt: string;
-    }]
+    rows: [
+        {
+            id: number;
+            userId: number;
+            type: number;
+            params: {
+                userAddress: string;
+                contentId: number;
+            };
+            read: boolean;
+            createdAt: string;
+        }
+    ];
 }
 
 export interface UnreadNotifications {
-    success : boolean;
+    success: boolean;
     data: number;
 }
 
@@ -77,12 +79,12 @@ export interface RecoverUser {
 
 // Define a service using a base URL and expected endpoints
 export const userApi = emptySplitApi.injectEndpoints({
-    endpoints: builder => ({
+    endpoints: (builder) => ({
         // Accept beneficiary community rules
         acceptRules: builder.mutation<void, void>({
             query: () => ({
                 body: {
-                    'action': 'beneficiary-rules'
+                    action: 'beneficiary-rules'
                 },
                 method: 'PATCH',
                 url: 'users'
@@ -95,11 +97,12 @@ export const userApi = emptySplitApi.injectEndpoints({
                 method: 'POST',
                 url: 'users/report'
             }),
-            transformResponse: (response: { data: AnonymousReport }) => response.data
+            transformResponse: (response: { data: AnonymousReport }) =>
+                response.data
         }),
         // First connect. Either register or login.
         createUser: builder.mutation<User, PutPostUser>({
-            query: body => ({
+            query: (body) => ({
                 body,
                 method: 'POST',
                 url: 'users'
@@ -114,16 +117,22 @@ export const userApi = emptySplitApi.injectEndpoints({
             })
         }),
         // Get notifications
-        getNotifications: builder.mutation<Notification[], {limit: number, offset: number}>({
-            query: ({limit, offset}) => ({
+        getNotifications: builder.mutation<
+            Notification[],
+            { limit: number; offset: number }
+        >({
+            query: ({ limit, offset }) => ({
                 method: 'GET',
-                url: `users/notifications?${!!offset ? `&offset=${offset}` : ''}${!!limit ? `&limit=${limit}` : ''}`
+                url: `users/notifications?${
+                    !!offset ? `&offset=${offset}` : ''
+                }${!!limit ? `&limit=${limit}` : ''}`
             }),
-            transformResponse: (response: { data: Notification[] }) => response.data
+            transformResponse: (response: { data: Notification[] }) =>
+                response.data
         }),
         // Get preSigned URL for image upload
         getPreSigned: builder.mutation<PreSigned, void>({
-            query: type => ({
+            query: (type) => ({
                 method: 'GET',
                 url: `users/presigned?mime=${type}`
             }),
@@ -153,16 +162,17 @@ export const userApi = emptySplitApi.injectEndpoints({
         }),
         // Recover account
         recoverAccount: builder.mutation<RecoverUser, void>({
-            query: body => ({
+            query: (body) => ({
                 body,
                 method: 'POST',
                 url: 'users'
             }),
-            transformResponse: (response: { data: RecoverUser }) => response.data
+            transformResponse: (response: { data: RecoverUser }) =>
+                response.data
         }),
         // Mark notifications as read
-        updateNotifications: builder.mutation<Notification[], {body: any}>({
-            query: ({body}) => ({
+        updateNotifications: builder.mutation<Notification[], { body: any }>({
+            query: ({ body }) => ({
                 body,
                 method: 'PUT',
                 url: 'users/notifications/read'
@@ -170,7 +180,7 @@ export const userApi = emptySplitApi.injectEndpoints({
         }),
         // Edit profile
         updateUser: builder.mutation<User, PutPostUser>({
-            query: body => ({
+            query: (body) => ({
                 body,
                 method: 'PUT',
                 url: 'users'

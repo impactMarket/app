@@ -8,7 +8,10 @@ const { gaId } = config;
 const GoogleAnalytics = () => {
     return (
         <Head>
-            <script async src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`} />
+            <script
+                async
+                src={`https://www.googletagmanager.com/gtag/js?id=${gaId}`}
+            />
             <script
                 dangerouslySetInnerHTML={{
                     __html: `

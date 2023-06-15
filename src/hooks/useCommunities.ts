@@ -10,24 +10,30 @@ const basefilters = {
     name: '',
     offset: 0,
     orderBy: 'bigger:DESC',
-    status: 'valid',
+    status: 'valid'
 };
 
 export default function useCommunities(incomingFilters: any, fetcher?: any) {
     // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const { type = null, page, state, ...requestFilters } = incomingFilters;
-    const status = state ?? basefilters.status
+    const status = state ?? basefilters.status;
     const offset = (!page ? 0 : page) * ITEMS_PER_PAGE;
-    const filters = {...basefilters, ...{offset, status, ...requestFilters}};
+    const filters = {
+        ...basefilters,
+        ...{ offset, status, ...requestFilters }
+    };
 
     const queryString = Object.keys(filters)
-        .map((key) => `${ key }=${ filters[key] }`)
+        .map((key) => `${key}=${filters[key]}`)
         .join('&');
 
     const supportingCountries = [] as any;
 
-    const { data, mutate, error } = useSWR(`/communities?${queryString}`, fetcher);
-    
+    const { data, mutate, error } = useSWR(
+        `/communities?${queryString}`,
+        fetcher
+    );
+
     const loadingCommunities = !data && !error;
     const pageCount = Math.ceil(data?.data?.count / ITEMS_PER_PAGE);
 
@@ -37,10 +43,12 @@ export default function useCommunities(incomingFilters: any, fetcher?: any) {
 
     const uniqueSupportingCountries = [...new Set(supportingCountries)];
 
-    const communitiesCountries = uniqueSupportingCountries.map((country: any) => ({
-        label: getCountryNameFromInitials(country),
-        value: country
-    }));
+    const communitiesCountries = uniqueSupportingCountries.map(
+        (country: any) => ({
+            label: getCountryNameFromInitials(country),
+            value: country
+        })
+    );
 
     return {
         communities: data || { data: [] },

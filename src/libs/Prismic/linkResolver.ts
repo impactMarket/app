@@ -44,7 +44,7 @@ const linkResolver = (doc: FilledLinkToDocumentField) => {
     if (Object.keys(viewRedirects).includes(viewKey)) {
         const path = viewRedirects[viewKey] || '';
 
-        return  `/${lang}/${path}`;
+        return `/${lang}/${path}`;
     }
 
     return `/${lang}/${clearPrefix(doc.type, 'view-')}`;

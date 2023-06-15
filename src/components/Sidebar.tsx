@@ -54,7 +54,7 @@ type User = {
     loanManager?: {
         community?: string;
         state: number;
-    },
+    };
     manager?: {
         community?: string;
         state: number;
@@ -84,10 +84,10 @@ const getUserType = (user: User) => {
     }
     if (user?.roles?.includes('councilMember')) {
         return 'council-member';
-    };
+    }
     if (user?.roles?.includes('loanManager')) {
         return 'loan-manager';
-    };
+    }
 
     return 'donor';
 };
@@ -130,7 +130,7 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
 
     if (isMyCommunity) {
         const { path } = useMyCommunity();
-        
+
         newUrl = path;
     }
 
@@ -147,7 +147,8 @@ const MenuItem = (props: SidebarMenuItemProps & { url?: string }) => {
         );
     }
 
-    const isInternalLink = newUrl?.startsWith('https:///') || newUrl?.startsWith('/');
+    const isInternalLink =
+        newUrl?.startsWith('https:///') || newUrl?.startsWith('/');
 
     const Wrapper = isInternalLink ? Link : (React.Fragment as any);
     const wrapperProps = isInternalLink ? { href: newUrl, passHref: true } : {};

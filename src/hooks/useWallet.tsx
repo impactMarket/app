@@ -13,7 +13,13 @@ import useCache from '../hooks/useCache';
 const network = config.useTestNet ? Alfajores : Mainnet;
 
 const useWallet = () => {
-    const { address, connect: connectFromHook, disconnect: disconnectFromHook, isReady, network: walletNetwork } = React.useContext(AppContext);
+    const {
+        address,
+        connect: connectFromHook,
+        disconnect: disconnectFromHook,
+        isReady,
+        network: walletNetwork
+    } = React.useContext(AppContext);
 
     const dispatch = useDispatch();
 
@@ -26,8 +32,8 @@ const useWallet = () => {
     const connect = async (callback?: Function) => {
         if (localStorage.getItem('walletconnect')) {
             localStorage.removeItem('walletconnect');
-        };
-        
+        }
+
         try {
             const connector = await connectFromHook();
 
@@ -35,17 +41,22 @@ const useWallet = () => {
                 address: getAddress(connector.kit.connection.config.from)
             }).unwrap();
 
-            dispatch(setCredentials({ 
-                token: payload.token, 
-                type: getUserTypes(payload),
-                user: { ...payload }
-            }));
+            dispatch(
+                setCredentials({
+                    token: payload.token,
+                    type: getUserTypes(payload),
+                    user: { ...payload }
+                })
+            );
 
             // Create cookie to save Auth Token
             const expiryDate = new Date();
 
-            expiryDate.setTime(expiryDate.getTime()+(30*24*60*60*1000));
-            setCookies('AUTH_TOKEN', payload.token, { expires: expiryDate, path: '/' });
+            expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+            setCookies('AUTH_TOKEN', payload.token, {
+                expires: expiryDate,
+                path: '/'
+            });
             removeCookies('LOCALE', { path: '/' });
 
             if (!!callback) {
@@ -59,16 +70,20 @@ const useWallet = () => {
             if (error?.data?.error?.name === 'DELETION_PROCESS') {
                 const connector = await connectFromHook();
 
-                dispatch(setCredentials({
-                    token: '',
-                    type: [],
-                    user: {
-                        deleteProcess: true,
-                        recoverAddress: getAddress(connector.kit.connection.config.from)
-                    },
-                }));
+                dispatch(
+                    setCredentials({
+                        token: '',
+                        type: [],
+                        user: {
+                            deleteProcess: true,
+                            recoverAddress: getAddress(
+                                connector.kit.connection.config.from
+                            )
+                        }
+                    })
+                );
 
-                return true
+                return true;
             }
 
             return false;
@@ -92,7 +107,14 @@ const useWallet = () => {
         }
     };
 
-    return { address, connect, disconnect, isReady, userConnection, wrongNetwork };
+    return {
+        address,
+        connect,
+        disconnect,
+        isReady,
+        userConnection,
+        wrongNetwork
+    };
 };
 
 export default useWallet;

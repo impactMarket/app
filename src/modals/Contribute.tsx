@@ -13,7 +13,7 @@ import {
     toast,
     useModal
 } from '@impact-market/ui';
-import { handleKnownErrors } from "../helpers/handleKnownErrors";
+import { handleKnownErrors } from '../helpers/handleKnownErrors';
 import { localeFormat } from '../utils/currencies';
 import { useCUSDBalance, useDonationMiner } from '@impact-market/utils';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -55,7 +55,7 @@ const ButtonWrapper = styled(Button)`
 
 const AlertWrapper = styled(Box)`
     a {
-        font-size:0.875rem;
+        font-size: 0.875rem;
     }
 `;
 
@@ -66,9 +66,15 @@ const Contribute = () => {
     const [approved, setApproved] = useState(0);
     const [contribution, setContribution] = useState(value);
     const { extractFromModals } = usePrismicData();
-    const { placeholder, balance, content, tip, tipTitle, title, approve: approveCUSD } = extractFromModals(
-        'contribute'
-    ) as any;
+    const {
+        placeholder,
+        balance,
+        content,
+        tip,
+        tipTitle,
+        title,
+        approve: approveCUSD
+    } = extractFromModals('contribute') as any;
     const { approve, donateToCommunity, donateToTreasury } = useDonationMiner();
     const { clear } = useFilters();
     const balanceCUSD = useCUSDBalance();
@@ -78,7 +84,8 @@ const Contribute = () => {
     });
     const insuficientFunds = contribution <= 0 || contribution > balanceCUSD;
     const isApprovalDisabled = step === 1 || insuficientFunds;
-    const isContributeDisabled = step === 0 || insuficientFunds || contribution !== approved;
+    const isContributeDisabled =
+        step === 0 || insuficientFunds || contribution !== approved;
 
     const handleChange = (e: any) => {
         if (approved > 0) {
@@ -99,12 +106,12 @@ const Contribute = () => {
             BigNumber.config({ EXPONENTIAL_AT: 29 });
             const amount = new BigNumber(contribution).toString();
 
-            toast.info(<Message id="approveTransaction"/>);
+            toast.info(<Message id="approveTransaction" />);
             const response = await approve(amount, contractAddress);
 
             if (!response?.status) {
                 processTransactionError(response, 'approve');
-                
+
                 return toast.error(<Message id="errorOccurred" />);
             }
 
@@ -131,7 +138,7 @@ const Contribute = () => {
             BigNumber.config({ EXPONENTIAL_AT: 29 });
             const amount = new BigNumber(contribution).toString();
 
-            toast.info(<Message id="approveTransaction"/>);
+            toast.info(<Message id="approveTransaction" />);
             const response = !!contractAddress
                 ? await donateToCommunity(contractAddress, amount)
                 : await donateToTreasury(amount);
@@ -273,7 +280,7 @@ const Contribute = () => {
                 </Col>
             </Row>
 
-            {loading && 
+            {loading && (
                 <AlertWrapper>
                     <Alert
                         icon="alertCircle"
@@ -281,8 +288,8 @@ const Contribute = () => {
                         mt={1}
                         title={tipTitle}
                     />
-                </AlertWrapper>   
-            }
+                </AlertWrapper>
+            )}
         </ModalWrapper>
     );
 };

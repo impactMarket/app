@@ -53,7 +53,7 @@ interface DonateCardProps {
 //             display: flex;
 //             align-items: center;
 //         }
-//     } 
+//     }
 // `;
 
 const DonateCard = (props: DonateCardProps) => {
@@ -81,15 +81,17 @@ const DonateCard = (props: DonateCardProps) => {
         const getData = async () => {
             try {
                 //  Get community's campaign URL
-                const communityCampaign = await getCommunityCampaign(community).unwrap() as any;
+                const communityCampaign = (await getCommunityCampaign(
+                    community
+                ).unwrap()) as any;
 
                 setCampaignUrl(communityCampaign?.data?.campaignUrl);
             } catch (error) {
                 console.log(error);
             }
-        }
+        };
 
-        getData()
+        getData();
     }, []);
 
     const handleMiscDonationClick = () => {
@@ -113,7 +115,7 @@ const DonateCard = (props: DonateCardProps) => {
     useEffect(() => {
         return () => {
             closeModal(() => {});
-        }
+        };
     }, []);
 
     useEffect(() => {
@@ -131,13 +133,13 @@ const DonateCard = (props: DonateCardProps) => {
         await action();
 
         setIsLoading(false);
-    }
+    };
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
 
         toast.success(<Message id="copiedAddress" />);
-    }
+    };
 
     return (
         <Card padding={1.4} w="100%">
@@ -153,7 +155,12 @@ const DonateCard = (props: DonateCardProps) => {
                 />
             </Box>
             <Box mt={1.5}>
-                <Button h={3.8} isLoading={isLoading} onClick={onClick} w="100%">
+                <Button
+                    h={3.8}
+                    isLoading={isLoading}
+                    onClick={onClick}
+                    w="100%"
+                >
                     <Text large medium>
                         <String id="donate" />
                     </Text>
@@ -178,7 +185,7 @@ const DonateCard = (props: DonateCardProps) => {
                 </Button>
             </BoxWrapper>
             */}
-            {!!campaignUrl &&
+            {!!campaignUrl && (
                 <Box tAlign="center">
                     <Text g500 mt={0.5} small>
                         <String id="or" />
@@ -197,16 +204,27 @@ const DonateCard = (props: DonateCardProps) => {
                         <Text extrasmall g500 mr={0.25}>
                             <String id="poweredBy" />
                         </Text>
-                        <a href="https://esolidar.com" rel="noreferrer noopener" target="_blank">
-                            <img alt="e-solidar logo" height="14px" src="/img/partners/esolidar.svg" width="65px" />
+                        <a
+                            href="https://esolidar.com"
+                            rel="noreferrer noopener"
+                            target="_blank"
+                        >
+                            <img
+                                alt="e-solidar logo"
+                                height="14px"
+                                src="/img/partners/esolidar.svg"
+                                width="65px"
+                            />
                         </a>
                     </Box>
                 </Box>
-            }
+            )}
             <Box fLayout="between" flex mt={1}>
                 <Box left>
                     <Text g500 left mt={1} small>
-                        {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t('backers')}`}
+                        {`${_.upperFirst(t('raisedFrom'))} ${backers} ${t(
+                            'backers'
+                        )}`}
                     </Text>
                 </Box>
                 <Box right>
@@ -218,7 +236,11 @@ const DonateCard = (props: DonateCardProps) => {
             <Box fLayout="between" flex>
                 <Box left>
                     <Text g900 semibold small>
-                        {currencyFormat(raised)} ({formatPercentage(Number.isFinite(quotient) ? quotient : 0)})
+                        {currencyFormat(raised)} (
+                        {formatPercentage(
+                            Number.isFinite(quotient) ? quotient : 0
+                        )}
+                        )
                     </Text>
                 </Box>
                 <Box right>
@@ -246,7 +268,13 @@ const DonateCard = (props: DonateCardProps) => {
                     items={[
                         {
                             icon: 'open',
-                            onClick: () => window.open(config.explorerUrl?.replace('#USER#', contractAddress)),
+                            onClick: () =>
+                                window.open(
+                                    config.explorerUrl?.replace(
+                                        '#USER#',
+                                        contractAddress
+                                    )
+                                ),
                             title: t('openInExplorer')
                         },
                         {

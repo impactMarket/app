@@ -13,7 +13,10 @@ import {
     TextLink,
     toast
 } from '@impact-market/ui';
-import { CommunityContract, useGetCommunityContractMutation } from '../../api/community';
+import {
+    CommunityContract,
+    useGetCommunityContractMutation
+} from '../../api/community';
 import { currencyFormat } from '../../utils/currencies';
 import { getCountryNameFromInitials } from '../../utils/countries';
 import { selectCurrentUser } from '../../state/slices/auth';
@@ -28,7 +31,6 @@ import String from '../../libs/Prismic/components/String';
 import generateCommunityProposal from '../../helpers/generateCommunityProposal';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-
 const Community = ({ data, requestsCount, setRequestsCount }: any) => {
     const [community] = useState(data);
     const { addCommunity } = useImpactMarketCouncil();
@@ -36,7 +38,10 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
     const [isLoadingCommunity, setIsLoadingCommunity] = useState(false);
     const [isAdded, setIsAdded] = useState(false);
     const [getCommunityContract] = useGetCommunityContractMutation();
-    const [communityContract, setCommunityContract] = useState<CommunityContract>();
+    const [
+        communityContract,
+        setCommunityContract
+    ] = useState<CommunityContract>();
     const { view } = usePrismicData();
     const { t } = useTranslations();
 
@@ -52,7 +57,9 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
         const getCommunityContractMethod = async () => {
             try {
                 setIsLoadingCommunity(true);
-                const response = await getCommunityContract(community.id).unwrap();
+                const response = await getCommunityContract(
+                    community.id
+                ).unwrap();
 
                 setCommunityContract(response);
 
@@ -81,11 +88,15 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
 
             setRequestsCount(requestsCount - 1);
             setIsLoading(false);
-            toast.success(<RichText content={view.data.messageRequestsGenerated}/>);
+            toast.success(
+                <RichText content={view.data.messageRequestsGenerated} />
+            );
         } catch (error) {
-            toast.error(<RichText content={view.data.messageRequestsNotGenerated}/>);
+            toast.error(
+                <RichText content={view.data.messageRequestsNotGenerated} />
+            );
             setIsLoading(false);
-        }  
+        }
     };
 
     return (
@@ -97,39 +108,84 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
             ) : (
                 <Card mt={1}>
                     <Row pt={1}>
-                        <Col colSize={{sm: 3, xs: 12}} pt={0}>
-                            <Box pt="100%" style={{position: 'relative'}} w="100%">
-                                <Image alt="" src={community.coverMediaPath} style={{borderRadius: '8px'}} />
+                        <Col colSize={{ sm: 3, xs: 12 }} pt={0}>
+                            <Box
+                                pt="100%"
+                                style={{ position: 'relative' }}
+                                w="100%"
+                            >
+                                <Image
+                                    alt=""
+                                    src={community.coverMediaPath}
+                                    style={{ borderRadius: '8px' }}
+                                />
                             </Box>
                         </Col>
 
-                        <Col colSize={{sm: 8, xs: 12}} pl={{sm: 1, xs: 1}} pt={0}>
+                        <Col
+                            colSize={{ sm: 8, xs: 12 }}
+                            pl={{ sm: 1, xs: 1 }}
+                            pt={0}
+                        >
                             <Display>{community.name}</Display>
                             <Box>
-                                <Text>{community.city}, {getCountryNameFromInitials(community.country)}</Text>
+                                <Text>
+                                    {community.city},{' '}
+                                    {getCountryNameFromInitials(
+                                        community.country
+                                    )}
+                                </Text>
                             </Box>
 
-                            <Link href={`/communities/${community.id}`} passHref>
+                            <Link
+                                href={`/communities/${community.id}`}
+                                passHref
+                            >
                                 <Text>
                                     <TextLink medium>
-                                        <String id="seeMore" />...
+                                        <String id="seeMore" />
+                                        ...
                                     </TextLink>
                                 </Text>
                             </Link>
 
-                            <Box pt={1}>    
-                                <RichText content={view.data.messageTotalClaimAmount} variables={{ total: (() => currencyFormat(community.contract.maxClaim, localeCurrency)) }}/>
-                                <RichText content={view.data.messageMinutesIncrement} variables={{ minutes: (communityContract?.data?.incrementInterval / 12) }}/>
+                            <Box pt={1}>
+                                <RichText
+                                    content={view.data.messageTotalClaimAmount}
+                                    variables={{
+                                        total: () =>
+                                            currencyFormat(
+                                                community.contract.maxClaim,
+                                                localeCurrency
+                                            )
+                                    }}
+                                />
+                                <RichText
+                                    content={view.data.messageMinutesIncrement}
+                                    variables={{
+                                        minutes:
+                                            communityContract?.data
+                                                ?.incrementInterval / 12
+                                    }}
+                                />
                             </Box>
 
                             <CanBeRendered types={['councilMember']}>
                                 <Box pt={1}>
                                     {!isAdded ? (
-                                        <Button disabled={isLoading} isLoading={!!isLoading} onClick={handleAddCommunity}>
+                                        <Button
+                                            disabled={isLoading}
+                                            isLoading={!!isLoading}
+                                            onClick={handleAddCommunity}
+                                        >
                                             <String id="generateProposal" />
                                         </Button>
-                                    ): (
-                                        <Label content={t('generatedSuccessfully')} icon="arrowUp" success />
+                                    ) : (
+                                        <Label
+                                            content={t('generatedSuccessfully')}
+                                            icon="arrowUp"
+                                            success
+                                        />
                                     )}
                                 </Box>
                             </CanBeRendered>
@@ -138,7 +194,7 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
                 </Card>
             )}
         </>
-    )
+    );
 };
 
 export default Community;

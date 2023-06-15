@@ -35,7 +35,7 @@ const Filters = () => {
 
         getCountriesMethod();
     }, []);
-    
+
     return (
         <Row pb={1}>
             <Col colSize={{ sm: 4, xs: 12 }}>
@@ -45,7 +45,7 @@ const Filters = () => {
                     isClearable
                     isMultiple
                     options={countries}
-                    placeholder={`${t('allCountries')} (${countries.length})` }
+                    placeholder={`${t('allCountries')} (${countries.length})`}
                     showFlag
                     withOptionsSearch
                 />

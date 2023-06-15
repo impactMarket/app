@@ -1,16 +1,24 @@
-import { Box, Card, DropdownMenu, Table, Text, colors, toast } from '@impact-market/ui';
+import {
+    Box,
+    Card,
+    DropdownMenu,
+    Table,
+    Text,
+    colors,
+    toast
+} from '@impact-market/ui';
 import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../utils/formatAddress';
 import Link from 'next/link';
 import Message from '../../libs/Prismic/components/Message';
 import React from 'react';
 import String from '../../libs/Prismic/components/String';
-import config from '../../../config'
+import config from '../../../config';
 import styled from 'styled-components';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const TableWrapper = styled(Box)`
-     > div > div {
+    > div > div {
         overflow-x: unset;
     }
 `;
@@ -22,16 +30,19 @@ const getColumns = (myCommunities: any, activitySort: boolean) => {
         navigator.clipboard.writeText(address);
 
         toast.success(<Message id="copiedAddress" />);
-    }
+    };
 
     return [
         {
-            render: (data: any) => { 
-                const communityData = myCommunities?.filter((community: { value: string; }) => community.value.toLowerCase() === data.id)
+            render: (data: any) => {
+                const communityData = myCommunities?.filter(
+                    (community: { value: string }) =>
+                        community.value.toLowerCase() === data.id
+                );
 
                 console.log(communityData);
 
-                return(
+                return (
                     <Box>
                         <Link
                             href={`/communities/${communityData[0]?.id}`}
@@ -47,7 +58,13 @@ const getColumns = (myCommunities: any, activitySort: boolean) => {
                                 items={[
                                     {
                                         icon: 'open',
-                                        onClick: () => window.open(config.explorerUrl?.replace('#USER#', data.id)),
+                                        onClick: () =>
+                                            window.open(
+                                                config.explorerUrl?.replace(
+                                                    '#USER#',
+                                                    data.id
+                                                )
+                                            ),
                                         title: t('openInExplorer')
                                     },
                                     {
@@ -59,8 +76,8 @@ const getColumns = (myCommunities: any, activitySort: boolean) => {
                                 title={formatAddress(data.id, [6, 5])}
                             />
                         </Box>
-                    </Box> 
-                )
+                    </Box>
+                );
             },
             title: t('communityName'),
             width: '80%'
@@ -68,7 +85,8 @@ const getColumns = (myCommunities: any, activitySort: boolean) => {
         {
             render: (data: any) => (
                 <Text g500 small>
-                    {dateHelpers.complete(data?.lastActivity) || t('noActivity')}
+                    {dateHelpers.complete(data?.lastActivity) ||
+                        t('noActivity')}
                 </Text>
             ),
             sortable: true,
@@ -79,8 +97,20 @@ const getColumns = (myCommunities: any, activitySort: boolean) => {
     ];
 };
 
-const Activity: React.FC<{ activitySort: boolean; data: any, loading: boolean, myCommunities: any; setActivitySort: any; }> = props => {
-    const { activitySort, data, loading, myCommunities, setActivitySort } = props;
+const Activity: React.FC<{
+    activitySort: boolean;
+    data: any;
+    loading: boolean;
+    myCommunities: any;
+    setActivitySort: any;
+}> = (props) => {
+    const {
+        activitySort,
+        data,
+        loading,
+        myCommunities,
+        setActivitySort
+    } = props;
     const { t } = useTranslations();
 
     const handleSort = () => {

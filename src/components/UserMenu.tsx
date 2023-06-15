@@ -9,31 +9,34 @@ export const getUserMenu = (roles: string[]) => {
         const rolesArr = Array.isArray(roles) ? roles : [roles];
 
         //  Get menus from user's roles
-        const activeRoles: any[] = []
+        const activeRoles: any[] = [];
 
-        userConfig?.map((prismicData: { uid: string; data: { asideMenuItems: { items: any; }[]; }; }) => 
-            rolesArr?.map(role => {
+        userConfig?.map(
+            (prismicData: {
+                uid: string;
+                data: { asideMenuItems: { items: any }[] };
+            }) =>
+                rolesArr?.map((role) => {
                     const roleKebabCase = kebabCase(role);
-                    
-                    prismicData?.uid === roleKebabCase && activeRoles?.push(prismicData?.data?.asideMenuItems[0]?.items)
-                }
-            )
-        )
+
+                    prismicData?.uid === roleKebabCase &&
+                        activeRoles?.push(
+                            prismicData?.data?.asideMenuItems[0]?.items
+                        );
+                })
+        );
 
         //  Merge menu's items
-        const mergedItems: any[] = []
-        
-        activeRoles?.map(
-            roleMenu =>
-                roleMenu?.map((items: any) =>
-                    mergedItems?.push(items)
-                )
-        );  
+        const mergedItems: any[] = [];
+
+        activeRoles?.map((roleMenu) =>
+            roleMenu?.map((items: any) => mergedItems?.push(items))
+        );
 
         //  Delete duplicated items
         const duplicates: any[] = [];
-        
-        const deletedDuplicates = mergedItems?.filter(item => {
+
+        const deletedDuplicates = mergedItems?.filter((item) => {
             const isDuplicate = duplicates?.includes(item?.url);
 
             if (!isDuplicate) {
@@ -44,12 +47,11 @@ export const getUserMenu = (roles: string[]) => {
 
             return false;
         });
-    
-        return deletedDuplicates;
 
+        return deletedDuplicates;
     } catch (error) {
         console.log(error);
-        
+
         return [];
     }
-}
+};

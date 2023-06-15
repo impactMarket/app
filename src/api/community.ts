@@ -20,7 +20,7 @@ export interface Community {
     gps?: {
         latitude: number;
         longitude: number;
-    }
+    };
     placeId?: string;
     coverMediaPath?: string;
     requestByAddress?: string;
@@ -56,24 +56,26 @@ export interface Contract {
 }
 export interface PendingCommunities {
     count: number;
-    rows: [{
-        name: string;
-        description: string;
-        country: string;
-        city: string;
-        coverMediaPath: string;
-        ambassadorAddress: string;
-        proposals?: boolean;
-        contract: {
-            maxClaim: number;
-            baseInterval: number;
-            claimAmount: number;
-            incrementInterval: number;
-        };
-        success: boolean;
-        userHasVoted?: boolean;
-    }];
-};
+    rows: [
+        {
+            name: string;
+            description: string;
+            country: string;
+            city: string;
+            coverMediaPath: string;
+            ambassadorAddress: string;
+            proposals?: boolean;
+            contract: {
+                maxClaim: number;
+                baseInterval: number;
+                claimAmount: number;
+                incrementInterval: number;
+            };
+            success: boolean;
+            userHasVoted?: boolean;
+        }
+    ];
+}
 
 export interface CommunityContract {
     data: {
@@ -81,10 +83,10 @@ export interface CommunityContract {
         claimAmount: string;
         maxClaim: string;
         baseInterval: number;
-        incrementInterval: number;  
+        incrementInterval: number;
     };
     success: boolean;
-};
+}
 
 interface PostCommunity {
     requestByAddress?: string;
@@ -109,13 +111,13 @@ interface PostCommunity {
         incrementInterval: number;
     };
     placeId?: string;
-};
+}
 
 interface PostValidCommunity {
     name: string;
     description: string;
     coverMediaPath: string;
-};
+}
 
 interface PostContractParams {
     contractParams?: {
@@ -123,8 +125,8 @@ interface PostContractParams {
         maxClaim: string;
         baseInterval: number;
         incrementInterval: number;
-    }
-};
+    };
+}
 
 interface PreSigned {
     filePath?: string;
@@ -134,7 +136,7 @@ interface PreSigned {
         id?: number;
         url?: string;
         width?: number;
-    }
+    };
     uploadURL?: string;
 }
 
@@ -149,22 +151,24 @@ interface Promoter {
     id: number;
     logoMediaPath?: string;
     name: string;
-    socialMedia?: [{
-        promoterId: number;
-        mediaType: string;
-        url: string;
-    }]
+    socialMedia?: [
+        {
+            promoterId: number;
+            mediaType: string;
+            url: string;
+        }
+    ];
 }
 
 export interface CommunityCampaign {
     id: number;
     communityId: number;
-    campaignUrl: string;  
-};
+    campaignUrl: string;
+}
 
 // Define a service using a base URL and expected endpoints
 export const communityApi = emptySplitApi.injectEndpoints({
-    endpoints: builder => ({
+    endpoints: (builder) => ({
         createCommunity: builder.mutation<Community, PostCommunity>({
             query: (body: any) => ({
                 body,
@@ -173,24 +177,33 @@ export const communityApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: Community }) => response.data
         }),
-        editContractParams: builder.mutation<Community, { id: string, body: PostContractParams}>({
-            query: ({id, body}) => ({
+        editContractParams: builder.mutation<
+            Community,
+            { id: string; body: PostContractParams }
+        >({
+            query: ({ id, body }) => ({
                 body,
                 method: 'PUT',
                 url: `communities/${id}`
             }),
             transformResponse: (response: { data: Community }) => response.data
         }),
-        editPendingCommunity: builder.mutation<Community, { id: string, body: PostCommunity }>({
-            query: ({id , body}) => ({
+        editPendingCommunity: builder.mutation<
+            Community,
+            { id: string; body: PostCommunity }
+        >({
+            query: ({ id, body }) => ({
                 body,
                 method: 'PATCH',
                 url: `communities/${id}`
             }),
             transformResponse: (response: { data: Community }) => response.data
         }),
-        editValidCommunity: builder.mutation<Community, { id: string, body: PostValidCommunity}>({
-            query: ({id, body}) => ({
+        editValidCommunity: builder.mutation<
+            Community,
+            { id: string; body: PostValidCommunity }
+        >({
+            query: ({ id, body }) => ({
                 body,
                 method: 'PUT',
                 url: `communities/${id}`
@@ -205,20 +218,25 @@ export const communityApi = emptySplitApi.injectEndpoints({
             transformResponse: (response: { data?: any }) => response.data
         }),
         //  Get claims locations
-        getClaimsLocations: builder.mutation<claimLocations[], {id: any} >({
+        getClaimsLocations: builder.mutation<claimLocations[], { id: any }>({
             query: (id: any) => ({
                 method: 'GET',
                 url: `communities/${id}/claims-location`
             }),
-            transformResponse: (response: { data?: claimLocations[] }) => response.data
+            transformResponse: (response: { data?: claimLocations[] }) =>
+                response.data
         }),
         //  Get all communities by country or/and review status
         getCommunities: builder.mutation<Communities, Record<string, any>>({
             query: (filters: Record<string, any>) => ({
                 method: 'GET',
-                url: qs.stringifyUrl({query:{ ...filters }, url:'communities'})
+                url: qs.stringifyUrl({
+                    query: { ...filters },
+                    url: 'communities'
+                })
             }),
-            transformResponse: (response: { data?: Communities }) => response.data
+            transformResponse: (response: { data?: Communities }) =>
+                response.data
         }),
         //  Get single community by id
         getCommunity: builder.mutation<Community, { id: any }>({
@@ -234,18 +252,26 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 method: 'GET',
                 url: `communities/${id}/ambassador`
             }),
-            transformResponse: (response: { data?: PutPostUser }) => response.data
+            transformResponse: (response: { data?: PutPostUser }) =>
+                response.data
         }),
-        getCommunityBeneficiaries: builder.mutation<any, {filters: string, limit: number, offset: number}>({
-            query: ({filters, limit, offset}) => ({
+        getCommunityBeneficiaries: builder.mutation<
+            any,
+            { filters: string; limit: number; offset: number }
+        >({
+            query: ({ filters, limit, offset }) => ({
                 method: 'GET',
-                url: `communities/beneficiaries?${!!filters ? `${filters}` : ''}${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}`
+                url: `communities/beneficiaries?${
+                    !!filters ? `${filters}` : ''
+                }${!!limit ? `&limit=${limit}` : ''}${
+                    !!offset ? `&offset=${offset}` : ''
+                }`
             }),
             transformResponse: (response: { data?: any }) => response.data
         }),
         //  Get community campaign URL
         getCommunityCampaign: builder.mutation<CommunityCampaign, string>({
-            query: (id: string) =>  `communities/${id}/campaign`
+            query: (id: string) => `communities/${id}/campaign`
         }),
         //  Get single community contract
         getCommunityContract: builder.mutation<CommunityContract, { id: any }>({
@@ -256,21 +282,29 @@ export const communityApi = emptySplitApi.injectEndpoints({
         }),
         // Get preSigned URL for image upload
         getCommunityPreSigned: builder.mutation<PreSigned, void>({
-            query: type => ({
+            query: (type) => ({
                 method: 'GET',
                 url: `communities/media/${type}`
             }),
             transformResponse: (response: { data: PreSigned }) => response.data
         }),
-        getPendingCommunities: builder.mutation<PendingCommunities, {limit: any, offset: number, orderBy?: string}>({
-            query: ({limit, offset, orderBy}) => ({
+        getPendingCommunities: builder.mutation<
+            PendingCommunities,
+            { limit: any; offset: number; orderBy?: string }
+        >({
+            query: ({ limit, offset, orderBy }) => ({
                 method: 'GET',
-                url: `communities?status=pending&review=accepted${!!limit ? `&limit=${limit}` : ''}${!!offset ? `&offset=${offset}` : ''}${!!orderBy ? `&orderBy=${orderBy}` : ''}&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
+                url: `communities?status=pending&review=accepted${
+                    !!limit ? `&limit=${limit}` : ''
+                }${!!offset ? `&offset=${offset}` : ''}${
+                    !!orderBy ? `&orderBy=${orderBy}` : ''
+                }&fields=id;requestByAddress;name;description;country;city;coverMediaPath;ambassadorAddress;contract.maxClaim;contract.baseInterval;contract.claimAmount;contract.incrementInterval`
             }),
-            transformResponse: (response: { data?: PendingCommunities }) => response.data
+            transformResponse: (response: { data?: PendingCommunities }) =>
+                response.data
         }),
         //  Get claims locations
-        getPromoter: builder.mutation<Promoter, {id: any} >({
+        getPromoter: builder.mutation<Promoter, { id: any }>({
             query: (id: any) => ({
                 method: 'GET',
                 url: `communities/${id}/promoter`
@@ -293,7 +327,7 @@ export const communityApi = emptySplitApi.injectEndpoints({
                 url: `communities/${id}/review`
             }),
             transformResponse: (response: { data: Update }) => response.data
-        }),
+        })
     })
 });
 

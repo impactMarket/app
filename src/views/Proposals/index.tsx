@@ -44,21 +44,21 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
                 setLoading(false);
             } catch (error) {
                 console.log(error);
-                
+
                 return false;
-            };      
+            }
         };
 
-            getCommunities();
+        getCommunities();
     }, []);
 
     const handleTab = () => {
         if (getByKey('tab') === 'proposals' || getByKey('tab') === undefined) {
-            return 0
+            return 0;
         } else if (getByKey('tab') === 'requests') {
-            return 1
-        } 
-    }
+            return 1;
+        }
+    };
 
     return (
         <ViewContainer isLoading={isLoading || loading || !isReady}>
@@ -69,14 +69,24 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
 
             <Tabs defaultIndex={handleTab()}>
                 <TabList>
-                    <Tab onClick={() => update({ 'page': 1, 'tab': 'proposals'})} title={t('proposals')}/>
-                    <Tab number={requestsCount} onClick={() => update({ 'page': 1, 'tab': 'requests'})} title={t('requests')}/>
+                    <Tab
+                        onClick={() => update({ page: 1, tab: 'proposals' })}
+                        title={t('proposals')}
+                    />
+                    <Tab
+                        number={requestsCount}
+                        onClick={() => update({ page: 1, tab: 'requests' })}
+                        title={t('requests')}
+                    />
                 </TabList>
                 <TabPanel>
                     <ProposalsPage />
                 </TabPanel>
                 <TabPanel>
-                    <AddCommunityPage requestsCount={requestsCount} setRequestsCount={setRequestsCount} />
+                    <AddCommunityPage
+                        requestsCount={requestsCount}
+                        setRequestsCount={setRequestsCount}
+                    />
                 </TabPanel>
             </Tabs>
         </ViewContainer>

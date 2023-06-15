@@ -4,13 +4,13 @@ interface Claim {
     communityId: number;
     gps: {
         latitude: number;
-        longitude: number
+        longitude: number;
     };
-};
+}
 
 // Define a service using a base URL and expected endpoints
 export const claimApi = emptySplitApi.injectEndpoints({
-    endpoints: builder => ({
+    endpoints: (builder) => ({
         saveClaimLocation: builder.mutation<Claim, Claim>({
             query: (body) => ({
                 body,

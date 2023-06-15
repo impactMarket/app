@@ -1,5 +1,11 @@
 import { ServerStyleSheet } from 'styled-components';
-import Document, { DocumentContext, Head, Html, Main, NextScript } from 'next/document';
+import Document, {
+    DocumentContext,
+    Head,
+    Html,
+    Main,
+    NextScript
+} from 'next/document';
 import React from 'react';
 
 class MyDocument extends Document {
@@ -10,10 +16,10 @@ class MyDocument extends Document {
         try {
             ctx.renderPage = () =>
                 originalRenderPage({
-                    enhanceApp: App => props => { 
+                    enhanceApp: (App) => (props) => {
                         const AppContent = App as any;
 
-                        return sheet.collectStyles(<AppContent {...props} />); 
+                        return sheet.collectStyles(<AppContent {...props} />);
                     }
                 });
 
@@ -26,12 +32,12 @@ class MyDocument extends Document {
                         {initialProps.styles}
                         {sheet.getStyleElement()}
                     </>
-                ),
+                )
             };
         } finally {
             sheet.seal();
         }
-    }
+    };
 
     render() {
         const HeadContent = Head as any;
@@ -63,9 +69,10 @@ class MyDocument extends Document {
                     {
                         // chat feature can be only in one url, so avoid enabling it
                         // eslint-disable-next-line no-process-env
-                        process.env.NEXT_PUBLIC_ENABLE_LIVE_AGENT_CHAT === 'true'
-                            ? <script type="text/javascript" src="/la-chat.js" />
-                            : null
+                        process.env.NEXT_PUBLIC_ENABLE_LIVE_AGENT_CHAT ===
+                        'true' ? (
+                            <script type="text/javascript" src="/la-chat.js" />
+                        ) : null
                     }
                 </body>
             </Html>

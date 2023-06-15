@@ -1,9 +1,20 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Alert, Box, Button, CircledIcon, Col, ModalWrapper, Row, Text, toast, useModal } from '@impact-market/ui';
-import { SubmitHandler, useForm } from "react-hook-form";
+import {
+    Alert,
+    Box,
+    Button,
+    CircledIcon,
+    Col,
+    ModalWrapper,
+    Row,
+    Text,
+    toast,
+    useModal
+} from '@impact-market/ui';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { getCommunityBeneficiaries } from '../graph/user';
 import { gql, useQuery } from '@apollo/client';
-import { handleKnownErrors } from "../helpers/handleKnownErrors";
+import { handleKnownErrors } from '../helpers/handleKnownErrors';
 import { mutate } from 'swr';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useManager } from '@impact-market/utils/useManager';
@@ -21,7 +32,7 @@ import useTranslations from '../libs/Prismic/hooks/useTranslations';
 //  Get managers community from thegraph
 const beneficiariesQuery = gql`
     query beneficiariesQuery($id: String!) {
-        beneficiaryEntities(where: {id: $id state:0}) {
+        beneficiaryEntities(where: { id: $id, state: 0 }) {
             id
         }
     }
@@ -29,37 +40,45 @@ const beneficiariesQuery = gql`
 
 const AddBeneficiary = () => {
     const { modals } = usePrismicData();
-    const { 
-        addBeneficiaryCommunityErrorTitle, 
-        addBeneficiaryCommunityErrorDescription, 
+    const {
+        addBeneficiaryCommunityErrorTitle,
+        addBeneficiaryCommunityErrorDescription,
         addBeneficiaryMaximumBeneficiaries,
         addBeneficiaryMaximumBeneficiariesDescription,
-        addBeneficiaryValoraErrorDescription, 
+        addBeneficiaryValoraErrorDescription,
         addBeneficiaryValoraErrorTitle,
         addBeneficiaryUserNotAllowed,
         addBeneficiaryUserNotAllowedDescription
-    } = modals?.data
-    
+    } = modals?.data;
+
     const schema = yup.object().shape({
-        address: yup.string().max(42),
+        address: yup.string().max(42)
     });
-    
+
     const auth = useSelector(selectCurrentUser);
-    const { activeBeneficiariesLength, handleClose, maxBeneficiaries } = useModal();
+    const {
+        activeBeneficiariesLength,
+        handleClose,
+        maxBeneficiaries
+    } = useModal();
     const { t } = useTranslations();
-    const [beneficiaryAddress, setBeneficiaryAddress] = useState(null)
-    const [isLoading, setIsLoading] = useState(false)
+    const [beneficiaryAddress, setBeneficiaryAddress] = useState(null);
+    const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState({
         description: '',
         state: false,
         title: ''
-    })
+    });
 
     const { data, loading: dataIsLoading }: any = useQuery(beneficiariesQuery, {
-        variables: { id: beneficiaryAddress?.toLowerCase() },
-    })
+        variables: { id: beneficiaryAddress?.toLowerCase() }
+    });
 
-    const { handleSubmit, control, formState: { errors } } = useForm({
+    const {
+        handleSubmit,
+        control,
+        formState: { errors }
+    } = useForm({
         defaultValues: {
             address: ''
         },
@@ -67,96 +86,113 @@ const AddBeneficiary = () => {
     });
 
     // Check if current User has access to this page
-    if(!auth?.type?.includes(userManager)) {
+    if (!auth?.type?.includes(userManager)) {
         handleClose();
 
         return null;
     }
 
-    const { canUsersBeBeneficiaries } = useManager(auth?.user?.manager?.community);
+    const { canUsersBeBeneficiaries } = useManager(
+        auth?.user?.manager?.community
+    );
     const { addBeneficiary } = useManager(auth?.user?.manager?.community);
 
-    const onSubmit: SubmitHandler<any> = (submitData: { address?: string }) => setBeneficiaryAddress(submitData?.address);
+    const onSubmit: SubmitHandler<any> = (submitData: { address?: string }) =>
+        setBeneficiaryAddress(submitData?.address);
 
     const errorMessagesHandling = (error: any) => {
         const errorMessage = error.toString().toLowerCase();
 
-        if ((activeBeneficiariesLength >= maxBeneficiaries) && (maxBeneficiaries !== 0)) {
+        if (
+            activeBeneficiariesLength >= maxBeneficiaries &&
+            maxBeneficiaries !== 0
+        ) {
             setError({
-                description: addBeneficiaryMaximumBeneficiariesDescription[0].text,
+                description:
+                    addBeneficiaryMaximumBeneficiariesDescription[0].text,
                 state: true,
                 title: addBeneficiaryMaximumBeneficiaries
-            })
+            });
         } else if (errorMessage.includes('usernotallowed')) {
-                setError({
-                    description: addBeneficiaryUserNotAllowedDescription[0].text,
-                    state: true,
-                    title: addBeneficiaryUserNotAllowed
-                })
-            } else {
-                setError({
-                    description: addBeneficiaryValoraErrorDescription[0].text,
-                    state: true,
-                    title: addBeneficiaryValoraErrorTitle
-                })
-            } 
+            setError({
+                description: addBeneficiaryUserNotAllowedDescription[0].text,
+                state: true,
+                title: addBeneficiaryUserNotAllowed
+            });
+        } else {
+            setError({
+                description: addBeneficiaryValoraErrorDescription[0].text,
+                state: true,
+                title: addBeneficiaryValoraErrorTitle
+            });
+        }
     };
 
     useEffect(() => {
         if (data?.beneficiaryEntities?.length === 0) {
             const addManagerFunc = async () => {
                 try {
-                    setIsLoading(true)
+                    setIsLoading(true);
 
                     setError({
                         description: '',
                         state: false,
-                        title:''
-                    })
+                        title: ''
+                    });
 
                     //  Check if user can be Beneficiary
                     await canUsersBeBeneficiaries([beneficiaryAddress])
-                        .then( async () => {
-                            toast.info(<Message id="approveTransaction"/>);
-                            const { status } = await addBeneficiary(beneficiaryAddress);
+                        .then(async () => {
+                            toast.info(<Message id="approveTransaction" />);
+                            const { status } = await addBeneficiary(
+                                beneficiaryAddress
+                            );
 
-                            if(status) {
+                            if (status) {
                                 handleClose();
 
-                                mutate('/communities/beneficiaries?limit=7&offset=0&orderBy=since:desc&state=0');
-                                mutate([getCommunityBeneficiaries, {address: auth?.user?.manager?.community}]);
+                                mutate(
+                                    '/communities/beneficiaries?limit=7&offset=0&orderBy=since:desc&state=0'
+                                );
+                                mutate([
+                                    getCommunityBeneficiaries,
+                                    { address: auth?.user?.manager?.community }
+                                ]);
 
-                                setBeneficiaryAddress(null)
-        
-                                setIsLoading(false)
-        
-                                toast.success(<Message id="beneficiaryAdded" />);
-                            }
-                            else {
-                                processTransactionError(error, 'add_beneficiary');
+                                setBeneficiaryAddress(null);
+
+                                setIsLoading(false);
+
+                                toast.success(
+                                    <Message id="beneficiaryAdded" />
+                                );
+                            } else {
+                                processTransactionError(
+                                    error,
+                                    'add_beneficiary'
+                                );
 
                                 setError({
                                     description: t('pleaseTryAgainLater'),
                                     state: true,
                                     title: t('somethingWentWrong')
-                                })
+                                });
                             }
-        
-                            return setIsLoading(false)
 
-                        }).catch((error) => {
+                            return setIsLoading(false);
+                        })
+                        .catch((error) => {
                             handleKnownErrors(error);
                             processTransactionError(error, 'add_beneficiary');
                             errorMessagesHandling(error);
 
-                            console.log(error)
+                            console.log(error);
 
-                            return setIsLoading(false)
-                        })
+                            return setIsLoading(false);
+                        });
 
-                    return setIsLoading(false)               
-                }
-                catch(e) {
+                    return setIsLoading(false);
+                } catch (e) {
                     handleKnownErrors(error);
                     processTransactionError(error, 'add_beneficiary');
 
@@ -164,13 +200,13 @@ const AddBeneficiary = () => {
                         description: t('pleaseTryAgainLater'),
                         state: true,
                         title: t('somethingWentWrong')
-                    })
+                    });
 
                     return setIsLoading(false);
                 }
-            }
+            };
 
-            addManagerFunc()
+            addManagerFunc();
         }
 
         if (!!data?.beneficiaryEntities?.length) {
@@ -178,21 +214,20 @@ const AddBeneficiary = () => {
                 description: addBeneficiaryCommunityErrorDescription[0].text,
                 state: true,
                 title: addBeneficiaryCommunityErrorTitle
-            })
+            });
         }
-
-    }, [data])
+    }, [data]);
 
     return (
         <ModalWrapper maxW={30.25} padding={1.5} w="100%">
-            <CircledIcon icon="userPlus" info medium /> 
+            <CircledIcon icon="userPlus" info medium />
             <Text g900 large mt={1.25} semibold>
                 <String id="addBeneficiary" />
             </Text>
             <Message g500 id="monitorAllTransactions" mt={0.5} small />
             <Box mt={1.25}>
                 <form onSubmit={handleSubmit(onSubmit)}>
-                    <Input 
+                    <Input
                         control={control}
                         hint={errors?.address ? t('requiredField') : ''}
                         label={t('beneficiaryValoraWalletAddress')}
@@ -200,7 +235,7 @@ const AddBeneficiary = () => {
                         rules={{ required: true }}
                         withError={!!errors?.address}
                     />
-                    {error?.state &&
+                    {error?.state && (
                         <Row margin={0} mt={1} w="100%">
                             <Alert
                                 error
@@ -209,18 +244,29 @@ const AddBeneficiary = () => {
                                 title={error?.title}
                             />
                         </Row>
-                    }                    
+                    )}
                     <Row fLayout="between" margin={0} mt={1} w="100%">
                         <Col colSize={6} pl={0} pr={0.375}>
                             <Box flex h="100%">
-                                <Button disabled={isLoading} gray onClick={handleClose} type="button" w="100%">
+                                <Button
+                                    disabled={isLoading}
+                                    gray
+                                    onClick={handleClose}
+                                    type="button"
+                                    w="100%"
+                                >
                                     <String id="cancel" />
                                 </Button>
                             </Box>
                         </Col>
                         <Col colSize={6} pl={0.375} pr={0}>
                             <Box flex h="100%">
-                                <Button disabled={dataIsLoading} isLoading={isLoading} type="submit" w="100%">
+                                <Button
+                                    disabled={dataIsLoading}
+                                    isLoading={isLoading}
+                                    type="submit"
+                                    w="100%"
+                                >
                                     <String id="addBeneficiary" />
                                 </Button>
                             </Box>
@@ -229,7 +275,7 @@ const AddBeneficiary = () => {
                 </form>
             </Box>
         </ModalWrapper>
-    )
-}
+    );
+};
 
 export default AddBeneficiary;

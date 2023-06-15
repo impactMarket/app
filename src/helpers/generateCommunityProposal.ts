@@ -45,8 +45,17 @@ const getTranches = () => {
     };
 };
 
-const generateCommunityProposal = ( community: Community, contract: Contract ) => {
-    const { ambassadorAddress, requestByAddress, id, name, description } = community;
+const generateCommunityProposal = (
+    community: Community,
+    contract: Contract
+) => {
+    const {
+        ambassadorAddress,
+        requestByAddress,
+        id,
+        name,
+        description
+    } = community;
     const { claimAmount, maxClaim, baseInterval, incrementInterval } = contract;
     const { minTranche, maxTranche } = getTranches();
     const { maxBeneficiaries, decreaseStep, exponential } = PROPOSAL_CONSTANTS;
@@ -60,7 +69,7 @@ const generateCommunityProposal = ( community: Community, contract: Contract ) =
         managers: [requestByAddress],
         maxBeneficiaries,
         maxClaim: toToken(maxClaim),
-        maxTranche: toToken(maxTranche , { EXPONENTIAL_AT: exponential }),
+        maxTranche: toToken(maxTranche, { EXPONENTIAL_AT: exponential }),
         minTranche: toToken(minTranche),
         proposalDescription: `
         ## Description:
@@ -75,7 +84,7 @@ const generateCommunityProposal = ( community: Community, contract: Contract ) =
 
         More details: ${config.baseUrl}/communities/${id}`,
         proposalTitle: `[New Community] ${name}`,
-        tokenAddress: config.cUSDAddress,
+        tokenAddress: config.cUSDAddress
     };
 };
 

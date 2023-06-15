@@ -16,7 +16,11 @@ export const getCommunityEntity = gql`
 
 export const getCommunityEntities = gql`
     query getCommunityEntities($ids: [String], $orderDirection: String) {
-        communityEntities(orderBy: lastActivity, orderDirection: $orderDirection, where: {id_in: $ids}) {
+        communityEntities(
+            orderBy: lastActivity
+            orderDirection: $orderDirection
+            where: { id_in: $ids }
+        ) {
             id
             lastActivity
         }
@@ -33,7 +37,7 @@ export const getBeneficiaries = gql`
 
 export const getCommunityBeneficiaries = gql`
     query getBeneficiaries($ids: [String]) {
-        communityEntities(where: {id_in: $ids}) {
+        communityEntities(where: { id_in: $ids }) {
             beneficiaries
         }
     }
@@ -41,7 +45,9 @@ export const getCommunityBeneficiaries = gql`
 
 export const getInactiveBeneficiaries = gql`
     query getInactiveBeneficiaries($lastActivity_lt: Int!, $address: String!) {
-        beneficiaryEntities(where: { lastActivity_lt: $lastActivity_lt, community: $address }){
+        beneficiaryEntities(
+            where: { lastActivity_lt: $lastActivity_lt, community: $address }
+        ) {
             id
             address
             since

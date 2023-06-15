@@ -5,28 +5,25 @@ export type Level = {
     currency: string | null;
     rate: number | null;
     id: {
-        alternate_languages: [],
-        lang: string,
-        lessons: [],
-        title: string
-    }
+        alternate_languages: [];
+        lang: string;
+        lessons: [];
+        title: string;
+    };
 };
 interface LevelState {
-    levels: Level[]
-};
+    levels: Level[];
+}
 
 const slice = createSlice({
     initialState: {
-        levels: [] 
+        levels: []
     } as LevelState,
     name: 'learnAndEarn',
     reducers: {
-        setLevels: (
-            state,
-            action: PayloadAction<Level[]>
-        ) => {
+        setLevels: (state, action: PayloadAction<Level[]>) => {
             state.levels = action.payload;
-        },
+        }
     }
 });
 

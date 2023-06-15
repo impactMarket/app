@@ -17,7 +17,11 @@ const Filters = (props: FilterProps) => {
     const { t } = useTranslations();
     const { update } = useFilters();
 
-    const onInputChange = ( field: string, value: string | number, timeout: number = 0 ) => {
+    const onInputChange = (
+        field: string,
+        value: string | number,
+        timeout: number = 0
+    ) => {
         if (timeoutFilter) clearTimeout(timeoutFilter);
         timeoutFilter = setTimeout(() => update(field, value), timeout);
     };

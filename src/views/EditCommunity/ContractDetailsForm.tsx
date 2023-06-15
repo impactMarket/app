@@ -45,8 +45,8 @@ const ContractDetailsForm = ({ community, currency, rates, formData }: any) => {
 
     const onSubmit = async (data: any) => {
         try {
-            toast.info(<Message id="approveTransaction"/>);
-            
+            toast.info(<Message id="approveTransaction" />);
+
             const res = await updateBeneficiaryParams({
                 baseInterval: data.baseInterval === 'day' ? '17280' : '120960',
                 claimAmount: toToken(data?.claimAmount),

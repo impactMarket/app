@@ -21,7 +21,7 @@ import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
 import { gql, useQuery } from '@apollo/client';
-import { handleKnownErrors } from "../helpers/handleKnownErrors";
+import { handleKnownErrors } from '../helpers/handleKnownErrors';
 import { selectCurrentUser } from '../state/slices/auth';
 import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
@@ -100,17 +100,13 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
     const {
         isReady,
         claim,
-        beneficiary: { 
-            claimedAmount, 
-            claimCooldown, 
-            isClaimable, 
-            fundsRemainingDays, 
-            community: { 
-                claimAmount, 
-                hasFunds, 
-                maxClaim 
-            }
-        },
+        beneficiary: {
+            claimedAmount,
+            claimCooldown,
+            isClaimable,
+            fundsRemainingDays,
+            community: { claimAmount, hasFunds, maxClaim }
+        }
     } = useBeneficiary(auth?.user?.beneficiary?.community);
 
     const { community, loadingCommunity } = useCommunity(
@@ -132,7 +128,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         try {
             toggleLoadingButton(true);
 
-            toast.info(<Message id="approveTransaction"/>);
+            toast.info(<Message id="approveTransaction" />);
             await claim().then(({ status }) => {
                 if (status) {
                     const communityPosition: {
@@ -198,18 +194,20 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
 
     const [cardType, setCardType] = useState(0);
     const [cardIcon, setCardIcon] = useState('clock');
-    const [cardIconState, setCardIconState] = useState({ warning: true }) as any;
+    const [cardIconState, setCardIconState] = useState({
+        warning: true
+    }) as any;
     const [cardTitle, setCardTitle] = useState('');
     const [cardMessage, setCardMessage] = useState('');
     const [cardImage, setCardImage] = useState('') as any;
     const claimAmountDisplay = currencyFormat(claimAmount, localeCurrency);
-    
+
     useEffect(() => {
         if (isClaimable || claimAllowed) {
             if (hasFunds) {
-                setCardType(2)
+                setCardType(2);
             } else {
-                setCardType(1)
+                setCardType(1);
             }
         } else {
             setCardType(0);
@@ -217,7 +215,13 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
     }, [isClaimable, hasFunds, claimAllowed]);
 
     useEffect(() => {
-        setCardIcon(cardType === 0 ? 'clock' : cardType === 1 ? 'alertCircle' : 'coinStack');
+        setCardIcon(
+            cardType === 0
+                ? 'clock'
+                : cardType === 1
+                ? 'alertCircle'
+                : 'coinStack'
+        );
         setCardIconState(
             cardType === 0
                 ? { warning: true }
@@ -228,7 +232,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         setCardTitle(view.data.claimCardStates[cardType].title);
         setCardMessage(view.data.claimCardStates[cardType].text);
         setCardImage(view.data.claimCardStates[cardType].image);
-    }, [cardType])
+    }, [cardType]);
 
     return (
         <ViewContainer isLoading={!isReady || isLoading || loadingCommunity}>
@@ -316,7 +320,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                         <Text g900 large medium>
                                             {cardTitle}
                                         </Text>
-                                        {(!isClaimable && !claimAllowed) && (
+                                        {!isClaimable && !claimAllowed && (
                                             <RichText
                                                 content={cardMessage}
                                                 g500
@@ -327,7 +331,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                                 }}
                                             />
                                         )}
-                                        {(isClaimable || claimAllowed) && 
+                                        {(isClaimable || claimAllowed) &&
                                             hasFunds && (
                                                 <RichText
                                                     content={cardMessage}
@@ -342,10 +346,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                                             12
                                                     }}
                                                 />
-                                        )}
+                                            )}
                                     </Box>
                                     <Box margin="0 auto" maxW={22}>
-                                        {(!isClaimable && !claimAllowed) && (
+                                        {!isClaimable && !claimAllowed && (
                                             <Countdown
                                                 date={new Date(claimCooldown)}
                                                 onEnd={allowClaim}
@@ -364,7 +368,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                                     <String id="claim" /> ~
                                                     {claimAmountDisplay}
                                                 </Button>
-                                        )}
+                                            )}
                                     </Box>
                                 </Grid>
                             </Box>

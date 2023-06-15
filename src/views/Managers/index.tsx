@@ -1,5 +1,13 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import { Box, Display, Tab, TabList, TabPanel, Tabs, ViewContainer } from '@impact-market/ui';
+import {
+    Box,
+    Display,
+    Tab,
+    TabList,
+    TabPanel,
+    Tabs,
+    ViewContainer
+} from '@impact-market/ui';
 import { getCommunityManagers } from '../../graph/user';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunityMutation } from '../../api/community';
@@ -16,7 +24,7 @@ import RichText from '../../libs/Prismic/components/RichText';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
+const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const [loadingCommunity, toggleLoadingCommunity] = useState(true);
     const [community, setCommunity] = useState({}) as any;
@@ -31,30 +39,34 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     const { update, getByKey } = useFilters();
     const [getCommunity] = useGetCommunityMutation();
 
-
     // Check if current User has access to this page
-    if(!auth?.type?.includes(userManager)) {
+    if (!auth?.type?.includes(userManager)) {
         router.push('/');
 
         return null;
     }
 
-    const communityManagers = useQuery(getCommunityManagers, { variables: { address: auth?.user?.manager?.community } });
+    const communityManagers = useQuery(getCommunityManagers, {
+        variables: { address: auth?.user?.manager?.community }
+    });
 
     useEffect(() => {
-        if(!getByKey('state')) {
-            router.push('/manager/managers?state=0', undefined, { shallow: true });
+        if (!getByKey('state')) {
+            router.push('/manager/managers?state=0', undefined, {
+                shallow: true
+            });
         }
 
         const init = async () => {
             try {
-                const data = await getCommunity(auth?.user?.manager?.community).unwrap();
+                const data = await getCommunity(
+                    auth?.user?.manager?.community
+                ).unwrap();
 
                 setCommunity(data);
 
                 toggleLoadingCommunity(false);
-            }
-            catch (error) {
+            } catch (error) {
                 console.log(error);
 
                 toggleLoadingCommunity(false);
@@ -65,26 +77,37 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
     }, []);
 
     return (
-        <ViewContainer isLoading={isLoading || loadingCommunity || communityManagers?.loading}>
+        <ViewContainer
+            isLoading={
+                isLoading || loadingCommunity || communityManagers?.loading
+            }
+        >
             <Box>
-                <Display g900  medium>
+                <Display g900 medium>
                     {title}
                 </Display>
                 <RichText content={content} g500 mt={0.25} />
             </Box>
-            {
-                communityManagers?.data?.managerEntities?.length > 0 ?
+            {communityManagers?.data?.managerEntities?.length > 0 ? (
                 <Box mt={0.5}>
                     <Tabs defaultIndex={getByKey('state') === '1' ? 1 : 0}>
                         <TabList>
-                            { /* TODO: check if the "number" calculation is correct */ }
+                            {/* TODO: check if the "number" calculation is correct */}
                             <Tab
-                                number={communityManagers?.data?.managerEntities?.filter((elem: any) => elem.state === 0)?.length}
+                                number={
+                                    communityManagers?.data?.managerEntities?.filter(
+                                        (elem: any) => elem.state === 0
+                                    )?.length
+                                }
                                 onClick={() => update('state', '0')}
                                 title={t('added')}
                             />
                             <Tab
-                                number={communityManagers?.data?.managerEntities?.filter((elem: any) => elem.state === 1)?.length}
+                                number={
+                                    communityManagers?.data?.managerEntities?.filter(
+                                        (elem: any) => elem.state === 1
+                                    )?.length
+                                }
                                 onClick={() => update('state', '1')}
                                 title={t('removed')}
                             />
@@ -95,9 +118,9 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = props => {
                     <Filters margin="1.5 0 0 0" maxW={20} property="search" />
                     <ManagersList community={community?.id} />
                 </Box>
-                :
+            ) : (
                 <NoManagers />
-            }
+            )}
         </ViewContainer>
     );
 };

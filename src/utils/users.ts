@@ -12,15 +12,14 @@ export const userBeneficiary = 'beneficiary';
 export const userCouncilMember = 'councilMember';
 export const userLoanManager = 'loanManager';
 
-
 export const getUserTypes = (user: PutPostUser) => {
     const types = [userDonor];
 
-    if(user?.beneficiary) types.push(userBeneficiary);
-    if(user?.manager) types.push(userManager);
-    if(user?.councilMember) types.push(userCouncilMember);
-    if(user?.ambassador) types.push(userAmbassador);
-    if(user?.loanManager) types.push(userLoanManager);
+    if (user?.beneficiary) types.push(userBeneficiary);
+    if (user?.manager) types.push(userManager);
+    if (user?.councilMember) types.push(userCouncilMember);
+    if (user?.ambassador) types.push(userAmbassador);
+    if (user?.loanManager) types.push(userLoanManager);
 
     return types;
 };
@@ -29,14 +28,18 @@ export const getUserName = (user: PutPostUser) => {
     const firstName = user?.firstName?.split(' ')[0] || '';
     const lastName = user?.lastName?.split(' ').pop() || '';
 
-    return (firstName || firstName) ? `${firstName} ${lastName}` : '';
+    return firstName || firstName ? `${firstName} ${lastName}` : '';
 };
 
 export const checkUserPermission = (types: string[]) => {
     const auth = useSelector(selectCurrentUser);
     const { address } = useWallet();
 
-    if (address && auth?.user && auth?.type?.some((value: string) => types.includes(value))) {
+    if (
+        address &&
+        auth?.user &&
+        auth?.type?.some((value: string) => types.includes(value))
+    ) {
         return true;
     }
 
