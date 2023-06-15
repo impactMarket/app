@@ -16,7 +16,7 @@ const schema = yup.object().shape({
         .integer()
         .min(0)
         .max(20)
-        .nullable()
+        .nullable(true)
         .transform((_, val) => (val === '' ? null : Number(val)))
 });
 
@@ -63,10 +63,8 @@ const Form = ({ onSubmit }: any) => {
                     control={control}
                     hint={
                         errors?.children
-                            // @ts-ignore
                             ? t(errors?.children?.message?.key)?.replace(
                                   '{{ value }}',
-                                // @ts-ignore
                                   errors?.children?.message?.value
                               )
                             : ''

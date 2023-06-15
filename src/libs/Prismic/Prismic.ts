@@ -22,8 +22,7 @@ const Prismic = {
     getAllCategories: async ({
         clientOptions = {},
         lang: langCode = defaultLang
-    }:
-    any) => {
+    }: any) => {
         const lang = langConfig.find(({ shortCode }) => shortCode === langCode)
             ?.code;
 

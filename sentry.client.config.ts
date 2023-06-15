@@ -5,14 +5,16 @@
 import * as Sentry from '@sentry/nextjs';
 import { BrowserTracing } from '@sentry/tracing';
 import { Offline as OfflineIntegration } from '@sentry/integrations';
+import { BrowserTracing } from '@sentry/tracing';
+import { Offline as OfflineIntegration } from '@sentry/integrations';
 import config from './config';
 
 Sentry.init({
     // eslint-disable-next-line no-process-env
     debug: process.env.NODE_ENV === 'development',
     dsn: config.sentryDSN,
+    // eslint-disable-next-line no-process-env
     enabled:
-        // eslint-disable-next-line no-process-env
         process.env.NODE_ENV !== 'development' && config.useTestNet !== true,
     integrations: [new OfflineIntegration(), new BrowserTracing()],
     // Adjust this value in production, or use tracesSampler for greater control

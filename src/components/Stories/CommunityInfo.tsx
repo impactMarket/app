@@ -7,6 +7,7 @@ import {
     Text,
     TextLink,
     toast
+    toast
 } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
 import { getCountryNameFromInitials } from '../../utils/countries';
@@ -61,11 +62,33 @@ const CommmunityInfo = (props: any) => {
                                             cursor: 'pointer'
                                         }}
                                     />
+                            <Link
+                                href={`/communities/${story?.community?.id}`}
+                                passHref
+                            >
+                                <Box
+                                    h={3}
+                                    pt="100%"
+                                    style={{ position: 'relative' }}
+                                    w={3}
+                                >
+                                    <Image
+                                        alt=""
+                                        src={story?.community?.coverMediaPath}
+                                        style={{
+                                            borderRadius: '50%',
+                                            cursor: 'pointer'
+                                        }}
+                                    />
                                 </Box>
                             </Link>
                         </Box>
                         <Box ml={1} mr={1}>
                             <Box onClick={() => handleClose()}>
+                                <Link
+                                    href={`/communities/${story?.community?.id}`}
+                                    passHref
+                                >
                                 <Link
                                     href={`/communities/${story?.community?.id}`}
                                     passHref
@@ -84,8 +107,17 @@ const CommmunityInfo = (props: any) => {
                                         height={1.2}
                                         mr={0.5}
                                     />
+                                    <CountryFlag
+                                        countryCode={story?.community?.country}
+                                        height={1.2}
+                                        mr={0.5}
+                                    />
                                     <Box>
                                         <Text>
+                                            {story?.community?.city},{' '}
+                                            {getCountryNameFromInitials(
+                                                story?.community?.country
+                                            )}
                                             {story?.community?.city},{' '}
                                             {getCountryNameFromInitials(
                                                 story?.community?.country
@@ -97,7 +129,9 @@ const CommmunityInfo = (props: any) => {
                         </Box>
                     </Box>
                 </Box>
+                </Box>
             </Box>
+            <Row>
             <Row>
                 <Col colSize={6}>
                     <DropdownMenu
@@ -112,22 +146,39 @@ const CommmunityInfo = (props: any) => {
                                             community?.contractAddress
                                         )
                                     ),
+                                onClick: () =>
+                                    window.open(
+                                        config.explorerUrl?.replace(
+                                            '#USER#',
+                                            community?.contractAddress
+                                        )
+                                    ),
                                 title: t('openInExplorer')
                             },
                             {
                                 icon: 'copy',
                                 onClick: () =>
                                     copyToClipboard(community?.contractAddress),
+                                onClick: () =>
+                                    copyToClipboard(community?.contractAddress),
                                 title: t('copyAddress')
                             }
                         ]}
-                        title={formatAddress(
-                            community?.contractAddress,
-                            [6, 4]
-                        )}
+                        title={formatAddress(community?.contractAddress, [
+                            6,
+                            4
+                        ])}
                         wrapperProps={{ mt: 0.25 }}
                     />
                 </Col>
+                <Col colSize={6} right>
+                    <DropdownMenu
+                        icon="share"
+                        items={shareItems}
+                        rtl
+                        title={t('share')}
+                        titleColor="g900"
+                    />
                 <Col colSize={6} right>
                     <DropdownMenu
                         icon="share"

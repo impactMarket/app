@@ -10,8 +10,9 @@ const Filters = ({ myCommunityTitle, filters, filterProperty }: any) => {
     const { t } = useTranslations();
     const { getByKey, update } = useFilters();
     const statusFilter = filters.state || 'valid';
-    const { communitiesCountries, loadingCountries } =
-        useCommunitiesCountries(statusFilter);
+    const { communitiesCountries, loadingCountries } = useCommunitiesCountries(
+        statusFilter
+    );
     const countries = getByKey('country')
         ? (getByKey('country') as string).split(';')
         : [];

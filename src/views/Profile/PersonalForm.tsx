@@ -18,7 +18,7 @@ const schema = yup.object().shape({
         .integer()
         .min(1)
         .max(150)
-        .nullable()
+        .nullable(true)
         .transform((_, val) => (val === '' ? null : Number(val))),
     firstName: yup.string().max(30),
     lastName: yup.string().max(30)
@@ -79,11 +79,9 @@ const Form = ({ onSubmit }: any) => {
                             hint={
                                 errors?.firstName
                                     ? t(
-                                        // @ts-ignore
                                           errors?.firstName?.message?.key
                                       )?.replace(
                                           '{{ value }}',
-                                        // @ts-ignore
                                           errors?.firstName?.message?.value
                                       )
                                     : ''
@@ -99,11 +97,9 @@ const Form = ({ onSubmit }: any) => {
                             hint={
                                 errors?.lastName
                                     ? t(
-                                        // @ts-ignore
                                           errors?.lastName?.message?.key
                                       )?.replace(
                                           '{{ value }}',
-                                        // @ts-ignore
                                           errors?.lastName?.message?.value
                                       )
                                     : ''
@@ -120,10 +116,8 @@ const Form = ({ onSubmit }: any) => {
                             control={control}
                             hint={
                                 errors?.age
-                                    // @ts-ignore
                                     ? t(errors?.age?.message?.key)?.replace(
                                           '{{ value }}',
-                                          // @ts-ignore
                                           errors?.age?.message?.value
                                       )
                                     : ''

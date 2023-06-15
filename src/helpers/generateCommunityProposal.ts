@@ -49,8 +49,13 @@ const generateCommunityProposal = (
     community: Community,
     contract: Contract
 ) => {
-    const { ambassadorAddress, requestByAddress, id, name, description } =
-        community;
+    const {
+        ambassadorAddress,
+        requestByAddress,
+        id,
+        name,
+        description
+    } = community;
     const { claimAmount, maxClaim, baseInterval, incrementInterval } = contract;
     const { minTranche, maxTranche } = getTranches();
     const { maxBeneficiaries, decreaseStep, exponential } = PROPOSAL_CONSTANTS;

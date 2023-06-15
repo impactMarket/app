@@ -27,9 +27,13 @@ export interface ProposalType {
 }
 
 const ProposalsPage = () => {
-    const { address } = useAccount();
-    const { proposalCount, getProposals, isReady, quorumVotes } =
-        useImpactMarketCouncil();
+    const { address } = useCelo();
+    const {
+        proposalCount,
+        getProposals,
+        isReady,
+        quorumVotes
+    } = useImpactMarketCouncil();
     const [proposals, setProposals] = useState<ProposalType[]>([]);
     const [loading, setLoading] = useState(false);
     const { update, getByKey } = useFilters();

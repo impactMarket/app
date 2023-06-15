@@ -142,7 +142,7 @@ const MicroCredit = (props: any) => {
                         overviewData={loanData}
                     />
                 )}
-                {/* {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
+                {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
                     <LoanRepayment
                         data={data[viewName].data}
                         isOverviewOpen={isOverviewOpen}
@@ -151,19 +151,21 @@ const MicroCredit = (props: any) => {
                         loanId={loanId}
                         overviewData={loanData}
                     />
-                )} */}
+                )}
                 {loan.loanStatus === LoanStatus.LOAN_FULL_REPAID && (
                     <LoanCompleted
                         data={data[viewName].data}
                         overviewData={loanData}
                     />
                 )}
-                {loan.loanStatus === LoanStatus.LOAN_CLAIMED  && (
+
+                {/* {loan.loanStatus ===   && (
                     <LoanRejected
                         data={data[viewName].data}
                         overviewData={loanData}
                     />
-                )}
+                )} */}
+
             </Card>
             {/* {loan.loanStatus ===   && (
                 <InfoAccordion

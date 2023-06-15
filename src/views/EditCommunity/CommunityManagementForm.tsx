@@ -52,8 +52,11 @@ const CommunityManagementForm = ({
         unlockCommunitySuccess,
         unlockCommunityError
     } = extractFromView('formSections') as any;
-    const { lockCommunity, unlockCommunity, updateMaxBeneficiaries } =
-        useAmbassador();
+    const {
+        lockCommunity,
+        unlockCommunity,
+        updateMaxBeneficiaries
+    } = useAmbassador();
     const {
         handleSubmit,
         reset,

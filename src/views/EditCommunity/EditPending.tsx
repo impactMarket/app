@@ -18,6 +18,7 @@ import {
 import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { selectRates } from '../../state/slices/rates';
+import { toCamelCase } from '../../helpers/toCamelCase';
 import { useForm, useWatch } from 'react-hook-form';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
@@ -118,8 +119,6 @@ const EditPending: React.FC<{
 
     // If the user has no Currency selected in the Settings, use the Currency based on the selected Country
     const locationWatch = useWatch({ control, name: 'location' });
-
-    console.log(locationWatch);
 
     useEffect(() => {
         if (!auth?.user?.currency && locationWatch?.country) {
@@ -250,9 +249,11 @@ const EditPending: React.FC<{
             console.log(e);
             toggleSubmitting(false);
 
-            console.log(e.data?.error?.name);
-
-            toast.error(<Message id="errorOccurred" />);
+            toast.error(
+                <Message
+                    id={toCamelCase(e.data?.error?.name, 'communityForm')}
+                />
+            );
         }
     };
 

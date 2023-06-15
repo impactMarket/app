@@ -6,6 +6,7 @@ import React from 'react';
 import String from '../../libs/Prismic/components/String';
 import Trim from '../Trim';
 import styled, { css } from 'styled-components';
+import styled, { css } from 'styled-components';
 import useFilters from '../../hooks/useFilters';
 
 const GridStyled = styled.div`
@@ -13,8 +14,10 @@ const GridStyled = styled.div`
     grid-gap: 1rem;
 
     .numbers {
+    .numbers {
         display: flex;
 
+        .dot {
         .dot {
             display: none;
             align-self: center;
@@ -29,12 +32,15 @@ const GridStyled = styled.div`
 
     ${mq.phone(css`
         grid-template-areas: 'love comment report' 'numbers numbers numbers';
+        grid-template-areas: 'love comment report' 'numbers numbers numbers';
         grid-template-columns: repeat(3, auto);
 
+        .numbers {
         .numbers {
             flex-direction: row;
             justify-content: center;
 
+            .dot {
             .dot {
                 display: block;
             }
@@ -43,11 +49,14 @@ const GridStyled = styled.div`
 
     ${mq.tablet(css`
         grid-template-areas: 'love comment' 'numbers report';
+        grid-template-areas: 'love comment' 'numbers report';
         grid-template-columns: repeat(2, auto);
 
         .numbers {
+        .numbers {
             flex-direction: column;
 
+            .dot {
             .dot {
                 display: none;
             }
@@ -56,12 +65,15 @@ const GridStyled = styled.div`
 
     ${mq.tabletLandscape(css`
         grid-template-areas: 'love comment report' 'numbers numbers numbers';
+        grid-template-areas: 'love comment report' 'numbers numbers numbers';
         grid-template-columns: repeat(3, auto);
 
+        .numbers {
         .numbers {
             flex-direction: row;
             justify-content: center;
 
+            .dot {
             .dot {
                 display: block;
             }
@@ -70,21 +82,31 @@ const GridStyled = styled.div`
 
     ${mq.desktop(css`
         grid-template-areas: 'love comment numbers report';
+        grid-template-areas: 'love comment numbers report';
         grid-template-columns: repeat(4, auto);
 
         .numbers {
+        .numbers {
             flex-direction: column;
 
+            .dot {
             .dot {
                 display: none;
             }
         }
     `)}
 `;
+`;
 
 const StoryInfo = (props: any) => {
-    const { comments, handleClose, story, onloveStory, items, onComment } =
-        props;
+    const {
+        comments,
+        handleClose,
+        story,
+        onloveStory,
+        items,
+        onComment
+    } = props;
     const { clear } = useFilters();
     const router = useRouter();
 
@@ -110,10 +132,28 @@ const StoryInfo = (props: any) => {
                                     pt={0}
                                     rows={4}
                                 />
+                                <Trim
+                                    g800
+                                    large
+                                    limit={256}
+                                    message={story?.message}
+                                    pb={0}
+                                    pt={0}
+                                    rows={4}
+                                />
                             </Box>
                         </Box>
                         <Box show={{ sm: 'none', xs: 'flex' }}>
                             <Box>
+                                <Trim
+                                    g800
+                                    large
+                                    limit={100}
+                                    message={story?.message}
+                                    pb={0}
+                                    pt={0}
+                                    rows={4}
+                                />
                                 <Trim
                                     g800
                                     large
@@ -143,8 +183,14 @@ const StoryInfo = (props: any) => {
             <Box mt={1}>
                 <GridStyled>
                     <Box style={{ gridArea: 'love' }}>
+                    <Box style={{ gridArea: 'love' }}>
                         <Button
                             gray
+                            icon={
+                                story?.engagement?.userLoved
+                                    ? 'heartFilled'
+                                    : 'heart'
+                            }
                             icon={
                                 story?.engagement?.userLoved
                                     ? 'heartFilled'
@@ -162,9 +208,17 @@ const StoryInfo = (props: any) => {
                                             : 'love'
                                     }
                                 />
+                                <String
+                                    id={
+                                        story?.engagement?.userLoved
+                                            ? 'loved'
+                                            : 'love'
+                                    }
+                                />
                             </Text>
                         </Button>
                     </Box>
+                    <Box style={{ gridArea: 'comment' }}>
                     <Box style={{ gridArea: 'comment' }}>
                         <Button
                             gray
@@ -182,15 +236,27 @@ const StoryInfo = (props: any) => {
                         g600
                         style={{ gridArea: 'numbers' }}
                     >
+                    <Box
+                        className="numbers"
+                        g600
+                        style={{ gridArea: 'numbers' }}
+                    >
                         <Text regular small>
+                            {story?.engagement?.loves} <String id="loves" />
                             {story?.engagement?.loves} <String id="loves" />
                         </Text>
                         <span className="dot" />
                         <Text regular small>
                             {comments?.count} <String id="comments" />
+                            {comments?.count} <String id="comments" />
                         </Text>
                     </Box>
                     <CanBeRendered types={['beneficiary', 'manager']}>
+                        <Box
+                            ml="auto"
+                            style={{ gridArea: 'report' }}
+                            tAlign="right"
+                        >
                         <Box
                             ml="auto"
                             style={{ gridArea: 'report' }}
@@ -204,8 +270,17 @@ const StoryInfo = (props: any) => {
                                     rtl
                                     wrapperProps={{ padding: 0.3 }}
                                 />
+                                <DropdownMenu
+                                    asButton
+                                    icon="ellipsis"
+                                    items={items}
+                                    rtl
+                                    wrapperProps={{ padding: 0.3 }}
+                                />
                             </Box>
                         </Box>
+                    </CanBeRendered>
+                </GridStyled>
                     </CanBeRendered>
                 </GridStyled>
             </Box>

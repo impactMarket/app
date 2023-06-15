@@ -16,8 +16,11 @@ const StateButtons: React.FC<{ beneficiary: any; community: string }> = (
     const [loadingRemoveButton, setLoadingRemoveButton] = useState(false);
     const [userState, setUserState] = useState(beneficiary?.beneficiary?.state);
 
-    const { lockBeneficiary, removeBeneficiary, unlockBeneficiary } =
-        useManager(community);
+    const {
+        lockBeneficiary,
+        removeBeneficiary,
+        unlockBeneficiary
+    } = useManager(community);
 
     const blockUser = async () => {
         try {
