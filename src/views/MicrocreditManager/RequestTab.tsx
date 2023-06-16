@@ -15,6 +15,55 @@ import useFilters from 'src/hooks/useFilters';
 
 const itemsPerPage = 7;
 
+const DecisionCard: React.FC<{}> = () => {
+    return (
+        <Card
+            flex
+            fDirection={{ sm: 'row', xs: 'column' }}
+            pt={'1.5rem'}
+            pb={'1.5rem'}
+            style={{
+                justifyContent: 'space-between',
+                alignItems: 'center'
+            }}
+        >
+            <Box>
+                <Text semibold weight="semibold" base mb={0.5}>
+                    Microcredit Applicants
+                </Text>
+                <Text extrasmall>
+                    Select beneficiary to Approve or Reject Loan.
+                </Text>
+            </Box>
+            <Box
+                flex
+                fDirection={{ sm: 'row', xs: 'column' }}
+                style={{
+                    justifyContent: 'space-evenly',
+                    alignItems: 'center'
+                }}
+            >
+                <Button
+                    default
+                    gray
+                    icon="upload"
+                    onClick={() => console.log('Reject all selected loans')}
+                >
+                    <Text small>Reject Selected Loans</Text>
+                </Button>
+                <Button
+                    default
+                    icon="plus"
+                    ml={1}
+                    onClick={() => console.log('Approve all selected loans')}
+                >
+                    <Text small>Approve Selected Loans</Text>
+                </Button>
+            </Box>
+        </Card>
+    );
+};
+
 const RequestTab: React.FC<{}> = () => {
     const { getByKey } = useFilters();
     const page = getByKey('page') ? +getByKey('page') : 1;
@@ -25,6 +74,8 @@ const RequestTab: React.FC<{}> = () => {
         `limit=${itemsPerPage}`,
         `offset=${itemOffset}`
     ]);
+    const [selected, setSelected] = useState([]);
+
     return (
         <Box mt={0.5}>
             {/* TODO: Make it into its one component that takes an array of names and functions */}
@@ -59,52 +110,8 @@ const RequestTab: React.FC<{}> = () => {
             />
             {/*  */}
             <Box mt={2}>
-                <Card
-                    flex
-                    fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{
-                        justifyContent: 'space-between',
-                        alignItems: 'center'
-                    }}
-                >
-                    <Box>
-                        <Text semibold weight="semibold" base mb={0.5}>
-                            Microcredit Applicants
-                        </Text>
-                        <Text extrasmall>
-                            Select beneficiary to Approve or Reject Loan.
-                        </Text>
-                    </Box>
-                    <Box
-                        style={{
-                            justifyContent: 'space-evenly',
-                            alignItems: 'center'
-                        }}
-                    >
-                        <Button
-                            default
-                            fluid="md"
-                            gray
-                            icon="upload"
-                            onClick={() =>
-                                console.log('Reject all selected loans')
-                            }
-                        >
-                            <Text small>Reject Selected Loans</Text>
-                        </Button>
-                        <Button
-                            default
-                            fluid="md"
-                            icon="plus"
-                            ml={1}
-                            onClick={() =>
-                                console.log('Approve all selected loans')
-                            }
-                        >
-                            <Text small>Approve Selected Loans</Text>
-                        </Button>
-                    </Box>
-                </Card>
+                {selected.length > 0 && <DecisionCard />}
+
                 <RequestList
                     borrowers={borrowers}
                     count={count}
@@ -113,6 +120,8 @@ const RequestTab: React.FC<{}> = () => {
                     setItemOffset={setItemOffset}
                     page={page}
                     actualPage={actualPage}
+                    setSelected={setSelected}
+                    selected={selected}
                 />
             </Box>
         </Box>

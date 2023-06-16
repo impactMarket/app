@@ -8,9 +8,10 @@ import {
     Text,
     TextLink,
     toast,
-    colors
+    colors,
+    Icon,
+    Badge
 } from '@impact-market/ui';
-import { currencyFormat } from 'src/utils/currencies';
 import { dateHelpers } from '../../helpers/dateHelpers';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
@@ -25,9 +26,67 @@ import Table from './Table';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const getColumns = () => {
+const loanStatus = (status: any) => {
+    let badgeContent = null;
+
+    if (false) {
+        badgeContent = (
+            <Badge bgS50 style={{ width: 'fit-content' }}>
+                <Box
+                    flex
+                    fDirection={{ sm: 'row', xs: 'column' }}
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                    <Icon icon="check" s500 mr={0.2} />
+                    <Text s700 extrasmall medium>
+                        Approved
+                    </Text>
+                </Box>
+            </Badge>
+        );
+    } else if (false) {
+        badgeContent = (
+            <Badge bgE50 style={{ width: 'fit-content' }}>
+                <Box
+                    flex
+                    fDirection={{ sm: 'row', xs: 'column' }}
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                    <Icon icon="close" e500 mr={0.2} />
+                    <Text e700 extrasmall medium>
+                        Rejected
+                    </Text>
+                </Box>
+            </Badge>
+        );
+    } else {
+        badgeContent = (
+            <Badge bgP50 style={{ width: 'fit-content' }}>
+                <Box
+                    flex
+                    fDirection={{ sm: 'row', xs: 'column' }}
+                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                >
+                    <Icon icon="clock" p500 mr={0.2} />
+                    <Text p700 extrasmall medium>
+                        Pending
+                    </Text>
+                </Box>
+            </Badge>
+        );
+    }
+
+    return (
+        <Box fLayout="center start" flex>
+            {badgeContent}
+        </Box>
+    );
+};
+
+const getColumns = (props: any) => {
     const { t } = useTranslations();
     const router = useRouter();
+    const { setSelected, selected } = props;
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
@@ -47,20 +106,58 @@ const getColumns = () => {
 
     return [
         {
-            minWidth: 14,
+            minWidth: 17,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
-                    <Box style={{
-                        width: '1.5rem',
-                        height: '1.5rem',
-                        borderRadius: '5px',
-                        backgroundColor: colors.p50
-                        }} 
-                        pr={0.75}
-                        mr={0.75}
-                    >
-                        
-                    </Box>
+                    {!selected.some(
+                        (item: any) => item.address === data.address
+                    ) ? (
+                        <Box
+                            style={{
+                                width: '1.5rem',
+                                height: '1.5rem',
+                                borderRadius: '6px',
+                                borderColor: colors.g300,
+                                borderWidth: '1px',
+                                borderStyle: 'solid'
+                            }}
+                            mr={0.75}
+                            onClick={() => {
+                                console.log('data', data);
+                                setSelected((selected: any) => [
+                                    ...selected,
+                                    data
+                                ]);
+                            }}
+                        ></Box>
+                    ) : (
+                        <Box
+                            flex
+                            style={{
+                                width: '1.5rem',
+                                height: '1.5rem',
+                                borderRadius: '6px',
+                                borderColor: colors.p600,
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
+                                justifyContent: 'center',
+                                alignItems: 'center',
+                                backgroundColor: colors.p50
+                            }}
+                            mr={0.75}
+                            onClick={() => {
+                                console.log('data', data);
+                                setSelected((selected: any) =>
+                                    selected.filter(
+                                        (item: any) =>
+                                            item.address !== data.address
+                                    )
+                                );
+                            }}
+                        >
+                            <Icon icon="check" p600 />
+                        </Box>
+                    )}
                     {!!data.avatarMediaPath ? (
                         <Avatar
                             extrasmall
@@ -117,7 +214,7 @@ const getColumns = () => {
             width: '35%'
         },
         {
-            minWidth: 10,
+            minWidth: 12,
             render: (data: any) => {
                 const score = 734;
                 const progress = (score / 850) * 100;
@@ -127,7 +224,7 @@ const getColumns = () => {
                         <Box
                             flex
                             fLayout="center start"
-                            style={{ gap: '0.2rem' }}
+                            style={{ gap: '0.8rem' }}
                         >
                             <ProgressBar
                                 progress={progress}
@@ -155,14 +252,25 @@ const getColumns = () => {
             width: '20%'
         },
         {
-            minWidth: 8,
+            minWidth: 10,
             render: (data: any) => {
                 return (
-                    <Text g900 small>
-                        {`${dateHelpers.secondsToMonth(data?.loan?.period)} ${t(
-                            'months'
-                        )}`}
-                    </Text>
+                    <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
+                        {true ? (
+                            <>
+                                <Text medium g900 small>
+                                    {'Jan 21, 2022'}
+                                </Text>
+                                <Text g500 small>
+                                    {'22:34am'}
+                                </Text>
+                            </>
+                        ) : (
+                            <Text medium g400 small>
+                                {'- - -'}
+                            </Text>
+                        )}
+                    </Box>
                 );
             },
             sortable: true,
@@ -171,18 +279,25 @@ const getColumns = () => {
             width: '10%'
         },
         {
-            minWidth: 8,
+            minWidth: 10,
             render: (data: any) => {
                 return (
-                    <Text g900 small>
-                        {data?.loan?.lastRepaymentAmount
-                            ? currencyFormat(
-                                  data?.loan?.lastRepaymentAmount,
-                                  localeCurrency,
-                                  rates
-                              )
-                            : t('none')}
-                    </Text>
+                    <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
+                        {false ? (
+                            <>
+                                <Text medium g900 small>
+                                    {'Jan 21, 2022'}
+                                </Text>
+                                <Text g500 small>
+                                    {'22:34am'}
+                                </Text>
+                            </>
+                        ) : (
+                            <Text medium g400 small>
+                                {'- - -'}
+                            </Text>
+                        )}
+                    </Box>
                 );
             },
             sortable: true,
@@ -191,15 +306,26 @@ const getColumns = () => {
             width: '15%'
         },
         {
-            minWidth: 8,
+            minWidth: 10,
             render: (data: any) => {
                 console.log(data);
                 return (
-                    <Text g900 small>
-                        {data?.loan?.lastRepayment
-                            ? dateHelpers.ago(data?.loan?.lastRepayment)
-                            : '--'}
-                    </Text>
+                    <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
+                        {false ? (
+                            <>
+                                <Text medium g900 small>
+                                    {'Jan 21, 2022'}
+                                </Text>
+                                <Text g500 small>
+                                    {'22:34am'}
+                                </Text>
+                            </>
+                        ) : (
+                            <Text medium g400 small>
+                                {'- - -'}
+                            </Text>
+                        )}
+                    </Box>
                 );
             },
             sortable: true,
@@ -208,26 +334,37 @@ const getColumns = () => {
             width: '15%'
         },
         {
-            minWidth: 8,
-            render: (data: any) => (
-                <Text g900 small>
-                    {currencyFormat(data?.loan?.amount, localeCurrency, rates)}
-                </Text>
-            ),
+            minWidth: 10,
+            render: (data: any) => loanStatus(data.status),
             sortable: true,
             title: 'Approved',
             value: 'currentDebt',
             width: '15%'
         },
         {
-            minWidth: 8,
+            minWidth: 4,
             render: (data: any) => (
-                <TextLink
-                    onClick={() => router.push(`/user/${data.address}`)}
-                    p500
-                >
-                    <Text small>{t('openProfile')}</Text>
-                </TextLink>
+                <Box flex fLayout="center start" style={{ gap: '1rem' }}>
+                    <Icon
+                        onClick={() => console.log('Expand')}
+                        g400
+                        icon="cardsStack"
+                    />
+                    <Box
+                        flex
+                        style={{
+                            transform: 'rotate(90deg)',
+                            justifyContent: 'center',
+                            alignItems: 'center'
+                        }}
+                    >
+                        <Icon
+                            onClick={() => console.log('more')}
+                            g400
+                            icon="ellipsis"
+                        />
+                    </Box>
+                </Box>
             ),
             width: '10%'
         }
@@ -242,7 +379,9 @@ const RequestList = (props: any) => {
         itemsPerPage,
         setItemOffset,
         page,
-        actualPage
+        actualPage,
+        setSelected,
+        selected
     } = props;
 
     console.log('Borrowers', borrowers);
@@ -250,7 +389,7 @@ const RequestList = (props: any) => {
     return (
         <Table
             actualPage={actualPage}
-            columns={getColumns()}
+            columns={getColumns({ setSelected, selected })}
             itemsPerPage={itemsPerPage}
             loadingBorrowers={loadingBorrowers}
             page={page}
