@@ -37,8 +37,6 @@ interface DonateCardProps {
     action: () => void;
 }
 
-<<<<<<< HEAD
-=======
 // const BoxWrapper = styled.div`
 //     Button {
 //         background: white;
@@ -53,7 +51,6 @@ interface DonateCardProps {
 //     }
 // `;
 
->>>>>>> 18835b4 (Final touches rejected view)
 const DonateCard = (props: DonateCardProps) => {
     const {
         raised,
