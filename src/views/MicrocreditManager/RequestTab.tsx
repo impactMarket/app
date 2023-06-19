@@ -1,8 +1,5 @@
 import {
     Box,
-    Tabs,
-    TabList,
-    Tab,
     Input,
     Card,
     Text,
@@ -12,8 +9,10 @@ import RequestList from './RequestList';
 import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import React, { useState } from 'react';
 import useFilters from 'src/hooks/useFilters';
+import { TabItem, FlexibleTab } from './FlexibleTab';
 
 const itemsPerPage = 7;
+
 
 const DecisionCard: React.FC<{}> = () => {
     return (
@@ -76,27 +75,35 @@ const RequestTab: React.FC<{}> = () => {
     ]);
     const [selected, setSelected] = useState([]);
 
+    const tabs: TabItem[] = [
+        {
+            title: 'All',
+            number: 10,
+            onClick: () => console.log('all')
+        },
+        {
+            title: 'Pending',
+            number: 5,
+            onClick: () => console.log('pending')
+        },
+        {
+            title: 'Approved',
+            number: 3,
+            onClick: () => console.log('Approved')
+        },
+        {
+            title: 'Rejected',
+            number: 2,
+            onClick: () => console.log('Rejected')
+        }
+    ];
+    
+    
+
     return (
         <Box mt={0.5}>
-            {/* TODO: Make it into its one component that takes an array of names and functions */}
-            {/*  */}
-            <Tabs>
-                <TabList>
-                    <Tab onClick={() => console.log('all')} title={'All'} />
-                    <Tab
-                        onClick={() => console.log('pending')}
-                        title={'Pending'}
-                    />
-                    <Tab
-                        onClick={() => console.log('Approved')}
-                        title={'Approved'}
-                    />
-                    <Tab
-                        onClick={() => console.log('Rejected')}
-                        title={'Rejected'}
-                    />
-                </TabList>
-            </Tabs>
+           
+            <FlexibleTab tabs={tabs} />
             <Input
                 hint=""
                 icon="search"
@@ -108,7 +115,6 @@ const RequestTab: React.FC<{}> = () => {
                     mt: 2
                 }}
             />
-            {/*  */}
             <Box mt={2}>
                 {selected.length > 0 && <DecisionCard />}
 

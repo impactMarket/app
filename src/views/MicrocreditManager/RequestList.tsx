@@ -6,7 +6,7 @@ import {
     DropdownMenu,
     ProgressBar,
     Text,
-    TextLink,
+    openModal,
     toast,
     colors,
     Icon,
@@ -344,26 +344,46 @@ const getColumns = (props: any) => {
         {
             minWidth: 4,
             render: (data: any) => (
-                <Box flex fLayout="center start" style={{ gap: '1rem' }}>
-                    <Icon
-                        onClick={() => console.log('Expand')}
-                        g400
-                        icon="cardsStack"
-                    />
-                    <Box
-                        flex
-                        style={{
-                            transform: 'rotate(90deg)',
-                            justifyContent: 'center',
-                            alignItems: 'center'
-                        }}
-                    >
-                        <Icon
-                            onClick={() => console.log('more')}
-                            g400
-                            icon="ellipsis"
-                        />
-                    </Box>
+                <Box flex fLayout="center start" style={{  gap: '1rem' }}>
+                    <DropdownMenu
+                                icon="cardsStack"
+                                titleColor='g400'
+                                rtl={true}
+                                items={[
+                                    {
+                                        icon: 'upload',
+                                        onClick: () =>
+                                        openModal('addNote'),
+                                        title: "Add Note"
+                                    },
+                                    {
+                                        icon: 'cardsStack',
+                                        onClick: () =>
+                                            console.log('View All Notes'),
+                                        title: "View All Notes"
+                                    }
+                                ]}
+                            />
+                    
+                        <DropdownMenu
+                                icon="ellipsis"
+                                titleColor='g400'
+                                rtl={true}
+                                items={[
+                                    {
+                                        icon: 'check',
+                                        onClick: () =>
+                                            openModal('approveLoan'),
+                                        title: "Approve Loan"
+                                    },
+                                    {
+                                        icon: 'close',
+                                        onClick: () =>
+                                            console.log('Reject'),
+                                        title: "Reject Loan"
+                                    }
+                                ]}
+                            />
                 </Box>
             ),
             width: '10%'
