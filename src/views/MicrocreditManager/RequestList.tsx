@@ -28,6 +28,7 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const loanStatus = (status: any) => {
     let badgeContent = null;
+    const { t } = useTranslations();
 
     if (false) {
         badgeContent = (
@@ -39,7 +40,7 @@ const loanStatus = (status: any) => {
                 >
                     <Icon icon="check" s500 mr={0.2} />
                     <Text s700 extrasmall medium>
-                        Approved
+                        {t('approved')}
                     </Text>
                 </Box>
             </Badge>
@@ -54,7 +55,7 @@ const loanStatus = (status: any) => {
                 >
                     <Icon icon="close" e500 mr={0.2} />
                     <Text e700 extrasmall medium>
-                        Rejected
+                       {t('rejected')}
                     </Text>
                 </Box>
             </Badge>
@@ -69,7 +70,7 @@ const loanStatus = (status: any) => {
                 >
                     <Icon icon="clock" p500 mr={0.2} />
                     <Text p700 extrasmall medium>
-                        Pending
+                        {t('pending')}
                     </Text>
                 </Box>
             </Badge>
