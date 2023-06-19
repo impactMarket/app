@@ -344,46 +344,42 @@ const getColumns = (props: any) => {
         {
             minWidth: 4,
             render: (data: any) => (
-                <Box flex fLayout="center start" style={{  gap: '1rem' }}>
+                <Box flex fLayout="center start" style={{ gap: '1rem' }}>
                     <DropdownMenu
-                                icon="cardsStack"
-                                titleColor='g400'
-                                rtl={true}
-                                items={[
-                                    {
-                                        icon: 'upload',
-                                        onClick: () =>
-                                        openModal('addNote'),
-                                        title: "Add Note"
-                                    },
-                                    {
-                                        icon: 'cardsStack',
-                                        onClick: () =>
-                                            console.log('View All Notes'),
-                                        title: "View All Notes"
-                                    }
-                                ]}
-                            />
-                    
-                        <DropdownMenu
-                                icon="ellipsis"
-                                titleColor='g400'
-                                rtl={true}
-                                items={[
-                                    {
-                                        icon: 'check',
-                                        onClick: () =>
-                                            openModal('approveLoan'),
-                                        title: "Approve Loan"
-                                    },
-                                    {
-                                        icon: 'close',
-                                        onClick: () =>
-                                            console.log('Reject'),
-                                        title: "Reject Loan"
-                                    }
-                                ]}
-                            />
+                        icon="cardsStack"
+                        titleColor="g400"
+                        rtl={true}
+                        items={[
+                            {
+                                icon: 'upload',
+                                onClick: () => openModal('addNote'),
+                                title: 'Add Note'
+                            },
+                            {
+                                icon: 'cardsStack',
+                                onClick: () => console.log('View All Notes'),
+                                title: 'View All Notes'
+                            }
+                        ]}
+                    />
+
+                    <DropdownMenu
+                        icon="ellipsis"
+                        titleColor="g400"
+                        rtl={true}
+                        items={[
+                            {
+                                icon: 'check',
+                                onClick: () => openModal('approveLoan'),
+                                title: 'Approve Loan'
+                            },
+                            {
+                                icon: 'close',
+                                onClick: () => console.log('Reject'),
+                                title: 'Reject Loan'
+                            }
+                        ]}
+                    />
                 </Box>
             ),
             width: '10%'

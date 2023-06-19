@@ -25,7 +25,9 @@ const modals = {
         ssr: false
     }),
     addNote: dynamic(() => import('./Microcredit/AddNote'), { ssr: false }),
-    approveLoan: dynamic(() => import('./Microcredit/ApproveLoan'), {ssr: false}),
+    approveLoan: dynamic(() => import('./Microcredit/ApproveLoan'), {
+        ssr: false
+    }),
     removeCommunity: dynamic(() => import('./RemoveCommunity'), { ssr: false }),
     reportStory: dynamic(() => import('./Stories/ReportStory'), { ssr: false }),
     reportSuspiciousActivity: dynamic(

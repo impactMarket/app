@@ -1,10 +1,4 @@
-import {
-    Box,
-    Input,
-    Card,
-    Text,
-    Button
-} from '@impact-market/ui';
+import { Box, Input, Card, Text, Button } from '@impact-market/ui';
 import RequestList from './RequestList';
 import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import React, { useState } from 'react';
@@ -12,7 +6,6 @@ import useFilters from 'src/hooks/useFilters';
 import { TabItem, FlexibleTab } from './FlexibleTab';
 
 const itemsPerPage = 7;
-
 
 const DecisionCard: React.FC<{}> = () => {
     return (
@@ -97,12 +90,9 @@ const RequestTab: React.FC<{}> = () => {
             onClick: () => console.log('Rejected')
         }
     ];
-    
-    
 
     return (
         <Box mt={0.5}>
-           
             <FlexibleTab tabs={tabs} />
             <Input
                 hint=""

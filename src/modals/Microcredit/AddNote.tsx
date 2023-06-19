@@ -1,30 +1,35 @@
-import { Button, ModalWrapper, Text, useModal, Box,CircledIcon, Input } from '@impact-market/ui';
+import {
+    Button,
+    ModalWrapper,
+    Text,
+    useModal,
+    Box,
+    CircledIcon,
+    Input
+} from '@impact-market/ui';
 
 const AddNote = () => {
-    const { handleClose} = useModal();
+    const { handleClose } = useModal();
 
     return (
-        <ModalWrapper maxW={"484px"} padding={2.5} w="100%">
-            <Box 
-                flex 
-                fDirection={{ sm: 'column', xs: 'column' }} 
-                style={{ 
-                    justifyContent:"center",
-                    alignItems:"center",
+        <ModalWrapper maxW={'484px'} padding={2.5} w="100%">
+            <Box
+                flex
+                fDirection={{ sm: 'column', xs: 'column' }}
+                style={{
+                    justifyContent: 'center',
+                    alignItems: 'center'
                 }}
             >
-                <Box 
+                <Box
                     flex
                     fDirection={{ sm: 'column', xs: 'column' }}
                     style={{
-                        justifyContent:"start",
+                        justifyContent: 'start'
                     }}
                     w="100%"
                 >
-                    <CircledIcon
-                        icon="upload"
-                        medium
-                    />
+                    <CircledIcon icon="upload" medium />
                     <Text g900 large mt={1} semibold>
                         Add Note
                     </Text>
@@ -33,29 +38,37 @@ const AddNote = () => {
                         rows={4}
                         wrapperProps={{
                             mt: 1,
-                            w: "100%",
+                            w: '100%'
                         }}
                     />
                 </Box>
 
-                <Box 
-                    flex 
-                    fDirection={{ sm: 'row', xs: 'column' }} 
-                    style={{ 
-                        justifyContent:"center",
-                        alignItems:"center",
-                        gap: "1rem",
+                <Box
+                    flex
+                    fDirection={{ sm: 'row', xs: 'column' }}
+                    style={{
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                        gap: '1rem'
                     }}
                 >
-                    <Button gray fluid={'xs'} mt={{sm:1.5, xs:1.5}} onClick={() => handleClose()}>
+                    <Button
+                        gray
+                        fluid={'xs'}
+                        mt={{ sm: 1.5, xs: 1.5 }}
+                        onClick={() => handleClose()}
+                    >
                         Dismiss
                     </Button>
-                    <Button  fluid={'xs'} mt={{sm:1.5, xs:0}} onClick={() => handleClose()}>
+                    <Button
+                        fluid={'xs'}
+                        mt={{ sm: 1.5, xs: 0 }}
+                        onClick={() => handleClose()}
+                    >
                         Save
                     </Button>
                 </Box>
-
-            </Box>  
+            </Box>
         </ModalWrapper>
     );
 };

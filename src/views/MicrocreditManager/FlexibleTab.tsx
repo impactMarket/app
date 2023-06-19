@@ -16,7 +16,12 @@ const FlexibleTab: React.FC<FlexibleTabProps> = ({ tabs }) => {
         <Tabs>
             <TabList>
                 {tabs.map((tab, index) => (
-                        <Tab key={index} title={tab.title} number={(tab.number > 0) ? tab.number : null} onClick={tab.onClick}/>
+                    <Tab
+                        key={index}
+                        title={tab.title}
+                        number={tab.number > 0 ? tab.number : null}
+                        onClick={tab.onClick}
+                    />
                 ))}
             </TabList>
         </Tabs>
