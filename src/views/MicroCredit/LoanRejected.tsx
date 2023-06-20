@@ -1,7 +1,7 @@
-import { Box} from '@impact-market/ui';
+import { Box,colors} from '@impact-market/ui';
 import Image from '../../libs/Prismic/components/Image';
 import RichText from '../../libs/Prismic/components/RichText';
-import { colors } from '@impact-market/ui';
+
 
 const LoanRejected = (props: any) => {
     const { data } = props;
@@ -14,7 +14,6 @@ const LoanRejected = (props: any) => {
         rejectedLoanQuest,
         rejectedLoanImage
     } = data;
-    console.log('overviewData',data);
 
     return (
         <Box fLayout="start" flex fDirection={{ sm: 'row', xs: 'column' }}>

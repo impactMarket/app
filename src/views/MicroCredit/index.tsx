@@ -9,7 +9,7 @@ import LoanCompleted from './LoanCompleted';
 import LoanRepayment from './LoanRepayment';
 // import RepaymentHistory from './RepaymentHistory';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-//import LoanRejected from './LoanRejected';
+// import LoanRejected from './LoanRejected';
 // import InfoAccordion from './InfoAccordion';
 
 const MicroCredit = (props: any) => {
