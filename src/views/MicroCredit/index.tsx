@@ -9,6 +9,8 @@ import LoanCompleted from './LoanCompleted';
 import LoanRepayment from './LoanRepayment';
 // import RepaymentHistory from './RepaymentHistory';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+//import LoanRejected from './LoanRejected';
+// import InfoAccordion from './InfoAccordion';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
@@ -131,7 +133,7 @@ const MicroCredit = (props: any) => {
                 {'MicroCredit'}
             </Display>
             <Box></Box>
-            <Card mt="2rem" mb="2rem" padding={{ sm: '4rem', xs: '1rem' }}>
+            <Card mt="2rem" mb="2rem" padding={{ sm: '2.5rem', xs: '1rem' }}>
                 {loan.loanStatus === LoanStatus.PENDING_CLAIM && (
                     <ClaimLoan
                         data={data[viewName].data}
@@ -156,7 +158,19 @@ const MicroCredit = (props: any) => {
                         overviewData={loanData}
                     />
                 )}
+
+                {/* {loan.loanStatus ===   && (
+                    <LoanRejected
+                        data={data[viewName].data}
+                    />
+                )} */}
+
             </Card>
+            {/* {loan.loanStatus ===   && (
+                <InfoAccordion
+                    data={data[viewName].data}
+                />
+            )}  */}
             {/* <RepaymentHistory /> */}
         </ViewContainer>
     );
