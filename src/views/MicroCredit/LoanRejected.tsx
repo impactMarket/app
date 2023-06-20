@@ -39,13 +39,13 @@ const LoanRejected = (props: any) => {
                     fLayout="start"
                     flex
                     fDirection={{ sm: 'column', xs: 'row' }}
+                    padding={2}
+                    borderRadius={0.5}
+                    backgroundColor={colors.g100}
                     order={{ sm: 1, xs: 0 }}
                     style={{
-                        backgroundColor: colors.g100,
-                        borderRadius: '0.5rem',
                         flexBasis: '65%',
                         justifyContent: 'space-evenly',
-                        padding: '2rem'
                     }}
                 >
                     <Box>
