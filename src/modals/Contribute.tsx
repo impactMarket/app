@@ -92,7 +92,7 @@ const Contribute = () => {
             e.target.value !== approved ? setStep(0) : setStep(1);
         }
 
-        setContribution(e.target.value.replace(/,/g, '.'));
+        setContribution(e?.target?.value?.replace(/,/g, '.'));
     };
 
     const handleApprove = async () => {

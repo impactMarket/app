@@ -24,7 +24,7 @@ const clearPrefix = (type?: string, prefix: string = '') => {
         return '';
     }
 
-    return type.replace(`pwa-${prefix}`, '');
+    return type?.replace(`pwa-${prefix}`, '');
 };
 
 const linkResolver = (doc: FilledLinkToDocumentField) => {
