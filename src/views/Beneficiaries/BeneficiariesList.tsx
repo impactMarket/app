@@ -1,14 +1,18 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import { Avatar, Box, CircledIcon, Text, TextLink } from '@impact-market/ui';
+import { currencyFormat } from 'src/utils/currencies';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getInactiveBeneficiaries } from '../../graph/community';
 import { getUserName } from '../../utils/users';
+import { selectCurrentUser } from 'src/state/slices/auth';
+import { selectRates } from 'src/state/slices/rates';
 import { useQuery } from '@apollo/client';
 import { useRouter } from 'next/router';
-import React from 'react';
+import { useSelector } from 'react-redux';
+import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
 import Table from '../../components/Table';
+import useBeneficiaries from 'src/hooks/useBeneficiaries';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -105,6 +109,37 @@ const BeneficiariesList: React.FC<{ community: any; lastActivity: number }> = (
 ) => {
     const { community, lastActivity } = props;
     const { getByKey } = useFilters();
+    const page = getByKey('page') ? +getByKey('page') : 1;
+    const actualPage = page - 1 >= 0 ? page - 1 : 0;
+    const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
+    const router = useRouter();
+    const {
+        asPath,
+        query: { search, state }
+    } = router;
+    const auth = useSelector(selectCurrentUser);
+    const rates = useSelector(selectRates);
+
+    const localeCurrency = new Intl.NumberFormat(
+        auth?.user.currency.language || 'en-US',
+        {
+            currency: auth?.user.currency || 'USD',
+            style: 'currency'
+        }
+    );
+
+    const { data, loading } = useBeneficiaries(
+        `${community?.id}/beneficiaries`,
+        {
+            limit: itemsPerPage,
+            offset: itemOffset,
+            orderBy: getByKey('orderBy')
+                ? getByKey('orderBy').toString()
+                : 'since:desc',
+            search: search ?? '',
+            state: state ?? 0
+        }
+    );
 
     const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, {
         variables: {
@@ -117,26 +152,57 @@ const BeneficiariesList: React.FC<{ community: any; lastActivity: number }> = (
         ? Object.keys(inactiveBeneficiaries?.data?.beneficiaryEntities).length
         : 0;
 
-    const thegraphData: any[] = [];
+    const thegraph: any[] = [];
 
     // Clone object to make it extensible
     if (!!inactiveBeneficiaries?.data) {
         inactiveBeneficiaries?.data?.beneficiaryEntities?.map((row: any) => {
             const rowClone = JSON.parse(JSON.stringify(row));
 
-            thegraphData.push(rowClone);
+            thegraph.push(rowClone);
+        });
+    }
+
+    const [thegraphData, setThegraphData] = useState(null);
+
+    useEffect(() => {
+        getByKey('state') === '3'
+            ? setThegraphData(
+                  thegraph?.slice(itemOffset, itemOffset + itemsPerPage)
+              )
+            : setThegraphData(null);
+    }, [itemOffset, asPath]);
+
+    if (!!thegraphData) {
+        thegraphData?.map((row: any) => {
+            row.claimedFormatted = currencyFormat(
+                row?.claimed,
+                localeCurrency,
+                rates
+            );
         });
     }
 
     return (
         <Table
+            actualPage={actualPage}
             columns={getColumns()}
-            count={getByKey('state') === '3' && totalInactiveBeneficiaries}
             itemsPerPage={itemsPerPage}
+            isLoading={
+                loading ||
+                thegraphData?.loading ||
+                (getByKey('state') === '3' ? !thegraphData : !data)
+            }
             mt={1.25}
+            page={page}
+            count={
+                getByKey('state') === '3'
+                    ? totalInactiveBeneficiaries
+                    : data?.count
+            }
             pb={6}
-            prefix={`${community?.id}/beneficiaries`}
-            thegraph={getByKey('state') === '3' && thegraphData}
+            prefix={getByKey('state') === '3' ? thegraphData : data?.rows}
+            setItemOffset={setItemOffset}
         />
     );
 };
