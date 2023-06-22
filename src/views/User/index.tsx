@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/rules-of-hooks */
 import {
     Avatar,
     Box,
@@ -20,21 +19,19 @@ import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetUserByIdMutation } from '../../api/user';
-import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
+import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
+import Microcredit from './Microcredit';
 import React, { useEffect, useState } from 'react';
 import StateButtons from './StateButtons';
 import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
-import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
-    const { extractFromView } = usePrismicData();
-    const { noMicrocreditDataFound } = extractFromView('microcredit') as any;
     const [loadingUser, toggleLoadingUser] = useState(true);
     const [user, setUser] = useState({}) as any;
 
@@ -43,16 +40,15 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const { t } = useTranslations();
     const [getUser] = useGetUserByIdMutation();
 
-    const { borrowers } = useMicrocreditBorrowers(['limit=999']);
+    const { borrower } = useMicrocreditBorrower([`address=${user?.address}`]);
 
     const hasAddress =
         !!auth?.user?.manager?.community && !!user?.beneficiary?.community;
     const userIsManager =
         auth?.user?.manager?.community === user?.beneficiary?.community &&
         hasAddress;
-    const userIsBorrower = borrowers?.find(
-        (borrower: any) => borrower?.address === user?.address
-    );
+    const showMicrocredit =
+        !!user?.borrower?.id && auth?.user?.roles.includes('loanManager');
 
     useEffect(() => {
         const init = async () => {
@@ -165,7 +161,7 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
                                 <Tab title={t('ubi')} />
                             </>
                         )}
-                        {userIsBorrower && <Tab title="Microcredit" />}
+                        {showMicrocredit && <Tab title="Microcredit" />}
                     </TabList>
 
                     {userIsManager && (
@@ -197,14 +193,9 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
                         </>
                     )}
 
-                    {userIsBorrower && (
+                    {showMicrocredit && (
                         <TabPanel>
-                            <Box column fLayout="center" flex h="60vh">
-                                <CircledIcon icon="forbidden" medium />
-                                <Text g500 medium mt={1}>
-                                    {noMicrocreditDataFound}
-                                </Text>
-                            </Box>
+                            <Microcredit borrower={borrower} />
                         </TabPanel>
                     )}
                 </Tabs>
