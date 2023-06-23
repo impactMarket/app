@@ -1,11 +1,11 @@
 import {
+    Box,
     Button,
+    CircledIcon,
+    Input,
     ModalWrapper,
     Text,
     useModal,
-    Box,
-    CircledIcon,
-    Input
 } from '@impact-market/ui';
 
 const AddNote = () => {
@@ -17,8 +17,8 @@ const AddNote = () => {
                 flex
                 fDirection={{ sm: 'column', xs: 'column' }}
                 style={{
+                    alignItems: 'center',
                     justifyContent: 'center',
-                    alignItems: 'center'
                 }}
             >
                 <Box
@@ -47,9 +47,9 @@ const AddNote = () => {
                     flex
                     fDirection={{ sm: 'row', xs: 'column' }}
                     style={{
-                        justifyContent: 'center',
                         alignItems: 'center',
-                        gap: '1rem'
+                        gap: '1rem',
+                        justifyContent: 'center',
                     }}
                 >
                     <Button

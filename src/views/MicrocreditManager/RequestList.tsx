@@ -1,27 +1,22 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import {
     Avatar,
+    Badge,
     Box,
+    colors,
     CircledIcon,
     DropdownMenu,
+    Icon,
     ProgressBar,
     Text,
     openModal,
     toast,
-    colors,
-    Icon,
-    Badge
 } from '@impact-market/ui';
-import { dateHelpers } from '../../helpers/dateHelpers';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
-import { selectCurrentUser } from 'src/state/slices/auth';
-import { selectRates } from 'src/state/slices/rates';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
-import React, { useState } from 'react';
+import React from 'react';
 import Table from './Table';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -29,6 +24,7 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 const loanStatus = (status: any) => {
     let badgeContent = null;
     const { t } = useTranslations();
+    let statusText = status;
 
     if (false) {
         badgeContent = (
@@ -86,7 +82,7 @@ const loanStatus = (status: any) => {
 
 const getColumns = (props: any) => {
     const { t } = useTranslations();
-    const router = useRouter();
+
     const { setSelected, selected } = props;
 
     const copyToClipboard = (address: any) => {
@@ -95,15 +91,6 @@ const getColumns = (props: any) => {
         toast.success(<Message id="copiedAddress" />);
     };
 
-    const auth = useSelector(selectCurrentUser);
-    const rates = useSelector(selectRates);
-    const language = auth?.user?.language || 'en-US';
-    const currency = auth?.user?.currency || 'USD';
-    const localeCurrency = new Intl.NumberFormat(language, {
-        currency,
-        maximumFractionDigits: 3,
-        style: 'currency'
-    });
 
     return [
         {
