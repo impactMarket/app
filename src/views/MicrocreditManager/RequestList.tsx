@@ -7,11 +7,12 @@ import {
     colors,
     DropdownMenu,
     Icon,
+    openModal,
     ProgressBar,
     Text,
-    openModal,
     toast,
 } from '@impact-market/ui';
+
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
@@ -125,8 +126,8 @@ const getColumns = (props: any) => {
                             borderStyle="solid"
                             backgroundColor={colors.p50}
                             style={{
-                                justifyContent: 'center',
                                 alignItems: 'center',
+                                justifyContent: 'center'
                             }}
                             mr={0.75}
                             onClick={() => {
@@ -292,7 +293,7 @@ const getColumns = (props: any) => {
         {
             minWidth: 10,
             render: (data: any) => {
-                console.log(data);
+                
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
                         {false ? (
@@ -372,19 +373,19 @@ const getColumns = (props: any) => {
 };
 
 const RequestList = (props: any) => {
+    
     const {
+        actualPage,
         borrowers,
         count,
-        loadingBorrowers,
         itemsPerPage,
-        setItemOffset,
+        loadingBorrowers,
         page,
-        actualPage,
+        selected,
         setSelected,
-        selected
+        setItemOffset,
     } = props;
-
-    console.log('Borrowers', borrowers);
+    
 
     return (
         <Table
