@@ -7,15 +7,16 @@ import {
     Tabs,
     ViewContainer
 } from '@impact-market/ui';
+import { selectCurrentUser } from 'src/state/slices/auth';
+import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
+import { useSelector } from 'react-redux';
 import BorrowersList from './BorrowersList';
 import React from 'react';
 import RequestTab from './RequestTab';
 import RichText from 'src/libs/Prismic/components/RichText';
 import Signature from 'src/components/Signature';
-import { selectCurrentUser } from 'src/state/slices/auth';
-import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
-import { useSelector } from 'react-redux';
+
 
 const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;

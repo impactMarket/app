@@ -3,8 +3,8 @@ import {
     Avatar,
     Badge,
     Box,
-    colors,
     CircledIcon,
+    colors,
     DropdownMenu,
     Icon,
     ProgressBar,
@@ -24,7 +24,7 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 const loanStatus = (status: any) => {
     let badgeContent = null;
     const { t } = useTranslations();
-    let statusText = status;
+    const statusText = status;
 
     if (false) {
         badgeContent = (
@@ -32,7 +32,7 @@ const loanStatus = (status: any) => {
                 <Box
                     flex
                     fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
                 >
                     <Icon icon="check" s500 mr={0.2} />
                     <Text s700 extrasmall medium>
@@ -47,7 +47,7 @@ const loanStatus = (status: any) => {
                 <Box
                     flex
                     fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
                 >
                     <Icon icon="close" e500 mr={0.2} />
                     <Text e700 extrasmall medium>
@@ -62,7 +62,7 @@ const loanStatus = (status: any) => {
                 <Box
                     flex
                     fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{ justifyContent: 'center', alignItems: 'center' }}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
                 >
                     <Icon icon="clock" p500 mr={0.2} />
                     <Text p700 extrasmall medium>
@@ -101,14 +101,10 @@ const getColumns = (props: any) => {
                         (item: any) => item.address === data.address
                     ) ? (
                         <Box
-                            style={{
-                                width: '1.5rem',
-                                height: '1.5rem',
-                                borderRadius: '6px',
-                                borderColor: colors.g300,
-                                borderWidth: '1px',
-                                borderStyle: 'solid'
-                            }}
+                            borderRadius="0.5rem"
+                            w="1.5rem"
+                            h="1.5rem"
+                            borderColor={colors.g300}
                             mr={0.75}
                             onClick={() => {
                                 console.log('data', data);
@@ -121,16 +117,16 @@ const getColumns = (props: any) => {
                     ) : (
                         <Box
                             flex
+                            w="1.5rem"
+                            h="1.5rem"
+                            borderRadius="0.5rem"
+                            borderColor={colors.p600}
+                            borderWidth="1px"
+                            borderStyle="solid"
+                            backgroundColor={colors.p50}
                             style={{
-                                width: '1.5rem',
-                                height: '1.5rem',
-                                borderRadius: '6px',
-                                borderColor: colors.p600,
-                                borderWidth: '1px',
-                                borderStyle: 'solid',
                                 justifyContent: 'center',
                                 alignItems: 'center',
-                                backgroundColor: colors.p50
                             }}
                             mr={0.75}
                             onClick={() => {

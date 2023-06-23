@@ -1,9 +1,9 @@
-import { Box, Input, Card, Text, Button } from '@impact-market/ui';
-import RequestList from './RequestList';
-import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
+import { Box, Button, Card, Input, Text } from '@impact-market/ui';
 import React, { useState } from 'react';
-import useFilters from 'src/hooks/useFilters';
 import { TabItem, FlexibleTab } from './FlexibleTab';
+import RequestList from './RequestList';
+import useFilters from 'src/hooks/useFilters';
+import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 
 const itemsPerPage = 7;
 
@@ -15,8 +15,8 @@ const DecisionCard: React.FC<{}> = () => {
             pt={'1.5rem'}
             pb={'1.5rem'}
             style={{
-                justifyContent: 'space-between',
-                alignItems: 'center'
+                alignItems: 'center',
+                justifyContent: 'space-between'
             }}
         >
             <Box>
@@ -31,8 +31,8 @@ const DecisionCard: React.FC<{}> = () => {
                 flex
                 fDirection={{ sm: 'row', xs: 'column' }}
                 style={{
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center'
+                    alignItems: 'center',
+                    justifyContent: 'space-evenly'
                 }}
             >
                 <Button
@@ -70,24 +70,24 @@ const RequestTab: React.FC<{}> = () => {
 
     const tabs: TabItem[] = [
         {
-            title: 'All',
             number: 10,
-            onClick: () => console.log('all')
+            onClick: () => console.log('all'),
+            title: 'All'
         },
         {
-            title: 'Pending',
             number: 5,
-            onClick: () => console.log('pending')
+            onClick: () => console.log('pending'),
+            title: 'Pending'
         },
         {
-            title: 'Approved',
             number: 3,
-            onClick: () => console.log('Approved')
+            onClick: () => console.log('Approved'),
+            title: 'Approved'
         },
         {
-            title: 'Rejected',
             number: 2,
-            onClick: () => console.log('Rejected')
+            onClick: () => console.log('Rejected'),
+            title: 'Rejected'
         }
     ];
 
