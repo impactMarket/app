@@ -21,13 +21,18 @@ import React from 'react';
 import Table from './Table';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import useMicrocreditApplications from 'src/hooks/useMicrocreditApplications';
+import useFilters from 'src/hooks/useFilters';
+import {useState} from 'react';
+import { dateHelpers } from 'src/helpers/dateHelpers';
+
 
 const loanStatus = (status: any) => {
     let badgeContent = null;
     const { t } = useTranslations();
-    const statusText = status;
+   
 
-    if (false) {
+    if (status == 1) {
         badgeContent = (
             <Badge bgS50 style={{ width: 'fit-content' }}>
                 <Box
@@ -42,7 +47,7 @@ const loanStatus = (status: any) => {
                 </Box>
             </Badge>
         );
-    } else if (false) {
+    } else if (status == 0) {
         badgeContent = (
             <Badge bgE50 style={{ width: 'fit-content' }}>
                 <Box
@@ -107,6 +112,13 @@ const getColumns = (props: any) => {
                             h="1.5rem"
                             borderColor={colors.g300}
                             mr={0.75}
+                            style={{
+                                borderColor: colors.g300,
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
+                                cursor: 'pointer'
+                            }}
+
                             onClick={() => {
                                 console.log('data', data);
                                 setSelected((selected: any) => [
@@ -120,14 +132,15 @@ const getColumns = (props: any) => {
                             flex
                             w="1.5rem"
                             h="1.5rem"
-                            borderRadius="0.5rem"
-                            borderColor={colors.p600}
-                            borderWidth="1px"
-                            borderStyle="solid"
-                            backgroundColor={colors.p50}
                             style={{
                                 alignItems: 'center',
-                                justifyContent: 'center'
+                                justifyContent: 'center',
+                                borderRadius: '0.5rem',
+                                borderColor: colors.p600,
+                                borderWidth: '1px',
+                                borderStyle: 'solid',
+                                backgroundColor: colors.p50,
+                                cursor: 'pointer'
                             }}
                             mr={0.75}
                             onClick={() => {
@@ -198,56 +211,53 @@ const getColumns = (props: any) => {
             value: 'name',
             width: '35%'
         },
-        {
-            minWidth: 12,
-            render: (data: any) => {
-                const score = 734;
-                const progress = (score / 850) * 100;
+        // {
+        //     minWidth: 12,
+        //     render: (data: any) => {
+        //         const score = 734;
+        //         const progress = (score / 850) * 100;
 
-                return (
-                    <>
-                        <Box
-                            flex
-                            fLayout="center start"
-                            style={{ gap: '0.8rem' }}
-                        >
-                            <ProgressBar
-                                progress={progress}
-                                success={progress > 83}
-                                warning={progress > 74 && progress <= 83}
-                                error={progress > 0 && progress <= 74}
-                                w="100%"
-                            />
-                            <Text
-                                g700
-                                style={{
-                                    fontSize: '0.75rem',
-                                    lineHeight: 'inherit'
-                                }}
-                            >
-                                {score}
-                            </Text>
-                        </Box>
-                    </>
-                );
-            },
-            sortable: true,
-            title: 'Credit Score',
-            value: 'creditScore',
-            width: '20%'
-        },
+        //         return (
+        //             <>
+        //                 <Box
+        //                     flex
+        //                     fLayout="center start"
+        //                     style={{ gap: '0.8rem' }}
+        //                 >
+        //                     <ProgressBar
+        //                         progress={progress}
+        //                         success={progress > 83}
+        //                         warning={progress > 74 && progress <= 83}
+        //                         error={progress > 0 && progress <= 74}
+        //                         w="100%"
+        //                     />
+        //                     <Text
+        //                         g700
+        //                         style={{
+        //                             fontSize: '0.75rem',
+        //                             lineHeight: 'inherit'
+        //                         }}
+        //                     >
+        //                         {score}
+        //                     </Text>
+        //                 </Box>
+        //             </>
+        //         );
+        //     },
+        //     sortable: true,
+        //     title: 'Credit Score',
+        //     value: 'creditScore',
+        //     width: '20%'
+        // },
         {
-            minWidth: 10,
+            minWidth: 8,
             render: (data: any) => {
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
-                        {true ? (
+                        {data?.application?.appliedOn ? (
                             <>
                                 <Text medium g900 small>
-                                    {'Jan 21, 2022'}
-                                </Text>
-                                <Text g500 small>
-                                    {'22:34am'}
+                                    {dateHelpers.compact(data?.application?.appliedOn)}
                                 </Text>
                             </>
                         ) : (
@@ -259,22 +269,19 @@ const getColumns = (props: any) => {
                 );
             },
             sortable: true,
-            title: 'Applied on',
-            value: 'maturity',
+            title: t('appliedOn'),
+            value: 'appliedOn',
             width: '10%'
         },
         {
-            minWidth: 10,
+            minWidth: 8,
             render: (data: any) => {
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
-                        {false ? (
+                        {data?.application?.decisionOn ? (
                             <>
                                 <Text medium g900 small>
-                                    {'Jan 21, 2022'}
-                                </Text>
-                                <Text g500 small>
-                                    {'22:34am'}
+                                    {dateHelpers.compact(data?.application?.decisionOn)}
                                 </Text>
                             </>
                         ) : (
@@ -286,23 +293,20 @@ const getColumns = (props: any) => {
                 );
             },
             sortable: true,
-            title: 'Decision on',
-            value: 'lastRepayment',
+            title: t('decisionOn'),
+            value: 'decisionOn',
             width: '15%'
         },
         {
-            minWidth: 10,
+            minWidth: 8,
             render: (data: any) => {
                 
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
-                        {false ? (
+                        {data?.application?.createdAt? (
                             <>
                                 <Text medium g900 small>
-                                    {'Jan 21, 2022'}
-                                </Text>
-                                <Text g500 small>
-                                    {'22:34am'}
+                                    {dateHelpers.compact(data?.application?.createdAt)}
                                 </Text>
                             </>
                         ) : (
@@ -320,9 +324,9 @@ const getColumns = (props: any) => {
         },
         {
             minWidth: 10,
-            render: (data: any) => loanStatus(data.status),
+            render: (data: any) => loanStatus(data?.application?.status),
             sortable: true,
-            title: 'Approved',
+            title: t('approved'),
             value: 'currentDebt',
             width: '15%'
         },
@@ -375,16 +379,24 @@ const getColumns = (props: any) => {
 const RequestList = (props: any) => {
     
     const {
-        actualPage,
-        borrowers,
-        count,
         itemsPerPage,
-        loadingBorrowers,
-        page,
         selected,
         setSelected,
-        setItemOffset,
+        filter,
     } = props;
+
+    const { getByKey } = useFilters();
+    const page = getByKey('page') ? +getByKey('page') : 1;
+
+    const actualPage = page - 1 >= 0 ? page - 1 : 0;
+    const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
+    
+
+    const { applications, count, loadingApplications } = useMicrocreditApplications([
+        `limit=${itemsPerPage}`,
+        `offset=${itemOffset}`,
+        filter ? `filter=${filter}` : ''
+    ]);
     
 
     return (
@@ -392,11 +404,11 @@ const RequestList = (props: any) => {
             actualPage={actualPage}
             columns={getColumns({ setSelected, selected })}
             itemsPerPage={itemsPerPage}
-            loadingBorrowers={loadingBorrowers}
+            loadingBorrowers={loadingApplications}
             page={page}
             count={count}
             pb={6}
-            prefix={borrowers}
+            prefix={applications}
             setItemOffset={setItemOffset}
         />
     );

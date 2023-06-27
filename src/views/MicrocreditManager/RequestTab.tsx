@@ -1,9 +1,8 @@
 import { Box, Button, Card, Input, Text } from '@impact-market/ui';
-import React, { useState } from 'react';
+import React, { useState} from 'react';
 import { TabItem, FlexibleTab } from './FlexibleTab';
 import RequestList from './RequestList';
-import useFilters from 'src/hooks/useFilters';
-import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
 
@@ -57,37 +56,33 @@ const DecisionCard: React.FC<{}> = () => {
 };
 
 const RequestTab: React.FC<{}> = () => {
-    const { getByKey } = useFilters();
-    const page = getByKey('page') ? +getByKey('page') : 1;
-
-    const actualPage = page - 1 >= 0 ? page - 1 : 0;
-    const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
-    const { borrowers, count, loadingBorrowers } = useMicrocreditBorrowers([
-        `limit=${itemsPerPage}`,
-        `offset=${itemOffset}`
-    ]);
+    
     const [selected, setSelected] = useState([]);
+    const [filter, setFilter] = useState(null);
+    const [counts, setCounts] = useState([]);
+    const { t } = useTranslations();
 
+   
     const tabs: TabItem[] = [
         {
-            number: 10,
-            onClick: () => console.log('all'),
-            title: 'All'
+            number: counts[0],
+            onClick: () => setFilter(null),
+            title: t('all')
         },
         {
-            number: 5,
-            onClick: () => console.log('pending'),
-            title: 'Pending'
+            number: counts[1],
+            onClick: () => setFilter('pending'),
+            title: t('pending')
         },
         {
-            number: 3,
-            onClick: () => console.log('Approved'),
-            title: 'Approved'
+            number: counts[2],
+            onClick: () => setFilter('approved'),
+            title: t('approved')
         },
         {
-            number: 2,
-            onClick: () => console.log('Rejected'),
-            title: 'Rejected'
+            number: counts[3],
+            onClick: () => setFilter('rejected'),
+            title: t('rejected')
         }
     ];
 
@@ -95,12 +90,10 @@ const RequestTab: React.FC<{}> = () => {
         <Box mt={0.5}>
             <FlexibleTab tabs={tabs} />
             <Input
-                hint=""
+
                 icon="search"
                 placeholder="Search by name or wallet address"
-                prefix=""
                 rows={0}
-                suffix=""
                 wrapperProps={{
                     mt: 2
                 }}
@@ -109,15 +102,10 @@ const RequestTab: React.FC<{}> = () => {
                 {selected.length > 0 && <DecisionCard />}
 
                 <RequestList
-                    borrowers={borrowers}
-                    count={count}
-                    loadingBorrowers={loadingBorrowers}
-                    itemsPerPage={itemsPerPage}
-                    setItemOffset={setItemOffset}
-                    page={page}
-                    actualPage={actualPage}
+                    filter={filter}
                     setSelected={setSelected}
                     selected={selected}
+                    itemsPerPage={itemsPerPage}
                 />
             </Box>
         </Box>
