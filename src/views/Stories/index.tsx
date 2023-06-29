@@ -40,7 +40,7 @@ const Stories: React.FC<{ isLoading?: boolean }> = (props) => {
         auth?.type?.some((value: string) => types.includes(value));
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Row>
                 <Col
                     colSize={

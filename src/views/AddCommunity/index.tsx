@@ -294,7 +294,7 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <form onSubmit={handleSubmit(openSubmitModal)}>
                 <Alert
                     icon="alertCircle"

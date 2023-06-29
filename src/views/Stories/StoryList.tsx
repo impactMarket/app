@@ -499,6 +499,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                             <CanBeRendered types={['beneficiary', 'manager']}>
                                 <Box pl={{ sm: 0, xs: 1 }}>
                                     <DropdownMenu
+                                        {...({} as any)}
                                         asButton
                                         icon="ellipsis"
                                         items={items}

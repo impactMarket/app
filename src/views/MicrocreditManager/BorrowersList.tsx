@@ -74,6 +74,7 @@ const getColumns = () => {
                         )}
                         <Box>
                             <DropdownMenu
+                                {...({} as any)}
                                 icon="chevronDown"
                                 items={[
                                     {

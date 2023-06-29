@@ -76,7 +76,7 @@ const Communities = (props: any) => {
     };
 
     return (
-        <ViewContainer>
+        <ViewContainer {...({} as any)}>
             <SWRConfig value={{ fallback, fetcher }}>
                 <Header
                     activeTab={filters.type}

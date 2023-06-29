@@ -71,11 +71,43 @@ const serializer: SerializerFunction = ({
         return parse(content, components);
     }
 
-    if (type.includes('heading')) {
+    if (type.includes('heading3')) {
         const { text } = node;
 
         return (
-            <Text as="div" {...forwardProps} g900 large semibold>
+            <Text as="div" {...forwardProps} g900 semibold large>
+                {parse(text)}
+            </Text>
+        );
+    }
+
+    if (type.includes('heading2')) {
+        const { text } = node;
+
+        return (
+            <Text
+                as="div"
+                {...forwardProps}
+                g900
+                semibold
+                style={{ fontSize: '1.5rem' }}
+            >
+                {parse(text)}
+            </Text>
+        );
+    }
+
+    if (type.includes('heading1')) {
+        const { text } = node;
+
+        return (
+            <Text
+                as="div"
+                {...forwardProps}
+                g900
+                semibold
+                style={{ fontSize: '2rem' }}
+            >
                 {parse(text)}
             </Text>
         );

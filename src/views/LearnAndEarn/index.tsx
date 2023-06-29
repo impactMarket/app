@@ -180,7 +180,7 @@ const LearnAndEarn = (props: any) => {
     }, [data]);
 
     return (
-        <ViewContainer isLoading={dataLoaded}>
+        <ViewContainer {...({} as any)} isLoading={dataLoaded}>
             <Box flex style={{ justifyContent: 'space-between' }}>
                 <Box flex fDirection={'column'}>
                     <Display g900 medium mb=".25rem">
@@ -210,6 +210,7 @@ const LearnAndEarn = (props: any) => {
                 <Box flex fWrap={'wrap'} mb="1rem">
                     <Box padding=".5rem 0rem">
                         <Dropdown
+                            {...({} as any)}
                             asButton
                             headerProps={{
                                 fLayout: 'center between'

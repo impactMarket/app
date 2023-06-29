@@ -19,7 +19,7 @@ const Messages: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Row h="100%">
                 <Col bgColor="g25" colSize={{ sm: 5, xs: 12 }} pb={0} pt={0}>
                     <Box fLayout="center between" flex>

@@ -50,6 +50,7 @@ const Filters = ({ myCommunityTitle, filters, filterProperty }: any) => {
         <Box fLayout="center start" inlineFlex mt={0.8} w="100%">
             {filters.type === 'myCommunities' && (
                 <DropdownMenu
+                    {...({} as any)}
                     asButton
                     headerProps={{
                         fLayout: 'center between'

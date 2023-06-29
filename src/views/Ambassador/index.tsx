@@ -196,7 +196,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     return (
-        <ViewContainer isLoading={isLoading || loading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading || loading}>
             <Display medium>
                 <String id="dashboard" />
             </Display>
@@ -206,7 +206,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                 mt={0.25}
             />
 
-            <Grid cols={1} pt={1}>
+            <Grid {...({} as any)} cols={1} pt={1}>
                 <Box pr={{ sm: 0.75, xs: 0 }} w={{ sm: '50%', xs: '100%' }}>
                     <Select
                         callback={(value: any) => {
@@ -228,7 +228,13 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                         ]}
                     />
                 </Box>
-                <Grid cols={{ md: 4, sm: 2, xs: 1 }} fWrap="wrap" flex pt={1}>
+                <Grid
+                    {...({} as any)}
+                    cols={{ md: 4, sm: 2, xs: 1 }}
+                    fWrap="wrap"
+                    flex
+                    pt={1}
+                >
                     {cards.map((el, key) => (
                         <Col key={key}>{renderCard(el)}</Col>
                     ))}

@@ -61,7 +61,10 @@ const Proposals: React.FC<{ isLoading?: boolean }> = (props) => {
     };
 
     return (
-        <ViewContainer isLoading={isLoading || loading || !isReady}>
+        <ViewContainer
+            {...({} as any)}
+            isLoading={isLoading || loading || !isReady}
+        >
             <Display>
                 <String id="proposals" />
             </Display>

@@ -33,7 +33,7 @@ const Support: React.FC<{ isLoading?: boolean }> = (props) => {
     }, []);
 
     return (
-        <ViewContainer isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <div id="la-form-impactmarket" />
             <InnerSupport />
         </ViewContainer>

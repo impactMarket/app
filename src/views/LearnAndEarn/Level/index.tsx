@@ -89,7 +89,7 @@ const Level = (props: any) => {
     const buttonDisabled = isLAEUSer && !completedToday;
 
     return (
-        <ViewContainer isLoading={false}>
+        <ViewContainer {...({} as any)} isLoading={false}>
             <Box as="a" onClick={() => router.push(`/${lang}/learn-and-earn/`)}>
                 <Label content={<String id="back" />} icon="arrowLeft" />
             </Box>

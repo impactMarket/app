@@ -77,6 +77,7 @@ const Review = ({
                     user?.address?.toLowerCase() && (
                     <Box ml={1}>
                         <DropdownMenu
+                            {...({} as any)}
                             asButton
                             items={[
                                 {

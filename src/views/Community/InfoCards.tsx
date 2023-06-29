@@ -36,6 +36,7 @@ const InfoCards = ({ data, show }: any) => {
     return (
         !!data && (
             <Grid
+                {...({} as any)}
                 colSpan={1}
                 cols={{ sm: 4, xs: 2 }}
                 mt={{ sm: 1.5, xs: 2 }}

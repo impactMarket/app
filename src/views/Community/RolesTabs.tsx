@@ -49,7 +49,7 @@ const RolesTabs = ({
                     {/* Ambassador */}
                     {ambassador?.active && (
                         <TabPanel>
-                            <Grid cols={{ sm: 3, xs: 1 }}>
+                            <Grid {...({} as any)} cols={{ sm: 3, xs: 1 }}>
                                 <Card>
                                     <UserCard
                                         community={community}

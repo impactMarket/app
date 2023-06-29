@@ -52,6 +52,7 @@ const getColumns = (myCommunities: any, activitySort: boolean) => {
                         </Link>
                         <Box>
                             <DropdownMenu
+                                {...({} as any)}
                                 icon="chevronDown"
                                 items={[
                                     {

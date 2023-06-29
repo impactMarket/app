@@ -166,6 +166,7 @@ const CommunityDetails = ({
     return (
         <>
             <CommunityWrapper
+                {...({} as any)}
                 cols={{ sm: 1, xs: 1 }}
                 columnReverse
                 margin={0}

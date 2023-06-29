@@ -115,6 +115,7 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
 
     return (
         <ViewContainer
+            {...({} as any)}
             isLoading={isLoading || loading || inactiveBeneficiaries?.loading}
         >
             <Box

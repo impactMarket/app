@@ -200,7 +200,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any }> = (
         loadingContract;
 
     return (
-        <ViewContainer isLoading={loadingData}>
+        <ViewContainer {...({} as any)} isLoading={loadingData}>
             <Header
                 buttonLoading={buttonLoading}
                 community={community}

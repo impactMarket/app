@@ -101,6 +101,7 @@ const CommmunityInfo = (props: any) => {
             <Row>
                 <Col colSize={6}>
                     <DropdownMenu
+                        {...({} as any)}
                         icon="chevronDown"
                         items={[
                             {
@@ -130,6 +131,7 @@ const CommmunityInfo = (props: any) => {
                 </Col>
                 <Col colSize={6} right>
                     <DropdownMenu
+                        {...({} as any)}
                         icon="share"
                         items={shareItems}
                         rtl
