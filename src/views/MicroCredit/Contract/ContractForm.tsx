@@ -19,7 +19,7 @@ import { handleSignature } from 'src/helpers/handleSignature';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { selectRates } from '../../../state/slices/rates';
 import { useEffect, useRef, useState } from 'react';
-import { useGetPreSignedMutation } from 'src/api/microcredit';
+import { useGetMicrocreditPreSignedMutation } from 'src/api/microcredit';
 import { usePDF } from '@react-pdf/renderer';
 import { useSelector } from 'react-redux';
 import { useSignatures } from '@impact-market/utils/useSignatures';
@@ -71,7 +71,7 @@ const ContractForm = (props: any) => {
     const { signature } = useSelector(selectCurrentUser);
     const { signMessage } = useSignatures();
 
-    const [getPreSigned] = useGetPreSignedMutation();
+    const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
 
     const localeCurrency = new Intl.NumberFormat(
         auth?.user?.currency?.language || 'en-US',
@@ -201,7 +201,7 @@ const ContractForm = (props: any) => {
             }
 
             const type = pdf?.blob?.type?.split('/')[1] || '';
-            const preSigned = await getPreSigned(type).unwrap();
+            const preSigned = await getMicrocreditPreSigned(type).unwrap();
 
             if (!preSigned?.uploadURL) {
                 return null;

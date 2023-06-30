@@ -7,9 +7,9 @@ interface PreSigned {
 }
 
 // Define a service using a base URL and expected endpoints
-export const storyApi = emptySplitApi.injectEndpoints({
+export const microcreditApi = emptySplitApi.injectEndpoints({
     endpoints: (builder) => ({
-        getPreSigned: builder.mutation<PreSigned, string>({
+        getMicrocreditPreSigned: builder.mutation<PreSigned, string>({
             query: (type: string) => ({
                 method: 'GET',
                 url: `/microcredit/presigned?mime=${type}`
@@ -21,4 +21,4 @@ export const storyApi = emptySplitApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { useGetPreSignedMutation } = storyApi;
+export const { useGetMicrocreditPreSignedMutation } = microcreditApi;
