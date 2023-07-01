@@ -1,12 +1,15 @@
-import { Box, Button, Card, Input, Text } from '@impact-market/ui';
+import { Box, Button, Card, Text } from '@impact-market/ui';
 import React, { useState} from 'react';
 import { TabItem, FlexibleTab } from './FlexibleTab';
 import RequestList from './RequestList';
+
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
 
+
 const DecisionCard: React.FC<{}> = () => {
+    const { t } = useTranslations();
     return (
         <Card
             flex
@@ -20,10 +23,10 @@ const DecisionCard: React.FC<{}> = () => {
         >
             <Box>
                 <Text semibold weight="semibold" base mb={0.5}>
-                    Microcredit Applicants
+                    {t('microcreditApplicants')}
                 </Text>
                 <Text extrasmall>
-                    Select beneficiary to Approve or Reject Loan.
+                    {t('selectBeneficiaryToApproveOrRejectLoan.')}
                 </Text>
             </Box>
             <Box
@@ -38,17 +41,17 @@ const DecisionCard: React.FC<{}> = () => {
                     default
                     gray
                     icon="upload"
-                    onClick={() => console.log('Reject all selected loans')}
+                    onClick={() => {}}
                 >
-                    <Text small>Reject Selected Loans</Text>
+                    <Text small> {t('rejectSelectedLoans')} </Text>
                 </Button>
                 <Button
                     default
                     icon="plus"
                     ml={1}
-                    onClick={() => console.log('Approve all selected loans')}
+                    onClick={() => {}}
                 >
-                    <Text small>Approve Selected Loans</Text>
+                    <Text small>{t('approveSelectedLoans')}</Text>
                 </Button>
             </Box>
         </Card>
@@ -59,28 +62,29 @@ const RequestTab: React.FC<{}> = () => {
     
     const [selected, setSelected] = useState([]);
     const [filter, setFilter] = useState(null);
-    const [counts, setCounts] = useState([]);
+    // const [counts, setCounts] = useState([]);
     const { t } = useTranslations();
 
+    
    
     const tabs: TabItem[] = [
         {
-            number: counts[0],
+            number: null,
             onClick: () => setFilter(null),
             title: t('all')
         },
         {
-            number: counts[1],
+            number: null,
             onClick: () => setFilter('pending'),
             title: t('pending')
         },
         {
-            number: counts[2],
+            number: null,
             onClick: () => setFilter('approved'),
             title: t('approved')
         },
         {
-            number: counts[3],
+            number: null,
             onClick: () => setFilter('rejected'),
             title: t('rejected')
         }
@@ -89,7 +93,7 @@ const RequestTab: React.FC<{}> = () => {
     return (
         <Box mt={0.5}>
             <FlexibleTab tabs={tabs} />
-            <Input
+            {/* <Input
 
                 icon="search"
                 placeholder="Search by name or wallet address"
@@ -97,9 +101,9 @@ const RequestTab: React.FC<{}> = () => {
                 wrapperProps={{
                     mt: 2
                 }}
-            />
+            /> */}
             <Box mt={2}>
-                {selected.length > 0 && <DecisionCard />}
+                {selected.length > 0 && <DecisionCard  />}
 
                 <RequestList
                     filter={filter}

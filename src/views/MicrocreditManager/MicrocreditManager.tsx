@@ -44,7 +44,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                 <Tabs>
                     <TabList>
                         <Tab title={t('repayments')} />
-                        <Tab title={'Borrowers'} />
+                        <Tab title={t('borrowers')} />
                     </TabList>
                     <TabPanel>
                         <Box mt={0.5}>

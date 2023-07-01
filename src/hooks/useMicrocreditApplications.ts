@@ -25,6 +25,7 @@ export default function useMicrocreditApplications(filters?: any[]) {
         fetcher
     );
 
+
     const loadingApplications = !data && !error;
 
     return {

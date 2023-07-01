@@ -8,16 +8,14 @@ import {
     DropdownMenu,
     Icon,
     openModal,
-    ProgressBar,
     Text,
     toast,
 } from '@impact-market/ui';
-
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
 import Message from '../../libs/Prismic/components/Message';
-import React from 'react';
+import React, { useEffect } from 'react';
 import Table from './Table';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -47,7 +45,7 @@ const loanStatus = (status: any) => {
                 </Box>
             </Badge>
         );
-    } else if (status == 0) {
+    } else if (status == 2) {
         badgeContent = (
             <Badge bgE50 style={{ width: 'fit-content' }}>
                 <Box
@@ -392,12 +390,11 @@ const RequestList = (props: any) => {
     const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
     
 
-    const { applications, count, loadingApplications } = useMicrocreditApplications([
+    const { applications, count, loadingApplications} = useMicrocreditApplications([
         `limit=${itemsPerPage}`,
         `offset=${itemOffset}`,
         filter ? `filter=${filter}` : ''
     ]);
-    
 
     return (
         <Table
