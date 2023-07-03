@@ -14,15 +14,15 @@ import {
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
+import { dateHelpers } from 'src/helpers/dateHelpers';
+import React, {useState} from 'react';
 import Message from '../../libs/Prismic/components/Message';
-import React, { useEffect } from 'react';
 import Table from './Table';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useMicrocreditApplications from 'src/hooks/useMicrocreditApplications';
 import useFilters from 'src/hooks/useFilters';
-import {useState} from 'react';
-import { dateHelpers } from 'src/helpers/dateHelpers';
+
 
 
 const loanStatus = (status: any) => {
@@ -118,7 +118,6 @@ const getColumns = (props: any) => {
                             }}
 
                             onClick={() => {
-                                console.log('data', data);
                                 setSelected((selected: any) => [
                                     ...selected,
                                     data
@@ -142,7 +141,6 @@ const getColumns = (props: any) => {
                             }}
                             mr={0.75}
                             onClick={() => {
-                                console.log('data', data);
                                 setSelected((selected: any) =>
                                     selected.filter(
                                         (item: any) =>
@@ -325,12 +323,12 @@ const getColumns = (props: any) => {
             render: (data: any) => loanStatus(data?.application?.status),
             sortable: true,
             title: t('approved'),
-            value: 'currentDebt',
+            value: 'status',
             width: '15%'
         },
         {
             minWidth: 4,
-            render: (data: any) => (
+            render: () => (
                 <Box flex fLayout="center start" style={{ gap: '1rem' }}>
                     <DropdownMenu
                         icon="cardsStack"
@@ -344,7 +342,7 @@ const getColumns = (props: any) => {
                             },
                             {
                                 icon: 'cardsStack',
-                                onClick: () => console.log('View All Notes'),
+                                onClick: () => {},
                                 title: 'View All Notes'
                             }
                         ]}
@@ -362,7 +360,7 @@ const getColumns = (props: any) => {
                             },
                             {
                                 icon: 'close',
-                                onClick: () => console.log('Reject'),
+                                onClick: () => {},
                                 title: 'Reject Loan'
                             }
                         ]}
