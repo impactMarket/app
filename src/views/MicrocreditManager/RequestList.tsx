@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
 
+
 import { 
     Avatar, 
     Badge, 
@@ -29,6 +30,9 @@ import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
 
 import Table from './Table';
+
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+
 
 
 
@@ -112,6 +116,16 @@ const getColumns = (props: any) => {
     const { t } = useTranslations();
 
     const { selected, setSelected } = props;
+
+    const { extractFromView } = usePrismicData();
+    const { addNote,
+            viewAllNotes,
+            appliedOn,
+            decisionOn,
+            approveLoan,
+            rejectLoan
+           } = extractFromView('messages') as any;
+
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
@@ -259,7 +273,7 @@ const getColumns = (props: any) => {
                 );
             },
             sortable: true,
-            title: t('appliedOn'),
+            title: appliedOn,
             value: 'appliedOn',
             width: '10%'
         },
@@ -283,7 +297,7 @@ const getColumns = (props: any) => {
                 );
             },
             sortable: true,
-            title: t('decisionOn'),
+            title: decisionOn,
             value: 'decisionOn',
             width: '15%'
         },
@@ -332,12 +346,12 @@ const getColumns = (props: any) => {
                             {
                                 icon: 'upload',
                                 onClick: () => openModal('addNote'),
-                                title: 'Add Note'
+                                title: addNote,
                             },
                             {
                                 icon: 'cardsStack',
                                 onClick: () => {},
-                                title: 'View All Notes'
+                                title: viewAllNotes
                             }
                         ]}
                     />
@@ -350,12 +364,12 @@ const getColumns = (props: any) => {
                             {
                                 icon: 'check',
                                 onClick: () => openModal('approveLoan'),
-                                title: 'Approve Loan'
+                                title: approveLoan
                             },
                             {
                                 icon: 'close',
                                 onClick: () => {},
-                                title: 'Reject Loan'
+                                title: rejectLoan
                             }
                         ]}
                     />

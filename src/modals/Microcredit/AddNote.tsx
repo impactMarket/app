@@ -4,18 +4,19 @@ import {
     CircledIcon,
     Input,
     ModalWrapper,
-    Text,
     useModal,
 } from '@impact-market/ui';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-
+import RichText from '../../libs/Prismic/components/RichText';
 
 const AddNote = () => {
     
-
+    const { extractFromView } = usePrismicData();
+    const {describeConvBorrower, addNote} = extractFromView('messages') as any;
     const { handleClose } = useModal();
     const { t } = useTranslations();
-
+    console.log("Describe",describeConvBorrower);
     return (
         <ModalWrapper maxW={'484px'} padding={2.5} w="100%">
             <Box
@@ -35,11 +36,9 @@ const AddNote = () => {
                     w="100%"
                 >
                     <CircledIcon icon="upload" medium />
-                    <Text g900 large mt={1} semibold>
-                        {t('addNote')}
-                    </Text>
+                    <RichText content={addNote} g900 large mt={1} semibold/>
                     <Input
-                        placeholder={`${t("describeConvBorrower")}`}
+                        placeholder={`${describeConvBorrower[0].text}`}
                         rows={4}
                         wrapperProps={{
                             mt: 1,

@@ -7,10 +7,14 @@ import {
     Text,
     useModal,
 } from '@impact-market/ui';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
+import RichText from '../../libs/Prismic/components/RichText';
 
 const ApproveLoan = () => {
 
+    const { extractFromView } = usePrismicData();
+    const {enterLoanMaturity, approveLoan} = extractFromView('messages') as any;
     const { handleClose } = useModal();
     const { t } = useTranslations();
 
@@ -33,11 +37,9 @@ const ApproveLoan = () => {
                     w="100%"
                 >
                     <CircledIcon icon="check" medium />
-                    <Text g900 large mt={1} semibold>
-                        {t('approveLoan')}
-                    </Text>
+                    <RichText content={approveLoan} g900 large mt={1} semibold/>
                     <Input
-                        placeholder={t("enterLoanMaturity")}
+                        placeholder={enterLoanMaturity[0].text}
                         rows={1}
                         wrapperProps={{
                             mt: 1,
@@ -69,7 +71,7 @@ const ApproveLoan = () => {
                         mt={{ sm: 1.5, xs: 0 }}
                         onClick={() => handleClose()}
                     >
-                        {t('approve')}
+                        {t('save')}
                     </Button>
                 </Box>
             </Box>

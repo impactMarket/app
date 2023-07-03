@@ -1,8 +1,10 @@
-import { Box, Button, Card, Text } from '@impact-market/ui';
+import { Box, Button, Card } from '@impact-market/ui';
 import { FlexibleTab, TabItem } from './FlexibleTab';
 import React, { useState} from 'react';
 import RequestList from './RequestList';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import RichText from 'src/libs/Prismic/components/RichText';
 
 
 
@@ -10,7 +12,13 @@ const itemsPerPage = 7;
 
 
 const DecisionCard: React.FC<{}> = () => {
-    const { t } = useTranslations();
+
+    const { extractFromView } = usePrismicData();
+    const { selectBeneficiaryToApproveOrRejectLoan,
+            microcreditApplicants,
+            rejectSelectedLoans,
+            approveSelectedLoans
+        } = extractFromView('messages') as any;
 
     return (
         <Card
@@ -24,12 +32,8 @@ const DecisionCard: React.FC<{}> = () => {
             }}
         >
             <Box>
-                <Text semibold weight="semibold" base mb={0.5}>
-                    {t('microcreditApplicants')}
-                </Text>
-                <Text extrasmall>
-                    {t('selectBeneficiaryToApproveOrRejectLoan')}
-                </Text>
+                <RichText content={microcreditApplicants} semibold base mb={0.5}/>
+                <RichText content={selectBeneficiaryToApproveOrRejectLoan} extrasmall/>
             </Box>
             <Box
                 flex
@@ -45,7 +49,7 @@ const DecisionCard: React.FC<{}> = () => {
                     icon="upload"
                     onClick={() => {}}
                 >
-                    <Text small> {t('rejectSelectedLoans')} </Text>
+                    <RichText small content={rejectSelectedLoans} />
                 </Button>
                 <Button
                     default
@@ -53,7 +57,7 @@ const DecisionCard: React.FC<{}> = () => {
                     ml={1}
                     onClick={() => {}}
                 >
-                    <Text small>{t('approveSelectedLoans')}</Text>
+                    <RichText small content={approveSelectedLoans} />
                 </Button>
             </Box>
         </Card>
