@@ -1,4 +1,7 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import React, { useState } from 'react';
+import styled from 'styled-components';
+
 import { 
     Avatar, 
     Badge, 
@@ -12,7 +15,12 @@ import {
     toast, 
 } from '@impact-market/ui';
 
+import { dateHelpers } from 'src/helpers/dateHelpers';
+import useFilters from 'src/hooks/useFilters';
+import useMicrocreditApplications from 'src/hooks/useMicrocreditApplications';
+
 import config from '../../../config';
+
 import Message from '../../libs/Prismic/components/Message';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -20,13 +28,8 @@ import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
 
-import { dateHelpers } from 'src/helpers/dateHelpers';
-import useMicrocreditApplications from 'src/hooks/useMicrocreditApplications';
-import useFilters from 'src/hooks/useFilters';
-
-import React, { useState } from 'react';
-import styled from 'styled-components';
 import Table from './Table';
+
 
 
 const CheckBox = styled(Box)`
@@ -108,7 +111,7 @@ const loanStatus = (status: any) => {
 const getColumns = (props: any) => {
     const { t } = useTranslations();
 
-    const { setSelected, selected } = props;
+    const { selected, setSelected } = props;
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);

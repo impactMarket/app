@@ -1,8 +1,8 @@
-import { Box, Button, Card, Text } from '@impact-market/ui';
 import React, { useState} from 'react';
-import { TabItem, FlexibleTab } from './FlexibleTab';
-import RequestList from './RequestList';
+import { Box, Button, Card, Text } from '@impact-market/ui';
+import { FlexibleTab, TabItem } from './FlexibleTab';
 
+import RequestList from './RequestList';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
