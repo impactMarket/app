@@ -228,14 +228,14 @@ const getColumns = (props: any) => {
         //                             lineHeight: 'inherit'
         //                         }}
         //                     >
-        //                         {score}
+        //                         {t('score')}
         //                     </Text>
         //                 </Box>
         //             </>
         //         );
         //     },
         //     sortable: true,
-        //     title: 'Credit Score',
+        //     title: 't(creditScore)',
         //     value: 'creditScore',
         //     width: '20%'
         // },
