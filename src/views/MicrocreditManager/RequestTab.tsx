@@ -28,7 +28,7 @@ const DecisionCard: React.FC<{}> = () => {
                     {t('microcreditApplicants')}
                 </Text>
                 <Text extrasmall>
-                    {t('selectBeneficiaryToApproveOrRejectLoan.')}
+                    {t('selectBeneficiaryToApproveOrRejectLoan')}
                 </Text>
             </Box>
             <Box

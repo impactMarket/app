@@ -1,3 +1,4 @@
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 import {
     Box,
     Button,
@@ -8,8 +9,11 @@ import {
     useModal,
 } from '@impact-market/ui';
 
+
 const ApproveLoan = () => {
+
     const { handleClose } = useModal();
+    const { t } = useTranslations();
 
     return (
         <ModalWrapper maxW={'484px'} padding={2.5} w="100%">
@@ -31,10 +35,10 @@ const ApproveLoan = () => {
                 >
                     <CircledIcon icon="check" medium />
                     <Text g900 large mt={1} semibold>
-                        Approve Loan
+                        {t('approveLoan')}
                     </Text>
                     <Input
-                        placeholder="Enter loan maturity in months ...."
+                        placeholder={t("enterLoanMaturity")}
                         rows={1}
                         wrapperProps={{
                             mt: 1,
@@ -59,14 +63,14 @@ const ApproveLoan = () => {
                         mt={{ sm: 1.5, xs: 1.5 }}
                         onClick={() => handleClose()}
                     >
-                        Dismiss
+                       {t('cancel')}
                     </Button>
                     <Button
                         fluid={'xs'}
                         mt={{ sm: 1.5, xs: 0 }}
                         onClick={() => handleClose()}
                     >
-                        Approve Loan
+                        {t('approve')}
                     </Button>
                 </Box>
             </Box>

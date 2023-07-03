@@ -1,3 +1,4 @@
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import {
     Box,
     Button,
@@ -8,8 +9,13 @@ import {
     useModal,
 } from '@impact-market/ui';
 
+
+
 const AddNote = () => {
+    
+
     const { handleClose } = useModal();
+    const { t } = useTranslations();
 
     return (
         <ModalWrapper maxW={'484px'} padding={2.5} w="100%">
@@ -31,10 +37,10 @@ const AddNote = () => {
                 >
                     <CircledIcon icon="upload" medium />
                     <Text g900 large mt={1} semibold>
-                        Add Note
+                        {t('addNote')}
                     </Text>
                     <Input
-                        placeholder="Describe your conversation with borrower ..."
+                        placeholder={t("describeConv") + " " + t("borrower")}
                         rows={4}
                         wrapperProps={{
                             mt: 1,
@@ -58,14 +64,14 @@ const AddNote = () => {
                         mt={{ sm: 1.5, xs: 1.5 }}
                         onClick={() => handleClose()}
                     >
-                        Dismiss
+                        {t('cancel')}
                     </Button>
                     <Button
                         fluid={'xs'}
                         mt={{ sm: 1.5, xs: 0 }}
                         onClick={() => handleClose()}
                     >
-                        Save
+                        {t('save')}
                     </Button>
                 </Box>
             </Box>
