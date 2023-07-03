@@ -391,7 +391,7 @@ const RequestList = (props: any) => {
     return (
         <Table
             actualPage={actualPage}
-            columns={getColumns({ setSelected, selected })}
+            columns={getColumns({ selected, setSelected })}
             itemsPerPage={itemsPerPage}
             loadingBorrowers={loadingApplications}
             page={page}
