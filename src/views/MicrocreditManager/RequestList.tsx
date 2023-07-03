@@ -1,27 +1,48 @@
 /* eslint-disable react-hooks/rules-of-hooks */
-import {
-    Avatar,
-    Badge,
-    Box,
-    CircledIcon,
-    colors,
-    DropdownMenu,
-    Icon,
-    openModal,
-    Text,
-    toast,
+import { 
+    Avatar, 
+    Badge, 
+    Box, 
+    CircledIcon, 
+    colors, 
+    DropdownMenu, 
+    Icon, 
+    openModal, 
+    Text, 
+    toast, 
 } from '@impact-market/ui';
+
+import config from '../../../config';
+import Message from '../../libs/Prismic/components/Message';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
+
 import { dateHelpers } from 'src/helpers/dateHelpers';
-import React, {useState} from 'react';
-import Message from '../../libs/Prismic/components/Message';
-import Table from './Table';
-import config from '../../../config';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useMicrocreditApplications from 'src/hooks/useMicrocreditApplications';
 import useFilters from 'src/hooks/useFilters';
+
+import React, { useState } from 'react';
+import styled from 'styled-components';
+import Table from './Table';
+
+
+const CheckBox = styled(Box)`
+    border-radius: 0.5rem;
+    border-width: 1px;
+    border-style: solid;
+    cursor: pointer;
+    height: 1.5rem;
+    margin-right: 0.75rem;
+    width: 1.5rem;
+    flex-direction: ${(props) => (props.flex ? 'row' : 'none')};
+    align-items: ${(props) => (props.flex ? 'center' : 'none')};
+    justify-content: ${(props) => (props.flex ? 'center' : 'none')};
+    background-color: ${(props) => (props.color ? colors.p50 : 'none')};
+    border-color: ${(props) => (props.color ? colors.p600 : colors.g300)};
+`;
 
 
 
@@ -101,57 +122,27 @@ const getColumns = (props: any) => {
             minWidth: 17,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
-                    {!selected.some(
-                        (item: any) => item.address === data.address
-                    ) ? (
-                        <Box
-                            borderRadius="0.5rem"
-                            w="1.5rem"
-                            h="1.5rem"
-                            borderColor={colors.g300}
-                            mr={0.75}
-                            style={{
-                                borderColor: colors.g300,
-                                borderWidth: '1px',
-                                borderStyle: 'solid',
-                                cursor: 'pointer'
-                            }}
-
-                            onClick={() => {
-                                setSelected((selected: any) => [
-                                    ...selected,
-                                    data
-                                ]);
-                            }}
-                        ></Box>
-                    ) : (
-                        <Box
-                            flex
-                            w="1.5rem"
-                            h="1.5rem"
-                            style={{
-                                alignItems: 'center',
-                                justifyContent: 'center',
-                                borderRadius: '0.5rem',
-                                borderColor: colors.p600,
-                                borderWidth: '1px',
-                                borderStyle: 'solid',
-                                backgroundColor: colors.p50,
-                                cursor: 'pointer'
-                            }}
-                            mr={0.75}
-                            onClick={() => {
-                                setSelected((selected: any) =>
-                                    selected.filter(
-                                        (item: any) =>
-                                            item.address !== data.address
-                                    )
-                                );
-                            }}
-                        >
-                            <Icon icon="check" p600 />
-                        </Box>
-                    )}
+                    {
+                        !selected.some((item: any) => item.address === data.address) ? (
+                            <CheckBox
+                                onClick={() => {
+                                    setSelected((selected: any) => [...selected, data]);
+                                }}
+                            ></CheckBox>
+                        ) : (
+                            <CheckBox
+                                flex
+                                color
+                                onClick={() => {
+                                    setSelected((selected: any) =>
+                                        selected.filter((item: any) => item.address !== data.address)
+                                    );
+                                }}
+                            >
+                                <Icon icon="check" p600 />
+                            </CheckBox>
+                        )
+                    }
                     {!!data.avatarMediaPath ? (
                         <Avatar
                             extrasmall
