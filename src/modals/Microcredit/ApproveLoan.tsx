@@ -1,4 +1,3 @@
-import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 import {
     Box,
     Button,
@@ -8,7 +7,7 @@ import {
     Text,
     useModal,
 } from '@impact-market/ui';
-
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const ApproveLoan = () => {
 

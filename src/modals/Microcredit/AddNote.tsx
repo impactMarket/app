@@ -1,4 +1,3 @@
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import {
     Box,
     Button,
@@ -8,7 +7,7 @@ import {
     Text,
     useModal,
 } from '@impact-market/ui';
-
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
 const AddNote = () => {
@@ -40,7 +39,7 @@ const AddNote = () => {
                         {t('addNote')}
                     </Text>
                     <Input
-                        placeholder={t("describeConv") + " " + t("borrower")}
+                        placeholder={`${t("describeConvBorrower")}`}
                         rows={4}
                         wrapperProps={{
                             mt: 1,
@@ -80,3 +79,4 @@ const AddNote = () => {
 };
 
 export default AddNote;
+
