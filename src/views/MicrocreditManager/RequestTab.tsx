@@ -1,15 +1,17 @@
-import React, { useState} from 'react';
 import { Box, Button, Card, Text } from '@impact-market/ui';
 import { FlexibleTab, TabItem } from './FlexibleTab';
-
+import React, { useState} from 'react';
 import RequestList from './RequestList';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+
+
 
 const itemsPerPage = 7;
 
 
 const DecisionCard: React.FC<{}> = () => {
     const { t } = useTranslations();
+
     return (
         <Card
             flex

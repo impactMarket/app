@@ -63,7 +63,8 @@ const Form = ({ onSubmit }: any) => {
                     control={control}
                     hint={
                         errors?.children
-                            ? // @ts-ignore
+                            ? 
+                                // @ts-ignore
                               t(errors?.children?.message?.key)?.replace(
                                   '{{ value }}',
                                   // @ts-ignore

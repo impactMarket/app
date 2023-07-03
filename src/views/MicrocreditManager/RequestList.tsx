@@ -7,11 +7,11 @@ import {
     Badge, 
     Box, 
     CircledIcon, 
-    colors, 
     DropdownMenu, 
     Icon, 
-    openModal, 
     Text, 
+    colors, 
+    openModal, 
     toast, 
 } from '@impact-market/ui';
 

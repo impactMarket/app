@@ -119,8 +119,9 @@ const Form = ({ onSubmit }: any) => {
                             control={control}
                             hint={
                                 errors?.age
-                                    ? // @ts-ignore
-                                      t(errors?.age?.message?.key)?.replace(
+                                    ? 
+                                        // @ts-ignore
+                                        t(errors?.age?.message?.key)?.replace(
                                           '{{ value }}',
                                           // @ts-ignore
                                           errors?.age?.message?.value
