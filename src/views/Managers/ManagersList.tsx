@@ -3,9 +3,12 @@ import { Avatar, Box, CircledIcon, Text, TextLink } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
 import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
-import React from 'react';
+import { useRouter } from 'next/router';
+import React, { useState } from 'react';
 import String from '../../libs/Prismic/components/String';
 import Table from '../../components/Table';
+import useBeneficiaries from 'src/hooks/useBeneficiaries';
+import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
@@ -81,15 +84,38 @@ const getColumns = () => {
 
 const ManagersList: React.FC<{ community: string }> = (props) => {
     const { community } = props;
+    const { getByKey } = useFilters();
+    const page = getByKey('page') ? +getByKey('page') : 1;
+    const actualPage = page - 1 >= 0 ? page - 1 : 0;
+    const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
+    const router = useRouter();
+    const {
+        query: { search, state }
+    } = router;
+
+    const { data, loading } = useBeneficiaries(`${community}/managers`, {
+        limit: itemsPerPage,
+        offset: itemOffset,
+        orderBy: getByKey('orderBy')
+            ? getByKey('orderBy').toString()
+            : 'since:desc',
+        search: search ?? '',
+        state: state ?? 0,
+        ...{ community }
+    });
 
     return (
         <Table
-            callbackProps={{ community }}
+            actualPage={actualPage}
             columns={getColumns()}
             itemsPerPage={itemsPerPage}
+            isLoading={loading}
             mt={1.25}
+            page={page}
+            count={data?.count}
             pb={6}
-            prefix={`${community}/managers`}
+            prefix={data?.rows}
+            setItemOffset={setItemOffset}
         />
     );
 };

@@ -1,12 +1,13 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-nested-ternary */
 import {
     Avatar,
     Box,
     CircledIcon,
     DropdownMenu,
+    Icon,
     ProgressBar,
     Text,
-    TextLink,
+    colors,
     toast
 } from '@impact-market/ui';
 import { currencyFormat } from 'src/utils/currencies';
@@ -16,17 +17,41 @@ import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { selectRates } from 'src/state/slices/rates';
+import { styled } from 'styled-components';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
-import React, { useState } from 'react';
-import Table from './Table';
+import React, { useEffect } from 'react';
+import Table from '../../components/Table';
 import config from '../../../config';
-import useFilters from 'src/hooks/useFilters';
-import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const itemsPerPage = 7;
+const PerformanceIcon = styled.div<{ performance: number }>`
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: ${(props) =>
+        props.performance < 50
+            ? '#FF4405'
+            : props.performance < 100
+            ? colors.w300
+            : props.performance >= 100 && colors.s300};
+`;
+
+const DropdownStyled = styled.div`
+    .dropdown > :nth-child(2) {
+        right: 0;
+        left: auto;
+    }
+
+    .dropdown.last > :nth-child(2) {
+        top: -3rem;
+    }
+`;
+
+const EllipsisIcon = styled(Icon)`
+    transform: rotate(90deg);
+`;
 
 const getColumns = () => {
     const { t } = useTranslations();
@@ -50,7 +75,7 @@ const getColumns = () => {
 
     return [
         {
-            minWidth: 14,
+            minWidth: 15,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
                     {!!data.avatarMediaPath ? (
@@ -106,75 +131,74 @@ const getColumns = () => {
                 </Box>
             ),
             title: t('beneficiary'),
-            value: 'name',
             width: '35%'
         },
         {
-            minWidth: 8,
+            minWidth: 7,
             render: (data: any) => (
-                <Text g900 small>
-                    {currencyFormat(data?.loan?.amount, localeCurrency, rates)}
-                </Text>
-            ),
-            sortable: true,
-            title: t('loan'),
-            value: 'loan',
-            width: '15%'
-        },
-        {
-            minWidth: 8,
-            render: (data: any) => {
-                return (
-                    <Text g900 small>
+                <>
+                    <Text g900 small center>
+                        {currencyFormat(
+                            data?.loan?.amount,
+                            localeCurrency,
+                            rates
+                        )}
+                    </Text>
+                    <Text g500 small center>
                         {`${dateHelpers.secondsToMonth(data?.loan?.period)} ${t(
                             'months'
                         )}`}
                     </Text>
-                );
-            },
+                </>
+            ),
             sortable: true,
-            title: t('maturity'),
-            value: 'maturity',
+            title: t('loan'),
+            value: 'amount',
             width: '10%'
         },
         {
-            minWidth: 8,
+            minWidth: 9,
             render: (data: any) => {
                 return (
                     <Text g900 small>
-                        {data?.loan?.lastRepaymentAmount
-                            ? currencyFormat(
-                                  data?.loan?.lastRepaymentAmount,
-                                  localeCurrency,
-                                  rates
-                              )
-                            : t('none')}
+                        {data?.loan?.lastRepayment
+                            ? dateHelpers.ago(data?.loan?.claimed)
+                            : '--'}
                     </Text>
+                );
+            },
+            title: t('claimed'),
+            width: '15%'
+        },
+        {
+            minWidth: 10,
+            render: (data: any) => {
+                return (
+                    <>
+                        <Text g900 small center>
+                            {data?.loan?.lastRepaymentAmount
+                                ? currencyFormat(
+                                      data?.loan?.lastRepaymentAmount,
+                                      localeCurrency,
+                                      rates
+                                  )
+                                : t('none')}
+                        </Text>
+                        <Text g500 small center>
+                            {data?.loan?.lastRepayment
+                                ? dateHelpers.ago(data?.loan?.lastRepayment)
+                                : '--'}
+                        </Text>
+                    </>
                 );
             },
             sortable: true,
             title: t('lastRepayment'),
             value: 'lastRepayment',
-            width: '15%'
+            width: '13%'
         },
         {
-            minWidth: 8,
-            render: (data: any) => {
-                return (
-                    <Text g900 small>
-                        {data?.loan?.lastRepayment
-                            ? dateHelpers.ago(data?.loan?.lastRepayment)
-                            : '--'}
-                    </Text>
-                );
-            },
-            sortable: true,
-            title: t('lastRepaymentDate'),
-            value: 'lastRepaymentDate',
-            width: '15%'
-        },
-        {
-            minWidth: 8,
+            minWidth: 7,
             render: (data: any) => {
                 const currentDebt = data?.loan?.amount - data?.loan?.repaid;
                 const currentDebtRound = currentDebt < 0 ? 0 : currentDebt;
@@ -197,13 +221,7 @@ const getColumns = () => {
                             fLayout="center start"
                             style={{ gap: '0.2rem' }}
                         >
-                            <ProgressBar
-                                progress={progress}
-                                success={progress > 66}
-                                warning={progress > 33 && progress <= 66}
-                                error={progress > 0 && progress <= 33}
-                                w="100%"
-                            />
+                            <ProgressBar progress={progress} w="100%" />
                             <Text
                                 g700
                                 style={{
@@ -219,42 +237,87 @@ const getColumns = () => {
             },
             sortable: true,
             title: t('currentDebt'),
-            value: 'currentDebt',
-            width: '15%'
+            value: 'lastDebt',
+            width: '13%'
         },
         {
-            minWidth: 8,
+            minWidth: 5,
+            render: (data: any) => {
+                return (
+                    <Box flex fLayout="center" style={{ gap: '0.5rem' }}>
+                        <PerformanceIcon performance={data?.performance} />
+                        <Text g900 small center>
+                            {data?.performance}%
+                        </Text>
+                    </Box>
+                );
+            },
+            sortable: true,
+            title: 'Performance',
+            value: 'performance',
+            width: '13%'
+        },
+        {
+            minWidth: 2,
             render: (data: any) => (
-                <TextLink
-                    onClick={() => router.push(`/user/${data.address}`)}
-                    p500
-                >
-                    <Text small>{t('openProfile')}</Text>
-                </TextLink>
+                <DropdownStyled>
+                    <DropdownMenu
+                        {...({} as any)}
+                        items={[
+                            {
+                                icon: 'open',
+                                onClick: () =>
+                                    router.push(`/user/${data.address}`),
+                                title: t('openProfile')
+                            }
+                        ]}
+                        title={<EllipsisIcon icon="ellipsis" g400 />}
+                        className="dropdown"
+                    />
+                </DropdownStyled>
             ),
-            width: '10%'
+            width: '5%'
         }
     ];
 };
 
-const BorrowersList: React.FC<{}> = () => {
-    const { getByKey } = useFilters();
-    const page = getByKey('page') ? +getByKey('page') : 1;
-    const actualPage = page - 1 >= 0 ? page - 1 : 0;
-    const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
+const BorrowersList: React.FC<{
+    actualPage: number;
+    itemsPerPage: number;
+    loadingBorrowers: boolean;
+    page: number;
+    count: number;
+    borrowers: any;
+    setItemOffset: any;
+}> = (props) => {
+    const {
+        actualPage,
+        itemsPerPage,
+        loadingBorrowers,
+        page,
+        count,
+        borrowers,
+        setItemOffset
+    } = props;
 
-    const { borrowers, count, loadingBorrowers } = useMicrocreditBorrowers([
-        `limit=${itemsPerPage}`,
-        `offset=${itemOffset}`
-    ]);
+    // Add .last class to the last Open Profile dropdown
+    useEffect(() => {
+        const elements = document.querySelectorAll('.dropdown');
+
+        if (elements.length > 0) {
+            const lastElement = elements[elements.length - 1];
+
+            lastElement.classList.add('last');
+        }
+    }, [borrowers]);
 
     return (
         <Table
             actualPage={actualPage}
             columns={getColumns()}
             itemsPerPage={itemsPerPage}
-            loadingBorrowers={loadingBorrowers}
-            mt={1.25}
+            isLoading={loadingBorrowers}
+            mt={1}
             page={page}
             count={count}
             pb={6}
