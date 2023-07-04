@@ -65,6 +65,11 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
             title: t('all')
         },
         {
+            number: countOntrack || 0,
+            onClick: () => update({ filter: 'ontrack', page: 1 }),
+            title: t('ontrack')
+        },
+        {
             number: countNeedHelp || 0,
             onClick: () => update({ filter: 'need-help', page: 1 }),
             title: t('needHelp')
@@ -73,11 +78,6 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
             number: countFullyRepaid || 0,
             onClick: () => update({ filter: 'repaid', page: 1 }),
             title: t('fullyRepaid')
-        },
-        {
-            number: countOntrack || 0,
-            onClick: () => update({ filter: 'ontrack', page: 1 }),
-            title: t('ontrack')
         }
     ];
 
