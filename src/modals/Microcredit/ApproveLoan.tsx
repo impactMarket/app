@@ -4,17 +4,16 @@ import {
     CircledIcon,
     Input,
     ModalWrapper,
-    Text,
     useModal,
 } from '@impact-market/ui';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 import RichText from '../../libs/Prismic/components/RichText';
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const ApproveLoan = () => {
-
     const { extractFromView } = usePrismicData();
     const {enterLoanMaturity, approveLoan} = extractFromView('messages') as any;
+
     const { handleClose } = useModal();
     const { t } = useTranslations();
 

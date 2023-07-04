@@ -1,10 +1,10 @@
 import { Box, Button, Card } from '@impact-market/ui';
 import { FlexibleTab, TabItem } from './FlexibleTab';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import React, { useState} from 'react';
 import RequestList from './RequestList';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import RichText from 'src/libs/Prismic/components/RichText';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 
 
