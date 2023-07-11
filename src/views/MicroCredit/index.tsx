@@ -1,5 +1,5 @@
 import { Box, Card, Display, Label, ViewContainer } from '@impact-market/ui';
-import { LoanStatus, useMicroCredit } from '@impact-market/utils';
+import { LoanStatus, useBorrower } from '@impact-market/utils';
 import { dateHelpers } from '../../helpers/dateHelpers';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useEffect, useState } from 'react';
@@ -21,7 +21,7 @@ const MicroCredit = (props: any) => {
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);
     const auth = useSelector(selectCurrentUser);
     const { getActiveLoanId, loan, repayLoan, claimLoan, isReady } =
-        useMicroCredit();
+        useBorrower();
     const router = useRouter();
     const { getByKey } = useFilters();
     const { t } = useTranslations();
