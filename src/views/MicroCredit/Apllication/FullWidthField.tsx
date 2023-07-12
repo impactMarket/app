@@ -2,22 +2,23 @@ import {
     InputUpload as BaseInputUpload,
     Box,
     Button,
-    // Card,
     Icon,
+    ImgClick,
     Input,
     Row,
     colors
-    // Text
 } from '@impact-market/ui';
-import RichText from '../../../libs/Prismic/components/RichText';
+import { getCookie } from 'cookies-next';
+import { selectCurrentUser } from '../../../state/slices/auth';
+import { useEffect, useState } from 'react';
+import { useGetMicrocreditPreSignedMutation } from 'src/api/microcredit';
+import { useSelector } from 'react-redux';
 
+import RichText from '../../../libs/Prismic/components/RichText';
 import Select from '../../../components/Select';
 import config from '../../../../config';
 import styled from 'styled-components';
 import useCommunitiesCountries from '../../../hooks/useCommunitiesCountries';
-
-// import InputUpload from '../../../components/InputUpload';
-// import { useState } from 'react';
 
 const SelectElement = styled(Button)`
     background-color: white;
@@ -57,32 +58,149 @@ const CheckBox = styled(Box)`
     width: 20px;
 `;
 
+const UploadWrapper = styled(Box)`
+    height: 128px;
+    display: flex;
+    justify-content: space-between;
+    border-radius: 0.5rem;
+    box-shadow: 0 0.125rem 0.0625rem rgba(16, 24, 40, 0.05),
+        0 0 0 1px ${colors.g300};
+
+    > div a {
+        background-color: ${colors.p25};
+        box-shadow: none;
+    }
+`;
+
+const ImageWrapper = styled(Box)`
+    max-width: 30%;
+    flex: 1;
+    position: relative;
+
+    img {
+        object-fit: cover;
+        z-index: 0;
+        position: relative;
+    }
+`;
+
 export interface FullWidthProps {
     item: any;
     fieldType: string;
     idx: number;
     sectionId: string;
-    // formId: number;
+    updateFormData: (rowKey: string, columnKey: number, value: any) => void;
+    getElement: (rowKey: any, columnKey: number) => any;
+}
+
+export interface FormDataProps {
+    item: any;
+    fieldType: string;
+    idx: number;
+    sectionId: string;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
     getElement: (rowKey: any, columnKey: number) => any;
 }
 
 const fetcher = () =>
     fetch(
-        `${config.baseApiUrl  }/communities/count?groupBy=country&status=valid`
+        `${config.baseApiUrl}/communities/count?groupBy=country&status=valid`
     ).then((res) => res.json());
 
 const FullWidthField = (props: FullWidthProps) => {
     const { item, sectionId, idx, updateFormData, getElement } = props;
+    const [profilePictureThumbnail, setProfilePictureThumbnail] = useState(
+        null
+    );
+
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
+    const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
+    const auth = useSelector(selectCurrentUser);
 
     const toggleActive = (value: string, id: number) => {
-        updateFormData(sectionId, idx, value);
+        updateFormData(sectionId, idx, {
+            data: value,
+            hint: '',
+            review: ''
+        });
         document.querySelector(`.active`)?.classList.remove('active');
         document.querySelector(`.select-${id}`).classList.add('active');
     };
 
     const value = getElement(sectionId, idx);
+
+    useEffect(() => {
+        if (!!item.type && !getElement(sectionId, idx)) {
+            updateFormData(sectionId, idx, {
+                data: '',
+                hint: '',
+                review: ''
+            });
+        }
+        if (item.type === 'Upload' && !!getElement(sectionId, idx)?.data) {
+            const obj = {
+                bucket: 'impactmarket-microcredit-staging',
+                key: `${getElement(sectionId, idx)?.data}`
+            };
+            const path = Buffer.from(JSON.stringify(obj)).toString('base64');
+
+            setProfilePictureThumbnail(
+                `https://dxdwf61ltxjyn.cloudfront.net/${path}`
+            );
+        }
+        // if (
+        //     item.type === 'CheckBox' && !getElement(sectionId, idx)
+        // ) {
+        //     updateFormData(sectionId, idx, {
+        //         data: false,
+        //         hint: '',
+        //         review: ''
+        //     });
+        // }
+    }, [item]);
+
+    const handleFiles = async (file: any) => {
+        const type = file[0]?.type?.split('/')[1] || '';
+
+        setProfilePictureThumbnail(file[0]);
+        const preSigned = await getMicrocreditPreSigned(type).unwrap();
+
+        if (!preSigned?.uploadURL) {
+            return null;
+        }
+
+        await fetch(preSigned?.uploadURL, {
+            body: file[0],
+            method: 'PUT'
+        });
+
+        const res = await fetch(`${config.baseApiUrl}/microcredit/docs`, {
+            body: JSON.stringify([
+                {
+                    category: 1,
+                    filepath: preSigned?.filePath
+                }
+            ]),
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${auth.token}`,
+                'Content-Type': 'application/json',
+                message: getCookie('MESSAGE').toString(),
+                signature: getCookie('SIGNATURE').toString()
+            },
+            method: 'POST'
+        });
+
+        if (res?.ok) {
+            updateFormData(sectionId, idx, {
+                data: preSigned?.filePath,
+                hint: '',
+                review: ''
+            });
+        }
+
+        return res;
+    };
 
     return (
         <Row w="100%" ml="0">
@@ -107,32 +225,32 @@ const FullWidthField = (props: FullWidthProps) => {
                                     style={{ alignItems: 'center' }}
                                 >
                                     <CheckBox
+                                        on
                                         onClick={() => {
                                             const checked = getElement(
                                                 sectionId,
                                                 id
                                             );
 
-                                            console.log(checked);
-
-                                            if (!!checked) {
-                                                updateFormData(
-                                                    sectionId,
-                                                    id,
-                                                    false
-                                                );
+                                            if (!!checked?.data) {
+                                                updateFormData(sectionId, id, {
+                                                    data: false,
+                                                    hint: '',
+                                                    review: ''
+                                                });
                                             } else {
-                                                updateFormData(
-                                                    sectionId,
-                                                    id,
-                                                    true
-                                                );
+                                                updateFormData(sectionId, id, {
+                                                    data: true,
+                                                    hint: '',
+                                                    review: ''
+                                                });
                                             }
                                         }}
                                         padding={0.3}
                                         flex
                                     >
-                                        {getElement(sectionId, id) && (
+                                        {getElement(sectionId, id)?.data ===
+                                            true && (
                                             <Icon
                                                 icon="tick"
                                                 p500
@@ -169,11 +287,48 @@ const FullWidthField = (props: FullWidthProps) => {
                             w="100%"
                         />
                     )}
-                    <Box>
-                        <BaseInputUpload
-                            handleFiles={() => console.log('cenas')}
-                        />
-                    </Box>
+                    <UploadWrapper flex>
+                        <Box style={{ flexBasis: '40%' }}>
+                            <BaseInputUpload
+                                className="upload"
+                                handleFiles={handleFiles}
+                                accept={['image/png', 'image/jpeg']}
+                                multiple={false}
+                                name="documents"
+                            >
+                                <RichText
+                                    g500
+                                    small
+                                    content={item.placeholder}
+                                />
+                            </BaseInputUpload>
+                        </Box>
+
+                        {!!profilePictureThumbnail && (
+                            <ImageWrapper>
+                                <ImgClick
+                                    handleClick={(event: any) => {
+                                        event.preventDefault();
+                                        updateFormData(sectionId, idx, {
+                                            data: '',
+                                            hint: '',
+                                            review: ''
+                                        });
+                                        setProfilePictureThumbnail(null);
+                                    }}
+                                    icon="trash"
+                                    url={
+                                        typeof profilePictureThumbnail ===
+                                        'string'
+                                            ? profilePictureThumbnail
+                                            : URL.createObjectURL(
+                                                  profilePictureThumbnail
+                                              )
+                                    }
+                                />
+                            </ImageWrapper>
+                        )}
+                    </UploadWrapper>
                 </Box>
             )}
             {item.type === 'Radio' && (
@@ -191,31 +346,32 @@ const FullWidthField = (props: FullWidthProps) => {
                         />
                     )}
                     <Box>
-                        {item.options.map((option: any, id: number) => (
-                            <Box pb=".5rem">
-                                <input
-                                    type="radio"
-                                    name={`${sectionId}-${idx}`}
-                                    id={option.text}
-                                    value={option.text}
-                                    style={{ margin: '0 .75rem 0 0' }}
-                                    checked={
-                                        getElement(sectionId, idx) ===
-                                        id.toString()
-                                    }
-                                    onChange={() => {
-                                        console.log(id);
-
-                                        updateFormData(
-                                            sectionId,
-                                            idx,
+                        <Box>
+                            {item.options.map((option: any, id: number) => (
+                                <Box pb=".5rem">
+                                    <input
+                                        type="radio"
+                                        name={`${sectionId}-${idx}`}
+                                        className={id === 0 ? 'test' : ''}
+                                        id={`${sectionId}-${idx}`}
+                                        value={option.text}
+                                        style={{ margin: '0 .75rem 0 0' }}
+                                        checked={
+                                            getElement(sectionId, idx)?.data ===
                                             id.toString()
-                                        );
-                                    }}
-                                />
-                                <label>{option.text}</label>
-                            </Box>
-                        ))}
+                                        }
+                                        onChange={() => {
+                                            updateFormData(sectionId, idx, {
+                                                data: id.toString(),
+                                                hint: '',
+                                                review: ''
+                                            });
+                                        }}
+                                    />
+                                    <label>{option.text}</label>
+                                </Box>
+                            ))}
+                        </Box>
                         {!!item?.disclaimer.length && (
                             <RichText
                                 content={item?.disclaimer}
@@ -245,7 +401,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                 <SelectElement
                                     pb=".5rem"
                                     className={`select-${id} ${
-                                        getElement(sectionId, idx) ===
+                                        getElement(sectionId, idx)?.data ===
                                         option.text
                                             ? 'active'
                                             : ''
@@ -258,7 +414,6 @@ const FullWidthField = (props: FullWidthProps) => {
                                 </SelectElement>
                             ))}
                         </Box>
-
                         {!!item?.disclaimer.length && (
                             <RichText
                                 content={item?.disclaimer}
@@ -272,7 +427,8 @@ const FullWidthField = (props: FullWidthProps) => {
             {(item.type === 'TextField' ||
                 item.type === 'CurrencyField' ||
                 item.type === 'EmailField' ||
-                item.type === 'Textbox') && (
+                item.type === 'Textbox' ||
+                item.type === 'NumericField') && (
                 <Box w="100%">
                     {!!item?.question[0]?.text && (
                         <RichText
@@ -287,6 +443,8 @@ const FullWidthField = (props: FullWidthProps) => {
                     <Box>
                         {
                             <Input
+                                id={`${sectionId}-${idx}`}
+                                className="test"
                                 hint={
                                     item?.disclaimer.length
                                         ? item?.disclaimer[0].text
@@ -305,6 +463,12 @@ const FullWidthField = (props: FullWidthProps) => {
                                 suffix={
                                     item.type === 'CurrencyField' ? 'USD' : ''
                                 }
+                                type={
+                                    item.type === 'CurrencyField' ||
+                                    item.type === 'NumericField'
+                                        ? 'number'
+                                        : ''
+                                }
                                 value={value?.data ?? ''}
                                 onChange={(e: any) => {
                                     updateFormData(sectionId, idx, {
@@ -312,6 +476,23 @@ const FullWidthField = (props: FullWidthProps) => {
                                         hint: '',
                                         review: ''
                                     });
+                                    // if (
+                                    //     document.getElementById(
+                                    //         `${sectionId}-${idx}-error`
+                                    //     )
+                                    // ) {
+                                    //     const grandparent = document.getElementById(
+                                    //         `${sectionId}-${idx}`
+                                    //     ).parentElement?.parentElement;
+                                    //     grandparent.style.boxShadow =
+                                    //         '0 0.125rem 0.0625rem rgba(16,24,40,0.05), 0 0 0 1px #D0D5DD';
+                                    //     document
+                                    //         .getElementById(
+                                    //             `${sectionId}-${idx}-error`
+                                    //         )
+                                    //         .remove();
+                                    //     console.log(`${sectionId}-${idx}`);
+                                    // }
                                 }}
                                 wrapperProps={{
                                     mt: 0.5
@@ -339,14 +520,18 @@ const FullWidthField = (props: FullWidthProps) => {
                         {
                             <Select
                                 callback={(value: any) => {
-                                    updateFormData(sectionId, idx, value);
+                                    updateFormData(sectionId, idx, {
+                                        data: value,
+                                        hint: '',
+                                        review: ''
+                                    });
                                 }}
                                 initialValue={''}
                                 isClearable
                                 options={communitiesCountries}
                                 placeholder={'Countries'}
                                 showFlag
-                                value={value ?? ''}
+                                value={value?.data ?? ''}
                                 withOptionsSearch
                             />
                         }

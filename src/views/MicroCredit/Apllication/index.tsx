@@ -27,23 +27,21 @@ type MatrixJsonType = {
     submit: boolean;
 };
 
-const ApplicationForm = (props: any) => {
-    const { data } = props;
-
-    console.log(data);
-    
+const ApplicationForm = () => {
+    // const { data } = props;
     const auth = useSelector(selectCurrentUser);
     const { signature } = useSelector(selectCurrentUser);
     // Get data from props
     const { view } = usePrismicData();
     const [page, setPage] = useState(0);
+    const [isLoading, setIsLoading] = useState(true);
     const [formArray, setFormArray] = useState([]);
     const [titleArray, setTitleArray] = useState([]);
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [prismicId, setPrismicId] = useState('');
     const [formApiData, setFormApiData] = useState({} as any);
-
+    const [readyToProceed, setReadyToProceed] = useState(false);
     const [submitForm] = useSubmitFormMutation();
     const [getBorrower] = useGetBorrowerMutation();
     const [getFormId] = useGetFormIdMutation();
@@ -93,26 +91,34 @@ const ApplicationForm = (props: any) => {
         }
     };
 
-    // useEffect(() => {
-    // const matrixJson: MatrixJsonType = {
-    //     prismicId: 'za85748jf',
-    //     form: getMatrixWithValues()
-    // };
+    useEffect(() => {
+        // console.log(getMatrixWithValues());
+        setReadyToProceed(validateFields());
+        setIsLoading(false);
 
-    // const jsonMatrix = JSON.stringify(matrixJson, null, 2);
-    //     console.log(jsonMatrix);
-    // }, [matrix]);
+        // const matrixJson: MatrixJsonType = {
+        //     prismicId: 'za85748jf',
+        //     form: getMatrixWithValues()
+        // };
+
+        // const jsonMatrix = JSON.stringify(matrixJson, null, 2);
+        //     console.log(jsonMatrix);
+    }, [matrix]);
 
     useEffect(() => {
         const fetchData = async () => {
             try {
                 if (!signature) {
+                    // Send back
                     // await handleSignature(signMessage);
                 }
 
+                console.log(auth?.user?.address);
+                
+
                 const formData = await getBorrower(auth?.user?.address).then(
                     async (borrowerData: any) => {
-                        console.log(borrowerData);
+                        // console.log(borrowerData);
 
                         // if borrower don't have data i don't need to make the next request
                         return await getFormId(
@@ -128,22 +134,17 @@ const ApplicationForm = (props: any) => {
         };
 
         fetchData();
-    }, []);
+    }, [auth?.user?.address]);
 
     useEffect(() => {
-        // addFullJson({
-        //     prismicId,
-        //     form
-        // });
         const titleArray: any = [];
         const formArray: any = [];
         let currentForm: any, id: any;
 
         if (!!formApiData?.data) {
-            // debugger
             const { prismicId, form } = formApiData?.data ?? {
                 form: {},
-                prismicId: '',
+                prismicId: ''
             };
 
             id = prismicId;
@@ -173,7 +174,6 @@ const ApplicationForm = (props: any) => {
                 }
             }
         } else {
-            // debugger
             id = view[0]?.id;
             currentForm = view[0]?.data;
         }
@@ -186,9 +186,8 @@ const ApplicationForm = (props: any) => {
             Object.keys(currentForm).forEach((key) => {
                 if (key.includes('page')) {
                     if (/\d+Title$/.test(key)) {
-                        titleArray.push(currentForm[key]);
+                        titleArray.push(currentForm[key][0]?.text);
                     } else if (/\d+Form$/.test(key)) {
-                        // debugger
                         formArray.push(currentForm[key]);
                     }
                 }
@@ -197,33 +196,6 @@ const ApplicationForm = (props: any) => {
         setFormArray(formArray);
         setTitleArray(titleArray);
     }, [formApiData]);
-
-    // useEffect(() => {
-    //     addFullJson({
-    //         "prismicId": "za85748jf",
-    //         "form": {
-    //           "full_width_form_field$4821e2c1-0044-46c5-a6e7-e4a9252a731f": {
-    //             "0": "0"
-    //           },
-    //           "full_width_form_field$a9552890-5f38-4bcd-b2ad-bf00e8999755": {
-    //             "0": "1"
-    //           },
-    //           "double_input$698174d7-c938-4fc5-9b60-7eae5e4f3493": {
-    //             "0": "Paulo",
-    //             "1": "Sousa",
-    //             "2": "36",
-    //             "4": "BO"
-    //           },
-    //           "full_width_form_field$5f936942-0874-472d-9365-ba40f4c35d98": {
-    //             "0": "1",
-    //             "1": "0"
-    //           },
-    //           "full_width_form_field$b6fc9f3c-2600-4c15-ac6f-5152f63be31d": {
-    //             "0": "place"
-    //           }
-    //         }
-    //       })
-    // }, []);
 
     const getMatrixWithValues = () => {
         const matrixWithValues: {
@@ -245,11 +217,92 @@ const ApplicationForm = (props: any) => {
         return matrixWithValues;
     };
 
-    // console.log(formArray[2]);
-    
+    const validateFields = () => {
+        let formIsReady = true;
+
+        formArray[page]?.map((section: any) => {
+            const formValues = getMatrixWithValues();
+
+            if (section.id.toString().includes('double_input')) {
+                let counter = 0;
+
+                section.items.map((el: any) => {
+                    const value1 = formValues[section.id.toString()][
+                        counter.toString()
+                    ] as any;
+
+                    if (!value1?.data) {
+                        formIsReady = false;
+                    }
+                    counter++;
+
+                    const value2 = formValues[section.id.toString()][
+                        counter.toString()
+                    ] as any;
+
+                    if (!value2?.data && !!el?.type2) {
+                        formIsReady = false;
+                    }
+
+                    counter++;
+                });
+            } else {
+                section.items.map((field: any, idx: number) => {
+                    if (field?.type === 'Checkbox') {
+                        field.options.map((_: any, index: number) => {
+                            const value = formValues[section.id.toString()][
+                                index.toString()
+                            ] as any;
+
+                            if (!value?.data) {
+                                formIsReady = false;
+                            }
+                        });
+                    } else {
+                        const value = formValues[section.id.toString()][
+                            idx.toString()
+                        ] as any;
+
+                        if (!value?.data) {
+                            formIsReady = false;
+                        }
+                    }
+                });
+            }
+        });
+
+        return formIsReady;
+    };
+
+    const handleButtonClick = () => {
+        const formIsReady = validateFields();
+
+        if (formIsReady) {
+            const response = submitFormData(false);
+
+            if (!!response) {
+                setPage(page + 1);
+            }
+        }
+    };
+
+    const submitFormData = async (status: boolean) => {
+        const matrixJson: MatrixJsonType = {
+            form: getMatrixWithValues(),
+            prismicId,
+            submit: status
+        };
+
+        const response = await submitForm(matrixJson as any);
+
+        console.log(response);
+        
+
+        return response;
+    };
 
     return (
-        <ViewContainer {...({} as any)} isLoading={false}>
+        <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box fLayout="start between" fWrap="wrap" flex>
                 <Box column flex pr={{ sm: 2, xs: 0 }}>
                     <Display g900 medium>
@@ -264,6 +317,7 @@ const ApplicationForm = (props: any) => {
                             currentStep={page + 1}
                             onStepClick={() => {}}
                             steps={titleArray.length}
+                            // stepsTitles={titleArray}
                         />
                     </Box>
                 </Box>
@@ -299,24 +353,25 @@ const ApplicationForm = (props: any) => {
                             {'Previous Step'}
                         </Button>
                         {page !== formArray.length - 1 && (
-                            <Button onClick={() => setPage(page + 1)} gray>
+                            <Button
+                                disabled={!readyToProceed}
+                                onClick={handleButtonClick}
+                                gray
+                            >
                                 {'Next Step'}
                             </Button>
                         )}
                         {page === formArray.length - 1 && (
                             <Button
-                                onClick={async () => {
-                                    const matrixJson: MatrixJsonType = {
-                                        form: getMatrixWithValues(),
-                                        prismicId,
-                                        submit: false
-                                    };
+                                disabled={!readyToProceed}
+                                onClick={() => {
+                                    // const matrixJson: MatrixJsonType = {
+                                    //     form: getMatrixWithValues(),
+                                    //     prismicId,
+                                    //     submit: true
+                                    // };
 
-                                    const response = await submitForm(
-                                        matrixJson as any
-                                    );
-
-                                    console.log(response);
+                                    const response = submitFormData(true);
 
                                     if (!!response) {
                                         router.push(
@@ -325,7 +380,7 @@ const ApplicationForm = (props: any) => {
                                     }
                                 }}
                             >
-                                {'Submit'}
+                                {'Submit Form'}
                             </Button>
                         )}
                     </Box>
