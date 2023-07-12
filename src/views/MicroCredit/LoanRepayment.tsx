@@ -10,7 +10,7 @@ import {
 } from '@impact-market/ui';
 import { localeFormat } from '../../utils/currencies';
 import { mq } from 'styled-gen';
-import { useCUSDBalance, useMicroCredit } from '@impact-market/utils';
+import { useBorrower, useCUSDBalance } from '@impact-market/utils';
 import { useState } from 'react';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
@@ -59,7 +59,7 @@ const LoanRepayment = (props: any) => {
         props;
     const { t } = useTranslations();
     const balanceCUSD = useCUSDBalance();
-    const { approve } = useMicroCredit();
+    const { approve } = useBorrower();
     const formattedBalance = localeFormat(balanceCUSD, {
         maximumFractionDigits: 6,
         maximumSignificantDigits: 6
