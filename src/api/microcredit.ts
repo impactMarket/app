@@ -25,10 +25,10 @@ interface AplicationFormProps {
 // Define a service using a base URL and expected endpoints
 export const microcreditApi = emptySplitApi.injectEndpoints({
     endpoints: (builder) => ({
-        getBorrower: builder.mutation<any, { address: string }>({
+        getBorrowerForms: builder.mutation<any, { address: string }>({
             query: (address: any) => ({
                 method: 'GET',
-                url: `microcredit/borrower?address=${address}`
+                url: `microcredit/borrower?address=${address}&include=forms`
             }),
             transformResponse: (response: { data?: any }) => response.data
         }),
@@ -61,7 +61,7 @@ export const microcreditApi = emptySplitApi.injectEndpoints({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const { 
-    useGetBorrowerMutation,
+    useGetBorrowerFormsMutation,
     useGetFormIdMutation,
     useGetMicrocreditPreSignedMutation,
     useSubmitFormMutation,

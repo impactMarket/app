@@ -10,7 +10,7 @@ import {
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useEffect, useRef, useState } from 'react';
 import {
-    useGetBorrowerMutation,
+    useGetBorrowerFormsMutation,
     useGetFormIdMutation,
     useSubmitFormMutation
 } from '../../../api/microcredit';
@@ -43,7 +43,7 @@ const ApplicationForm = () => {
     const [formApiData, setFormApiData] = useState({} as any);
     const [readyToProceed, setReadyToProceed] = useState(false);
     const [submitForm] = useSubmitFormMutation();
-    const [getBorrower] = useGetBorrowerMutation();
+    const [getBorrowerForms] = useGetBorrowerFormsMutation();
     const [getFormId] = useGetFormIdMutation();
     const [matrix, setMatrix] = useState<MatrixType>({});
     const mapRef = useRef<Map<string, string>>(new Map());
@@ -116,9 +116,8 @@ const ApplicationForm = () => {
                 console.log(auth?.user?.address);
                 
 
-                const formData = await getBorrower(auth?.user?.address).then(
+                const formData = await getBorrowerForms(auth?.user?.address).then(
                     async (borrowerData: any) => {
-                        // console.log(borrowerData);
 
                         // if borrower don't have data i don't need to make the next request
                         return await getFormId(
