@@ -1,13 +1,13 @@
 import {
     Box,
 } from '@impact-market/ui';
-
+import { FlexibleTab } from 'src/components/FlexibleTab';
 import BorrowersList from './BorrowersList';
 import React, { useEffect, useState } from 'react';
 import useFilters from 'src/hooks/useFilters';
 import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
-import { FlexibleTab } from 'src/components/FlexibleTab';
+
 
 
 const itemsPerPage = 7;

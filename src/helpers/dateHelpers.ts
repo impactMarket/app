@@ -41,6 +41,14 @@ export const dateHelpers = {
 
     complete: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), `MMM d, y • H:m`) : '',
+        
+    getDateAndTime: (timestamp: string) => {
+        const date = new Date(timestamp);
+        const dateString = dateFnsFormat(date, 'MMM d, y', { locale: getLocale() });
+        const timeString = dateFnsFormat(date, 'HH:mm', { locale: getLocale() });
+
+        return [dateString, timeString];
+    },
 
     secondsToMonth: (date: number) => (date ? Number(date) / 2592000 : ''),
 
@@ -48,12 +56,5 @@ export const dateHelpers = {
         date ? format(new Date(fromUnixTime(date)), 'dd/MM/yyyy') : '',
 
     unix: (date: number) =>
-        date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : '',
-    getDateAndTime: (timestamp: string) => {
-        const date = new Date(timestamp);
-        const dateString = dateFnsFormat(date, 'MMM d, y', { locale: getLocale() });
-        const timeString = dateFnsFormat(date, 'HH:mm', { locale: getLocale() });
-
-        return [dateString, timeString];
-    }
+        date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : ''
 };
