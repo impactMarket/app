@@ -10,9 +10,9 @@ import {
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
-import BorrowersTab from './Borrowers/BorrowersTab';
+import BorrowersTab from './BorrowersTab';
 import React from 'react';
-import RequestTab from './Request/RequestTab';
+import RequestTab from './RequestTab';
 import RichText from 'src/libs/Prismic/components/RichText';
 import Signature from 'src/components/Signature';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';

@@ -180,24 +180,27 @@ const getColumns = (props: any) => {
                         )}
                         <Box>
                             <DropdownMenu
+                                {...({} as any)}
                                 icon="chevronDown"
                                 items={[
                                     {
                                         icon: 'open',
-                                        onClick: () =>
+                                        onClick: () =>{
                                             window.open(
                                                 config.explorerUrl?.replace(
                                                     '#USER#',
                                                     data.address
                                                 )
-                                            ),
+                                            )},
                                         title: t('openInExplorer')
                                     },
                                     {
+                                        
                                         icon: 'copy',
                                         onClick: () =>
                                             copyToClipboard(data.address),
-                                        title: t('copyAddress')
+                                        title: t('copyAddress'),
+                                        
                                     }
                                 ]}
                                 title={
@@ -357,39 +360,44 @@ const getColumns = (props: any) => {
             render: (data : any) => (
                 <Box flex fLayout="center start" style={{ gap: '1rem' }}>
                     <DropdownMenu
+                        {...({} as any)}
                         icon="cardsStack"
                         titleColor="g400"
                         rtl={true}
                         items={[
                             {
+                                
                                 icon: 'upload',
                                 onClick: () => openModal('addNote'),
                                 title: addNote,
                             },
                             {
+                                
                                 icon: 'cardsStack',
                                 onClick: () => {},
                                 title: viewAllNotes
+                                
                             }
                         ]}
                     />
 
                     <DropdownMenu
+                        {...({} as any)}
                         icon="ellipsis"
                         titleColor="g400"
                         rtl={true}
                         items={[
                             {
+                                
                                 icon: 'check',
                                 onClick: () => openModal('approveLoan'),
                                 title: approveLoan
                             },
                             {
+                                
                                 icon: 'close',
-                                onClick: () => {
-                                    console.log(data);
-                                },
-                                title: rejectLoan
+                                onClick: () => { },
+                                title: rejectLoan                               
                             }
                         ]}
                     />
