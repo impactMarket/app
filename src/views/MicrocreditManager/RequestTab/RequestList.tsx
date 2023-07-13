@@ -30,8 +30,8 @@ import { getUserName } from '../../../utils/users';
 
 import Table from '../../../components/Table';
 
+
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
-import { da } from 'date-fns/locale';
 
 
 
