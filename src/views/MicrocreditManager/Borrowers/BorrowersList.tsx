@@ -11,20 +11,20 @@ import {
     toast
 } from '@impact-market/ui';
 import { currencyFormat } from 'src/utils/currencies';
-import { dateHelpers } from '../../helpers/dateHelpers';
-import { formatAddress } from '../../utils/formatAddress';
-import { getImage } from '../../utils/images';
-import { getUserName } from '../../utils/users';
+import { dateHelpers } from '../../../helpers/dateHelpers';
+import { formatAddress } from '../../../utils/formatAddress';
+import { getImage } from '../../../utils/images';
+import { getUserName } from '../../../utils/users';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { selectRates } from 'src/state/slices/rates';
 import { styled } from 'styled-components';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import Message from '../../libs/Prismic/components/Message';
+import Message from '../../../libs/Prismic/components/Message';
 import React, { useEffect } from 'react';
-import Table from '../../components/Table';
-import config from '../../../config';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import Table from '../../../components/Table';
+import config from '../../../../config';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const PerformanceIcon = styled.div<{ performance: number }>`
     width: 12px;
@@ -310,6 +310,9 @@ const BorrowersList: React.FC<{
             lastElement.classList.add('last');
         }
     }, [borrowers]);
+ 
+
+    
 
     return (
         <Table

@@ -48,5 +48,12 @@ export const dateHelpers = {
         date ? format(new Date(fromUnixTime(date)), 'dd/MM/yyyy') : '',
 
     unix: (date: number) =>
-        date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : ''
+        date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : '',
+    getDateAndTime: (timestamp: string) => {
+        const date = new Date(timestamp);
+        const dateString = dateFnsFormat(date, 'MMM d, y', { locale: getLocale() });
+        const timeString = dateFnsFormat(date, 'HH:mm', { locale: getLocale() });
+
+        return [dateString, timeString];
+    }
 };
