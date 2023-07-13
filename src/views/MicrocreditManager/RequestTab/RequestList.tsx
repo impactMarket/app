@@ -31,6 +31,7 @@ import { getUserName } from '../../../utils/users';
 import Table from '../../../components/Table';
 
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
+import { da } from 'date-fns/locale';
 
 
 
@@ -350,14 +351,13 @@ const getColumns = (props: any) => {
         {
             minWidth: 10,
             render: (data: any) => loanStatus(data?.application?.status),
-            sortable: true,
             title: t('approved'),
             value: 'status',
             width: '15%'
         },
         {
             minWidth: 4,
-            render: (data : any) => (
+            render: () => (
                 <Box flex fLayout="center start" style={{ gap: '1rem' }}>
                     <DropdownMenu
                         {...({} as any)}
@@ -388,7 +388,6 @@ const getColumns = (props: any) => {
                         rtl={true}
                         items={[
                             {
-                                
                                 icon: 'check',
                                 onClick: () => openModal('approveLoan'),
                                 title: approveLoan
