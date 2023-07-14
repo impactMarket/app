@@ -92,9 +92,7 @@ const ApplicationForm = () => {
     };
 
     useEffect(() => {
-        // console.log(getMatrixWithValues());
         setReadyToProceed(validateFields());
-        setIsLoading(false);
 
         // const matrixJson: MatrixJsonType = {
         //     prismicId: 'za85748jf',
@@ -109,24 +107,18 @@ const ApplicationForm = () => {
         const fetchData = async () => {
             try {
                 if (!signature) {
-                    // Send back
-                    // await handleSignature(signMessage);
+                    return router.push('/microcredit/apply');
                 }
 
-                console.log(auth?.user?.address);
-                
-
-                const formData = await getBorrowerForms(auth?.user?.address).then(
-                    async (borrowerData: any) => {
-
-                        // if borrower don't have data i don't need to make the next request
-                        return await getFormId(
-                            borrowerData?.data?.forms[0]?.id
-                        );
-                    }
-                );
+                const formData = await getBorrowerForms(
+                    auth?.user?.address
+                ).then(async (borrowerData: any) => {
+                    // if borrower don't have data i don't need to make the next request
+                    return await getFormId(borrowerData?.data?.forms[0]?.id);
+                });
 
                 setFormApiData(formData);
+                setIsLoading(false);
             } catch (error) {
                 console.error('Error fetching data:', error);
             }
@@ -295,7 +287,6 @@ const ApplicationForm = () => {
         const response = await submitForm(matrixJson as any);
 
         console.log(response);
-        
 
         return response;
     };
@@ -363,18 +354,20 @@ const ApplicationForm = () => {
                         {page === formArray.length - 1 && (
                             <Button
                                 disabled={!readyToProceed}
-                                onClick={() => {
+                                onClick={async () => {
                                     // const matrixJson: MatrixJsonType = {
                                     //     form: getMatrixWithValues(),
                                     //     prismicId,
                                     //     submit: true
                                     // };
 
-                                    const response = submitFormData(true);
+                                    const response = (await submitFormData(
+                                        true
+                                    )) as any;
 
                                     if (!!response) {
                                         router.push(
-                                            '/microcredit/apply?success=true'
+                                            `/microcredit/apply?success=true&formId=${response?.data?.id}`
                                         );
                                     }
                                 }}

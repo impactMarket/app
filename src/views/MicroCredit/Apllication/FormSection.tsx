@@ -1,6 +1,29 @@
 import { Box, Card, Col, Row } from '@impact-market/ui';
+import { mq } from 'styled-gen';
 import FullWidthField from './FullWidthField';
 import RichText from '../../../libs/Prismic/components/RichText';
+import styled, {css} from 'styled-components';
+
+const Section = styled(Row)`
+    ${mq.phone(css`
+        margin-bottom: 3rem;
+
+        .section-info {
+            margin-bottom: 1rem;
+        }
+    `)};
+`;
+
+const DoubleInputWrapper = styled(Row)`
+    ${mq.phone(css`
+        flex-direction: column;
+
+        > .column {
+            flex-basis: 100% !important;
+            width: 100%;
+        }
+    `)};
+`;
 
 export interface FormSectionProps {
     items: Array<any>;
@@ -25,8 +48,8 @@ const FormSection = (props: FormSectionProps) => {
     let counter = 0;
 
     return (
-        <Row mb="1.3rem">
-            <Col colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
+        <Section mb="1.3rem">
+            <Col className="section-info" colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
                 <RichText content={title} g700 medium small semibold />
                 <RichText content={description} g500 regular small />
             </Col>
@@ -63,15 +86,15 @@ const FormSection = (props: FormSectionProps) => {
                             };
 
                             return (
-                                <Box
-                                    padding="1.5rem 0 0"
+                                <DoubleInputWrapper
+                                    padding=".5rem 0 0"
                                     pb={
                                         items.length - 1 === idx ? '1.5rem' : ''
                                     }
                                     flex
                                     fLayout="start between"
                                 >
-                                    <Box style={{ flexBasis: '48%' }}>
+                                    <Box className="column" style={{ flexBasis: '48%' }}>
                                         <FullWidthField
                                             item={item1}
                                             fieldType={fieldType}
@@ -81,7 +104,7 @@ const FormSection = (props: FormSectionProps) => {
                                             getElement={getElement}
                                         />
                                     </Box>
-                                    <Box style={{ flexBasis: '48%' }}>
+                                    <Box className="column" style={{ flexBasis: '48%' }}>
                                         <FullWidthField
                                             item={item2}
                                             fieldType={fieldType}
@@ -91,13 +114,13 @@ const FormSection = (props: FormSectionProps) => {
                                             getElement={getElement}
                                         />
                                     </Box>
-                                </Box>
+                                </DoubleInputWrapper>
                             );
                         }
                     })}
                 </Card>
             </Col>
-        </Row>
+        </Section>
     );
 };
 

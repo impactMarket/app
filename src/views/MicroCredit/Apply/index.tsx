@@ -1,4 +1,4 @@
-import { Box, Button, Card, Display, ViewContainer } from '@impact-market/ui';
+import { Accordion, AccordionItem, Box, Button, Card, Display, ViewContainer } from '@impact-market/ui';
 import { handleSignature } from '../../../helpers/handleSignature';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useRouter } from 'next/router';
@@ -7,7 +7,30 @@ import { useSignatures } from '@impact-market/utils/useSignatures';
 import Image from '../../../libs/Prismic/components/Image';
 import LoanOverview from '../LoanOverview';
 import RichText from '../../../libs/Prismic/components/RichText';
+import styled from 'styled-components';
 import useFilters from '../../../hooks/useFilters';
+
+const AccordionComponent = styled(Accordion)`
+    a {
+        flex-wrap: wrap;
+        max-width: 100%;
+    }
+
+    p {
+        max-width: 100%;
+    }
+`;
+
+const scrollIntoView = (isActive: boolean, el: HTMLElement) => {
+    setTimeout(() => {
+        if (!isActive) {
+            el.scrollIntoView({
+                behavior: 'smooth',
+                block: 'nearest'
+            });
+        }
+    }, 300);
+};
 
 const MicroCredit = (props: any) => {
     const { data, view } = props;
@@ -19,6 +42,7 @@ const MicroCredit = (props: any) => {
         applyContent,
         applyImage,
         applyTitle,
+        faq,
         headingTitle,
         interestRateLabel,
         interestRateText,
@@ -39,6 +63,7 @@ const MicroCredit = (props: any) => {
     const { signMessage } = useSignatures();
     const { getByKey } = useFilters();
     const isSuccessful = getByKey('success') ?? false;
+    const formId = getByKey('formId') ?? '';
 
     const router = useRouter();
 
@@ -157,6 +182,7 @@ const MicroCredit = (props: any) => {
                                 small
                                 mt={0.5}
                                 g500
+                                variables={{ formId }}
                             />
                         </Box>
                         <Box
@@ -182,7 +208,19 @@ const MicroCredit = (props: any) => {
                     </Box>
                 )}
             </Card>
-            {/* <RepaymentHistory /> */}
+            {faq?.length > 0 && (
+                <AccordionComponent mt={2}>
+                    {faq?.map((faq: any, index: number) => (
+                        <AccordionItem
+                            key={index}
+                            scrollIntoView={scrollIntoView}
+                            title={faq.title}
+                        >
+                            <RichText content={faq.content} g500 small />
+                        </AccordionItem>
+                    ))}
+                </AccordionComponent>
+            )}
         </ViewContainer>
     );
 };

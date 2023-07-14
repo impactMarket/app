@@ -9,6 +9,7 @@ import {
     colors
 } from '@impact-market/ui';
 import { getCookie } from 'cookies-next';
+import { mq } from 'styled-gen';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useEffect, useState } from 'react';
 import { useGetMicrocreditPreSignedMutation } from 'src/api/microcredit';
@@ -17,7 +18,7 @@ import { useSelector } from 'react-redux';
 import RichText from '../../../libs/Prismic/components/RichText';
 import Select from '../../../components/Select';
 import config from '../../../../config';
-import styled from 'styled-components';
+import styled, {css} from 'styled-components';
 import useCommunitiesCountries from '../../../hooks/useCommunitiesCountries';
 
 const SelectElement = styled(Button)`
@@ -84,6 +85,12 @@ const ImageWrapper = styled(Box)`
     }
 `;
 
+const Spacer = styled(Box)`
+    ${mq.phone(css`
+        display: none;
+    `)};
+`;
+
 export interface FullWidthProps {
     item: any;
     fieldType: string;
@@ -116,6 +123,7 @@ const FullWidthField = (props: FullWidthProps) => {
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
     const auth = useSelector(selectCurrentUser);
+    const walletAddress = auth?.user?.address;
 
     const toggleActive = (value: string, id: number) => {
         updateFormData(sectionId, idx, {
@@ -145,18 +153,9 @@ const FullWidthField = (props: FullWidthProps) => {
             const path = Buffer.from(JSON.stringify(obj)).toString('base64');
 
             setProfilePictureThumbnail(
-                `https://dxdwf61ltxjyn.cloudfront.net/${path}`
+                `${config.imagesUrl}${path}`
             );
         }
-        // if (
-        //     item.type === 'CheckBox' && !getElement(sectionId, idx)
-        // ) {
-        //     updateFormData(sectionId, idx, {
-        //         data: false,
-        //         hint: '',
-        //         review: ''
-        //     });
-        // }
     }, [item]);
 
     const handleFiles = async (file: any) => {
@@ -177,7 +176,7 @@ const FullWidthField = (props: FullWidthProps) => {
         const res = await fetch(`${config.baseApiUrl}/microcredit/docs`, {
             body: JSON.stringify([
                 {
-                    category: 1,
+                    category: 2,
                     filepath: preSigned?.filePath
                 }
             ]),
@@ -331,7 +330,8 @@ const FullWidthField = (props: FullWidthProps) => {
                     </UploadWrapper>
                 </Box>
             )}
-            {item.type === 'Radio' && (
+            {(item.type === 'Radio' ||
+            item.type === 'RadioSingleLine') && (
                 <Box w="100%">
                     {!!item?.question[0]?.text && (
                         <RichText
@@ -342,13 +342,14 @@ const FullWidthField = (props: FullWidthProps) => {
                             semibold
                             pb="1rem"
                             pt=".5rem"
+                            variables={{ walletAddress }}
                             w="100%"
                         />
                     )}
                     <Box>
-                        <Box>
+                        <Box flex={item.type === 'RadioSingleLine' ? true : '' }>
                             {item.options.map((option: any, id: number) => (
-                                <Box pb=".5rem">
+                                <Box pb=".5rem" mr={item.type === 'RadioSingleLine' ? '.5rem' : '' }>
                                     <input
                                         type="radio"
                                         name={`${sectionId}-${idx}`}
@@ -439,12 +440,11 @@ const FullWidthField = (props: FullWidthProps) => {
                             semibold
                         />
                     )}
-                    {!item?.question[0]?.text && <Box mt="1.75rem" />}
+                    {(!item?.question[0]?.text && item.type !== 'Textbox') && <Spacer mt="1.75rem" />}
                     <Box>
                         {
                             <Input
                                 id={`${sectionId}-${idx}`}
-                                className="test"
                                 hint={
                                     item?.disclaimer.length
                                         ? item?.disclaimer[0].text
@@ -476,26 +476,9 @@ const FullWidthField = (props: FullWidthProps) => {
                                         hint: '',
                                         review: ''
                                     });
-                                    // if (
-                                    //     document.getElementById(
-                                    //         `${sectionId}-${idx}-error`
-                                    //     )
-                                    // ) {
-                                    //     const grandparent = document.getElementById(
-                                    //         `${sectionId}-${idx}`
-                                    //     ).parentElement?.parentElement;
-                                    //     grandparent.style.boxShadow =
-                                    //         '0 0.125rem 0.0625rem rgba(16,24,40,0.05), 0 0 0 1px #D0D5DD';
-                                    //     document
-                                    //         .getElementById(
-                                    //             `${sectionId}-${idx}-error`
-                                    //         )
-                                    //         .remove();
-                                    //     console.log(`${sectionId}-${idx}`);
-                                    // }
                                 }}
                                 wrapperProps={{
-                                    mt: 0.5
+                                    mt: !!item?.question[0]?.text ? 0.5 : ''
                                 }}
                             />
                         }
