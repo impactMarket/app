@@ -26,7 +26,9 @@ const Slices = (props: SlicesProps) => {
                     return null;
                 }
 
-                return <SliceComponent key={index} {...slice} />;
+                const Component = SliceComponent as React.ComponentType<Slice>;
+
+                return <Component key={index} {...slice} />;
             })}
         </>
     );

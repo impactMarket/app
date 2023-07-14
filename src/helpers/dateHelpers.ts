@@ -39,6 +39,9 @@ export const dateHelpers = {
     compact: (date: string | Date) =>
         date ? format(new Date(date), 'MMM d, y') : '',
 
+    compactFromUnix: (date: number) =>
+        date ? format(new Date(fromUnixTime(date)), 'MMM d, y') : '',
+
     complete: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), `MMM d, y • H:m`) : '',
         
@@ -49,6 +52,9 @@ export const dateHelpers = {
 
         return [dateString, timeString];
     },
+
+    hours: (date: number) =>
+        date ? format(new Date(fromUnixTime(date)), `H:m`) : '',
 
     secondsToMonth: (date: number) => (date ? Number(date) / 2592000 : ''),
 
