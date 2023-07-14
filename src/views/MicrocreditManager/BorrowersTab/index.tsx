@@ -1,19 +1,14 @@
-import {
-    Box,
-} from '@impact-market/ui';
+import { Box } from '@impact-market/ui';
 import { FlexibleTab } from 'src/components/FlexibleTab';
+import { useMicrocreditBorrowers } from 'src/hooks/useMicrocredit';
 import BorrowersList from './BorrowersList';
 import React, { useEffect, useState } from 'react';
 import useFilters from 'src/hooks/useFilters';
-import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
-
-
 
 const itemsPerPage = 7;
 
 const BorrowersTab: React.FC = () => {
-
     const { t } = useTranslations();
     const { update, clear, getByKey } = useFilters();
     const page = getByKey('page') ? +getByKey('page') : 1;
@@ -66,9 +61,7 @@ const BorrowersTab: React.FC = () => {
         }
     ];
 
-    return(
-   
-         
+    return (
         <Box mt={0.5}>
             <FlexibleTab tabs={tabs} />
             {/* <Input
@@ -92,9 +85,7 @@ const BorrowersTab: React.FC = () => {
                 />
             </Box>
         </Box>
-
-    )
-
-}
+    );
+};
 
 export default BorrowersTab;
