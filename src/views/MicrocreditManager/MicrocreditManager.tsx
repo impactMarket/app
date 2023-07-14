@@ -9,6 +9,7 @@ import {
 } from '@impact-market/ui';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { styled } from 'styled-components';
+import { useMicrocreditBorrowers } from 'src/hooks/useMicrocredit';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import BorrowersList from './BorrowersList';
@@ -16,7 +17,6 @@ import React, { useState } from 'react';
 import RichText from 'src/libs/Prismic/components/RichText';
 import Signature from 'src/components/Signature';
 import useFilters from 'src/hooks/useFilters';
-import useMicrocreditBorrowers from 'src/hooks/useMicrocreditBorrowers';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
