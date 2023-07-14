@@ -1,11 +1,11 @@
 import {
-    InputUpload as BaseInputUpload,
+    EnhancedInputUpload as BaseInputUpload,
     Box,
     Button,
     Icon,
-    ImgClick,
     Input,
     Row,
+    Text,
     colors
 } from '@impact-market/ui';
 import { getCookie } from 'cookies-next';
@@ -18,7 +18,7 @@ import { useSelector } from 'react-redux';
 import RichText from '../../../libs/Prismic/components/RichText';
 import Select from '../../../components/Select';
 import config from '../../../../config';
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 import useCommunitiesCountries from '../../../hooks/useCommunitiesCountries';
 
 const SelectElement = styled(Button)`
@@ -59,31 +59,6 @@ const CheckBox = styled(Box)`
     width: 20px;
 `;
 
-const UploadWrapper = styled(Box)`
-    height: 128px;
-    display: flex;
-    justify-content: space-between;
-    border-radius: 0.5rem;
-    box-shadow: 0 0.125rem 0.0625rem rgba(16, 24, 40, 0.05),
-        0 0 0 1px ${colors.g300};
-
-    > div a {
-        background-color: ${colors.p25};
-        box-shadow: none;
-    }
-`;
-
-const ImageWrapper = styled(Box)`
-    max-width: 30%;
-    flex: 1;
-    position: relative;
-
-    img {
-        object-fit: cover;
-        z-index: 0;
-        position: relative;
-    }
-`;
 
 const Spacer = styled(Box)`
     ${mq.phone(css`
@@ -116,9 +91,10 @@ const fetcher = () =>
 
 const FullWidthField = (props: FullWidthProps) => {
     const { item, sectionId, idx, updateFormData, getElement } = props;
-    const [profilePictureThumbnail, setProfilePictureThumbnail] = useState(
-        null
-    );
+    const [fileName, setFileName] = useState('');
+    const [fileSize, setFileSize] = useState('');
+    // const [profilePictureThumbnail, setProfilePictureThumbnail] =
+    //     useState(null);
 
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
@@ -146,22 +122,22 @@ const FullWidthField = (props: FullWidthProps) => {
             });
         }
         if (item.type === 'Upload' && !!getElement(sectionId, idx)?.data) {
-            const obj = {
-                bucket: 'impactmarket-microcredit-staging',
-                key: `${getElement(sectionId, idx)?.data}`
-            };
-            const path = Buffer.from(JSON.stringify(obj)).toString('base64');
+            // const obj = {
+            //     bucket: 'impactmarket-microcredit-staging',
+            //     key: `${getElement(sectionId, idx)?.data}`
+            // };
 
-            setProfilePictureThumbnail(
-                `${config.imagesUrl}${path}`
-            );
+            // const path = Buffer.from(JSON.stringify(obj)).toString('base64');
+
+            setFileName(getElement(sectionId, idx)?.data);
+            // setProfilePictureThumbnail(`${config.imagesUrl}${path}`);
         }
     }, [item]);
 
     const handleFiles = async (file: any) => {
         const type = file[0]?.type?.split('/')[1] || '';
 
-        setProfilePictureThumbnail(file[0]);
+        // setProfilePictureThumbnail(file[0]);
         const preSigned = await getMicrocreditPreSigned(type).unwrap();
 
         if (!preSigned?.uploadURL) {
@@ -196,6 +172,9 @@ const FullWidthField = (props: FullWidthProps) => {
                 hint: '',
                 review: ''
             });
+
+            setFileName(file[0].name);
+            setFileSize(`${Math.floor(file[0].size / 1024)} KB`);
         }
 
         return res;
@@ -286,52 +265,28 @@ const FullWidthField = (props: FullWidthProps) => {
                             w="100%"
                         />
                     )}
-                    <UploadWrapper flex>
-                        <Box style={{ flexBasis: '40%' }}>
-                            <BaseInputUpload
-                                className="upload"
-                                handleFiles={handleFiles}
-                                accept={['image/png', 'image/jpeg']}
-                                multiple={false}
-                                name="documents"
-                            >
-                                <RichText
-                                    g500
-                                    small
-                                    content={item.placeholder}
-                                />
-                            </BaseInputUpload>
+                    <BaseInputUpload
+                        className="upload"
+                        hint={
+                            <RichText g500 small content={item.placeholder} />
+                        }
+                        handleFiles={handleFiles}
+                        accept={['image/png', 'image/jpeg']}
+                        multiple={false}
+                        name="documents"
+                    >
+                        <Box mt="-.75rem">
+                            <Text sColor={colors.g700} medium>
+                                {fileName}
+                            </Text>
+                            <Text sColor={colors.g500} small>
+                                {fileSize}
+                            </Text>
                         </Box>
-
-                        {!!profilePictureThumbnail && (
-                            <ImageWrapper>
-                                <ImgClick
-                                    handleClick={(event: any) => {
-                                        event.preventDefault();
-                                        updateFormData(sectionId, idx, {
-                                            data: '',
-                                            hint: '',
-                                            review: ''
-                                        });
-                                        setProfilePictureThumbnail(null);
-                                    }}
-                                    icon="trash"
-                                    url={
-                                        typeof profilePictureThumbnail ===
-                                        'string'
-                                            ? profilePictureThumbnail
-                                            : URL.createObjectURL(
-                                                  profilePictureThumbnail
-                                              )
-                                    }
-                                />
-                            </ImageWrapper>
-                        )}
-                    </UploadWrapper>
+                    </BaseInputUpload>
                 </Box>
             )}
-            {(item.type === 'Radio' ||
-            item.type === 'RadioSingleLine') && (
+            {(item.type === 'Radio' || item.type === 'RadioSingleLine') && (
                 <Box w="100%">
                     {!!item?.question[0]?.text && (
                         <RichText
@@ -347,9 +302,16 @@ const FullWidthField = (props: FullWidthProps) => {
                         />
                     )}
                     <Box>
-                        <Box flex={item.type === 'RadioSingleLine' ? true : '' }>
+                        <Box flex={item.type === 'RadioSingleLine' ? true : ''}>
                             {item.options.map((option: any, id: number) => (
-                                <Box pb=".5rem" mr={item.type === 'RadioSingleLine' ? '.5rem' : '' }>
+                                <Box
+                                    pb=".5rem"
+                                    mr={
+                                        item.type === 'RadioSingleLine'
+                                            ? '.5rem'
+                                            : ''
+                                    }
+                                >
                                     <input
                                         type="radio"
                                         name={`${sectionId}-${idx}`}
@@ -440,7 +402,9 @@ const FullWidthField = (props: FullWidthProps) => {
                             semibold
                         />
                     )}
-                    {(!item?.question[0]?.text && item.type !== 'Textbox') && <Spacer mt="1.75rem" />}
+                    {!item?.question[0]?.text && item.type !== 'Textbox' && (
+                        <Spacer mt="1.75rem" />
+                    )}
                     <Box>
                         {
                             <Input

@@ -307,7 +307,7 @@ const ApplicationForm = () => {
                             currentStep={page + 1}
                             onStepClick={() => {}}
                             steps={titleArray.length}
-                            // stepsTitles={titleArray}
+                            stepsTitles={titleArray}
                         />
                     </Box>
                 </Box>
