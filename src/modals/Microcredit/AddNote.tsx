@@ -17,7 +17,6 @@ const AddNote = () => {
     const { handleClose } = useModal();
     const { t } = useTranslations();
 
-    console.log("Describe",describeConvBorrower);
 
     return (
         <ModalWrapper maxW={'484px'} padding={2.5} w="100%">
