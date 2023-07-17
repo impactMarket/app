@@ -18,6 +18,15 @@ const TableWrapper = styled(Box)`
     td {
         padding: 1rem 1.25rem;
     }
+
+    .dropdown > :nth-child(2) {
+        right: 0;
+        left: auto;
+    }
+
+    .dropdown.last > :nth-child(2) {
+        top: -3rem;
+    }
 `;
 
 type Partial<BaseTableProps> = {
@@ -115,6 +124,17 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
 
         setSortKey(newSort);
     };
+
+    // Add .last class to the last dropdown
+    useEffect(() => {
+        const elements = document.querySelectorAll('.dropdown');
+
+        if (elements.length > 0) {
+            const lastElement = elements[elements.length - 1];
+
+            lastElement.classList.add('last');
+        }
+    }, [data]);
 
     return (
         <TableWrapper ref={tableRef} {...forwardProps}>
