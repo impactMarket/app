@@ -19,6 +19,7 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import FormSection from './FormSection';
 import RichText from '../../../libs/Prismic/components/RichText';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 type MatrixType = Record<string, Record<string, string | undefined>>;
 type MatrixJsonType = {
@@ -28,10 +29,9 @@ type MatrixJsonType = {
 };
 
 const ApplicationForm = () => {
-    // const { data } = props;
     const auth = useSelector(selectCurrentUser);
     const { signature } = useSelector(selectCurrentUser);
-    // Get data from props
+    const { t } = useTranslations();
     const { view } = usePrismicData();
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
@@ -93,15 +93,7 @@ const ApplicationForm = () => {
 
     useEffect(() => {
         setReadyToProceed(validateFields());
-
-        // const matrixJson: MatrixJsonType = {
-        //     prismicId: 'za85748jf',
-        //     form: getMatrixWithValues()
-        // };
-
-        // const jsonMatrix = JSON.stringify(matrixJson, null, 2);
-        //     console.log(jsonMatrix);
-    }, [matrix]);
+    }, [page]);
 
     useEffect(() => {
         const fetchData = async () => {
@@ -146,12 +138,18 @@ const ApplicationForm = () => {
                 submit: false
             });
 
-            const element = view.find((obj: any) => obj.id === prismicId);
+            let doc: any = [];
+
+            if (!Array.isArray(view)) {
+                doc = [view];
+            }
+
+            const element = doc?.find((obj: any) => obj.id === prismicId);
 
             currentForm = element?.data;
 
             if (element === undefined) {
-                const alt = view.find((obj: any) =>
+                const alt = view?.find((obj: any) =>
                     obj.alternate_languages.find(
                         (langs: any) => langs?.id === prismicId
                     )
@@ -164,9 +162,12 @@ const ApplicationForm = () => {
                     currentForm = view[0]?.data;
                 }
             }
-        } else {
+        } else if (Array.isArray(view)) {
             id = view[0]?.id;
             currentForm = view[0]?.data;
+        } else {
+            id = view?.id;
+            currentForm = view?.data;
         }
 
         setPrismicId(id);
@@ -291,6 +292,14 @@ const ApplicationForm = () => {
         return response;
     };
 
+    const goToPage = (step: number) => {
+        const pageToGo = step - 1;
+
+        if (pageToGo <= page) {
+            setPage(pageToGo);
+        }
+    };
+
     return (
         <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box fLayout="start between" fWrap="wrap" flex>
@@ -301,11 +310,11 @@ const ApplicationForm = () => {
                     <RichText content={description} g500 mt={0.25} />
                 </Box>
 
-                <Box padding="3 0" w="100%">
+                <Box padding="3rem 0" w="100%">
                     <Box>
                         <ProgressIndicator
                             currentStep={page + 1}
-                            onStepClick={() => {}}
+                            onStepClick={(step: number) => goToPage(step)}
                             steps={titleArray.length}
                             stepsTitles={titleArray}
                         />
@@ -340,7 +349,7 @@ const ApplicationForm = () => {
                             disabled={!page}
                             gray
                         >
-                            {'Previous Step'}
+                            {t('previousStep')}
                         </Button>
                         {page !== formArray.length - 1 && (
                             <Button
@@ -348,19 +357,13 @@ const ApplicationForm = () => {
                                 onClick={handleButtonClick}
                                 gray
                             >
-                                {'Next Step'}
+                                {t('nextStep')}
                             </Button>
                         )}
                         {page === formArray.length - 1 && (
                             <Button
                                 disabled={!readyToProceed}
                                 onClick={async () => {
-                                    // const matrixJson: MatrixJsonType = {
-                                    //     form: getMatrixWithValues(),
-                                    //     prismicId,
-                                    //     submit: true
-                                    // };
-
                                     const response = (await submitFormData(
                                         true
                                     )) as any;
@@ -372,7 +375,7 @@ const ApplicationForm = () => {
                                     }
                                 }}
                             >
-                                {'Submit Form'}
+                                {t('submitForm')}
                             </Button>
                         )}
                     </Box>

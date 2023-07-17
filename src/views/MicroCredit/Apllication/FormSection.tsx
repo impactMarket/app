@@ -2,7 +2,7 @@ import { Box, Card, Col, Row } from '@impact-market/ui';
 import { mq } from 'styled-gen';
 import FullWidthField from './FullWidthField';
 import RichText from '../../../libs/Prismic/components/RichText';
-import styled, {css} from 'styled-components';
+import styled, { css } from 'styled-components';
 
 const Section = styled(Row)`
     ${mq.phone(css`
@@ -49,7 +49,12 @@ const FormSection = (props: FormSectionProps) => {
 
     return (
         <Section mb="1.3rem">
-            <Col className="section-info" colSize={{ sm: 4, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
+            <Col
+                className="section-info"
+                colSize={{ sm: 4, xs: 12 }}
+                pb={1.25}
+                pt={{ sm: 1.25, xs: 0 }}
+            >
                 <RichText content={title} g700 medium small semibold />
                 <RichText content={description} g500 regular small />
             </Col>
@@ -75,14 +80,14 @@ const FormSection = (props: FormSectionProps) => {
                                 options: item.options1,
                                 placeholder: item.placeholder1,
                                 question: item.question1,
-                                type: item.type1,
+                                type: item.type1
                             };
                             const item2 = {
                                 disclaimer: item.disclaimer2,
                                 options: item.options2,
                                 placeholder: item.placeholder2,
                                 question: item.question2,
-                                type: item.type2,
+                                type: item.type2
                             };
 
                             return (
@@ -94,7 +99,10 @@ const FormSection = (props: FormSectionProps) => {
                                     flex
                                     fLayout="start between"
                                 >
-                                    <Box className="column" style={{ flexBasis: '48%' }}>
+                                    <Box
+                                        className="column"
+                                        style={{ flexBasis: '48%' }}
+                                    >
                                         <FullWidthField
                                             item={item1}
                                             fieldType={fieldType}
@@ -104,7 +112,10 @@ const FormSection = (props: FormSectionProps) => {
                                             getElement={getElement}
                                         />
                                     </Box>
-                                    <Box className="column" style={{ flexBasis: '48%' }}>
+                                    <Box
+                                        className="column"
+                                        style={{ flexBasis: '48%' }}
+                                    >
                                         <FullWidthField
                                             item={item2}
                                             fieldType={fieldType}

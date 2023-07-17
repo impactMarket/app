@@ -59,7 +59,6 @@ const CheckBox = styled(Box)`
     width: 20px;
 `;
 
-
 const Spacer = styled(Box)`
     ${mq.phone(css`
         display: none;
@@ -93,9 +92,6 @@ const FullWidthField = (props: FullWidthProps) => {
     const { item, sectionId, idx, updateFormData, getElement } = props;
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
-    // const [profilePictureThumbnail, setProfilePictureThumbnail] =
-    //     useState(null);
-
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
     const auth = useSelector(selectCurrentUser);
@@ -122,22 +118,12 @@ const FullWidthField = (props: FullWidthProps) => {
             });
         }
         if (item.type === 'Upload' && !!getElement(sectionId, idx)?.data) {
-            // const obj = {
-            //     bucket: 'impactmarket-microcredit-staging',
-            //     key: `${getElement(sectionId, idx)?.data}`
-            // };
-
-            // const path = Buffer.from(JSON.stringify(obj)).toString('base64');
-
             setFileName(getElement(sectionId, idx)?.data);
-            // setProfilePictureThumbnail(`${config.imagesUrl}${path}`);
         }
     }, [item]);
 
     const handleFiles = async (file: any) => {
         const type = file[0]?.type?.split('/')[1] || '';
-
-        // setProfilePictureThumbnail(file[0]);
         const preSigned = await getMicrocreditPreSigned(type).unwrap();
 
         if (!preSigned?.uploadURL) {
@@ -240,7 +226,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                 </Box>
                                 <label style={{ textAlign: 'left' }}>
                                     <RichText
-                                        content={option?.text}
+                                        content={[option]}
                                         small
                                         semibold
                                         g700
