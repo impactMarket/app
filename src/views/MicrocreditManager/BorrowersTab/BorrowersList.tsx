@@ -161,7 +161,7 @@ const getColumns = () => {
             render: (data: any) => {
                 return (
                     <Text g900 small>
-                        {data?.loan?.lastRepayment
+                        {data?.loan?.claimed
                             ? dateHelpers.ago(data?.loan?.claimed)
                             : '--'}
                     </Text>
@@ -310,9 +310,6 @@ const BorrowersList: React.FC<{
             lastElement.classList.add('last');
         }
     }, [borrowers]);
- 
-
-    
 
     return (
         <Table
