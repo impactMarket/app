@@ -96,7 +96,7 @@ const ApproveLoan = () => {
 
             if (status) {
                 mutate();
-                toast.success('Loan(s) approved successfully');
+                toast.success('Loan(s) approved successfully!');
                 handleClose();
             } else {
                 toast.error(<Message id="errorOccurred" />);
