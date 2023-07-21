@@ -60,6 +60,8 @@ const CommmunityInfo = (props: any) => {
                                             borderRadius: '50%',
                                             cursor: 'pointer'
                                         }}
+                                        w={100}
+                                        h={100}
                                     />
                                 </Box>
                             </Link>
