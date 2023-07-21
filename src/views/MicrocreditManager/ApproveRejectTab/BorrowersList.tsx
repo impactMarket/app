@@ -21,6 +21,7 @@ import { getUserName } from '../../../utils/users';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { useLoanManager } from '@impact-market/utils';
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../../libs/Prismic/components/Message';
 import Table from '../../../components/Table';
@@ -117,6 +118,7 @@ const loanStatus = (status: any) => {
 
 const getColumns = (props: any) => {
     const { t } = useTranslations();
+    const router = useRouter();
 
     const { auth, selected, setSelected, rejectLoan, limitReach, mutate } =
         props;
@@ -387,15 +389,42 @@ const getColumns = (props: any) => {
         {
             minWidth: 10,
             render: (data: any) => loanStatus(data?.application?.status),
-            title: t('approved'),
+            title: 'Status',
             value: 'status',
             width: '15%'
         },
         {
             minWidth: 4,
-            render: (data: any) => (
-                <Box flex fLayout="center start" style={{ gap: '1rem' }}>
-                    {/* <DropdownMenu
+            render: (data: any) => {
+                const dropdownItems = [
+                    !limitReach &&
+                        data?.application?.status !== 4 && {
+                            icon: 'check',
+                            onClick: () =>
+                                openModal('approveLoan', {
+                                    address: data?.address,
+                                    mutate
+                                }),
+                            title: approveLoan
+                        },
+                    data?.application?.status !== 5 && {
+                        icon: 'close',
+                        onClick: () =>
+                            rejectLoan(auth, data?.application?.id, mutate),
+                        title: rejectLoanText
+                    },
+                    {
+                        icon: 'user',
+                        onClick: () => router.push(`/user/${data.address}`),
+                        title: t('openProfile')
+                    }
+                ];
+
+                const filteredItems = dropdownItems.filter((item) => !!item);
+
+                return (
+                    <Box flex fLayout="center start" style={{ gap: '1rem' }}>
+                        {/* <DropdownMenu
                         {...({} as any)}
                         icon="cardsStack"
                         titleColor="g400"
@@ -413,51 +442,17 @@ const getColumns = (props: any) => {
                             }
                         ]}
                     /> */}
-                    <DropdownMenu
-                        {...({} as any)}
-                        className="dropdown"
-                        icon="ellipsis"
-                        titleColor="g400"
-                        rtl={true}
-                        items={
-                            limitReach
-                                ? [
-                                      {
-                                          icon: 'close',
-                                          onClick: () =>
-                                              rejectLoan(
-                                                  auth,
-                                                  data?.application?.id,
-                                                  mutate
-                                              ),
-                                          title: rejectLoanText
-                                      }
-                                  ]
-                                : [
-                                      {
-                                          icon: 'check',
-                                          onClick: () =>
-                                              openModal('approveLoan', {
-                                                  address: data?.address,
-                                                  mutate
-                                              }),
-                                          title: approveLoan
-                                      },
-                                      {
-                                          icon: 'close',
-                                          onClick: () =>
-                                              rejectLoan(
-                                                  auth,
-                                                  data?.application?.id,
-                                                  mutate
-                                              ),
-                                          title: rejectLoanText
-                                      }
-                                  ]
-                        }
-                    />
-                </Box>
-            ),
+                        <DropdownMenu
+                            {...({} as any)}
+                            className="dropdown"
+                            icon="ellipsis"
+                            titleColor="g400"
+                            rtl={true}
+                            items={filteredItems}
+                        />
+                    </Box>
+                );
+            },
             width: '10%'
         }
     ];

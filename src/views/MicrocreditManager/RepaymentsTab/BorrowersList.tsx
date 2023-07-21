@@ -253,7 +253,7 @@ const getColumns = () => {
                     {...({} as any)}
                     items={[
                         {
-                            icon: 'open',
+                            icon: 'user',
                             onClick: () => router.push(`/user/${data.address}`),
                             title: t('openProfile')
                         }
