@@ -35,8 +35,7 @@ const RepaymentsTab: React.FC = () => {
         {
             number: countAll || 0,
             onClick: () => {
-                update({ page: 1 });
-                clear('filter');
+                clear(['filter', 'page']);
             },
             title: t('all')
         },

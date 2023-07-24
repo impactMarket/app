@@ -24,7 +24,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { t } = useTranslations();
     const { extractFromView } = usePrismicData();
-    const { clear, update, getByKey } = useFilters();
+    const { update, getByKey } = useFilters();
     const { title, content } = extractFromView('heading') as any;
     const { signature } = useSelector(selectCurrentUser);
 
@@ -72,15 +72,25 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                         <Tab
                             title={t('repayments')}
                             onClick={() => {
-                                update('tab', 'repayments');
-                                clear(['filter', 'orderBy', 'status', 'page']);
+                                update({
+                                    filter: '',
+                                    orderBy: '',
+                                    page: '',
+                                    status: '',
+                                    tab: 'repayments'
+                                });
                             }}
                         />
                         <Tab
                             title="Approve/Reject"
                             onClick={() => {
-                                update('tab', 'approveReject');
-                                clear(['filter', 'orderBy', 'status', 'page']);
+                                update({
+                                    filter: '',
+                                    orderBy: '',
+                                    page: '',
+                                    status: '',
+                                    tab: 'approveReject'
+                                });
                             }}
                         />
                     </TabList>

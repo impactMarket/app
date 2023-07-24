@@ -178,8 +178,7 @@ const ApproveRejectTab: React.FC<{}> = () => {
         {
             number: countAll || 0,
             onClick: () => {
-                update({ page: 1 });
-                clear('status');
+                clear(['status', 'page']);
             },
             title: t('all')
         },
