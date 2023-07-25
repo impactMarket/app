@@ -1,40 +1,32 @@
-/* eslint-disable react-hooks/rules-of-hooks */
+/* eslint-disable no-inline-comments */
 import React from 'react';
 import styled from 'styled-components';
 
-
-import { 
-    Avatar, 
-    Badge, 
-    Box, 
-    CircledIcon, 
-    DropdownMenu, 
-    Icon, 
-    Text, 
-    colors, 
-    openModal, 
-    toast, 
+import {
+    Avatar,
+    Badge,
+    Box,
+    CircledIcon,
+    DropdownMenu,
+    Icon,
+    Text,
+    colors,
+    openModal,
+    toast
 } from '@impact-market/ui';
-
 import { dateHelpers } from 'src/helpers/dateHelpers';
-
-
-import config from '../../../../config';
-
-import Message from '../../../libs/Prismic/components/Message';
-import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
-
 import { formatAddress } from '../../../utils/formatAddress';
 import { getImage } from '../../../utils/images';
 import { getUserName } from '../../../utils/users';
-
-import Table from '../../../components/Table';
-
-
+import { selectCurrentUser } from 'src/state/slices/auth';
+import { useLoanManager } from '@impact-market/utils';
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
-
-
-
+import { useRouter } from 'next/router';
+import { useSelector } from 'react-redux';
+import Message from '../../../libs/Prismic/components/Message';
+import Table from '../../../components/Table';
+import config from '../../../../config';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const CheckBox = styled(Box)`
     border-radius: 0.5rem;
@@ -51,81 +43,95 @@ const CheckBox = styled(Box)`
     border-color: ${(props) => (props.color ? colors.p600 : colors.g300)};
 `;
 
-
-
 const loanStatus = (status: any) => {
-    let badgeContent = null;
     const { t } = useTranslations();
-   
+    let badgeContent = null;
+    let bgColor = '';
 
-    if (status == 1) {
-        badgeContent = (
-            <Badge bgS50 style={{ width: 'fit-content' }}>
-                <Box
-                    flex
-                    fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{ alignItems: 'center', justifyContent: 'center' }}
-                >
-                    <Icon icon="check" s500 mr={0.2} />
+    switch (status) {
+        case 1: // Pending
+            badgeContent = (
+                <>
+                    <Icon icon={'clock'} g700 mr={0.2} />
+                    <Text g700 extrasmall medium>
+                        {t('pending')}
+                    </Text>
+                </>
+            );
+            bgColor = 'bgG50';
+            break;
+        case 3: // Requested Changes
+            badgeContent = (
+                <>
+                    <Icon icon={'menu'} p700 mr={0.2} />
+                    <Text g900 extrasmall medium>
+                        In Revision
+                    </Text>
+                </>
+            );
+            bgColor = 'bgP50';
+            break;
+        case 4: // Approved
+            badgeContent = (
+                <>
+                    <Icon icon={'check'} s500 mr={0.2} />
                     <Text s700 extrasmall medium>
                         {t('approved')}
                     </Text>
-                </Box>
-            </Badge>
-        );
-    } else if (status == 2) {
-        badgeContent = (
-            <Badge bgE50 style={{ width: 'fit-content' }}>
-                <Box
-                    flex
-                    fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{ alignItems: 'center', justifyContent: 'center' }}
-                >
-                    <Icon icon="close" e500 mr={0.2} />
+                </>
+            );
+            bgColor = 'bgS50';
+            break;
+        case 5: // Rejected
+            badgeContent = (
+                <>
+                    <Icon icon={'close'} e500 mr={0.2} />
                     <Text e700 extrasmall medium>
-                       {t('rejected')}
+                        {t('rejected')}
                     </Text>
-                </Box>
-            </Badge>
-        );
-    } else {
-        badgeContent = (
-            <Badge bgP50 style={{ width: 'fit-content' }}>
-                <Box
-                    flex
-                    fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{ alignItems: 'center', justifyContent: 'center' }}
-                >
-                    <Icon icon="clock" p500 mr={0.2} />
-                    <Text p700 extrasmall medium>
-                        {t('pending')}
-                    </Text>
-                </Box>
-            </Badge>
-        );
+                </>
+            );
+            bgColor = 'bgE50';
+            break;
+        default:
+            badgeContent = <></>;
+            bgColor = 'bgN01';
     }
 
     return (
         <Box fLayout="center start" flex>
-            {badgeContent}
+            <Badge {...{ [bgColor]: true }} style={{ width: 'fit-content' }}>
+                <Box
+                    flex
+                    fDirection={{ sm: 'row', xs: 'column' }}
+                    style={{
+                        alignItems: 'center',
+                        justifyContent: 'center'
+                    }}
+                >
+                    {badgeContent}
+                </Box>
+            </Badge>
         </Box>
     );
 };
 
 const getColumns = (props: any) => {
     const { t } = useTranslations();
+    const router = useRouter();
 
-    const { selected, setSelected } = props;
+    const { auth, selected, setSelected, rejectLoan, limitReach, mutate } =
+        props;
 
     const { extractFromView } = usePrismicData();
-    const { addNote,
-            viewAllNotes,
-            appliedOn,
-            decisionOn,
-            approveLoan,
-            rejectLoan
-           } = extractFromView('messages') as any;
-
+    const {
+        // addNote,
+        // viewAllNotes,
+        appliedOn,
+        decisionOn,
+        approveLoan,
+        rejectLoan: rejectLoanText
+    } = extractFromView('messages') as any;
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
@@ -133,33 +139,38 @@ const getColumns = (props: any) => {
         toast.success(<Message id="copiedAddress" />);
     };
 
-
     return [
         {
             minWidth: 14,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
-                    {
-                        !selected.some((item: any) => item.address === data.address) ? (
-                            <CheckBox
-                                onClick={() => {
-                                    setSelected((selected: any) => [...selected, data]);
-                                }}
-                            ></CheckBox>
-                        ) : (
-                            <CheckBox
-                                flex
-                                color
-                                onClick={() => {
-                                    setSelected((selected: any) =>
-                                        selected.filter((item: any) => item.address !== data.address)
-                                    );
-                                }}
-                            >
-                                <Icon icon="check" p600 />
-                            </CheckBox>
-                        )
-                    }
+                    {!selected.some(
+                        (item: any) => item.address === data.address
+                    ) ? (
+                        <CheckBox
+                            onClick={() => {
+                                setSelected((selected: any) => [
+                                    ...selected,
+                                    data
+                                ]);
+                            }}
+                        ></CheckBox>
+                    ) : (
+                        <CheckBox
+                            flex
+                            color
+                            onClick={() => {
+                                setSelected((selected: any) =>
+                                    selected.filter(
+                                        (item: any) =>
+                                            item.address !== data.address
+                                    )
+                                );
+                            }}
+                        >
+                            <Icon icon="check" p600 />
+                        </CheckBox>
+                    )}
                     {!!data.avatarMediaPath ? (
                         <Avatar
                             extrasmall
@@ -186,22 +197,21 @@ const getColumns = (props: any) => {
                                 items={[
                                     {
                                         icon: 'open',
-                                        onClick: () =>{
+                                        onClick: () => {
                                             window.open(
                                                 config.explorerUrl?.replace(
                                                     '#USER#',
                                                     data.address
                                                 )
-                                            )},
+                                            );
+                                        },
                                         title: t('openInExplorer')
                                     },
                                     {
-                                        
                                         icon: 'copy',
                                         onClick: () =>
                                             copyToClipboard(data.address),
-                                        title: t('copyAddress'),
-                                        
+                                        title: t('copyAddress')
                                     }
                                 ]}
                                 title={
@@ -263,16 +273,26 @@ const getColumns = (props: any) => {
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
                         {data?.application?.appliedOn ? (
                             <>
-                                <Box flex fLayout="center start" fDirection={{ sm: 'column', xs: 'column' }}>
+                                <Box
+                                    flex
+                                    fLayout="center start"
+                                    fDirection={{ sm: 'column', xs: 'column' }}
+                                >
                                     <Text medium g900 small>
-                                        {`${dateHelpers.getDateAndTime(data?.application?.appliedOn)[0]}`}
+                                        {`${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.appliedOn
+                                            )[0]
+                                        }`}
                                     </Text>
                                     <Text medium g400 extrasmall>
-                                        {` ${dateHelpers.getDateAndTime(data?.application?.appliedOn)[1]}`}
+                                        {` ${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.appliedOn
+                                            )[1]
+                                        }`}
                                     </Text>
-
                                 </Box>
-
                             </>
                         ) : (
                             <Text medium g400 small>
@@ -282,7 +302,6 @@ const getColumns = (props: any) => {
                     </Box>
                 );
             },
-            sortable: true,
             title: appliedOn,
             value: 'appliedOn',
             width: '10%'
@@ -294,14 +313,25 @@ const getColumns = (props: any) => {
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
                         {data?.application?.decisionOn ? (
                             <>
-                                <Box flex fLayout="center start" fDirection={{ sm: 'column', xs: 'column' }}>
+                                <Box
+                                    flex
+                                    fLayout="center start"
+                                    fDirection={{ sm: 'column', xs: 'column' }}
+                                >
                                     <Text medium g900 small>
-                                        {`${dateHelpers.getDateAndTime(data?.application?.decisionOn)[0]}`}
+                                        {`${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.decisionOn
+                                            )[0]
+                                        }`}
                                     </Text>
                                     <Text medium g400 extrasmall>
-                                        {` ${dateHelpers.getDateAndTime(data?.application?.decisionOn)[1]}`}
+                                        {` ${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.decisionOn
+                                            )[1]
+                                        }`}
                                     </Text>
-
                                 </Box>
                             </>
                         ) : (
@@ -312,7 +342,6 @@ const getColumns = (props: any) => {
                     </Box>
                 );
             },
-            sortable: true,
             title: decisionOn,
             value: 'decisionOn',
             width: '15%'
@@ -320,19 +349,29 @@ const getColumns = (props: any) => {
         {
             minWidth: 8,
             render: (data: any) => {
-                
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
-                        {data?.application?.createdAt? (
+                        {data?.application?.createdAt ? (
                             <>
-                                <Box flex fLayout="center start" fDirection={{ sm: 'column', xs: 'column' }}>
+                                <Box
+                                    flex
+                                    fLayout="center start"
+                                    fDirection={{ sm: 'column', xs: 'column' }}
+                                >
                                     <Text medium g900 small>
-                                        {`${dateHelpers.getDateAndTime(data?.application?.createdAt)[0]}`}
+                                        {`${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.createdAt
+                                            )[0]
+                                        }`}
                                     </Text>
                                     <Text medium g400 extrasmall>
-                                        {` ${dateHelpers.getDateAndTime(data?.application?.createdAt)[1]}`}
+                                        {` ${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.createdAt
+                                            )[1]
+                                        }`}
                                     </Text>
-
                                 </Box>
                             </>
                         ) : (
@@ -343,7 +382,6 @@ const getColumns = (props: any) => {
                     </Box>
                 );
             },
-            sortable: true,
             title: t('accepted'),
             value: 'lastRepaymentDate',
             width: '15%'
@@ -351,64 +389,76 @@ const getColumns = (props: any) => {
         {
             minWidth: 10,
             render: (data: any) => loanStatus(data?.application?.status),
-            title: t('approved'),
+            title: 'Status',
             value: 'status',
             width: '15%'
         },
         {
             minWidth: 4,
-            render: () => (
-                <Box flex fLayout="center start" style={{ gap: '1rem' }}>
-                    <DropdownMenu
+            render: (data: any) => {
+                const dropdownItems = [
+                    !limitReach &&
+                        data?.application?.status !== 4 && {
+                            icon: 'check',
+                            onClick: () =>
+                                openModal('approveLoan', {
+                                    address: data?.address,
+                                    mutate
+                                }),
+                            title: approveLoan
+                        },
+                    data?.application?.status !== 5 && {
+                        icon: 'close',
+                        onClick: () =>
+                            rejectLoan(auth, data?.application?.id, mutate),
+                        title: rejectLoanText
+                    },
+                    {
+                        icon: 'user',
+                        onClick: () => router.push(`/user/${data.address}`),
+                        title: t('openProfile')
+                    }
+                ];
+
+                const filteredItems = dropdownItems.filter((item) => !!item);
+
+                return (
+                    <Box flex fLayout="center start" style={{ gap: '1rem' }}>
+                        {/* <DropdownMenu
                         {...({} as any)}
                         icon="cardsStack"
                         titleColor="g400"
                         rtl={true}
                         items={[
                             {
-                                
                                 icon: 'upload',
                                 onClick: () => openModal('addNote'),
-                                title: addNote,
+                                title: addNote
                             },
                             {
-                                
                                 icon: 'cardsStack',
                                 onClick: () => {},
                                 title: viewAllNotes
-                                
                             }
                         ]}
-                    />
-
-                    <DropdownMenu
-                        {...({} as any)}
-                        icon="ellipsis"
-                        titleColor="g400"
-                        rtl={true}
-                        items={[
-                            {
-                                icon: 'check',
-                                onClick: () => openModal('approveLoan'),
-                                title: approveLoan
-                            },
-                            {
-                                
-                                icon: 'close',
-                                onClick: () => { },
-                                title: rejectLoan                               
-                            }
-                        ]}
-                    />
-                </Box>
-            ),
+                    /> */}
+                        <DropdownMenu
+                            {...({} as any)}
+                            className="dropdown"
+                            icon="ellipsis"
+                            titleColor="g400"
+                            rtl={true}
+                            items={filteredItems}
+                        />
+                    </Box>
+                );
+            },
             width: '10%'
         }
     ];
 };
 
-const RequestList = (props: any) => {
-    
+const BorrowersList = (props: any) => {
     const {
         itemsPerPage,
         selected,
@@ -418,18 +468,32 @@ const RequestList = (props: any) => {
         count,
         loadingApplications,
         setItemOffset,
-        page
+        page,
+        rejectLoan,
+        mutate
     } = props;
+    const auth = useSelector(selectCurrentUser);
 
-    
+    const { managerDetails } = useLoanManager();
+
+    const limitReach =
+        managerDetails?.currentLentAmount >=
+        managerDetails?.currentLentAmountLimit;
 
     return (
         <Table
             actualPage={actualPage}
-            columns={getColumns({ selected, setSelected })}
+            columns={getColumns({
+                auth,
+                limitReach,
+                mutate,
+                rejectLoan,
+                selected,
+                setSelected
+            })}
             itemsPerPage={itemsPerPage}
             isLoading={loadingApplications}
-            mt={1}
+            mt={2}
             page={page}
             count={count}
             pb={6}
@@ -439,4 +503,4 @@ const RequestList = (props: any) => {
     );
 };
 
-export default RequestList;
+export default BorrowersList;

@@ -21,7 +21,7 @@ import { styled } from 'styled-components';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../../libs/Prismic/components/Message';
-import React, { useEffect } from 'react';
+import React from 'react';
 import Table from '../../../components/Table';
 import config from '../../../../config';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
@@ -36,17 +36,6 @@ const PerformanceIcon = styled.div<{ performance: number }>`
             : props.performance < 100
             ? colors.w300
             : props.performance >= 100 && colors.s300};
-`;
-
-const DropdownStyled = styled.div`
-    .dropdown > :nth-child(2) {
-        right: 0;
-        left: auto;
-    }
-
-    .dropdown.last > :nth-child(2) {
-        top: -3rem;
-    }
 `;
 
 const EllipsisIcon = styled(Icon)`
@@ -260,21 +249,18 @@ const getColumns = () => {
         {
             minWidth: 2,
             render: (data: any) => (
-                <DropdownStyled>
-                    <DropdownMenu
-                        {...({} as any)}
-                        items={[
-                            {
-                                icon: 'open',
-                                onClick: () =>
-                                    router.push(`/user/${data.address}`),
-                                title: t('openProfile')
-                            }
-                        ]}
-                        title={<EllipsisIcon icon="ellipsis" g400 />}
-                        className="dropdown"
-                    />
-                </DropdownStyled>
+                <DropdownMenu
+                    {...({} as any)}
+                    items={[
+                        {
+                            icon: 'user',
+                            onClick: () => router.push(`/user/${data.address}`),
+                            title: t('openProfile')
+                        }
+                    ]}
+                    title={<EllipsisIcon icon="ellipsis" g400 />}
+                    className="dropdown"
+                />
             ),
             width: '5%'
         }
@@ -299,17 +285,6 @@ const BorrowersList: React.FC<{
         borrowers,
         setItemOffset
     } = props;
-
-    // Add .last class to the last Open Profile dropdown
-    useEffect(() => {
-        const elements = document.querySelectorAll('.dropdown');
-
-        if (elements.length > 0) {
-            const lastElement = elements[elements.length - 1];
-
-            lastElement.classList.add('last');
-        }
-    }, [borrowers]);
 
     return (
         <Table

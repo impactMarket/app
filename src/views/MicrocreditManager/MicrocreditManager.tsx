@@ -1,4 +1,5 @@
 import {
+    Alert,
     Box,
     Display,
     Tab,
@@ -8,25 +9,48 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 import { selectCurrentUser } from 'src/state/slices/auth';
+import { useEffect } from 'react';
+import { useLoanManager } from '@impact-market/utils';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
-import BorrowersTab from './BorrowersTab';
-import React from 'react';
-import RequestTab from './RequestTab';
+import ApproveRejectTab from './ApproveRejectTab';
+import RepaymentsTab from './RepaymentsTab';
 import RichText from 'src/libs/Prismic/components/RichText';
 import Signature from 'src/components/Signature';
+import useFilters from 'src/hooks/useFilters';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { t } = useTranslations();
     const { extractFromView } = usePrismicData();
+    const { update, getByKey } = useFilters();
     const { title, content } = extractFromView('heading') as any;
-
     const { signature } = useSelector(selectCurrentUser);
+
+    useEffect(() => {
+        if (!getByKey('tab')) {
+            update('tab', 'repayments');
+        }
+    }, []);
+
+    const { managerDetails } = useLoanManager();
+
+    const limitReach =
+        managerDetails?.currentLentAmount >=
+        managerDetails?.currentLentAmountLimit;
 
     return (
         <ViewContainer {...({} as any)} isLoading={isLoading}>
+            {signature && limitReach && (
+                <Alert
+                    icon="alertCircle"
+                    mb={1.5}
+                    title="Microcredit limit reach"
+                    message={`You microcredit limit of $${managerDetails?.currentLentAmountLimit} has been reached.`}
+                    error
+                />
+            )}
             <Box
                 fDirection={{ sm: 'row', xs: 'column' }}
                 fLayout="start between"
@@ -41,20 +65,40 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
             </Box>
             {!signature && <Signature />}
             {signature && (
-                <Tabs>
+                <Tabs
+                    defaultIndex={getByKey('tab') === 'approveReject' ? 1 : 0}
+                >
                     <TabList>
-                        <Tab title={t('repayments')} />
-                        <Tab title={t('borrowers')} />
+                        <Tab
+                            title={t('repayments')}
+                            onClick={() => {
+                                update({
+                                    filter: '',
+                                    orderBy: '',
+                                    page: '',
+                                    status: '',
+                                    tab: 'repayments'
+                                });
+                            }}
+                        />
+                        <Tab
+                            title="Approve/Reject"
+                            onClick={() => {
+                                update({
+                                    filter: '',
+                                    orderBy: '',
+                                    page: '',
+                                    status: '',
+                                    tab: 'approveReject'
+                                });
+                            }}
+                        />
                     </TabList>
                     <TabPanel>
-                        <Box mt={0.5}>
-                            <BorrowersTab />
-                        </Box>
+                        <RepaymentsTab />
                     </TabPanel>
                     <TabPanel>
-                        <Box mt={0.5}>
-                            <RequestTab />
-                        </Box>
+                        <ApproveRejectTab />
                     </TabPanel>
                 </Tabs>
             )}

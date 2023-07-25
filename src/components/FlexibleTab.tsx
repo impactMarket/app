@@ -19,7 +19,7 @@ const FlexibleTab: React.FC<FlexibleTabProps> = ({ tabs }) => {
                     <Tab
                         key={index}
                         title={tab.title}
-                        number={tab.number > 0 ? tab.number : null}
+                        number={tab.number}
                         onClick={tab.onClick}
                     />
                 ))}

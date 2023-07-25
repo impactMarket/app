@@ -2,13 +2,13 @@ import { Box } from '@impact-market/ui';
 import { FlexibleTab } from 'src/components/FlexibleTab';
 import { useMicrocreditBorrowers } from 'src/hooks/useMicrocredit';
 import BorrowersList from './BorrowersList';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import useFilters from 'src/hooks/useFilters';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
 
-const BorrowersTab: React.FC = () => {
+const RepaymentsTab: React.FC = () => {
     const { t } = useTranslations();
     const { update, clear, getByKey } = useFilters();
     const page = getByKey('page') ? +getByKey('page') : 1;
@@ -18,6 +18,7 @@ const BorrowersTab: React.FC = () => {
     const { borrowers, count, loadingBorrowers } = useMicrocreditBorrowers([
         `limit=${itemsPerPage}`,
         `offset=${itemOffset}`,
+        `orderBy=${getByKey('orderBy') || 'lastRepayment'}`,
         `${getByKey('filter') ? `filter=${getByKey('filter')}` : ''}`
     ]);
 
@@ -30,17 +31,11 @@ const BorrowersTab: React.FC = () => {
     ]);
     const { count: countOntrack } = useMicrocreditBorrowers(['filter=ontrack']);
 
-    useEffect(() => {
-        update({ page: 1 });
-        clear('filter');
-    }, []);
-
     const tabs = [
         {
             number: countAll || 0,
             onClick: () => {
-                update({ page: 1 });
-                clear('filter');
+                clear(['filter', 'page']);
             },
             title: t('all')
         },
@@ -62,7 +57,7 @@ const BorrowersTab: React.FC = () => {
     ];
 
     return (
-        <Box mt={0.5}>
+        <Box>
             <FlexibleTab tabs={tabs} />
             {/* <Input
 
@@ -88,4 +83,4 @@ const BorrowersTab: React.FC = () => {
     );
 };
 
-export default BorrowersTab;
+export default RepaymentsTab;
