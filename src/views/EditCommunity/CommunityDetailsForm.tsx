@@ -1,5 +1,3 @@
-import { handleSignature } from '../../helpers/handleSignature';
-import { selectCurrentUser } from '../../state/slices/auth';
 import { toast } from '@impact-market/ui';
 import {
     useEditPendingCommunityMutation,
@@ -7,8 +5,6 @@ import {
     useGetCommunityPreSignedMutation
 } from '../../api/community';
 import { useForm, useFormState } from 'react-hook-form';
-import { useSelector } from 'react-redux';
-import { useSignatures } from '@impact-market/utils/useSignatures';
 import { useYupValidationResolver, yup } from '../../helpers/yup';
 import CommunityForm from '../AddCommunity/CommunityForm';
 import Message from '../../libs/Prismic/components/Message';
@@ -28,8 +24,6 @@ const CommunityDetailsForm = ({
 }: any) => {
     const [editValidCommunity] = useEditValidCommunityMutation();
     const [editPendingCommunity] = useEditPendingCommunityMutation();
-    const { signature } = useSelector(selectCurrentUser);
-    const { signMessage } = useSignatures();
     const [getCommunityPreSigned] = useGetCommunityPreSignedMutation();
 
     const {
@@ -60,10 +54,6 @@ const CommunityDetailsForm = ({
                 description: data?.description || '',
                 name: data.name || ''
             };
-
-            if (!signature) {
-                await handleSignature(signMessage);
-            }
 
             if (communityImage?.type) {
                 const type = communityImage.type?.split('/')[1] || '';
@@ -114,16 +104,7 @@ const CommunityDetailsForm = ({
             }
         } catch (error: any) {
             console.log(error);
-            if (
-                error?.data?.error?.name === 'EXPIRED_SIGNATURE' ||
-                error?.data?.error?.name === 'INVALID_SINATURE'
-            ) {
-                await handleSignature(signMessage);
-
-                submit(data);
-            } else {
-                toast.error(<Message id="errorOccurred" />);
-            }
+            toast.error(<Message id="errorOccurred" />);
         }
     };
 

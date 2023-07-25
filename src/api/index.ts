@@ -9,17 +9,24 @@ const baseQuery = retry(
         const result = await fetchBaseQuery({
             baseUrl: config.baseApiUrl,
             prepareHeaders: (headers, { getState }) => {
-                const { token, signature, message } = (getState() as RootState)
-                    .auth;
+                const {
+                    token,
+                    signature,
+                    message,
+                    eip712_signature,
+                    eip712_message
+                } = (getState() as RootState).auth;
 
                 // If we have a token set in state, let's assume that we should be passing it.
                 if (token) {
                     headers.set('authorization', `Bearer ${token}`);
                 }
 
-                if (signature) {
+                if (signature || eip712_signature) {
                     headers.set('signature', signature);
                     headers.set('message', message);
+                    headers.set('eip712_signature', eip712_signature);
+                    headers.set('eip712_message', eip712_message);
                 }
 
                 return headers;

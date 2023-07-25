@@ -68,8 +68,8 @@ const ContractForm = (props: any) => {
     const [consent1, setConsent1] = useState(false);
     const [consent2, setConsent2] = useState(false);
 
-    const { signature } = useSelector(selectCurrentUser);
-    const { signMessage } = useSignatures();
+    const { signature, eip712_signature } = useSelector(selectCurrentUser);
+    const { signMessage, signTypedData } = useSignatures();
 
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
 
@@ -196,8 +196,8 @@ const ContractForm = (props: any) => {
         setIsLoading(true);
 
         try {
-            if (!signature) {
-                await handleSignature(signMessage);
+            if (!signature || !eip712_signature) {
+                await handleSignature(signMessage, signTypedData);
             }
 
             const type = pdf?.blob?.type?.split('/')[1] || '';
@@ -226,6 +226,10 @@ const ContractForm = (props: any) => {
                             Accept: 'application/json',
                             Authorization: `Bearer ${auth.token}`,
                             'Content-Type': 'application/json',
+                            eip712_message:
+                                getCookie('EIP712_MESSAGE').toString(),
+                            eip712_signature:
+                                getCookie('EIP712_SIGNATURE').toString(),
                             message: getCookie('MESSAGE').toString(),
                             signature: getCookie('SIGNATURE').toString()
                         },

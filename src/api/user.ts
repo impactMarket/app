@@ -138,13 +138,6 @@ export const userApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: PreSigned }) => response.data
         }),
-        // Get number of unread notifications
-        getUnreadNotifications: builder.mutation<UnreadNotifications, void>({
-            query: () => ({
-                method: 'GET',
-                url: 'users/notifications/unread'
-            })
-        }),
         // Get profile
         getUser: builder.mutation<User, void>({
             query: () => ({
@@ -175,7 +168,7 @@ export const userApi = emptySplitApi.injectEndpoints({
             query: ({ body }) => ({
                 body,
                 method: 'PUT',
-                url: 'users/notifications/read'
+                url: 'users/notifications'
             })
         }),
         // Edit profile
@@ -198,7 +191,6 @@ export const {
     useCreateUserMutation,
     useDeleteUserMutation,
     useGetNotificationsMutation,
-    useGetUnreadNotificationsMutation,
     useGetUserMutation,
     useGetUserByIdMutation,
     useRecoverAccountMutation,

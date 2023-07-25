@@ -3,7 +3,7 @@ import { useSelector } from 'react-redux';
 import config from '../../config';
 import useSWR from 'swr';
 
-export default function useMicrocreditApplications(filters?: any[]) {
+export function useNotifications(filters?: any[]) {
     const auth = useSelector(selectCurrentUser);
     const { signature, message, eip712_message, eip712_signature } =
         useSelector(selectCurrentUser);
@@ -20,7 +20,7 @@ export default function useMicrocreditApplications(filters?: any[]) {
         }).then((res) => res.json());
 
     const { data, mutate, error } = useSWR(
-        `/microcredit/applications?${
+        `/users/notifications/${
             !!filters?.length
                 ? filters?.map((filter: any) => filter).join('&')
                 : ''
@@ -28,12 +28,11 @@ export default function useMicrocreditApplications(filters?: any[]) {
         fetcher
     );
 
-    const loadingApplications = !data && !error;
+    const loadingNotifications = !data && !error;
 
     return {
-        applications: data?.data?.rows,
-        count: data?.data?.count,
-        loadingApplications,
-        mutate
+        loadingNotifications,
+        mutate,
+        notifications: data?.data
     };
 }

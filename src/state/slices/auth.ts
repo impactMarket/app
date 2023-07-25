@@ -4,6 +4,8 @@ import type { RootState } from '../store';
 type User = any;
 
 type AuthState = {
+    eip712_signature: string | null;
+    eip712_message: string | null;
     user: User | null;
     signature: string | null;
     message: string | null;
@@ -13,6 +15,7 @@ type AuthState = {
 
 const slice = createSlice({
     initialState: {
+        eip712_signature: null,
         signature: null,
         token: null,
         type: null,
@@ -35,10 +38,17 @@ const slice = createSlice({
         },
         setSignature: (
             state,
-            action: PayloadAction<{ signature: string; message: string }>
+            action: PayloadAction<{
+                signature: string;
+                message: string;
+                eip712_signature: string;
+                eip712_message: string;
+            }>
         ) => {
             state.signature = action.payload.signature;
             state.message = action.payload.message;
+            state.eip712_signature = action.payload.eip712_signature;
+            state.eip712_message = action.payload.eip712_message;
         },
         setToken: (state, action: PayloadAction<{ token: string }>) => {
             // console.log('setToken', action);

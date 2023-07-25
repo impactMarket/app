@@ -67,8 +67,8 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
     const dispatch = useDispatch();
     const router = useRouter();
     const { t } = useTranslations();
-    const { signature } = useSelector(selectCurrentUser);
-    const { signMessage } = useSignatures();
+    const { signature, eip712_signature } = useSelector(selectCurrentUser);
+    const { signMessage, signTypedData } = useSignatures();
 
     const handleDisconnectClick = async () => {
         await disconnect();
@@ -92,7 +92,10 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
             }
         } catch (e: any) {
             if (e?.data?.error?.name === 'EXPIRED_SIGNATURE') {
-                const { success } = await handleSignature(signMessage);
+                const { success } = await handleSignature(
+                    signMessage,
+                    signTypedData
+                );
 
                 if (success) update(data);
             } else {
@@ -104,8 +107,8 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            if (!signature) {
-                await handleSignature(signMessage);
+            if (!signature || !eip712_signature) {
+                await handleSignature(signMessage, signTypedData);
             }
 
             update(data);
@@ -123,8 +126,8 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
                 let success = false;
                 const type = data[0].type?.split('/')[1] || '';
 
-                if (!signature) {
-                    await handleSignature(signMessage);
+                if (!signature || !eip712_signature) {
+                    await handleSignature(signMessage, signTypedData);
                 }
 
                 if (type) {

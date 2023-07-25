@@ -5,12 +5,15 @@ import useSWR from 'swr';
 
 export function useMicrocreditBorrowers(filters?: any[]) {
     const auth = useSelector(selectCurrentUser);
-    const { signature, message } = useSelector(selectCurrentUser);
+    const { signature, message, eip712_message, eip712_signature } =
+        useSelector(selectCurrentUser);
 
     const fetcher = (url: string) =>
         fetch(config.baseApiUrl + url, {
             headers: {
                 Authorization: `Bearer ${auth.token}`,
+                eip712signature: eip712_signature,
+                eip712value: eip712_message,
                 message,
                 signature
             }
@@ -37,12 +40,15 @@ export function useMicrocreditBorrowers(filters?: any[]) {
 
 export function useMicrocreditBorrower(filters?: any[]) {
     const auth = useSelector(selectCurrentUser);
-    const { signature, message } = useSelector(selectCurrentUser);
+    const { signature, message, eip712_message, eip712_signature } =
+        useSelector(selectCurrentUser);
 
     const fetcher = (url: string) =>
         fetch(config.baseApiUrl + url, {
             headers: {
                 Authorization: `Bearer ${auth.token}`,
+                eip712signature: eip712_signature,
+                eip712value: eip712_message,
                 message,
                 signature
             }
@@ -68,12 +74,15 @@ export function useMicrocreditBorrower(filters?: any[]) {
 
 export function useMicrocreditBorrowerRepaymentHistory(filters?: any[]) {
     const auth = useSelector(selectCurrentUser);
-    const { signature, message } = useSelector(selectCurrentUser);
+    const { signature, message, eip712_message, eip712_signature } =
+        useSelector(selectCurrentUser);
 
     const fetcher = (url: string) =>
         fetch(config.baseApiUrl + url, {
             headers: {
                 Authorization: `Bearer ${auth.token}`,
+                eip712signature: eip712_signature,
+                eip712value: eip712_message,
                 message,
                 signature
             }

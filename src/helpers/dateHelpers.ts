@@ -44,17 +44,32 @@ export const dateHelpers = {
 
     complete: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), `MMM d, y • H:m`) : '',
-        
+
     getDateAndTime: (timestamp: string) => {
         const date = new Date(timestamp);
-        const dateString = dateFnsFormat(date, 'MMM d, y', { locale: getLocale() });
-        const timeString = dateFnsFormat(date, 'HH:mm', { locale: getLocale() });
+        const dateString = dateFnsFormat(date, 'MMM d, y', {
+            locale: getLocale()
+        });
+        const timeString = dateFnsFormat(date, 'HH:mm', {
+            locale: getLocale()
+        });
 
         return [dateString, timeString];
     },
 
     hours: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), `H:m`) : '',
+
+    notificationsAgo: (date: number | string | Date) => {
+        const dateStr = date;
+        const dateObj = new Date(dateStr);
+
+        const distance = formatDistanceToNowStrict(dateObj, {
+            addSuffix: true
+        });
+
+        return distance;
+    },
 
     secondsToMonth: (date: number) => (date ? Number(date) / 2592000 : ''),
 
