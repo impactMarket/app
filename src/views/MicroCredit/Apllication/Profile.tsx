@@ -150,14 +150,17 @@ const Profile = (props: ProfileProps) => {
                                         <SelectElement
                                             pb=".5rem"
                                             className={`select-${id} ${
-                                                gender === option.charAt(0).toLowerCase()
+                                                gender ===
+                                                option.charAt(0).toLowerCase()
                                                     ? 'active'
                                                     : ''
                                             }`}
                                             onClick={() => {
                                                 setProfileData({
                                                     ...profileData,
-                                                    gender: option.charAt(0).toLowerCase()
+                                                    gender: option
+                                                        .charAt(0)
+                                                        .toLowerCase()
                                                 });
                                             }}
                                         >

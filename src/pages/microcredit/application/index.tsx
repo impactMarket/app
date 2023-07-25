@@ -18,7 +18,7 @@ export const getStaticProps: GetStaticProps = async ({
             data,
             fallback: '',
             lang,
-            view: 'Application',
+            view: 'view-application',
             withPreview: !!previewData
         }
     };

@@ -37,6 +37,7 @@ export interface MobileBankerProps {
     fieldType: string;
     idx: number;
     sectionId: string;
+    setLoanManagerId: (managerId: number) => void;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
     getElement: (rowKey: any, columnKey: number) => any;
 }
@@ -47,7 +48,14 @@ export interface MobileBankerProps {
 //     ).then((res) => res.json());
 
 const MobileBankerSelector = (props: MobileBankerProps) => {
-    const { item, sectionId, idx, updateFormData, getElement } = props;
+    const {
+        item,
+        sectionId,
+        idx,
+        updateFormData,
+        getElement,
+        setLoanManagerId
+    } = props;
     const formData = getElement(sectionId, idx)?.data;
     const [active, setActive] = useState(formData ?? -1);
     const auth = useSelector(selectCurrentUser);
@@ -80,7 +88,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
 
     const fetchManagers = async (country: string) => {
         const managers = await fetch(
-            `${config.baseApiUrl  }/microcredit/managers/${country}`,
+            `${config.baseApiUrl}/microcredit/managers/${country}`,
             {
                 headers: {
                     Authorization: `Bearer ${auth.token}`,
@@ -154,6 +162,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
                                 style={{ alignItems: 'center' }}
                                 checked={selectedId === id.toString()}
                                 onChange={() => {
+                                    setLoanManagerId(managers[id]?.id);
                                     setSelectedId(id.toString());
                                     updateFormData(sectionId, idx, {
                                         data: `${country}-${id.toString()}`,

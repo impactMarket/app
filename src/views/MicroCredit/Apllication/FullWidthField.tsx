@@ -2,6 +2,7 @@ import {
     EnhancedInputUpload as BaseInputUpload,
     Box,
     Button,
+    DropdownMenu,
     Icon,
     Input,
     Row,
@@ -65,6 +66,13 @@ const Spacer = styled(Box)`
     `)};
 `;
 
+const CurrencySelector = styled(DropdownMenu)`
+    p,
+    svg {
+        color: ${colors.g900};
+    }
+`;
+
 export interface FullWidthProps {
     item: any;
     fieldType: string;
@@ -92,6 +100,8 @@ const FullWidthField = (props: FullWidthProps) => {
     const { item, sectionId, idx, updateFormData, getElement } = props;
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
+    const [currency, setCurrency] = useState('USD');
+    const [income, setIncome] = useState('');
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
     const auth = useSelector(selectCurrentUser);
@@ -110,6 +120,10 @@ const FullWidthField = (props: FullWidthProps) => {
     const value = getElement(sectionId, idx);
 
     useEffect(() => {
+        if (item.type === 'CurrencyField' && value?.data) {
+            setIncome(value?.data?.split(' ')[0]);
+            setCurrency(value?.data?.split(' ')[1]);
+        }
         if (!!item.type && !getElement(sectionId, idx)) {
             updateFormData(sectionId, idx, {
                 data: '',
@@ -164,6 +178,14 @@ const FullWidthField = (props: FullWidthProps) => {
         }
 
         return res;
+    };
+
+    const updateIncome = (value: string, curr: string) => {
+        updateFormData(sectionId, idx, {
+            data: `${value} ${curr}`,
+            hint: '',
+            review: ''
+        });
     };
 
     return (
@@ -316,7 +338,9 @@ const FullWidthField = (props: FullWidthProps) => {
                                             });
                                         }}
                                     />
-                                    <label htmlFor={`${sectionId}-${id}`}>{option.text}</label>
+                                    <label htmlFor={`${sectionId}-${id}`}>
+                                        {option.text}
+                                    </label>
                                 </Box>
                             ))}
                         </Box>
@@ -390,7 +414,7 @@ const FullWidthField = (props: FullWidthProps) => {
                     {!item?.question[0]?.text && item.type !== 'Textbox' && (
                         <Spacer mt="1.75rem" />
                     )}
-                    <Box>
+                    <Box style={{ position: 'relative' }}>
                         {
                             <Input
                                 id={`${sectionId}-${idx}`}
@@ -409,28 +433,90 @@ const FullWidthField = (props: FullWidthProps) => {
                                     item.type === 'CurrencyField' ? '$' : ''
                                 }
                                 rows={item.type === 'Textbox' ? 5 : 0}
-                                suffix={
-                                    item.type === 'CurrencyField' ? 'USD' : ''
-                                }
+                                // suffix={
+                                //     item.type === 'CurrencyField' ? 'USD' : ''
+                                // }
                                 type={
                                     item.type === 'CurrencyField' ||
                                     item.type === 'NumericField'
                                         ? 'number'
                                         : ''
                                 }
-                                value={value?.data ?? ''}
+                                value={
+                                    item.type === 'CurrencyField'
+                                        ? income
+                                        : value?.data ?? ''
+                                }
                                 onChange={(e: any) => {
-                                    updateFormData(sectionId, idx, {
-                                        data: e.target.value,
-                                        hint: '',
-                                        review: ''
-                                    });
+                                    if (item.type === 'CurrencyField') {
+                                        setIncome(e.target.value);
+                                        updateIncome(e.target.value, currency);
+                                    } else {
+                                        updateFormData(sectionId, idx, {
+                                            data: e.target.value,
+                                            hint: '',
+                                            review: ''
+                                        });
+                                    }
                                 }}
                                 wrapperProps={{
                                     mt: !!item?.question[0]?.text ? 0.5 : ''
                                 }}
                             />
                         }
+                        {item.type === 'CurrencyField' && (
+                            <Box
+                                style={{
+                                    position: 'absolute',
+                                    right: '1rem',
+                                    top: '0.625rem'
+                                }}
+                            >
+                                <CurrencySelector
+                                    {...({} as any)}
+                                    icon="chevronDown"
+                                    items={[
+                                        {
+                                            onClick: () => {
+                                                updateIncome(income, 'USD');
+                                                setCurrency('USD');
+                                                console.log(currency);
+                                            },
+                                            title: 'USD'
+                                        },
+                                        {
+                                            onClick: () => {
+                                                updateIncome(income, 'UGX');
+                                                setCurrency('UGX');
+                                            },
+                                            title: 'UGX'
+                                        },
+                                        {
+                                            onClick: () => {
+                                                updateIncome(income, 'BRL');
+                                                setCurrency('BRL');
+                                            },
+                                            title: 'BRL'
+                                        },
+                                        {
+                                            onClick: () => {
+                                                updateIncome(income, 'NGN');
+                                                setCurrency('NGN');
+                                            },
+                                            title: 'NGN'
+                                        },
+                                        {
+                                            onClick: () => {
+                                                updateIncome(income, 'VED');
+                                                setCurrency('VED');
+                                            },
+                                            title: 'VED'
+                                        }
+                                    ]}
+                                    title={currency}
+                                />
+                            </Box>
+                        )}
                     </Box>
                 </Box>
             )}

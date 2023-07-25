@@ -17,7 +17,7 @@ import {
     useGetFormIdMutation,
     useSubmitFormMutation
 } from '../../../api/microcredit';
-import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
+// import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useUpdateUserMutation } from '../../../api/user';
 import FormSection from './FormSection';
@@ -30,14 +30,18 @@ type MatrixType = Record<string, Record<string, string | undefined>>;
 type MatrixJsonType = {
     prismicId: string;
     form: MatrixType;
+    selectedLoanManagerId?: number;
     submit: boolean;
 };
 
-const ApplicationForm = () => {
+const ApplicationForm = (props: any) => {
+    const { data, view: viewName } = props;
+    const view = data[viewName];
+    
     const auth = useSelector(selectCurrentUser);
     const { signature } = useSelector(selectCurrentUser);
     const { t } = useTranslations();
-    const { view } = usePrismicData();
+    // const { view } = usePrismicData();
     const [updateUser] = useUpdateUserMutation();
     const dispatch = useDispatch();
     const [page, setPage] = useState(0);
@@ -63,7 +67,9 @@ const ApplicationForm = () => {
         lastName: lastName ?? '',
         phone: phone ?? ''
     });
+    
     const [isValidating, setIsValidating] = useState(false);
+    const [loanManagerId, setLoanManagerId] = useState(-1);
 
     const router = useRouter();
 
@@ -142,7 +148,7 @@ const ApplicationForm = () => {
         let currentForm: any, id: any;
 
         if (!!formApiData?.data) {
-            const { prismicId, form } = formApiData?.data ?? {
+            const { prismicId, form, selectedLoanManagerId } = formApiData?.data ?? {
                 form: {},
                 prismicId: ''
             };
@@ -152,13 +158,18 @@ const ApplicationForm = () => {
             addFullJson({
                 form,
                 prismicId,
+                selectedLoanManagerId,
                 submit: false
             });
+
+            setLoanManagerId(selectedLoanManagerId)
 
             let doc: any = [];
 
             if (!Array.isArray(view)) {
                 doc = [view];
+            } else {
+                doc = view;
             }
 
             const element = doc?.find((obj: any) => obj.id === prismicId);
@@ -166,7 +177,7 @@ const ApplicationForm = () => {
             currentForm = element?.data;
 
             if (element === undefined) {
-                const alt = view?.find((obj: any) =>
+                const alt = doc?.find((obj: any) =>
                     obj.alternate_languages.find(
                         (langs: any) => langs?.id === prismicId
                     )
@@ -365,6 +376,7 @@ const ApplicationForm = () => {
         const matrixJson: MatrixJsonType = {
             form: getMatrixWithValues(),
             prismicId,
+            selectedLoanManagerId: loanManagerId,
             submit: status
         };
 
@@ -413,6 +425,7 @@ const ApplicationForm = () => {
                                 primary={el?.primary}
                                 fieldType={el.slice_type}
                                 sectionId={el.id}
+                                setLoanManagerId={setLoanManagerId}
                                 updateFormData={addOrUpdateElement}
                                 getElement={getElement}
                             />

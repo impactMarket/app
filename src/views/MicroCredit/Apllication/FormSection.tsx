@@ -34,6 +34,7 @@ export interface FormSectionProps {
     // title: any;
     // description: any;
     sectionId: string;
+    setLoanManagerId: (managerId: number) => void;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
     getElement: (rowKey: any, columnKey: number) => any;
 }
@@ -46,6 +47,7 @@ const FormSection = (props: FormSectionProps) => {
         fieldType,
         primary,
         sectionId,
+        setLoanManagerId,
         updateFormData,
         getElement
     } = props;
@@ -64,7 +66,12 @@ const FormSection = (props: FormSectionProps) => {
                 <RichText content={title} g700 medium small semibold />
                 <RichText content={description} g500 regular small />
             </Col>
-            <Col colSize={{ sm: 8, xs: 12 }} pb="1.25rem" pl="0" pt={{ sm: 1.25, xs: 0 }}>
+            <Col
+                colSize={{ sm: 8, xs: 12 }}
+                pb="1.25rem"
+                pl="0"
+                pt={{ sm: 1.25, xs: 0 }}
+            >
                 <Card padding="0">
                     {items.map((item, idx) => {
                         // if (fieldType === 'profile') {
@@ -86,6 +93,7 @@ const FormSection = (props: FormSectionProps) => {
                                     fieldType={fieldType}
                                     idx={idx}
                                     sectionId={sectionId}
+                                    setLoanManagerId={setLoanManagerId}
                                     updateFormData={updateFormData}
                                     getElement={getElement}
                                 />
@@ -130,21 +138,21 @@ const FormSection = (props: FormSectionProps) => {
                                     flex
                                     fLayout="start between"
                                 >
-                                     {[1,2].map((id: number) => 
-                                    <Box
-                                        className="column"
-                                        style={{ flexBasis: '50%' }}
-                                    >
-                                        <FullWidthField
-                                            item={id === 1 ? item1 : item2}
-                                            fieldType={fieldType}
-                                            idx={counter++}
-                                            sectionId={sectionId}
-                                            updateFormData={updateFormData}
-                                            getElement={getElement}
-                                        />
-                                    </Box>
-                                    )}
+                                    {[1, 2].map((id: number) => (
+                                        <Box
+                                            className="column"
+                                            style={{ flexBasis: '50%' }}
+                                        >
+                                            <FullWidthField
+                                                item={id === 1 ? item1 : item2}
+                                                fieldType={fieldType}
+                                                idx={counter++}
+                                                sectionId={sectionId}
+                                                updateFormData={updateFormData}
+                                                getElement={getElement}
+                                            />
+                                        </Box>
+                                    ))}
                                 </DoubleInputWrapper>
                             );
                         }
