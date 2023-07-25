@@ -283,6 +283,8 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                                         style={{
                                                             borderRadius: '50%'
                                                         }}
+                                                        h={100}
+                                                        w={100}
                                                     />
                                                 </Box>
                                             </Link>

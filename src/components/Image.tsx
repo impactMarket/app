@@ -15,7 +15,14 @@ const getImageOptions = (forwardProps: any) => {
 };
 
 const Image = (props: any) => {
-    const { src: filePath, h: height, w: width, ...forwardProps } = props;
+    const {
+        src: filePath,
+        h: height,
+        w: width,
+        maxH,
+        maxW,
+        ...forwardProps
+    } = props;
 
     return (
         <Img
