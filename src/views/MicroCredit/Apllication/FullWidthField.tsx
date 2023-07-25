@@ -174,7 +174,7 @@ const FullWidthField = (props: FullWidthProps) => {
                         <RichText
                             content={item?.question}
                             g700
-                            small
+                            medium
                             pb="1.5rem"
                             pt=".5rem"
                             w="100%"
@@ -244,7 +244,6 @@ const FullWidthField = (props: FullWidthProps) => {
                             content={item?.question}
                             g700
                             medium
-                            small
                             semibold
                             pb="1rem"
                             pt=".5rem"
@@ -279,7 +278,7 @@ const FullWidthField = (props: FullWidthProps) => {
                             content={item?.question}
                             g700
                             medium
-                            small
+                            // small
                             semibold
                             pb="1rem"
                             pt=".5rem"
@@ -301,8 +300,8 @@ const FullWidthField = (props: FullWidthProps) => {
                                     <input
                                         type="radio"
                                         name={`${sectionId}-${idx}`}
-                                        className={id === 0 ? 'test' : ''}
-                                        id={`${sectionId}-${idx}`}
+                                        // className={id === 0 ? 'test' : ''}
+                                        id={`${sectionId}-${id}`}
                                         value={option.text}
                                         style={{ margin: '0 .75rem 0 0' }}
                                         checked={
@@ -317,7 +316,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                             });
                                         }}
                                     />
-                                    <label>{option.text}</label>
+                                    <label htmlFor={`${sectionId}-${id}`}>{option.text}</label>
                                 </Box>
                             ))}
                         </Box>
@@ -338,7 +337,7 @@ const FullWidthField = (props: FullWidthProps) => {
                             content={item?.question}
                             g700
                             medium
-                            small
+                            // small
                             semibold
                             pb=".5rem"
                             w="100%"
@@ -384,7 +383,7 @@ const FullWidthField = (props: FullWidthProps) => {
                             content={item?.question}
                             g700
                             medium
-                            small
+                            // small
                             semibold
                         />
                     )}
@@ -442,7 +441,7 @@ const FullWidthField = (props: FullWidthProps) => {
                             content={item?.question}
                             g700
                             medium
-                            small
+                            // small
                             semibold
                             pb="1rem"
                             pt=".5rem"

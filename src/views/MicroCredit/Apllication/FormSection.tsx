@@ -1,8 +1,10 @@
 import { Box, Card, Col, Row } from '@impact-market/ui';
 import { mq } from 'styled-gen';
 import FullWidthField from './FullWidthField';
+import MobileBankerSelector from './MobileBankerSelector';
 import RichText from '../../../libs/Prismic/components/RichText';
 import styled, { css } from 'styled-components';
+// import Profile from './Profile';
 
 const Section = styled(Row)`
     ${mq.phone(css`
@@ -28,8 +30,9 @@ const DoubleInputWrapper = styled(Row)`
 export interface FormSectionProps {
     items: Array<any>;
     fieldType: string;
-    title: any;
-    description: any;
+    primary: any;
+    // title: any;
+    // description: any;
     sectionId: string;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
     getElement: (rowKey: any, columnKey: number) => any;
@@ -38,14 +41,17 @@ export interface FormSectionProps {
 const FormSection = (props: FormSectionProps) => {
     const {
         items,
-        title,
-        description,
+        // title,
+        // description,
         fieldType,
+        primary,
         sectionId,
         updateFormData,
         getElement
     } = props;
     let counter = 0;
+    const title = primary?.title;
+    const description = primary?.description;
 
     return (
         <Section mb="1.3rem">
@@ -58,9 +64,34 @@ const FormSection = (props: FormSectionProps) => {
                 <RichText content={title} g700 medium small semibold />
                 <RichText content={description} g500 regular small />
             </Col>
-            <Col colSize={{ sm: 8, xs: 12 }} pb={1.25} pt={{ sm: 1.25, xs: 0 }}>
+            <Col colSize={{ sm: 8, xs: 12 }} pb="1.25rem" pl="0" pt={{ sm: 1.25, xs: 0 }}>
                 <Card padding="0">
                     {items.map((item, idx) => {
+                        // if (fieldType === 'profile') {
+                        //     return (
+                        //         <Profile
+                        //             item={primary}
+                        //             fieldType={fieldType}
+                        //             idx={idx}
+                        //             sectionId={sectionId}
+                        //             updateFormData={updateFormData}
+                        //             getElement={getElement}
+                        //         />
+                        //     );
+                        // }
+                        if (fieldType === 'mobile_banker_selector') {
+                            return (
+                                <MobileBankerSelector
+                                    item={primary}
+                                    fieldType={fieldType}
+                                    idx={idx}
+                                    sectionId={sectionId}
+                                    updateFormData={updateFormData}
+                                    getElement={getElement}
+                                />
+                            );
+                        }
+
                         if (fieldType === 'full_width_form_field') {
                             return (
                                 <FullWidthField
@@ -99,12 +130,13 @@ const FormSection = (props: FormSectionProps) => {
                                     flex
                                     fLayout="start between"
                                 >
+                                     {[1,2].map((id: number) => 
                                     <Box
                                         className="column"
-                                        style={{ flexBasis: '48%' }}
+                                        style={{ flexBasis: '50%' }}
                                     >
                                         <FullWidthField
-                                            item={item1}
+                                            item={id === 1 ? item1 : item2}
                                             fieldType={fieldType}
                                             idx={counter++}
                                             sectionId={sectionId}
@@ -112,19 +144,7 @@ const FormSection = (props: FormSectionProps) => {
                                             getElement={getElement}
                                         />
                                     </Box>
-                                    <Box
-                                        className="column"
-                                        style={{ flexBasis: '48%' }}
-                                    >
-                                        <FullWidthField
-                                            item={item2}
-                                            fieldType={fieldType}
-                                            idx={counter++}
-                                            sectionId={sectionId}
-                                            updateFormData={updateFormData}
-                                            getElement={getElement}
-                                        />
-                                    </Box>
+                                    )}
                                 </DoubleInputWrapper>
                             );
                         }

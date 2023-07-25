@@ -5,9 +5,12 @@ import {
     Display,
     ProgressIndicator,
     Row,
-    ViewContainer
+    Text,
+    ViewContainer,
+    toast
 } from '@impact-market/ui';
-import { selectCurrentUser } from '../../../state/slices/auth';
+import { selectCurrentUser, setUser } from '../../../state/slices/auth';
+import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import {
     useGetBorrowerFormsMutation,
@@ -16,8 +19,10 @@ import {
 } from '../../../api/microcredit';
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
+import { useUpdateUserMutation } from '../../../api/user';
 import FormSection from './FormSection';
+import Message from '../../../libs/Prismic/components/Message';
+import Profile from './Profile';
 import RichText from '../../../libs/Prismic/components/RichText';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
@@ -33,6 +38,8 @@ const ApplicationForm = () => {
     const { signature } = useSelector(selectCurrentUser);
     const { t } = useTranslations();
     const { view } = usePrismicData();
+    const [updateUser] = useUpdateUserMutation();
+    const dispatch = useDispatch();
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [formArray, setFormArray] = useState([]);
@@ -41,12 +48,22 @@ const ApplicationForm = () => {
     const [description, setDescription] = useState('');
     const [prismicId, setPrismicId] = useState('');
     const [formApiData, setFormApiData] = useState({} as any);
-    const [readyToProceed, setReadyToProceed] = useState(false);
+    const [readyToProceed, setReadyToProceed] = useState(true);
     const [submitForm] = useSubmitFormMutation();
     const [getBorrowerForms] = useGetBorrowerFormsMutation();
     const [getFormId] = useGetFormIdMutation();
     const [matrix, setMatrix] = useState<MatrixType>({});
     const mapRef = useRef<Map<string, string>>(new Map());
+    const { firstName, lastName, age, gender, email, phone } = auth?.user;
+    const [profileData, setProfileData] = useState<{ [key: string]: any }>({
+        age: age ?? '',
+        email: email ?? '',
+        firstName: firstName ?? '',
+        gender: gender !== 'u' ? gender : '',
+        lastName: lastName ?? '',
+        phone: phone ?? ''
+    });
+    const [isValidating, setIsValidating] = useState(false);
 
     const router = useRouter();
 
@@ -92,7 +109,7 @@ const ApplicationForm = () => {
     };
 
     useEffect(() => {
-        setReadyToProceed(validateFields());
+        setReadyToProceed(true);
     }, [page]);
 
     useEffect(() => {
@@ -209,6 +226,23 @@ const ApplicationForm = () => {
         return matrixWithValues;
     };
 
+    const updateProfile = async () => {
+        try {
+            const result = await updateUser(profileData).unwrap();
+
+            if (result) {
+                dispatch(setUser({ user: { ...result } }));
+            }
+
+            return true;
+        } catch (e: any) {
+            console.log(e);
+            toast.error(<Message id="errorOccurred" />);
+
+            return false;
+        }
+    };
+
     const validateFields = () => {
         let formIsReady = true;
 
@@ -219,26 +253,46 @@ const ApplicationForm = () => {
                 let counter = 0;
 
                 section.items.map((el: any) => {
-                    const value1 = formValues[section.id.toString()][
-                        counter.toString()
-                    ] as any;
+                    // const value1 = formValues[section.id.toString()][
+                    //     counter.toString()
+                    // ] as any;
 
-                    if (!value1?.data) {
+                    // if (!value1?.data) {
+                    //     formIsReady = false;
+                    // }
+                    const sectionId = section.id.toString();
+                    const idxString = counter.toString();
+
+                    const value = formValues[sectionId] && formValues[sectionId][idxString] ? formValues[sectionId][idxString] : undefined as any;
+
+                    if (value === undefined || !value?.data) {
                         formIsReady = false;
                     }
                     counter++;
 
-                    const value2 = formValues[section.id.toString()][
-                        counter.toString()
-                    ] as any;
+                    const sectionId2 = section.id.toString();
+                    const idxString2 = counter.toString();
 
-                    if (!value2?.data && !!el?.type2) {
+                    const value2 = formValues[sectionId2] && formValues[sectionId2][idxString2] ? formValues[sectionId2][idxString2] : undefined as any;
+
+                    if (value2 === undefined || (!value2?.data && !!el?.type2)) {
                         formIsReady = false;
                     }
+
+                    // const value2 = formValues[section.id.toString()][
+                    //     counter.toString()
+                    // ] as any;
+
+                    // if (!value2?.data && !!el?.type2) {
+                    //     formIsReady = false;
+                    // }
 
                     counter++;
                 });
-            } else {
+            } else if (
+                section.id.toString().includes('full_width_form_field') ||
+                section.id.toString().includes('mobile_banker_selector')
+            ) {
                 section.items.map((field: any, idx: number) => {
                     if (field?.type === 'Checkbox') {
                         field.options.map((_: any, index: number) => {
@@ -251,15 +305,40 @@ const ApplicationForm = () => {
                             }
                         });
                     } else {
-                        const value = formValues[section.id.toString()][
-                            idx.toString()
-                        ] as any;
+                        const sectionId = section.id.toString();
+                        const idxString = idx.toString();
 
-                        if (!value?.data) {
+                        const value = formValues[sectionId] && formValues[sectionId][idxString] ? formValues[sectionId][idxString] : undefined as any;
+
+                        if (value === undefined || !value?.data) {
+                            formIsReady = false;
+                        }
+
+
+
+                        // const value = formValues[section.id.toString()][
+                        //     idx.toString()
+                        // ] as any;
+
+                        // if (!value?.data) {
+                        //     formIsReady = false;
+                        // }
+                    }
+                });
+            } else if (section.id.toString().includes('profile')) {
+                for (const key in profileData) {
+                    if (profileData.hasOwnProperty(key)) {
+                        const value = profileData[key];
+
+                        if (!value) {
                             formIsReady = false;
                         }
                     }
-                });
+                }
+
+                if (formIsReady) {
+                    updateProfile();
+                }
             }
         });
 
@@ -267,6 +346,7 @@ const ApplicationForm = () => {
     };
 
     const handleButtonClick = () => {
+        setIsValidating(true);
         const formIsReady = validateFields();
 
         if (formIsReady) {
@@ -275,7 +355,10 @@ const ApplicationForm = () => {
             if (!!response) {
                 setPage(page + 1);
             }
+        } else {
+            setReadyToProceed(false);
         }
+        setIsValidating(false);
     };
 
     const submitFormData = async (status: boolean) => {
@@ -321,17 +404,33 @@ const ApplicationForm = () => {
                     </Box>
                 </Box>
             </Box>
-            {formArray[page]?.map((el: any) => (
-                <FormSection
-                    items={el?.items}
-                    title={el?.primary?.title}
-                    description={el?.primary?.description}
-                    fieldType={el.slice_type}
-                    sectionId={el.id}
-                    updateFormData={addOrUpdateElement}
-                    getElement={getElement}
-                />
-            ))}
+            {formArray[page]?.map((el: any) => {
+                if (el.slice_type !== 'profile') {
+                    return (
+                        el.slice_type !== 'profile' && (
+                            <FormSection
+                                items={el?.items}
+                                primary={el?.primary}
+                                fieldType={el.slice_type}
+                                sectionId={el.id}
+                                updateFormData={addOrUpdateElement}
+                                getElement={getElement}
+                            />
+                        )
+                    );
+                } else if (el?.slice_type === 'profile') {
+                    return (
+                        <Profile
+                            fieldType={el.slice_type}
+                            idx={0}
+                            primary={el?.primary}
+                            profileData={profileData}
+                            sectionId={el.id}
+                            setProfileData={setProfileData}
+                        />
+                    );
+                }
+            })}
             <Row>
                 <Col
                     colSize={{ sm: 4, xs: 12 }}
@@ -353,7 +452,7 @@ const ApplicationForm = () => {
                         </Button>
                         {page !== formArray.length - 1 && (
                             <Button
-                                disabled={!readyToProceed}
+                                isLoading={isValidating}
                                 onClick={handleButtonClick}
                                 gray
                             >
@@ -362,23 +461,38 @@ const ApplicationForm = () => {
                         )}
                         {page === formArray.length - 1 && (
                             <Button
-                                disabled={!readyToProceed}
+                                isLoading={isValidating}
                                 onClick={async () => {
-                                    const response = (await submitFormData(
-                                        true
-                                    )) as any;
+                                    setIsValidating(true);
+                                    const formIsReady = validateFields();
 
-                                    if (!!response) {
-                                        router.push(
-                                            `/microcredit/apply?success=true&formId=${response?.data?.id}`
-                                        );
+                                    if (formIsReady) {
+                                        const response = (await submitFormData(
+                                            true
+                                        )) as any;
+
+                                        if (!!response) {
+                                            router.push(
+                                                `/microcredit/apply?success=true&formId=${response?.data?.id}`
+                                            );
+                                        }
+                                    } else {
+                                        setReadyToProceed(false);
                                     }
+                                    setIsValidating(false);
                                 }}
                             >
                                 {t('submitForm')}
                             </Button>
                         )}
                     </Box>
+                    {!readyToProceed && (
+                        <Box flex fLayout="end">
+                            <Text e500 bold>
+                                {'* All fields are required'}
+                            </Text>
+                        </Box>
+                    )}
                 </Col>
             </Row>
         </ViewContainer>
