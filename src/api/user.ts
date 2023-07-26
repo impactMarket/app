@@ -116,20 +116,6 @@ export const userApi = emptySplitApi.injectEndpoints({
                 url: 'users'
             })
         }),
-        // Get notifications
-        getNotifications: builder.mutation<
-            Notification[],
-            { limit: number; offset: number }
-        >({
-            query: ({ limit, offset }) => ({
-                method: 'GET',
-                url: `users/notifications?${
-                    !!offset ? `&offset=${offset}` : ''
-                }${!!limit ? `&limit=${limit}` : ''}`
-            }),
-            transformResponse: (response: { data: Notification[] }) =>
-                response.data
-        }),
         // Get preSigned URL for image upload
         getPreSigned: builder.mutation<PreSigned, void>({
             query: (type) => ({
@@ -190,7 +176,6 @@ export const {
     useAnonymousReportMutation,
     useCreateUserMutation,
     useDeleteUserMutation,
-    useGetNotificationsMutation,
     useGetUserMutation,
     useGetUserByIdMutation,
     useRecoverAccountMutation,

@@ -63,9 +63,9 @@ const loanStatus = (status: any) => {
         case 3: // Requested Changes
             badgeContent = (
                 <>
-                    <Icon icon={'menu'} p700 mr={0.2} />
+                    <Icon icon={'edit'} p700 mr={0.2} />
                     <Text g900 extrasmall medium>
-                        In Revision
+                        Revise
                     </Text>
                 </>
             );
@@ -413,6 +413,14 @@ const getColumns = (props: any) => {
                             rejectLoan(auth, data?.application?.id, mutate),
                         title: rejectLoanText
                     },
+                    // {
+                    //     icon: 'bookOpen',
+                    //     onClick: () =>
+                    //         router.push(
+                    //             `/microcredit/form/${data?.application?.id}`
+                    //         ),
+                    //     title: 'Loan Application'
+                    // },
                     {
                         icon: 'user',
                         onClick: () => router.push(`/user/${data.address}`),

@@ -200,13 +200,28 @@ const ApproveRejectTab: React.FC<{}> = () => {
         {
             number: countReqChanges || 0,
             onClick: () => update({ page: 1, status: '3' }),
-            title: 'In Revision'
+            title: 'Revise'
         }
     ];
 
+    const tabsIndex = (() => {
+        switch (getByKey('status')) {
+            case '1':
+                return 1;
+            case '4':
+                return 2;
+            case '5':
+                return 3;
+            case '3':
+                return 4;
+            default:
+                return 0;
+        }
+    })();
+
     return (
         <Box>
-            <FlexibleTab tabs={tabs} />
+            <FlexibleTab tabs={tabs} index={tabsIndex} />
             {/* <Input
 
                 icon="search"

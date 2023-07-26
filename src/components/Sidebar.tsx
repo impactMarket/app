@@ -14,7 +14,6 @@ import {
 import { formatAddress } from '../utils/formatAddress';
 import { getCookie, hasCookie, setCookie } from 'cookies-next';
 import { getImage } from '../utils/images';
-import { getNotifications } from '../state/slices/notifications';
 import { getUserMenu } from './UserMenu';
 import { getUserName } from '../utils/users';
 import { languagesOptions } from 'src/utils/languages';
@@ -246,7 +245,6 @@ const SidebarMobileActions = (props: { user?: User }) => {
 const Sidebar = () => {
     const { asPath, locale, push, replace } = useRouter();
     const { user } = useSelector(selectCurrentUser);
-    const { notifications } = useSelector(getNotifications);
     const { address } = useWallet();
 
     const [data, setData] = useState<MenusState | undefined>();
@@ -298,11 +296,16 @@ const Sidebar = () => {
 
         setData({
             commonMenu,
-            flags: notifications,
+            flags: [
+                {
+                    key: 'notifications',
+                    value: user?.notificationsCount
+                }
+            ],
             footerMenu,
             menus
         });
-    }, [asPath, user, notifications, locale, address]);
+    }, [asPath, user, locale, address]);
 
     const footerMenu = () => {
         const userBeneficiary = user?.roles?.includes('beneficiary');

@@ -9,7 +9,6 @@ import {
 } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider, useSelector } from 'react-redux';
-import { addNotification } from '../state/slices/notifications';
 import { getCookie, hasCookie } from 'cookies-next';
 import {
     selectCurrentUser,
@@ -20,7 +19,6 @@ import { setRates } from '../state/slices/rates';
 import { store } from '../state/store';
 import { useAccount } from 'wagmi';
 import { useGetExchangeRatesMutation } from '../api/generic';
-import { useNotifications } from 'src/hooks/useNotifications';
 import ErrorPage from 'next/error';
 import GoogleAnalytics from '../components/GoogleAnalytics';
 import React, { useEffect } from 'react';
@@ -70,26 +68,6 @@ const InnerApp = (props: AppProps) => {
 
         init();
     }, []);
-
-    const { notifications } = useNotifications([
-        `unreadOnly=true`,
-        `isWebApp=true`
-    ]);
-
-    useEffect(() => {
-        try {
-            store.dispatch(
-                addNotification({
-                    notification: {
-                        key: 'notifications',
-                        value: notifications?.rows || 0
-                    }
-                })
-            );
-        } catch (error) {
-            console.log(error);
-        }
-    }, [notifications]);
 
     const Content = Component as any;
 
