@@ -207,7 +207,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                                                     right
                                                 >
                                                     <Text g500>
-                                                        {dateHelpers.notificationsAgo(
+                                                        {dateHelpers.agoISO(
                                                             notification?.createdAt
                                                         )}
                                                     </Text>

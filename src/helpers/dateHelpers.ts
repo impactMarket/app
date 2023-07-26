@@ -36,6 +36,17 @@ export const dateHelpers = {
             addSuffix: true
         }),
 
+    agoISO: (date: number | string | Date) => {
+        const dateStr = date;
+        const dateObj = new Date(dateStr);
+
+        const distance = formatDistanceToNowStrict(dateObj, {
+            addSuffix: true
+        });
+
+        return distance;
+    },
+
     compact: (date: string | Date) =>
         date ? format(new Date(date), 'MMM d, y') : '',
 
@@ -59,17 +70,6 @@ export const dateHelpers = {
 
     hours: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), `H:m`) : '',
-
-    notificationsAgo: (date: number | string | Date) => {
-        const dateStr = date;
-        const dateObj = new Date(dateStr);
-
-        const distance = formatDistanceToNowStrict(dateObj, {
-            addSuffix: true
-        });
-
-        return distance;
-    },
 
     secondsToMonth: (date: number) => (date ? Number(date) / 2592000 : ''),
 
