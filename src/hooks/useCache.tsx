@@ -10,9 +10,13 @@ const useCache = () => {
         deleteCookie('AUTH_TOKEN', { path: '/' });
         deleteCookie('SIGNATURE', { path: '/' });
         deleteCookie('MESSAGE', { path: '/' });
+        deleteCookie('EIP712_SIGNATURE', { path: '/' });
+        deleteCookie('EIP712_MESSAGE', { path: '/' });
 
         dispatch(
             setSignature({
+                eip712_message: null,
+                eip712_signature: null,
                 message: null,
                 signature: null
             })

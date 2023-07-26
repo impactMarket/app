@@ -4,17 +4,23 @@ import {
     DesignSystemProvider,
     ModalManager,
     Toaster,
-    ViewContainer
+    ViewContainer,
+    openModal
 } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
-import { Provider } from 'react-redux';
+import { Provider, useSelector } from 'react-redux';
 import { addNotification } from '../state/slices/notifications';
 import { getCookie, hasCookie } from 'cookies-next';
+import {
+    selectCurrentUser,
+    setSignature,
+    setToken
+} from '../state/slices/auth';
 import { setRates } from '../state/slices/rates';
-import { setSignature, setToken } from '../state/slices/auth';
 import { store } from '../state/store';
+import { useAccount } from 'wagmi';
 import { useGetExchangeRatesMutation } from '../api/generic';
-import { useGetUnreadNotificationsMutation } from '../api/user';
+import { useNotifications } from 'src/hooks/useNotifications';
 import ErrorPage from 'next/error';
 import GoogleAnalytics from '../components/GoogleAnalytics';
 import React, { useEffect } from 'react';
@@ -41,7 +47,14 @@ const InnerApp = (props: AppProps) => {
 
     const [getRates] = useGetExchangeRatesMutation();
 
-    const [getUnreadNotifications] = useGetUnreadNotificationsMutation();
+    const { isConnected } = useAccount();
+    const { signature, eip712_signature } = useSelector(selectCurrentUser);
+
+    useEffect(() => {
+        if (isConnected && (!signature || !eip712_signature)) {
+            openModal('signature');
+        }
+    }, [isConnected, signature, eip712_signature]);
 
     useEffect(() => {
         const init = async () => {
@@ -58,27 +71,25 @@ const InnerApp = (props: AppProps) => {
         init();
     }, []);
 
+    const { notifications } = useNotifications([
+        `unreadOnly=true`,
+        `isWebApp=true`
+    ]);
+
     useEffect(() => {
-        const getFlags = async () => {
-            try {
-                const numberOfUnreadNotifications =
-                    await getUnreadNotifications().unwrap();
-
-                store.dispatch(
-                    addNotification({
-                        notification: {
-                            key: 'notifications',
-                            value: numberOfUnreadNotifications?.data || 0
-                        }
-                    })
-                );
-            } catch (error) {
-                console.log(error);
-            }
-        };
-
-        getFlags();
-    }, []);
+        try {
+            store.dispatch(
+                addNotification({
+                    notification: {
+                        key: 'notifications',
+                        value: notifications?.rows || 0
+                    }
+                })
+            );
+        } catch (error) {
+            console.log(error);
+        }
+    }, [notifications]);
 
     const Content = Component as any;
 
@@ -111,9 +122,11 @@ const App = (props: AppProps) => {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
 
-    if (hasCookie('SIGNATURE')) {
+    if (hasCookie('SIGNATURE') || hasCookie('EIP712_SIGNATURE')) {
         store.dispatch(
             setSignature({
+                eip712_message: getCookie('EIP712_MESSAGE').toString(),
+                eip712_signature: getCookie('EIP712_SIGNATURE').toString(),
                 message: getCookie('MESSAGE').toString(),
                 signature: getCookie('SIGNATURE').toString()
             })

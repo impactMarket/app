@@ -9,11 +9,9 @@ import {
     toast
 } from '@impact-market/ui';
 import { SubmitHandler } from 'react-hook-form';
-import { handleSignature } from '../../helpers/handleSignature';
-import { selectCurrentUser, setUser } from '../../state/slices/auth';
-import { useDispatch, useSelector } from 'react-redux';
+import { setUser } from '../../state/slices/auth';
+import { useDispatch } from 'react-redux';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import { useSignatures } from '@impact-market/utils';
 import { useUpdateUserMutation } from '../../api/user';
 import BasicForm from './BasicForm';
 import Message from '../../libs/Prismic/components/Message';
@@ -29,18 +27,11 @@ const Settings: React.FC<{ isLoading?: boolean }> = (props) => {
         'formSections'
     ) as any;
 
-    const { signature } = useSelector(selectCurrentUser);
-    const { signMessage } = useSignatures();
-
     const [updateUser] = useUpdateUserMutation();
     const dispatch = useDispatch();
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            if (!signature) {
-                await handleSignature(signMessage);
-            }
-
             const result = await updateUser({
                 ...data
             }).unwrap();

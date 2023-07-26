@@ -27,8 +27,8 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 const ConfirmAdd = () => {
     const { data, handleClose, isSubmitting, language, onSubmit } = useModal();
 
-    const { signature } = useSelector(selectCurrentUser);
-    const { signMessage } = useSignatures();
+    const { signature, eip712_signature } = useSelector(selectCurrentUser);
+    const { signMessage, signTypedData } = useSignatures();
     const auth = useSelector(selectCurrentUser);
     const [updatedData, setUpdatedData] = useState(data) as any;
     const [profilePicture, setProfilePicture] = useState(null);
@@ -74,8 +74,8 @@ const ConfirmAdd = () => {
     const personalForm: SubmitHandler<any> = async (userData) => {
         if (isValid) {
             try {
-                if (!signature) {
-                    await handleSignature(signMessage);
+                if (!signature || !eip712_signature) {
+                    await handleSignature(signMessage, signTypedData);
                 }
 
                 if (profilePicture || auth?.user?.avatarMediaPath) {
@@ -86,7 +86,10 @@ const ConfirmAdd = () => {
                     error?.data?.error?.name === 'EXPIRED_SIGNATURE' ||
                     error?.data?.error?.name === 'INVALID_SINATURE'
                 ) {
-                    const { success } = await handleSignature(signMessage);
+                    const { success } = await handleSignature(
+                        signMessage,
+                        signTypedData
+                    );
 
                     if (success) personalForm(data);
                 } else {

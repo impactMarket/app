@@ -13,12 +13,10 @@ import {
 import { dateHelpers } from '../helpers/dateHelpers';
 import { markAsRead } from '../state/slices/notifications';
 import { store } from '../state/store';
-import {
-    useGetNotificationsMutation,
-    useUpdateNotificationsMutation
-} from '../api/user';
+import { useNotifications } from 'src/hooks/useNotifications';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
+import { useUpdateNotificationsMutation } from '../api/user';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
@@ -27,19 +25,22 @@ import useFilters from '../hooks/useFilters';
 const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { view } = usePrismicData({ list: true });
-    const [getNotifications] = useGetNotificationsMutation();
     const [updataNotifications] = useUpdateNotificationsMutation();
-    const [loading, setLoading] = useState(false);
-    const [notifications, setNotifications] = useState<any>();
     const router = useRouter();
     const { update, getByKey } = useFilters();
 
-    // Pagination
-    const limit = 10;
+    const limit = 7;
     const [offset, setItemOffset] = useState(0);
+
+    const { notifications, loadingNotifications } = useNotifications([
+        `limit=${limit}`,
+        `offset=${offset}`,
+        `isWebApp=true`
+    ]);
+
+    // Pagination
     const [currentPage, setCurrentPage] = useState(0);
-    const notificationsCount = notifications?.count;
-    const pageCount = Math.ceil(notificationsCount / limit);
+    const pageCount = Math.ceil(notifications?.count / limit);
     const [changed, setChanged] = useState<Date>(new Date());
     const [ready, setReady] = useState(false);
 
@@ -57,61 +58,48 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
     }, []);
 
     useEffect(() => {
-        const getNotificationsMethod = async () => {
-            try {
-                setLoading(true);
+        const markedAsRead = async () => {
+            if (notifications?.count > 0) {
+                const notificationsRead = notifications?.rows
+                    .filter((s: any) => !s.read)
+                    .map((s: any) => s.id);
 
-                const notificationsRequest = (await getNotifications({
-                    limit,
-                    offset
-                }).unwrap()) as any;
+                if (notificationsRead?.length) {
+                    await updataNotifications({
+                        body: { notifications: notificationsRead }
+                    });
 
-                setNotifications(notificationsRequest);
-
-                if (notificationsRequest?.count > 0) {
-                    const notifications = notificationsRequest?.rows
-                        .filter((s: any) => !s.read)
-                        .map((s: any) => s.id);
-
-                    if (notifications?.length) {
-                        await updataNotifications({ body: { notifications } });
-
-                        store.dispatch(
-                            markAsRead({
-                                key: 'notifications',
-                                reduce: notifications.length
-                            })
-                        );
-                    }
+                    store.dispatch(
+                        markAsRead({
+                            key: 'notifications',
+                            reduce: notificationsRead.length
+                        })
+                    );
                 }
-
-                setLoading(false);
-            } catch (error) {
-                console.log(error);
             }
         };
 
-        getNotificationsMethod();
-    }, [offset, ready, changed]);
+        markedAsRead();
+    }, [offset, ready, changed, notifications]);
 
     // Pagination
     const handlePageClick = (event: any, direction?: number) => {
         if (event.selected >= 0) {
-            const newOffset = (event.selected * limit) % notificationsCount;
+            const newOffset = (event.selected * limit) % notifications?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(event.selected);
             update('page', event.selected + 1);
         } else if (direction === 1 && currentPage > 0) {
             const newPage = currentPage - 1;
-            const newOffset = (newPage * limit) % notificationsCount;
+            const newOffset = (newPage * limit) % notifications?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
             update('page', newPage + 1);
         } else if (direction === 2 && currentPage < pageCount - 1) {
             const newPage = currentPage + 1;
-            const newOffset = (newPage * limit) % notificationsCount;
+            const newOffset = (newPage * limit) % notifications?.count;
 
             setItemOffset(newOffset);
             setCurrentPage(newPage);
@@ -148,144 +136,118 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     };
 
-    // Titles
-    const handleTitle = (type: number) => {
-        switch (type) {
-            case 0: {
-                return view?.data?.messageType0Title;
-            }
-            case 1: {
-                return view?.data?.messageType1Title;
-            }
-            case 2: {
-                return view?.data?.messageType2Title;
-            }
-            case 3: {
-                return view?.data?.messageType3Title;
-            }
-            default: {
-                break;
-            }
-        }
-    };
-
-    // Descriptions
-    const handleDescription = (type: number) => {
-        switch (type) {
-            case 0: {
-                return view?.data?.messageType0Description;
-            }
-            case 1: {
-                return view?.data?.messageType1Description;
-            }
-            case 2: {
-                return view?.data?.messageType2Description;
-            }
-            case 3: {
-                return view?.data?.messageType3Description;
-            }
-            default: {
-                break;
-            }
-        }
-    };
-
-    // TODO use Prismic data
     return (
-        <ViewContainer {...({} as any)} isLoading={isLoading || loading}>
-            <Display medium>
-                <String id="notifications" />
-            </Display>
-            <Text g500>
-                <RichText content={view.data.messageAllNotificationsSent} />
-            </Text>
-            <Box pb={2} pt={2}>
-                {notifications?.rows?.length ? (
-                    <Card padding={0}>
-                        {notifications?.rows.map(
-                            (notification: any, index: number) => (
-                                <>
-                                    <Box
-                                        bgColor={
-                                            notification?.read ? '' : 'p100'
-                                        }
-                                        key={index}
-                                    >
-                                        <Row pl={1} pr={1}>
-                                            <TextLink
-                                                onClick={() =>
-                                                    handlePageRedirect(
-                                                        notification?.type,
-                                                        notification?.params
-                                                    )
-                                                }
-                                            >
-                                                <RichText
-                                                    content={handleTitle(
-                                                        notification?.type
-                                                    )}
-                                                    g700
-                                                    pb={0}
-                                                    semibold
-                                                />
-                                            </TextLink>
-                                        </Row>
-                                        <Row pl={1} pr={1} pt={0}>
-                                            <Col
-                                                colSize={{ sm: 8, xs: 12 }}
-                                                pt={0}
-                                            >
-                                                <RichText
-                                                    content={handleDescription(
-                                                        notification?.type
-                                                    )}
-                                                    g500
-                                                />
-                                            </Col>
-                                            <Col
-                                                colSize={{ sm: 4, xs: 12 }}
-                                                pt={0}
-                                                right
-                                            >
-                                                <Text g500>
-                                                    {dateHelpers.ago(
-                                                        notification?.createdAt
-                                                    )}
-                                                </Text>
-                                            </Col>
-                                        </Row>
-                                        <Divider
+        <ViewContainer
+            {...({} as any)}
+            isLoading={isLoading || loadingNotifications}
+        >
+            <>
+                <Display medium>
+                    <String id="notifications" />
+                </Display>
+                <Text g500>
+                    <RichText content={view.data.messageAllNotificationsSent} />
+                </Text>
+                <Box pb={2} pt={2}>
+                    {notifications?.rows?.length ? (
+                        <Card padding={0}>
+                            {notifications?.rows.map(
+                                (notification: any, index: number) => (
+                                    <>
+                                        <Box
                                             bgColor={
-                                                notification?.read ? '' : 'g25'
+                                                notification?.read ? '' : 'p100'
                                             }
-                                        />
-                                    </Box>
-                                </>
-                            )
-                        )}
+                                            key={index}
+                                        >
+                                            <Row pl={1} pr={1}>
+                                                <TextLink
+                                                    onClick={() =>
+                                                        handlePageRedirect(
+                                                            notification?.type,
+                                                            notification?.params
+                                                        )
+                                                    }
+                                                >
+                                                    <RichText
+                                                        content={
+                                                            view?.data?.[
+                                                                `messageType${notification?.type}title`
+                                                            ]
+                                                        }
+                                                        g700
+                                                        pb={0}
+                                                        semibold
+                                                    />
+                                                </TextLink>
+                                            </Row>
+                                            <Row pl={1} pr={1} pt={0}>
+                                                <Col
+                                                    colSize={{
+                                                        sm: 8,
+                                                        xs: 12
+                                                    }}
+                                                    pt={0}
+                                                >
+                                                    <RichText
+                                                        content={
+                                                            view?.data?.[
+                                                                `messageType${notification?.type}description`
+                                                            ]
+                                                        }
+                                                        g500
+                                                    />
+                                                </Col>
+                                                <Col
+                                                    colSize={{
+                                                        sm: 4,
+                                                        xs: 12
+                                                    }}
+                                                    pt={0}
+                                                    right
+                                                >
+                                                    <Text g500>
+                                                        {dateHelpers.agoISO(
+                                                            notification?.createdAt
+                                                        )}
+                                                    </Text>
+                                                </Col>
+                                            </Row>
+                                            <Divider
+                                                bgColor={
+                                                    notification?.read
+                                                        ? ''
+                                                        : 'g25'
+                                                }
+                                            />
+                                        </Box>
+                                    </>
+                                )
+                            )}
 
-                        {pageCount > 1 && (
-                            <Box padding={1} pt={0}>
-                                <Pagination
-                                    currentPage={currentPage}
-                                    handlePageClick={handlePageClick}
-                                    nextIcon="arrowRight"
-                                    nextLabel="Next"
-                                    pageCount={pageCount}
-                                    previousIcon="arrowLeft"
-                                    previousLabel="Previous"
-                                />
-                            </Box>
-                        )}
-                    </Card>
-                ) : (
-                    <Box mt="25vh">
-                        <Row fLayout="center">
-                            <String id="noNotificationsFound" />
-                        </Row>
-                    </Box>
-                )}
-            </Box>
+                            {pageCount > 1 && (
+                                <Box padding={1} pt={0}>
+                                    <Pagination
+                                        currentPage={currentPage}
+                                        handlePageClick={handlePageClick}
+                                        nextIcon="arrowRight"
+                                        nextLabel="Next"
+                                        pageCount={pageCount}
+                                        previousIcon="arrowLeft"
+                                        previousLabel="Previous"
+                                    />
+                                </Box>
+                            )}
+                        </Card>
+                    ) : (
+                        <Box mt="25vh">
+                            <Row fLayout="center">
+                                <String id="noNotificationsFound" />
+                            </Row>
+                        </Box>
+                    )}
+                </Box>
+            </>
         </ViewContainer>
     );
 };

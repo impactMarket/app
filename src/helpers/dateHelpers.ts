@@ -36,6 +36,17 @@ export const dateHelpers = {
             addSuffix: true
         }),
 
+    agoISO: (date: number | string | Date) => {
+        const dateStr = date;
+        const dateObj = new Date(dateStr);
+
+        const distance = formatDistanceToNowStrict(dateObj, {
+            addSuffix: true
+        });
+
+        return distance;
+    },
+
     compact: (date: string | Date) =>
         date ? format(new Date(date), 'MMM d, y') : '',
 
@@ -44,11 +55,15 @@ export const dateHelpers = {
 
     complete: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), `MMM d, y • H:m`) : '',
-        
+
     getDateAndTime: (timestamp: string) => {
         const date = new Date(timestamp);
-        const dateString = dateFnsFormat(date, 'MMM d, y', { locale: getLocale() });
-        const timeString = dateFnsFormat(date, 'HH:mm', { locale: getLocale() });
+        const dateString = dateFnsFormat(date, 'MMM d, y', {
+            locale: getLocale()
+        });
+        const timeString = dateFnsFormat(date, 'HH:mm', {
+            locale: getLocale()
+        });
 
         return [dateString, timeString];
     },
