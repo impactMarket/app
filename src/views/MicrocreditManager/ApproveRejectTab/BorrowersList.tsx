@@ -28,6 +28,7 @@ import Table from '../../../components/Table';
 import config from '../../../../config';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
+
 const CheckBox = styled(Box)`
     border-radius: 0.5rem;
     border-width: 1px;
@@ -125,8 +126,8 @@ const getColumns = (props: any) => {
 
     const { extractFromView } = usePrismicData();
     const {
-        // addNote,
-        // viewAllNotes,
+        addNote,
+        viewAllNotes,
         appliedOn,
         decisionOn,
         approveLoan,
@@ -153,6 +154,7 @@ const getColumns = (props: any) => {
                                     ...selected,
                                     data
                                 ]);
+                                console.log(data);
                             }}
                         ></CheckBox>
                     ) : (
@@ -424,7 +426,7 @@ const getColumns = (props: any) => {
 
                 return (
                     <Box flex fLayout="center start" style={{ gap: '1rem' }}>
-                        {/* <DropdownMenu
+                        <DropdownMenu
                         {...({} as any)}
                         icon="cardsStack"
                         titleColor="g400"
@@ -432,7 +434,11 @@ const getColumns = (props: any) => {
                         items={[
                             {
                                 icon: 'upload',
-                                onClick: () => openModal('addNote'),
+                                onClick: () => openModal('addNote',
+                                {
+                                    applicationId: data?.application?.id
+                                }
+                                ),
                                 title: addNote
                             },
                             {
@@ -441,7 +447,7 @@ const getColumns = (props: any) => {
                                 title: viewAllNotes
                             }
                         ]}
-                    /> */}
+                    /> 
                         <DropdownMenu
                             {...({} as any)}
                             className="dropdown"
