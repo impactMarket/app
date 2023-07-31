@@ -91,14 +91,8 @@ const ApproveLoan = () => {
                 addressArray = [address];
             }
 
-            // @ts-ignore
-            const { status } = await addLoansNow(
-                addressArray,
-                amounts,
-                periods,
-                dailyInterests,
-                startDates
-            );
+            // eslint-disable-next-line
+            const { status } = await addLoansNow( addressArray, amounts, periods, dailyInterests, startDates );
 
             if (status) {
                 mutate();
