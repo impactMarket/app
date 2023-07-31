@@ -84,6 +84,7 @@ const DecisionCard: React.FC<{ selected: object; mutate: any }> = (props) => {
         (obj: { address: string }) => obj.address
     );
 
+    // @ts-ignore
     const { managerDetails } = useLoanManager();
 
     const limitReach =
