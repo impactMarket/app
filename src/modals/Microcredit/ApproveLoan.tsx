@@ -90,7 +90,8 @@ const ApproveLoan = () => {
                 );
                 addressArray = [address];
             }
-
+            
+            // @ts-ignore
             const { status } = await addLoans(
                 addressArray,
                 amounts,
