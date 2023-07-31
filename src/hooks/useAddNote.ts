@@ -18,7 +18,6 @@ async function getUserId(_auth: any) {
         throw new Error(`HTTP error! status: ${response.status}`);
       } else {
         const {data} = await response.json();
-
         return data?.id;
       }
     } catch (error) {
@@ -64,7 +63,6 @@ const useAddNote = (handleClose: Function) => {
 
             setLoading(false);
             handleClose();
-
             return data;
         } catch (err: any) {
             setLoading(false);

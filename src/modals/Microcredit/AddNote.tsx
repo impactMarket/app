@@ -1,3 +1,4 @@
+import { useState, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -14,12 +15,11 @@ import {
     useFormState,
     useWatch
 } from 'react-hook-form';
-import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import Message from 'src/libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
-import useAddNote from '../../hooks/useAddNote';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import useAddNote from '../../hooks/useAddNote';
 
 const AddNote = () => {
 
