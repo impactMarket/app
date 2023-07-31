@@ -484,7 +484,6 @@ const BorrowersList = (props: any) => {
     } = props;
     const auth = useSelector(selectCurrentUser);
 
-
     const { managerDetails } = useLoanManager();
 
     const limitReach =
