@@ -154,6 +154,7 @@ const getColumns = (props: any) => {
                                     ...selected,
                                     data
                                 ]);
+                                console.log(data);
                             }}
                         ></CheckBox>
                     ) : (
@@ -441,7 +442,11 @@ const getColumns = (props: any) => {
                         items={[
                             {
                                 icon: 'upload',
-                                onClick: () => openModal('addNote'),
+                                onClick: () => openModal('addNote',
+                                {
+                                    applicationId: data?.application?.id
+                                }
+                                ),
                                 title: addNote
                             },
                             {
