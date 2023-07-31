@@ -1,22 +1,24 @@
-import { useState } from 'react';
-import config from 'config';
 import { getCookie } from 'cookies-next';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { useSelector } from 'react-redux';
+import { useState } from 'react';
+import config from 'config';
 
 async function getUserId(_auth: any) {
     const url = `${config.baseApiUrl}/users`;
     const headers = {
-      'accept': '*/*',
       'Authorization': `Bearer ${_auth.token}`,
+      'accept': '*/*',
     };
   
     try {
-      const response = await fetch(url, { method: 'GET', headers: headers });
+      const response = await fetch(url, { headers, method: 'GET' });
+
       if (!response.ok) {
         throw new Error(`HTTP error! status: ${response.status}`);
       } else {
         const {data} = await response.json();
+
         return data?.id;
       }
     } catch (error) {
@@ -42,8 +44,8 @@ const useAddNote = (handleClose: Function) => {
         try {
             const response = await fetch(`${config.baseApiUrl}/microcredit/notes`, {
                 body: JSON.stringify({
-                    userId: userId,
-                    note: note,
+                    note,
+                    userId,
                 }),
                 headers: {
                     Accept: 'application/json',
@@ -62,6 +64,7 @@ const useAddNote = (handleClose: Function) => {
 
             setLoading(false);
             handleClose();
+
             return data;
         } catch (err: any) {
             setLoading(false);
@@ -69,7 +72,7 @@ const useAddNote = (handleClose: Function) => {
         }
     };
 
-    return { addNote, loading, error };
+    return { addNote, error, loading };
 };
 
 export default useAddNote;

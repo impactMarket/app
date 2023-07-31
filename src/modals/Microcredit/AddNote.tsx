@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -9,21 +8,21 @@ import {
     useModal,
 } from '@impact-market/ui';
 import {
+    Controller,
     SubmitHandler,
     useForm,
     useFormState,
-    useWatch,
-    Controller
+    useWatch
 } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
-import RichText from '../../libs/Prismic/components/RichText';
 import Message from 'src/libs/Prismic/components/Message';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import RichText from '../../libs/Prismic/components/RichText';
 import useAddNote from '../../hooks/useAddNote';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const AddNote = (props:any) => {
+const AddNote = () => {
 
-    const { applicationId } = props;
     const { extractFromView } = usePrismicData();
     const {describeConvBorrower, addNote} = extractFromView('messages') as any;
 
@@ -55,6 +54,7 @@ const AddNote = (props:any) => {
         
         try {
             const d = await addNotePost(data.noteText);
+
             console.log("response: ",d);
             toast.success('Note Added');
         } catch (error) {
