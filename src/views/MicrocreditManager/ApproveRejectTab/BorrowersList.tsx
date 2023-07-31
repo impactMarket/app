@@ -442,11 +442,7 @@ const getColumns = (props: any) => {
                         items={[
                             {
                                 icon: 'upload',
-                                onClick: () => openModal('addNote',
-                                {
-                                    applicationId: data?.application?.id
-                                }
-                                ),
+                                onClick: () => openModal('addNote'),
                                 title: addNote
                             },
                             {

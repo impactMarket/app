@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -9,17 +8,18 @@ import {
     useModal,
 } from '@impact-market/ui';
 import {
+    Controller,
     SubmitHandler,
     useForm,
     useFormState,
-    useWatch,
-    Controller
+    useWatch
 } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import Message from 'src/libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useAddNote from '../../hooks/useAddNote';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const AddNote = () => {
 
