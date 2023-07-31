@@ -14,7 +14,6 @@ import {
     useWatch
 } from 'react-hook-form';
 import { handleKnownErrors } from 'src/helpers/handleKnownErrors';
-import { useEffect } from 'react';
 import { useLoanManager } from '@impact-market/utils';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import Input from '../../components/Input';
@@ -41,7 +40,7 @@ const ApproveLoan = () => {
         control,
         formState: { errors }
     } = useForm({ defaultValues: { amount: '', period: '' } });
-    const { isDirty, isSubmitting, isSubmitSuccessful } = useFormState({
+    const { isDirty, isSubmitting } = useFormState({
         control
     });
 
@@ -67,75 +66,53 @@ const ApproveLoan = () => {
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            // setIsLoading(false);
-
             Sentry.captureMessage(`addLoan -> userAddress: ${address}`);
 
-            let addressArray = address;
-            const amounts = [];
-            const periods = [];
-            const dailyInterests = [];
-            const startDates = [];
+            let loans;
 
             if (Array.isArray(address)) {
-                address.forEach(() => {
-                    amounts.push(parseInt(data?.amount, 10));
-                    periods.push(parseInt(data?.period, 10) * 2592000);
-                    dailyInterests.push(0.1);
-                    startDates.push(
-                        Math.floor(
+                loans = address.map((addr) => ({
+                    amount: parseInt(data?.amount, 10),
+                    claimDeadline: Math.floor(
+                        new Date(new Date().getTime() + 1209600000).getTime() /
+                            1000
+                    ),
+                    dailyInterest: 0.1,
+                    period: parseInt(data?.period, 10) * 2592000,
+                    userAddress: addr
+                }));
+            } else {
+                loans = [
+                    {
+                        amount: parseInt(data?.amount, 10),
+                        claimDeadline: Math.floor(
                             new Date(
                                 new Date().getTime() + 1209600000
                             ).getTime() / 1000
-                        )
-                    );
-                });
-            } else {
-                amounts.push(parseInt(data?.amount, 10));
-                periods.push(parseInt(data?.period, 10) * 2592000);
-                dailyInterests.push(0.1);
-                startDates.push(
-                    Math.floor(
-                        new Date(new Date().getTime() + 1209600000).getTime() /
-                            1000
-                    )
-                );
-                addressArray = [address];
+                        ),
+                        dailyInterest: 0.1,
+                        period: parseInt(data?.period, 10) * 2592000,
+                        userAddress: address
+                    }
+                ];
             }
 
-            const { status } = await addLoans(
-                addressArray,
-                amounts,
-                periods,
-                dailyInterests,
-                startDates
-            );
+            
+            const { status } = await addLoans(loans);
 
             if (status) {
                 mutate();
                 toast.success(loansApproved);
                 handleClose();
-
-                // setIsLoading(false);
-
-                toast.success('Loan Approved');
             } else {
                 toast.error(<Message id="errorOccurred" />);
             }
-
-            // return setIsLoading(false);
         } catch (error) {
             console.log(error);
             handleKnownErrors(error);
             processTransactionError(error, 'accept_loan');
         }
     };
-
-    useEffect(() => {
-        if (isSubmitSuccessful) {
-            handleClose();
-        }
-    }, [isSubmitSuccessful]);
 
     return (
         <ModalWrapper maxW={'484px'} padding={2.5} w="100%">
@@ -165,29 +142,38 @@ const ApproveLoan = () => {
                             semibold
                         />
                         <Input
+                            type="number"
                             placeholder={enterLoanMaturity[0].text}
                             wrapperProps={{
                                 mt: 1,
                                 w: '100%'
                             }}
-                            rules={{ required: true }}
+                            rules={{
+                                required: true
+                            }}
                             control={control}
                             name="period"
                             withError={!!errors?.period}
-                            hint={errors?.period ? t('requiredField') : ''}
+                            hint="Max. 12 months"
                         />
                         <Input
+                            type="number"
                             placeholder="Enter loan amount..."
                             wrapperProps={{
                                 mt: 1,
                                 w: '100%'
                             }}
                             suffix="cUSD"
-                            rules={{ required: true }}
+                            rules={{
+                                required: true
+                            }}
                             control={control}
                             name="amount"
                             withError={!!errors?.amount}
-                            hint={errors?.amount ? t('requiredField') : ''}
+                            hint={`Max. ${
+                                managerDetails?.currentLentAmountLimit -
+                                managerDetails?.currentLentAmount
+                            } cUSD`}
                         />
                     </Box>
 
@@ -212,9 +198,13 @@ const ApproveLoan = () => {
                         <Button
                             fluid={'xs'}
                             mt={{ sm: 1.5, xs: 0 }}
-                            onClick={() => handleClose()}
                             disabled={
-                                isSubmitting || !isDirty || !period || !amount
+                                isSubmitting ||
+                                !isDirty ||
+                                !period ||
+                                !amount ||
+                                validateAmount ||
+                                validatePeriod
                             }
                             isLoading={isSubmitting}
                         >
