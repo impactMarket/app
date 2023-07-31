@@ -18,6 +18,7 @@ import {
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import Message from 'src/libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
+
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useAddNote from '../../hooks/useAddNote';
 
