@@ -475,7 +475,7 @@ const BorrowersList = (props: any) => {
     } = props;
     const auth = useSelector(selectCurrentUser);
 
-    // @ts-ignore
+
     const { managerDetails } = useLoanManager();
 
     const limitReach =

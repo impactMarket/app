@@ -93,7 +93,6 @@ const ApproveLoan = () => {
                 ];
             }
 
-            // @ts-ignore
             const { status } = await addLoans(loans);
 
             if (status) {
