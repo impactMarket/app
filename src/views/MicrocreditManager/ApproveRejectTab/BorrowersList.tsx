@@ -154,7 +154,6 @@ const getColumns = (props: any) => {
                                     ...selected,
                                     data
                                 ]);
-                                console.log(data);
                             }}
                         ></CheckBox>
                     ) : (
