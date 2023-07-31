@@ -50,7 +50,7 @@ const ApproveLoan = () => {
         name: 'amount'
     });
 
-    // @ts-ignore
+  
     const { addLoans, managerDetails } = useLoanManager();
 
     const validatePeriod =

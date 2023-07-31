@@ -31,7 +31,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     }, []);
 
 
-    // @ts-ignore
+    
     const { managerDetails } = useLoanManager();
 
     const limitReach =
