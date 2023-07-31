@@ -51,7 +51,7 @@ const ApproveLoan = () => {
         name: 'amount'
     });
 
-    const { addLoans } = useLoanManager();
+    const { addLoans: addLoansNow } = useLoanManager();
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
@@ -90,9 +90,9 @@ const ApproveLoan = () => {
                 );
                 addressArray = [address];
             }
-            
+
             // @ts-ignore
-            const { status } = await addLoans(
+            const { status } = await addLoansNow(
                 addressArray,
                 amounts,
                 periods,
