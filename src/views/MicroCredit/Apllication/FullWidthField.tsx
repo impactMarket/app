@@ -72,17 +72,19 @@ const CurrencySelector = styled(DropdownMenu)`
 
     p,
     svg {
-        line-height: normal;
         color: ${colors.g900};
+        line-height: normal;
     }
 
     > div {
         margin-top: .5rem;
-        justify-content: space-between;
         width: 100%;
+    }
 
+    > div:first-of-type {
         border-radius: 0.5rem;
         box-shadow: 0 0.125rem 0.0625rem rgba(16,24,40,0.05), 0 0 0 1px #D0D5DD;
+        justify-content: space-between;
         padding: 0.68rem 0.875rem;
     }
 `;

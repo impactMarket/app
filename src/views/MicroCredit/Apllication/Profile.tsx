@@ -4,7 +4,6 @@ import RichText from '../../../libs/Prismic/components/RichText';
 import styled, { css } from 'styled-components';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
-
 const Section = styled(Row)`
     ${mq.phone(css`
         margin-bottom: 3rem;
@@ -60,7 +59,11 @@ const Profile = (props: ProfileProps) => {
     const { t } = useTranslations();
     const { title1, title2, description1, description2 } = primary;
     const { firstName, lastName, age, gender, email, phone } = profileData;
-    const selectOptions = [t('male'), t('female'), t('other')];
+    const selectOptions = [
+        { title: t('male'), value: 'm' },
+        { title: t('female'), value: 'f' },
+        { title: t('other'), value: 'o' }
+    ];
 
     return (
         <Section mb="1.3rem">
@@ -121,12 +124,7 @@ const Profile = (props: ProfileProps) => {
                     </Box>
                     <Box pt="1.5rem" flex fLayout="start between">
                         <Box className="column" style={{ flexBasis: '48%' }}>
-                            <RichText
-                                content={t('age')}
-                                g700
-                                medium
-                                semibold
-                            />
+                            <RichText content={t('age')} g700 medium semibold />
                             <Input
                                 id={`${sectionId}-${idx}`}
                                 value={age ?? ''}
@@ -140,7 +138,12 @@ const Profile = (props: ProfileProps) => {
                             />
                         </Box>
                         <Box className="column" style={{ flexBasis: '48%' }}>
-                            <RichText content={t('gender')} g700 medium semibold />
+                            <RichText
+                                content={t('gender')}
+                                g700
+                                medium
+                                semibold
+                            />
                             <Box flex>
                                 {selectOptions.map(
                                     (option: any, id: number) => (
@@ -148,20 +151,18 @@ const Profile = (props: ProfileProps) => {
                                             pb=".5rem"
                                             className={`select-${id} ${
                                                 gender ===
-                                                option.charAt(0).toLowerCase()
+                                                option.value
                                                     ? 'active'
                                                     : ''
                                             }`}
                                             onClick={() => {
                                                 setProfileData({
                                                     ...profileData,
-                                                    gender: option
-                                                        .charAt(0)
-                                                        .toLowerCase()
+                                                    gender: option.value
                                                 });
                                             }}
                                         >
-                                            {option}
+                                            {option.title}
                                         </SelectElement>
                                     )
                                 )}
