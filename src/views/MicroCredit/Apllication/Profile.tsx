@@ -1,11 +1,9 @@
-// import * as React from 'react';
 import { Box, Button, Card, Col, Input, Row, colors } from '@impact-market/ui';
 import { mq } from 'styled-gen';
 import RichText from '../../../libs/Prismic/components/RichText';
 import styled, { css } from 'styled-components';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
-// import { selectCurrentUser } from '../../../state/slices/auth';
-// import { useSelector } from 'react-redux';
 
 const Section = styled(Row)`
     ${mq.phone(css`
@@ -33,7 +31,7 @@ const SelectElement = styled(Button)`
 
     &:hover,
     &.active {
-        background-color: ${colors.g50} !important;
+        background-color: ${colors.p50} !important;
         border-color: ${colors.g300} !important;
     }
 
@@ -59,10 +57,10 @@ export interface ProfileProps {
 
 const Profile = (props: ProfileProps) => {
     const { sectionId, idx, primary, profileData, setProfileData } = props;
-    // const auth = useSelector(selectCurrentUser);
+    const { t } = useTranslations();
     const { title1, title2, description1, description2 } = primary;
     const { firstName, lastName, age, gender, email, phone } = profileData;
-    const selectOptions = ['Male', 'Female', 'Other'];
+    const selectOptions = [t('male'), t('female'), t('other')];
 
     return (
         <Section mb="1.3rem">
@@ -85,7 +83,7 @@ const Profile = (props: ProfileProps) => {
                     <Box flex fLayout="start between">
                         <Box className="column" style={{ flexBasis: '48%' }}>
                             <RichText
-                                content={'First name'}
+                                content={t('firstName')}
                                 g700
                                 medium
                                 semibold
@@ -103,7 +101,7 @@ const Profile = (props: ProfileProps) => {
                         </Box>
                         <Box className="column" style={{ flexBasis: '48%' }}>
                             <RichText
-                                content={'Last name'}
+                                content={t('lastName')}
                                 g700
                                 medium
                                 semibold
@@ -124,10 +122,9 @@ const Profile = (props: ProfileProps) => {
                     <Box pt="1.5rem" flex fLayout="start between">
                         <Box className="column" style={{ flexBasis: '48%' }}>
                             <RichText
-                                content={'Age'}
+                                content={t('age')}
                                 g700
                                 medium
-                                // small
                                 semibold
                             />
                             <Input
@@ -143,7 +140,7 @@ const Profile = (props: ProfileProps) => {
                             />
                         </Box>
                         <Box className="column" style={{ flexBasis: '48%' }}>
-                            <RichText content={'Gender'} g700 medium semibold />
+                            <RichText content={t('gender')} g700 medium semibold />
                             <Box flex>
                                 {selectOptions.map(
                                     (option: any, id: number) => (
@@ -192,7 +189,7 @@ const Profile = (props: ProfileProps) => {
                     <Box flex fLayout="start between">
                         <Box className="column" style={{ flex: '1' }}>
                             <RichText
-                                content={'Your Email'}
+                                content={t('yourEmail')}
                                 g700
                                 medium
                                 semibold
@@ -214,7 +211,7 @@ const Profile = (props: ProfileProps) => {
                     <Box pt="1.5rem" flex fLayout="start between">
                         <Box className="column" style={{ flex: '1' }}>
                             <RichText
-                                content={'Enter Your Phone number'}
+                                content={t('yourPhone')}
                                 g700
                                 medium
                                 // small

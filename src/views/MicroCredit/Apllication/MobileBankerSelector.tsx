@@ -1,23 +1,13 @@
 import { Avatar, Box, Row, Text, colors } from '@impact-market/ui';
-// import { mq } from 'styled-gen';
-// import FullWidthField from './FullWidthField';
+import { getImage } from '../../../utils/images';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import RichText from '../../../libs/Prismic/components/RichText';
-import styled from 'styled-components';
-
-// import useCommunitiesCountries from '../../../hooks/useCommunitiesCountries';
-// import config from '../../../../config';
 import Select from '../../../components/Select';
 import config from '../../../../config';
+import styled from 'styled-components';
 
-// const SectionWrapper = styled(Box)`
-//     >input[type="radio"]:checked {
-//         border: 1px solid blue;
-//     }
-
-// `;
 const RadioWrapper = styled.label`
     align-items: center;
     border: 1px solid ${colors.g200};
@@ -42,11 +32,6 @@ export interface MobileBankerProps {
     getElement: (rowKey: any, columnKey: number) => any;
 }
 
-// const fetcher = () =>
-//     fetch(
-//         `${config.baseApiUrl}/communities/count?groupBy=country&status=valid`
-//     ).then((res) => res.json());
-
 const MobileBankerSelector = (props: MobileBankerProps) => {
     const {
         item,
@@ -69,7 +54,6 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
     );
     const [countryLabel, setCountryLabel] = useState('');
 
-    // const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const countries = [
         { label: 'Uganda', value: 'UG' },
         { label: 'Brazil', value: 'BR' },
@@ -184,8 +168,13 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
                                     {countryLabel}
                                 </Text>
                             </Box>
-                            <Box>
-                                <Avatar url={option.avatarMediaPath} />
+                            <Box ml=".5rem">
+                                <Avatar
+                                    url={getImage({
+                                        filePath: option.avatarMediaPath,
+                                        fit: 'cover'
+                                    })}
+                                />
                             </Box>
                         </RadioWrapper>
                     ))}

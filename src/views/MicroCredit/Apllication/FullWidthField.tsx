@@ -21,6 +21,7 @@ import Select from '../../../components/Select';
 import config from '../../../../config';
 import styled, { css } from 'styled-components';
 import useCommunitiesCountries from '../../../hooks/useCommunitiesCountries';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const SelectElement = styled(Button)`
     background-color: white;
@@ -38,7 +39,7 @@ const SelectElement = styled(Button)`
 
     &:hover,
     &.active {
-        background-color: ${colors.g50} !important;
+        background-color: ${colors.p50} !important;
         border-color: ${colors.g300} !important;
     }
 
@@ -67,10 +68,38 @@ const Spacer = styled(Box)`
 `;
 
 const CurrencySelector = styled(DropdownMenu)`
+    display: flex;
+
     p,
     svg {
+        line-height: normal;
         color: ${colors.g900};
     }
+
+    > div {
+        margin-top: .5rem;
+        justify-content: space-between;
+        width: 100%;
+
+        border-radius: 0.5rem;
+        box-shadow: 0 0.125rem 0.0625rem rgba(16,24,40,0.05), 0 0 0 1px #D0D5DD;
+        padding: 0.68rem 0.875rem;
+    }
+`;
+
+const CurrencyWrapper = styled(Box)`
+    > .column {
+        flex-basis: 49%;
+    }
+
+    ${mq.phone(css`
+        flex-wrap: wrap;
+
+        .column {
+            min-width: 10rem;
+            flex-basis: 100%;
+        }
+    `)};
 `;
 
 export interface FullWidthProps {
@@ -98,9 +127,10 @@ const fetcher = () =>
 
 const FullWidthField = (props: FullWidthProps) => {
     const { item, sectionId, idx, updateFormData, getElement } = props;
+    const { t } = useTranslations();
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
-    const [currency, setCurrency] = useState('USD');
+    const [currency, setCurrency] = useState('US Dollars (USD)');
     const [income, setIncome] = useState('');
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
@@ -121,8 +151,10 @@ const FullWidthField = (props: FullWidthProps) => {
 
     useEffect(() => {
         if (item.type === 'CurrencyField' && value?.data) {
-            setIncome(value?.data?.split(' ')[0]);
-            setCurrency(value?.data?.split(' ')[1]);
+            console.log(value?.data);
+            
+            setIncome(value?.data?.split('-')[0]);
+            setCurrency(value?.data?.split('-')[1]);
         }
         if (!!item.type && !getElement(sectionId, idx)) {
             updateFormData(sectionId, idx, {
@@ -135,6 +167,7 @@ const FullWidthField = (props: FullWidthProps) => {
             setFileName(getElement(sectionId, idx)?.data);
         }
     }, [item]);
+
 
     const handleFiles = async (file: any) => {
         const type = file[0]?.type?.split('/')[1] || '';
@@ -182,11 +215,24 @@ const FullWidthField = (props: FullWidthProps) => {
 
     const updateIncome = (value: string, curr: string) => {
         updateFormData(sectionId, idx, {
-            data: `${value} ${curr}`,
+            data: `${value}-${curr}`,
             hint: '',
             review: ''
         });
     };
+
+    const removeFiles = (e: any) => {
+        e.stopPropagation();
+
+        updateFormData(sectionId, idx, {
+            data: '',
+            hint: '',
+            review: ''
+        });
+
+        setFileName('');
+        setFileSize('');
+    }
 
     return (
         <Row w="100%" ml="0">
@@ -277,19 +323,24 @@ const FullWidthField = (props: FullWidthProps) => {
                         hint={
                             <RichText g500 small content={item.placeholder} />
                         }
+                        cancelUploadText={t('cancelUpload')}
+                        uploadText={t('upload')}
+                        uploadedText={t('uploaded')}
+                        uploadingText={t('uploading')}
                         handleFiles={handleFiles}
+                        removeFiles={removeFiles}
                         accept={['image/png', 'image/jpeg']}
                         multiple={false}
                         name="documents"
                     >
-                        <Box mt="-.75rem">
+                        {!!fileName && <Box mt="-.75rem">
                             <Text sColor={colors.g700} medium>
                                 {fileName}
                             </Text>
                             <Text sColor={colors.g500} small>
                                 {fileSize}
                             </Text>
-                        </Box>
+                        </Box>}
                     </BaseInputUpload>
                 </Box>
             )}
@@ -322,7 +373,6 @@ const FullWidthField = (props: FullWidthProps) => {
                                     <input
                                         type="radio"
                                         name={`${sectionId}-${idx}`}
-                                        // className={id === 0 ? 'test' : ''}
                                         id={`${sectionId}-${id}`}
                                         value={option.text}
                                         style={{ margin: '0 .75rem 0 0' }}
@@ -397,7 +447,6 @@ const FullWidthField = (props: FullWidthProps) => {
                 </Box>
             )}
             {(item.type === 'TextField' ||
-                item.type === 'CurrencyField' ||
                 item.type === 'EmailField' ||
                 item.type === 'Textbox' ||
                 item.type === 'NumericField') && (
@@ -407,7 +456,6 @@ const FullWidthField = (props: FullWidthProps) => {
                             content={item?.question}
                             g700
                             medium
-                            // small
                             semibold
                         />
                     )}
@@ -429,13 +477,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                         ? item?.placeholder[0].text
                                         : ''
                                 }
-                                prefix={
-                                    item.type === 'CurrencyField' ? '$' : ''
-                                }
                                 rows={item.type === 'Textbox' ? 5 : 0}
-                                // suffix={
-                                //     item.type === 'CurrencyField' ? 'USD' : ''
-                                // }
                                 type={
                                     item.type === 'CurrencyField' ||
                                     item.type === 'NumericField'
@@ -448,76 +490,119 @@ const FullWidthField = (props: FullWidthProps) => {
                                         : value?.data ?? ''
                                 }
                                 onChange={(e: any) => {
-                                    if (item.type === 'CurrencyField') {
-                                        setIncome(e.target.value);
-                                        updateIncome(e.target.value, currency);
-                                    } else {
-                                        updateFormData(sectionId, idx, {
-                                            data: e.target.value,
-                                            hint: '',
-                                            review: ''
-                                        });
-                                    }
+                                    updateFormData(sectionId, idx, {
+                                        data: e.target.value,
+                                        hint: '',
+                                        review: ''
+                                    });
                                 }}
                                 wrapperProps={{
                                     mt: !!item?.question[0]?.text ? 0.5 : ''
                                 }}
                             />
                         }
-                        {item.type === 'CurrencyField' && (
-                            <Box
-                                style={{
-                                    position: 'absolute',
-                                    right: '1rem',
-                                    top: '0.625rem'
-                                }}
-                            >
-                                <CurrencySelector
-                                    {...({} as any)}
-                                    icon="chevronDown"
-                                    items={[
-                                        {
-                                            onClick: () => {
-                                                updateIncome(income, 'USD');
-                                                setCurrency('USD');
-                                                console.log(currency);
-                                            },
-                                            title: 'USD'
-                                        },
-                                        {
-                                            onClick: () => {
-                                                updateIncome(income, 'UGX');
-                                                setCurrency('UGX');
-                                            },
-                                            title: 'UGX'
-                                        },
-                                        {
-                                            onClick: () => {
-                                                updateIncome(income, 'BRL');
-                                                setCurrency('BRL');
-                                            },
-                                            title: 'BRL'
-                                        },
-                                        {
-                                            onClick: () => {
-                                                updateIncome(income, 'NGN');
-                                                setCurrency('NGN');
-                                            },
-                                            title: 'NGN'
-                                        },
-                                        {
-                                            onClick: () => {
-                                                updateIncome(income, 'VED');
-                                                setCurrency('VED');
-                                            },
-                                            title: 'VED'
-                                        }
-                                    ]}
-                                    title={currency}
-                                />
-                            </Box>
-                        )}
                     </Box>
+                </Box>
+            )}
+            {(
+                item.type === 'CurrencyField') && (
+                <Box w="100%">
+                    <CurrencyWrapper fLayout="between" flex>
+                        <Box className="column">
+                            {!!item?.question[0]?.text && (
+                                <RichText
+                                    content={item?.question}
+                                    // content={'Total monthly income from all sources'}
+                                    g700
+                                    medium
+                                    semibold
+                                />
+                            )}
+                            {
+                            <Input
+                                id={`${sectionId}-${idx}`}
+                                hint={
+                                    item?.disclaimer.length
+                                        ? item?.disclaimer[0].text
+                                        : ''
+                                }
+                                placeholder={
+                                    item?.placeholder.length
+                                        ? item?.placeholder[0].text
+                                        : ''
+                                }
+                                type="number"
+                                value={income}
+                                onChange={(e: any) => {
+                                    setIncome(e.target.value);
+                                    updateIncome(e.target.value, currency);
+                                }}
+                                wrapperProps={{
+                                    mt: !!item?.question[0]?.text ? 0.5 : ''
+                                }}
+                            />
+                        }
+                        </Box>
+                        
+                        <Box
+                            className="column"
+                            style={{
+                                display: 'flex',
+                                flexDirection: 'column',
+                                justifyContent: 'space-between',
+                            }}
+                            
+                        >
+                            <RichText
+                                content={t('incomeCurrency')}
+                                g700
+                                medium
+                                semibold
+                            />
+                            <CurrencySelector
+                                {...({} as any)}
+                                icon="chevronDown"
+                                items={[
+                                    {
+                                        onClick: () => {
+                                            updateIncome(income, 'usDollars');
+                                            setCurrency('usDollars');
+                                        },
+                                        title: t('usDollars')
+                                    },
+                                    {
+                                        onClick: () => {
+                                            updateIncome(income, 'ugandanShilling');
+                                            setCurrency('ugandanShilling');
+                                        },
+                                        title: t('ugandanShilling')
+                                    },
+                                    {
+                                        onClick: () => {
+                                            updateIncome(income, 'brazilianReal');
+                                            setCurrency('brazilianReal');
+                                        },
+                                        title: t('brazilianReal')
+                                    },
+                                    {
+                                        onClick: () => {
+                                            updateIncome(income, 'nigerianNaira');
+                                            setCurrency('nigerianNaira');
+                                        },
+                                        title: t('nigerianNaira')
+                                    },
+                                    {
+                                        onClick: () => {
+                                            updateIncome(income, 'venezuelanBolivar');
+                                            setCurrency('venezuelanBolivar');
+                                        },
+                                        title: t('venezuelanBolivar')
+                                    }
+                                ]}
+                                title={t(currency)}
+                            />
+                        </Box>
+                    </CurrencyWrapper>
                 </Box>
             )}
             {item.type === 'CountryDropdown' && (
@@ -547,7 +632,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                 initialValue={''}
                                 isClearable
                                 options={communitiesCountries}
-                                placeholder={'Countries'}
+                                placeholder={t('countries')}
                                 showFlag
                                 value={value?.data ?? ''}
                                 withOptionsSearch

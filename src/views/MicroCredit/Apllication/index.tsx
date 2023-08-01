@@ -53,12 +53,13 @@ const ApplicationForm = (props: any) => {
     const [prismicId, setPrismicId] = useState('');
     const [formApiData, setFormApiData] = useState({} as any);
     const [readyToProceed, setReadyToProceed] = useState(true);
+    const [noKeysError, setNoKeysError] = useState(false);
     const [submitForm] = useSubmitFormMutation();
     const [getBorrowerForms] = useGetBorrowerFormsMutation();
     const [getFormId] = useGetFormIdMutation();
     const [matrix, setMatrix] = useState<MatrixType>({});
     const mapRef = useRef<Map<string, string>>(new Map());
-    const { firstName, lastName, age, gender, email, phone } = auth?.user;
+    const { firstName = '', lastName = '', age = '', gender = '', email = '', phone = '' } = auth?.user ?? {};
     const [profileData, setProfileData] = useState<{ [key: string]: any }>({
         age: age ?? '',
         email: email ?? '',
@@ -257,6 +258,21 @@ const ApplicationForm = (props: any) => {
     const validateFields = () => {
         let formIsReady = true;
 
+        if (page === 0) {
+            formArray[0]?.forEach((field: any) => {
+                const savedData = getElement(field?.id, 0) as any;
+                
+                if (field?.slice_type === 'full_width_form_field' && field?.id === 'full_width_form_field$a9552890-5f38-4bcd-b2ad-bf00e8999755' ) {
+                    if ( savedData?.data === '1') {
+                        formIsReady = false;
+                        setNoKeysError(true);
+                    } else {
+                        setNoKeysError(false);
+                    }
+                }
+            });
+        }
+
         formArray[page]?.map((section: any) => {
             const formValues = getMatrixWithValues();
 
@@ -264,13 +280,6 @@ const ApplicationForm = (props: any) => {
                 let counter = 0;
 
                 section.items.map((el: any) => {
-                    // const value1 = formValues[section.id.toString()][
-                    //     counter.toString()
-                    // ] as any;
-
-                    // if (!value1?.data) {
-                    //     formIsReady = false;
-                    // }
                     const sectionId = section.id.toString();
                     const idxString = counter.toString();
 
@@ -289,14 +298,6 @@ const ApplicationForm = (props: any) => {
                     if (value2 === undefined || (!value2?.data && !!el?.type2)) {
                         formIsReady = false;
                     }
-
-                    // const value2 = formValues[section.id.toString()][
-                    //     counter.toString()
-                    // ] as any;
-
-                    // if (!value2?.data && !!el?.type2) {
-                    //     formIsReady = false;
-                    // }
 
                     counter++;
                 });
@@ -324,16 +325,6 @@ const ApplicationForm = (props: any) => {
                         if (value === undefined || !value?.data) {
                             formIsReady = false;
                         }
-
-
-
-                        // const value = formValues[section.id.toString()][
-                        //     idx.toString()
-                        // ] as any;
-
-                        // if (!value?.data) {
-                        //     formIsReady = false;
-                        // }
                     }
                 });
             } else if (section.id.toString().includes('profile')) {
@@ -499,10 +490,17 @@ const ApplicationForm = (props: any) => {
                             </Button>
                         )}
                     </Box>
-                    {!readyToProceed && (
+                    {!readyToProceed && !(noKeysError && page === 0) && (
                         <Box flex fLayout="end">
                             <Text e500 bold>
-                                {'* All fields are required'}
+                                {t('allFieldsRequired')}
+                            </Text>
+                        </Box>
+                    )}
+                    {(noKeysError && page === 0) && (
+                        <Box flex fLayout="end">
+                            <Text e500 bold>
+                                {t('noKeys')}
                             </Text>
                         </Box>
                     )}
