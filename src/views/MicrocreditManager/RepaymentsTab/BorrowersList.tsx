@@ -242,7 +242,7 @@ const getColumns = () => {
                 );
             },
             sortable: true,
-            title: 'Performance',
+            title: t('performance'),
             value: 'performance',
             width: '13%'
         },

@@ -65,7 +65,7 @@ const loanStatus = (status: any) => {
                 <>
                     <Icon icon={'edit'} p700 mr={0.2} />
                     <Text g900 extrasmall medium>
-                        Revise
+                        {t('revise')}
                     </Text>
                 </>
             );
@@ -389,7 +389,7 @@ const getColumns = (props: any) => {
         {
             minWidth: 10,
             render: (data: any) => loanStatus(data?.application?.status),
-            title: 'Status',
+            title: t('status'),
             value: 'status',
             width: '15%'
         },

@@ -61,7 +61,7 @@ const RepaymentsTab: React.FC = () => {
         {
             number: countNotClaimed || 0,
             onClick: () => update({ filter: 'not-claimed', page: 1 }),
-            title: 'Unclaimed'
+            title: t('unclaimed')
         }
     ];
 

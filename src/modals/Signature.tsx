@@ -14,9 +14,11 @@ import Message from 'src/libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import String from '../libs/Prismic/components/String';
 import processTransactionError from 'src/utils/processTransactionError';
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 import useWallet from 'src/hooks/useWallet';
 
 const Signature = () => {
+    const { t } = useTranslations();
     const { signMessage, signTypedData } = useSignatures();
     const { disconnect } = useWallet();
     const { handleClose } = useModal();
@@ -30,7 +32,7 @@ const Signature = () => {
             await handleSignature(signMessage, signTypedData);
 
             setIsLoading(false);
-            toast.success('Logged in successfully.');
+            toast.success(t('loggedIn'));
             handleClose();
         } catch (error) {
             console.log(error);
@@ -71,7 +73,7 @@ const Signature = () => {
                             handleDisconnectClick();
                         }}
                     >
-                        Logout
+                        {t('logout')}
                     </Button>
                 </Box>
             </Box>
