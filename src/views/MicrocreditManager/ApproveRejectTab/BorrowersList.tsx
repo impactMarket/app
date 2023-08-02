@@ -28,6 +28,16 @@ import Table from '../../../components/Table';
 import config from '../../../../config';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
+const Test = styled(Table)`
+    > div {
+        overflow: visible;
+        
+        > div {
+            overflow: visible;
+        }
+    }
+`
+
 const CheckBox = styled(Box)`
     border-radius: 0.5rem;
     border-width: 1px;
@@ -502,7 +512,7 @@ const BorrowersList = (props: any) => {
         managerDetails?.currentLentAmountLimit;
 
     return (
-        <Table
+        <Test
             actualPage={actualPage}
             columns={getColumns({
                 auth,

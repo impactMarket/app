@@ -28,10 +28,21 @@ const SelectElement = styled(Button)`
         padding: 0;
     }
 
-    &:hover,
-    &.active {
+    &:hover:not(.disabled),
+    &.active:not(.disabled) {
         background-color: ${colors.p50} !important;
         border-color: ${colors.g300} !important;
+    }
+
+    &:hover.disabled {
+        cursor: auto;
+        background-color: initial !important;
+        border-color: ${colors.g300} !important;
+    }
+
+    &.active.disabled {
+        background-color: ${colors.g200} !important;
+        border-color: ${colors.g200} !important;
     }
 
     &:first-of-type {
@@ -56,10 +67,11 @@ export interface ProfileProps {
 }
 
 const Profile = (props: ProfileProps) => {
-    const { sectionId, idx, primary, profileData, readOnly, setProfileData } = props;
+    const { sectionId, idx, primary, profileData, readOnly, setProfileData } =
+        props;
 
     console.log(profileData);
-    
+
     const { t } = useTranslations();
     const { title1, title2, description1, description2 } = primary;
     const { firstName, lastName, age, gender, email, phone } = profileData;
@@ -157,16 +169,18 @@ const Profile = (props: ProfileProps) => {
                                         <SelectElement
                                             pb=".5rem"
                                             className={`select-${id} ${
-                                                gender ===
-                                                option.value
+                                                gender === option.value
                                                     ? 'active'
                                                     : ''
-                                            }`}
+                                            }
+                                            ${readOnly ? 'disabled' : ''}`}
                                             onClick={() => {
-                                                setProfileData({
-                                                    ...profileData,
-                                                    gender: option.value
-                                                });
+                                                if (!readOnly) {
+                                                    setProfileData({
+                                                        ...profileData,
+                                                        gender: option.value
+                                                    });
+                                                }
                                             }}
                                         >
                                             {option.title}

@@ -59,6 +59,10 @@ const CheckBox = styled(Box)`
     border-radius: 5px;
     height: 20px;
     width: 20px;
+
+    &.disabled {
+        background-color: ${colors.g300};
+    }
 `;
 
 const Spacer = styled(Box)`
@@ -77,13 +81,14 @@ const CurrencySelector = styled(DropdownMenu)`
     }
 
     > div {
-        margin-top: .5rem;
+        margin-top: 0.5rem;
         width: 100%;
     }
 
     > div:first-of-type {
         border-radius: 0.5rem;
-        box-shadow: 0 0.125rem 0.0625rem rgba(16,24,40,0.05), 0 0 0 1px #D0D5DD;
+        box-shadow: 0 0.125rem 0.0625rem rgba(16, 24, 40, 0.05),
+            0 0 0 1px #d0d5dd;
         justify-content: space-between;
         padding: 0.68rem 0.875rem;
     }
@@ -129,7 +134,8 @@ const fetcher = () =>
     ).then((res) => res.json());
 
 const FullWidthField = (props: FullWidthProps) => {
-    const { item, sectionId, idx, readOnly, updateFormData, getElement } = props;
+    const { item, sectionId, idx, readOnly, updateFormData, getElement } =
+        props;
     const { t } = useTranslations();
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
@@ -155,7 +161,7 @@ const FullWidthField = (props: FullWidthProps) => {
     useEffect(() => {
         if (item.type === 'CurrencyField' && value?.data) {
             console.log(value?.data);
-            
+
             setIncome(value?.data?.split('-')[0]);
             setCurrency(value?.data?.split('-')[1]);
         }
@@ -170,7 +176,6 @@ const FullWidthField = (props: FullWidthProps) => {
             setFileName(getElement(sectionId, idx)?.data);
         }
     }, [item]);
-
 
     const handleFiles = async (file: any) => {
         const type = file[0]?.type?.split('/')[1] || '';
@@ -235,7 +240,7 @@ const FullWidthField = (props: FullWidthProps) => {
 
         setFileName('');
         setFileSize('');
-    }
+    };
 
     return (
         <Row w="100%" ml="0">
@@ -260,25 +265,37 @@ const FullWidthField = (props: FullWidthProps) => {
                                     style={{ alignItems: 'center' }}
                                 >
                                     <CheckBox
-                                        
+                                        className={`${
+                                            readOnly ? 'disabled' : ''
+                                        }`}
                                         onClick={() => {
-                                            const checked = getElement(
-                                                sectionId,
-                                                id
-                                            );
+                                            if (!readOnly) {
+                                                const checked = getElement(
+                                                    sectionId,
+                                                    id
+                                                );
 
-                                            if (!!checked?.data) {
-                                                updateFormData(sectionId, id, {
-                                                    data: false,
-                                                    hint: '',
-                                                    review: ''
-                                                });
-                                            } else {
-                                                updateFormData(sectionId, id, {
-                                                    data: true,
-                                                    hint: '',
-                                                    review: ''
-                                                });
+                                                if (!!checked?.data) {
+                                                    updateFormData(
+                                                        sectionId,
+                                                        id,
+                                                        {
+                                                            data: false,
+                                                            hint: '',
+                                                            review: ''
+                                                        }
+                                                    );
+                                                } else {
+                                                    updateFormData(
+                                                        sectionId,
+                                                        id,
+                                                        {
+                                                            data: true,
+                                                            hint: '',
+                                                            review: ''
+                                                        }
+                                                    );
+                                                }
                                             }
                                         }}
                                         padding={0.3}
@@ -337,14 +354,16 @@ const FullWidthField = (props: FullWidthProps) => {
                         multiple={false}
                         name="documents"
                     >
-                        {!!fileName && <Box mt="-.75rem">
-                            <Text sColor={colors.g700} medium>
-                                {fileName}
-                            </Text>
-                            <Text sColor={colors.g500} small>
-                                {fileSize}
-                            </Text>
-                        </Box>}
+                        {!!fileName && (
+                            <Box mt="-.75rem">
+                                <Text sColor={colors.g700} medium>
+                                    {fileName}
+                                </Text>
+                                <Text sColor={colors.g500} small>
+                                    {fileSize}
+                                </Text>
+                            </Box>
+                        )}
                     </BaseInputUpload>
                 </Box>
             )}
@@ -510,55 +529,52 @@ const FullWidthField = (props: FullWidthProps) => {
                     </Box>
                 </Box>
             )}
-            {(
-                item.type === 'CurrencyField') && (
+            {item.type === 'CurrencyField' && (
                 <Box w="100%">
                     <CurrencyWrapper fLayout="between" flex>
                         <Box className="column">
                             {!!item?.question[0]?.text && (
                                 <RichText
                                     content={item?.question}
-                                    // content={'Total monthly income from all sources'}
                                     g700
                                     medium
                                     semibold
                                 />
                             )}
                             {
-                            <Input
-                                id={`${sectionId}-${idx}`}
-                                disabled={readOnly}
-                                hint={
-                                    item?.disclaimer.length
-                                        ? item?.disclaimer[0].text
-                                        : ''
-                                }
-                                placeholder={
-                                    item?.placeholder.length
-                                        ? item?.placeholder[0].text
-                                        : ''
-                                }
-                                type="number"
-                                value={income}
-                                onChange={(e: any) => {
-                                    setIncome(e.target.value);
-                                    updateIncome(e.target.value, currency);
-                                }}
-                                wrapperProps={{
-                                    mt: !!item?.question[0]?.text ? 0.5 : ''
-                                }}
-                            />
-                        }
+                                <Input
+                                    id={`${sectionId}-${idx}`}
+                                    disabled={readOnly}
+                                    hint={
+                                        item?.disclaimer.length
+                                            ? item?.disclaimer[0].text
+                                            : ''
+                                    }
+                                    placeholder={
+                                        item?.placeholder.length
+                                            ? item?.placeholder[0].text
+                                            : ''
+                                    }
+                                    type="number"
+                                    value={income}
+                                    onChange={(e: any) => {
+                                        setIncome(e.target.value);
+                                        updateIncome(e.target.value, currency);
+                                    }}
+                                    wrapperProps={{
+                                        mt: !!item?.question[0]?.text ? 0.5 : ''
+                                    }}
+                                />
+                            }
                         </Box>
-                        
+
                         <Box
                             className="column"
                             style={{
                                 display: 'flex',
                                 flexDirection: 'column',
-                                justifyContent: 'space-between',
+                                justifyContent: 'space-between'
                             }}
-                            
                         >
                             <RichText
                                 content={t('incomeCurrency')}
@@ -579,28 +595,40 @@ const FullWidthField = (props: FullWidthProps) => {
                                     },
                                     {
                                         onClick: () => {
-                                            updateIncome(income, 'ugandanShilling');
+                                            updateIncome(
+                                                income,
+                                                'ugandanShilling'
+                                            );
                                             setCurrency('ugandanShilling');
                                         },
                                         title: t('ugandanShilling')
                                     },
                                     {
                                         onClick: () => {
-                                            updateIncome(income, 'brazilianReal');
+                                            updateIncome(
+                                                income,
+                                                'brazilianReal'
+                                            );
                                             setCurrency('brazilianReal');
                                         },
                                         title: t('brazilianReal')
                                     },
                                     {
                                         onClick: () => {
-                                            updateIncome(income, 'nigerianNaira');
+                                            updateIncome(
+                                                income,
+                                                'nigerianNaira'
+                                            );
                                             setCurrency('nigerianNaira');
                                         },
                                         title: t('nigerianNaira')
                                     },
                                     {
                                         onClick: () => {
-                                            updateIncome(income, 'venezuelanBolivar');
+                                            updateIncome(
+                                                income,
+                                                'venezuelanBolivar'
+                                            );
                                             setCurrency('venezuelanBolivar');
                                         },
                                         title: t('venezuelanBolivar')
