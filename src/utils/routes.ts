@@ -25,7 +25,8 @@ export const publicRoutes: Routes = [
     '/manager/communities/add',
     ...laePublicRoutes,
     '/microcredit/application', 
-    '/microcredit/apply'
+    '/microcredit/apply',
+    '/microcredit/form/[id]'
 ];
 
 export const privateRoutes: Routes = ['/profile', '/settings', '/mycommunity'];

@@ -26,6 +26,9 @@ import Profile from './Profile';
 import RichText from '../../../libs/Prismic/components/RichText';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
+import { getCookie } from 'cookies-next';
+import config from '../../../../config';
+
 type MatrixType = Record<string, Record<string, string | undefined>>;
 type MatrixJsonType = {
     prismicId: string;
@@ -35,8 +38,13 @@ type MatrixJsonType = {
 };
 
 const ApplicationForm = (props: any) => {
-    const { data, view: viewName } = props;
+    const { data, view: viewName, readOnly } = props;
     const view = data[viewName];
+    // console.log(props);
+    
+    // console.log(viewName);
+    // console.log(data[viewName]);
+    
     
     const auth = useSelector(selectCurrentUser);
     const { signature } = useSelector(selectCurrentUser);
@@ -121,17 +129,32 @@ const ApplicationForm = (props: any) => {
 
     useEffect(() => {
         const fetchData = async () => {
-            try {
-                if (!signature) {
-                    return router.push('/microcredit/apply');
-                }
+            let formData = {} as any;
 
-                const formData = await getBorrowerForms(
-                    auth?.user?.address
-                ).then(async (borrowerData: any) => {
-                    // if borrower don't have data i don't need to make the next request
-                    return await getFormId(borrowerData?.data?.forms[0]?.id);
-                });
+            try {
+                if (props.readOnly) {
+                    formData = await getFormId(props.id);
+
+                    console.log(!!formData?.error);
+                    
+
+                    if (!!formData?.error) {
+                        return router.push('/');
+                    }
+                    console.log(formData);
+                    
+                } else {
+                    if (!signature) {
+                        return router.push('/microcredit/apply');
+                    }
+
+                    formData = await getBorrowerForms(
+                        auth?.user?.address
+                    ).then(async (borrowerData: any) => {
+                        // if borrower don't have data i don't need to make the next request
+                        return await getFormId(borrowerData?.data?.forms[0]?.id);
+                    });
+                }
 
                 setFormApiData(formData);
                 setIsLoading(false);
@@ -172,6 +195,7 @@ const ApplicationForm = (props: any) => {
             } else {
                 doc = view;
             }
+
 
             const element = doc?.find((obj: any) => obj.id === prismicId);
 
@@ -349,16 +373,22 @@ const ApplicationForm = (props: any) => {
 
     const handleButtonClick = () => {
         setIsValidating(true);
-        const formIsReady = validateFields();
+        
 
-        if (formIsReady) {
-            const response = submitFormData(false);
-
-            if (!!response) {
-                setPage(page + 1);
-            }
+        if (readOnly) {
+            setPage(page + 1);
         } else {
-            setReadyToProceed(false);
+            const formIsReady = validateFields();
+
+            if (formIsReady) {
+                const response = submitFormData(false);
+
+                if (!!response) {
+                    setPage(page + 1);
+                }
+            } else {
+                setReadyToProceed(false);
+            }
         }
         setIsValidating(false);
     };
@@ -386,14 +416,80 @@ const ApplicationForm = (props: any) => {
         }
     };
 
+    console.log(auth?.user?.roles);
+    
+
     return (
         <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box fLayout="start between" fWrap="wrap" flex>
-                <Box column flex pr={{ sm: 2, xs: 0 }}>
-                    <Display g900 medium>
-                        {title}
-                    </Display>
-                    <RichText content={description} g500 mt={0.25} />
+                <Box flex >
+                    <Box style={{flex: '1'}}>
+                        <Display g900 medium>
+                            {title}
+                        </Display>
+                        <RichText content={description} g500 mt={0.25} />
+                    </Box>
+                    {
+                        readOnly && auth?.user?.roles?.includes('loanManager') && <Box style={{height: 'fit-content'}}>
+                            <Button
+                                isLoading={isValidating}
+                                onClick={async () => {
+                                    console.log('review');
+
+                                    try {
+                                        const result = await fetch(
+                                            `${config.baseApiUrl}/microcredit/applications`,
+                                            {
+                                                body: JSON.stringify([{
+                                                    applicationId: props.id,
+                                                    status: 3
+                                                }]),
+                                                headers: {
+                                                    Accept: 'application/json',
+                                                    Authorization: `Bearer ${auth.token}`,
+                                                    'Content-Type': 'application/json',
+                                                    message: getCookie('MESSAGE').toString(),
+                                                    signature: getCookie('SIGNATURE').toString()
+                                                },
+                                                method: 'PUT'
+                                            }
+                                        );
+                                
+                                        if (result.status === 201) {
+                                            // mutate();
+                                            toast.success('Loan(s) rejected successfully');
+                                        } else {
+                                            toast.error(<Message id="errorOccurred" />);
+                                        }
+                                    } catch (error) {
+                                        console.log(error);
+                                        toast.error(<Message id="errorOccurred" />);
+                                        // processTransactionError(error, 'reject_loan');
+                                    }
+                                    
+                                    // setIsValidating(true);
+                                    // const formIsReady = validateFields();
+
+                                    // if (formIsReady) {
+                                    //     const response = (await submitFormData(
+                                    //         true
+                                    //     )) as any;
+
+                                    //     if (!!response) {
+                                    //         router.push(
+                                    //             `/microcredit/apply?success=true&formId=${response?.data?.id}`
+                                    //         );
+                                    //     }
+                                    // } else {
+                                    //     setReadyToProceed(false);
+                                    // }
+                                    // setIsValidating(false);
+                                }}
+                            >
+                                {'Request Borrower Revision'}
+                            </Button>
+                        </Box>
+                    }
                 </Box>
 
                 <Box padding="3rem 0" w="100%">
@@ -415,6 +511,7 @@ const ApplicationForm = (props: any) => {
                                 items={el?.items}
                                 primary={el?.primary}
                                 fieldType={el.slice_type}
+                                readOnly={readOnly}
                                 sectionId={el.id}
                                 setLoanManagerId={setLoanManagerId}
                                 updateFormData={addOrUpdateElement}
@@ -429,6 +526,7 @@ const ApplicationForm = (props: any) => {
                             idx={0}
                             primary={el?.primary}
                             profileData={profileData}
+                            readOnly={readOnly}
                             sectionId={el.id}
                             setProfileData={setProfileData}
                         />
@@ -463,7 +561,7 @@ const ApplicationForm = (props: any) => {
                                 {t('nextStep')}
                             </Button>
                         )}
-                        {page === formArray.length - 1 && (
+                        {(page === formArray.length - 1 && !readOnly) && (
                             <Button
                                 isLoading={isValidating}
                                 onClick={async () => {

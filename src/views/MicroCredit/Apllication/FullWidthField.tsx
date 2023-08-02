@@ -108,6 +108,7 @@ export interface FullWidthProps {
     item: any;
     fieldType: string;
     idx: number;
+    readOnly: boolean;
     sectionId: string;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
     getElement: (rowKey: any, columnKey: number) => any;
@@ -128,7 +129,7 @@ const fetcher = () =>
     ).then((res) => res.json());
 
 const FullWidthField = (props: FullWidthProps) => {
-    const { item, sectionId, idx, updateFormData, getElement } = props;
+    const { item, sectionId, idx, readOnly, updateFormData, getElement } = props;
     const { t } = useTranslations();
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
@@ -259,7 +260,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                     style={{ alignItems: 'center' }}
                                 >
                                     <CheckBox
-                                        on
+                                        
                                         onClick={() => {
                                             const checked = getElement(
                                                 sectionId,
@@ -326,6 +327,7 @@ const FullWidthField = (props: FullWidthProps) => {
                             <RichText g500 small content={item.placeholder} />
                         }
                         cancelUploadText={t('cancelUpload')}
+                        disabled={readOnly}
                         uploadText={t('upload')}
                         uploadedText={t('uploaded')}
                         uploadingText={t('uploading')}
@@ -376,6 +378,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                         type="radio"
                                         name={`${sectionId}-${idx}`}
                                         id={`${sectionId}-${id}`}
+                                        disabled={readOnly}
                                         value={option.text}
                                         style={{ margin: '0 .75rem 0 0' }}
                                         checked={
@@ -474,6 +477,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                         : ''
                                 }
                                 icon={item.type === 'EmailField' ? 'mail' : ''}
+                                disabled={readOnly}
                                 placeholder={
                                     item?.placeholder.length
                                         ? item?.placeholder[0].text
@@ -523,6 +527,7 @@ const FullWidthField = (props: FullWidthProps) => {
                             {
                             <Input
                                 id={`${sectionId}-${idx}`}
+                                disabled={readOnly}
                                 hint={
                                     item?.disclaimer.length
                                         ? item?.disclaimer[0].text
@@ -601,6 +606,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                         title: t('venezuelanBolivar')
                                     }
                                 ]}
+                                disabled={readOnly}
                                 title={t(currency)}
                             />
                         </Box>
@@ -633,6 +639,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                 }}
                                 initialValue={''}
                                 isClearable
+                                disabled={readOnly}
                                 options={communitiesCountries}
                                 placeholder={t('countries')}
                                 showFlag

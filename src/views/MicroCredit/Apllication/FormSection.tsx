@@ -31,8 +31,7 @@ export interface FormSectionProps {
     items: Array<any>;
     fieldType: string;
     primary: any;
-    // title: any;
-    // description: any;
+    readOnly: boolean;
     sectionId: string;
     setLoanManagerId: (managerId: number) => void;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
@@ -42,10 +41,9 @@ export interface FormSectionProps {
 const FormSection = (props: FormSectionProps) => {
     const {
         items,
-        // title,
-        // description,
         fieldType,
         primary,
+        readOnly,
         sectionId,
         setLoanManagerId,
         updateFormData,
@@ -74,24 +72,13 @@ const FormSection = (props: FormSectionProps) => {
             >
                 <Card padding="0">
                     {items.map((item, idx) => {
-                        // if (fieldType === 'profile') {
-                        //     return (
-                        //         <Profile
-                        //             item={primary}
-                        //             fieldType={fieldType}
-                        //             idx={idx}
-                        //             sectionId={sectionId}
-                        //             updateFormData={updateFormData}
-                        //             getElement={getElement}
-                        //         />
-                        //     );
-                        // }
                         if (fieldType === 'mobile_banker_selector') {
                             return (
                                 <MobileBankerSelector
                                     item={primary}
                                     fieldType={fieldType}
                                     idx={idx}
+                                    readOnly={readOnly}
                                     sectionId={sectionId}
                                     setLoanManagerId={setLoanManagerId}
                                     updateFormData={updateFormData}
@@ -106,6 +93,7 @@ const FormSection = (props: FormSectionProps) => {
                                     item={item}
                                     fieldType={fieldType}
                                     idx={idx}
+                                    readOnly={readOnly}
                                     sectionId={sectionId}
                                     updateFormData={updateFormData}
                                     getElement={getElement}
@@ -147,6 +135,7 @@ const FormSection = (props: FormSectionProps) => {
                                                 item={id === 1 ? item1 : item2}
                                                 fieldType={fieldType}
                                                 idx={counter++}
+                                                readOnly={readOnly}
                                                 sectionId={sectionId}
                                                 updateFormData={updateFormData}
                                                 getElement={getElement}

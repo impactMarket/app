@@ -433,6 +433,11 @@ const getColumns = (props: any) => {
                         icon: 'user',
                         onClick: () => router.push(`/user/${data.address}`),
                         title: t('openProfile')
+                    },
+                    {
+                        icon: 'user',
+                        onClick: () => router.push(`/microcredit/form/${data?.application?.id}`),
+                        title: 'View Application Form'
                     }
                 ];
 

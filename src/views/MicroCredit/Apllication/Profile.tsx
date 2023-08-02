@@ -50,12 +50,16 @@ export interface ProfileProps {
     idx: number;
     primary: any;
     profileData: any;
+    readOnly: boolean;
     sectionId: string;
     setProfileData: (data: any) => void;
 }
 
 const Profile = (props: ProfileProps) => {
-    const { sectionId, idx, primary, profileData, setProfileData } = props;
+    const { sectionId, idx, primary, profileData, readOnly, setProfileData } = props;
+
+    console.log(profileData);
+    
     const { t } = useTranslations();
     const { title1, title2, description1, description2 } = primary;
     const { firstName, lastName, age, gender, email, phone } = profileData;
@@ -93,6 +97,7 @@ const Profile = (props: ProfileProps) => {
                             />
                             <Input
                                 id={`${sectionId}-${idx}`}
+                                disabled={readOnly}
                                 value={firstName ?? ''}
                                 onChange={(e: any) => {
                                     setProfileData({
@@ -112,6 +117,7 @@ const Profile = (props: ProfileProps) => {
 
                             <Input
                                 id={`${sectionId}-${idx}`}
+                                disabled={readOnly}
                                 value={lastName ?? ''}
                                 onChange={(e: any) => {
                                     setProfileData({
@@ -127,6 +133,7 @@ const Profile = (props: ProfileProps) => {
                             <RichText content={t('age')} g700 medium semibold />
                             <Input
                                 id={`${sectionId}-${idx}`}
+                                disabled={readOnly}
                                 value={age ?? ''}
                                 type="number"
                                 onChange={(e: any) => {
@@ -197,6 +204,7 @@ const Profile = (props: ProfileProps) => {
                             />
                             <Input
                                 id={`${sectionId}-${idx}`}
+                                disabled={readOnly}
                                 icon={'mail'}
                                 name="email"
                                 value={email ?? ''}
@@ -220,6 +228,7 @@ const Profile = (props: ProfileProps) => {
                             />
                             <Input
                                 id={`${sectionId}-${idx}`}
+                                disabled={readOnly}
                                 type="number"
                                 value={phone}
                                 onChange={(e: any) => {

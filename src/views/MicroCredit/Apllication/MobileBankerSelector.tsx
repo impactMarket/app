@@ -26,6 +26,7 @@ export interface MobileBankerProps {
     item: any;
     fieldType: string;
     idx: number;
+    readOnly: boolean;
     sectionId: string;
     setLoanManagerId: (managerId: number) => void;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
@@ -34,9 +35,10 @@ export interface MobileBankerProps {
 
 const MobileBankerSelector = (props: MobileBankerProps) => {
     const {
-        item,
-        sectionId,
         idx,
+        item,
+        readOnly,
+        sectionId,
         updateFormData,
         getElement,
         setLoanManagerId
@@ -110,6 +112,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
                     isClearable
                     options={countries}
                     mt="1.5rem"
+                    disabled={readOnly}
                     showFlag
                     value={country}
                     withOptionsSearch
@@ -136,12 +139,13 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
                         <RadioWrapper
                             className={active == id ? 'active' : ''}
                             htmlFor={`${sectionId}-${id}`}
-                            onClick={() => setActive(id)}
+                            onClick={() => !readOnly && setActive(id)}
                         >
                             <input
                                 type="radio"
                                 name={`${sectionId}-${id}`}
                                 id={`${sectionId}-${id}`}
+                                disabled={readOnly}
                                 value={option.name}
                                 style={{ alignItems: 'center' }}
                                 checked={selectedId === id.toString()}
