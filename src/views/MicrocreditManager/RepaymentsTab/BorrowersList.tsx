@@ -210,7 +210,7 @@ const getColumns = () => {
                             fLayout="center start"
                             style={{ gap: '0.2rem' }}
                         >
-                            <ProgressBar progress={progress} w="100%" />
+                            <ProgressBar progress={progress || 0} w="100%" />
                             <Text
                                 g700
                                 style={{
@@ -218,7 +218,7 @@ const getColumns = () => {
                                     lineHeight: 'inherit'
                                 }}
                             >
-                                {parseInt(progress.toString(), 10)}%
+                                {parseInt(progress.toString(), 10) || 0}%
                             </Text>
                         </Box>
                     </>
@@ -242,7 +242,7 @@ const getColumns = () => {
                 );
             },
             sortable: true,
-            title: 'Performance',
+            title: t('performance'),
             value: 'performance',
             width: '13%'
         },

@@ -9,11 +9,12 @@ export type TabItem = {
 
 type FlexibleTabProps = {
     tabs: TabItem[];
+    index?: number;
 };
 
-const FlexibleTab: React.FC<FlexibleTabProps> = ({ tabs }) => {
+const FlexibleTab: React.FC<FlexibleTabProps> = ({ tabs, index }) => {
     return (
-        <Tabs>
+        <Tabs defaultIndex={index}>
             <TabList>
                 {tabs.map((tab, index) => (
                     <Tab
