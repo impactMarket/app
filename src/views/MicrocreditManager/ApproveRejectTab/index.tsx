@@ -18,6 +18,9 @@ import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 const itemsPerPage = 7;
 
 const rejectLoan = async (auth: any, selected: any, mutate: any) => {
+    const { extractFromView } = usePrismicData();
+    const { loansRejectedSuccessfully } = extractFromView('messages') as any;
+
     let requestData: object[] = [];
 
     if (typeof selected === 'object') {
@@ -58,7 +61,7 @@ const rejectLoan = async (auth: any, selected: any, mutate: any) => {
 
         if (result.status === 201) {
             mutate();
-            toast.success('Loan(s) rejected successfully');
+            toast.success(loansRejectedSuccessfully);
         } else {
             toast.error(<Message id="errorOccurred" />);
         }
@@ -201,13 +204,28 @@ const ApproveRejectTab: React.FC<{}> = () => {
         {
             number: countReqChanges || 0,
             onClick: () => update({ page: 1, status: '3' }),
-            title: 'In Revision'
+            title: t('revise')
         }
     ];
 
+    const tabsIndex = (() => {
+        switch (getByKey('status')) {
+            case '1':
+                return 1;
+            case '4':
+                return 2;
+            case '5':
+                return 3;
+            case '3':
+                return 4;
+            default:
+                return 0;
+        }
+    })();
+
     return (
         <Box>
-            <FlexibleTab tabs={tabs} />
+            <FlexibleTab tabs={tabs} index={tabsIndex} />
             {/* <Input
 
                 icon="search"

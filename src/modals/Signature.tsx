@@ -11,27 +11,35 @@ import { handleSignature } from 'src/helpers/handleSignature';
 import { useRouter } from 'next/router';
 import { useSignatures } from '@impact-market/utils/useSignatures';
 import Message from 'src/libs/Prismic/components/Message';
-import React from 'react';
+import React, { useState } from 'react';
 import String from '../libs/Prismic/components/String';
 import processTransactionError from 'src/utils/processTransactionError';
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 import useWallet from 'src/hooks/useWallet';
 
 const Signature = () => {
+    const { t } = useTranslations();
     const { signMessage, signTypedData } = useSignatures();
     const { disconnect } = useWallet();
     const { handleClose } = useModal();
     const router = useRouter();
+    const [isLoading, setIsLoading] = useState(false);
 
     const handleSignMessage = async () => {
         try {
+            setIsLoading(true);
+
             await handleSignature(signMessage, signTypedData);
-            toast.success('Logged in successfully.');
+
+            setIsLoading(false);
+            toast.success(t('loggedIn'));
             handleClose();
         } catch (error) {
             console.log(error);
             processTransactionError(error, 'global_signature');
             toast.error(<Message id="errorOccurred" />);
         }
+        setIsLoading(false);
     };
 
     const handleDisconnectClick = async () => {
@@ -51,7 +59,7 @@ const Signature = () => {
                 <Message g500 small id="validateSignature" />
                 <Box mt={1.25} flex style={{ gap: '1rem' }}>
                     <Button
-                        isLoading={false}
+                        isLoading={isLoading}
                         onClick={() => {
                             handleSignMessage();
                         }}
@@ -65,7 +73,7 @@ const Signature = () => {
                             handleDisconnectClick();
                         }}
                     >
-                        Logout
+                        {t('logout')}
                     </Button>
                 </Box>
             </Box>

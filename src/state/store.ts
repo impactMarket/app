@@ -1,7 +1,6 @@
 import { emptySplitApi as api } from '../api';
 import { configureStore } from '@reduxjs/toolkit';
 import authReducer from './slices/auth';
-import notificationsReducer from './slices/notifications';
 import ratesReducer from './slices/rates';
 
 import learnAndEarnReduce from './slices/learnAndEarn';
@@ -14,7 +13,6 @@ export const store = configureStore({
     reducer: {
         auth: authReducer,
         learnAndEarn: learnAndEarnReduce,
-        notifications: notificationsReducer,
         rates: ratesReducer,
         [api.reducerPath]: api.reducer
     }

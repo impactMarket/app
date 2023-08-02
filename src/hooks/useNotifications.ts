@@ -20,7 +20,7 @@ export function useNotifications(filters?: any[]) {
         }).then((res) => res.json());
 
     const { data, mutate, error } = useSWR(
-        `/users/notifications/${
+        `/users/notifications?${
             !!filters?.length
                 ? filters?.map((filter: any) => filter).join('&')
                 : ''

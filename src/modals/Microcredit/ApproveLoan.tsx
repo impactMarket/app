@@ -24,9 +24,13 @@ import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const ApproveLoan = () => {
     const { extractFromView } = usePrismicData();
-    const { enterLoanMaturity, approveLoan } = extractFromView(
-        'messages'
-    ) as any;
+    const {
+        enterLoanMaturity,
+        approveLoan,
+        loansApproved,
+        loanMaturityHint,
+        enterLoanAmount
+    } = extractFromView('messages') as any;
 
     const { handleClose, address, mutate } = useModal();
     const { t } = useTranslations();
@@ -97,7 +101,7 @@ const ApproveLoan = () => {
 
             if (status) {
                 mutate();
-                toast.success('Loan(s) approved successfully!');
+                toast.success(loansApproved);
                 handleClose();
             } else {
                 toast.error(<Message id="errorOccurred" />);
@@ -149,11 +153,11 @@ const ApproveLoan = () => {
                             control={control}
                             name="period"
                             withError={!!errors?.period}
-                            hint="Max. 12 months"
+                            hint={loanMaturityHint}
                         />
                         <Input
                             type="number"
-                            placeholder="Enter loan amount..."
+                            placeholder={enterLoanAmount}
                             wrapperProps={{
                                 mt: 1,
                                 w: '100%'
@@ -203,7 +207,7 @@ const ApproveLoan = () => {
                             }
                             isLoading={isSubmitting}
                         >
-                            Approve Loan
+                            {approveLoan}
                         </Button>
                     </Box>
                 </Box>

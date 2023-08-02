@@ -11,8 +11,6 @@ import {
     ViewContainer
 } from '@impact-market/ui';
 import { dateHelpers } from '../helpers/dateHelpers';
-import { markAsRead } from '../state/slices/notifications';
-import { store } from '../state/store';
 import { useNotifications } from 'src/hooks/useNotifications';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
@@ -32,7 +30,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
     const limit = 7;
     const [offset, setItemOffset] = useState(0);
 
-    const { notifications, loadingNotifications } = useNotifications([
+    const { notifications, loadingNotifications, mutate } = useNotifications([
         `limit=${limit}`,
         `offset=${offset}`,
         `isWebApp=true`
@@ -69,18 +67,13 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                         body: { notifications: notificationsRead }
                     });
 
-                    store.dispatch(
-                        markAsRead({
-                            key: 'notifications',
-                            reduce: notificationsRead.length
-                        })
-                    );
+                    mutate();
                 }
             }
         };
 
         markedAsRead();
-    }, [offset, ready, changed, notifications]);
+    }, [offset, ready, changed, notifications, mutate]);
 
     // Pagination
     const handlePageClick = (event: any, direction?: number) => {
