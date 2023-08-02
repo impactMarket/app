@@ -159,11 +159,11 @@ const ApproveLoan = () => {
                             control={control}
                             name="period"
                             withError={!!errors?.period}
-                            hint="Max. 12 months"
+                            hint={loanMaturityHint}
                         />
                         <Input
                             type="number"
-                            placeholder="Enter loan amount..."
+                            placeholder={enterLoanAmount}
                             wrapperProps={{
                                 mt: 1,
                                 w: '100%'
