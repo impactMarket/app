@@ -17,12 +17,10 @@ import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
 
-const rejectLoan = async (
-    auth: any,
-    selected: any,
-    mutate: any,
-    loansRejectedSuccessfully: any
-) => {
+const rejectLoan = async (auth: any, selected: any, mutate: any) => {
+    const { extractFromView } = usePrismicData();
+    const { loansRejectedSuccessfully } = extractFromView('messages') as any;
+
     let requestData: object[] = [];
 
     if (typeof selected === 'object') {

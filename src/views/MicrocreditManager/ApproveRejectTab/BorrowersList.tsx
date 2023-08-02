@@ -411,18 +411,12 @@ const getColumns = (props: any) => {
                                 }),
                             title: approveLoan
                         },
-                    data?.application?.status !== 5 &&
-                        data?.application?.status !== 4 && {
-                            icon: 'close',
-                            onClick: () =>
-                                rejectLoan(
-                                    auth,
-                                    data?.application?.id,
-                                    mutate,
-                                    loansRejectedSuccessfully
-                                ),
-                            title: rejectLoanText
-                        },
+                    data?.application?.status !== 5 && {
+                        icon: 'close',
+                        onClick: () =>
+                            rejectLoan(auth, data?.application?.id, mutate),
+                        title: rejectLoanText
+                    },
                     // {
                     //     icon: 'bookOpen',
                     //     onClick: () =>

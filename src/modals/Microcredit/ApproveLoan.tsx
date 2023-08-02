@@ -105,6 +105,7 @@ const ApproveLoan = () => {
 
             if (status) {
                 mutate();
+                toast.success(loansApproved);
                 handleClose();
 
                 // setIsLoading(false);
@@ -165,10 +166,11 @@ const ApproveLoan = () => {
                             control={control}
                             name="period"
                             withError={!!errors?.period}
-                            hint={errors?.period ? t('requiredField') : ''}
+                            hint={loanMaturityHint}
                         />
                         <Input
-                            placeholder="Enter loan amount..."
+                            type="number"
+                            placeholder={enterLoanAmount}
                             wrapperProps={{
                                 mt: 1,
                                 w: '100%'
