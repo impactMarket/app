@@ -23,6 +23,11 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
     const { extractFromView } = usePrismicData();
     const { update, getByKey } = useFilters();
     const { title, content } = extractFromView('heading') as any;
+    const {
+        microcreditLimitReachTitle,
+        microcreditLimitReachMessage,
+        approveReject
+    } = extractFromView('messages') as any;
 
     useEffect(() => {
         if (!getByKey('tab')) {
@@ -30,23 +35,27 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     }, []);
 
-
-    
-    const { managerDetails } = useLoanManager();
+    const { managerDetails, isReady } = useLoanManager();
 
     const limitReach =
         managerDetails?.currentLentAmount >=
         managerDetails?.currentLentAmountLimit;
 
     return (
-        <ViewContainer {...({} as any)} isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading || !isReady}>
             {limitReach && (
                 <Alert
                     icon="alertCircle"
                     mb={1.5}
-                    title="Microcredit limit reach"
-                    message={`You microcredit limit of $${managerDetails?.currentLentAmountLimit} has been reached.`}
-                    error
+                    title={microcreditLimitReachTitle}
+                    message={
+                        <RichText
+                            content={microcreditLimitReachMessage}
+                            variables={{
+                                limit: managerDetails?.currentLentAmountLimit
+                            }}
+                        />
+                    }
                 />
             )}
             <Box
@@ -76,7 +85,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                         }}
                     />
                     <Tab
-                        title="Approve/Reject"
+                        title={approveReject}
                         onClick={() => {
                             update({
                                 filter: '',
