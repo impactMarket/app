@@ -28,8 +28,8 @@ const ApproveLoan = () => {
         enterLoanMaturity,
         approveLoan,
         loansApproved,
-        // loanMaturityHint,
-        // enterLoanAmount
+        loanMaturityHint,
+        enterLoanAmount
     } = extractFromView('messages') as any;
 
     const { handleClose, address, mutate } = useModal();
@@ -154,11 +154,11 @@ const ApproveLoan = () => {
                             control={control}
                             name="period"
                             withError={!!errors?.period}
-                            hint="Max. 12 months"
+                            hint={loanMaturityHint}
                         />
                         <Input
                             type="number"
-                            placeholder="Enter loan amount..."
+                            placeholder={enterLoanAmount}
                             wrapperProps={{
                                 mt: 1,
                                 w: '100%'
