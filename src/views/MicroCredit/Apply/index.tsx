@@ -60,7 +60,7 @@ const MicroCredit = (props: any) => {
     } = data[view].data;
 
     const { signature } = useSelector(selectCurrentUser);
-    const { signMessage } = useSignatures();
+    const { signMessage, signTypedData } = useSignatures();
     const { getByKey } = useFilters();
     const isSuccessful = getByKey('success') ?? false;
     const formId = getByKey('formId') ?? '';
@@ -120,7 +120,7 @@ const MicroCredit = (props: any) => {
                                     h={3.8}
                                     onClick={async () => {
                                         if (!signature) {
-                                            await handleSignature(signMessage);
+                                            await handleSignature(signMessage, signTypedData);
                                         }
 
                                         router.push('/microcredit/application');

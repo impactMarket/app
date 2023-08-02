@@ -457,7 +457,7 @@ const ApplicationForm = (props: any) => {
                                 
                                         if (result.status === 201) {
                                             // mutate();
-                                            toast.success('Loan(s) rejected successfully');
+                                            toast.success('Loan set for revision successfully');
                                         } else {
                                             toast.error(<Message id="errorOccurred" />);
                                         }
