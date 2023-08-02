@@ -14,6 +14,7 @@ import { useAnonymousReportMutation } from '../api/user';
 import { useGetCommunityMutation } from '../api/community';
 import String from '../libs/Prismic/components/String';
 
+import * as Sentry from '@sentry/browser';
 import { selectCurrentUser } from '../state/slices/auth';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
@@ -99,6 +100,7 @@ const ReportSuspiciousActivity = () => {
         } catch (error) {
             toast.error(<RichText content="Error" />);
             console.log(error);
+            Sentry.captureException(error);
         }
     };
 

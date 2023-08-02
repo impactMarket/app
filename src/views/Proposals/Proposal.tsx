@@ -18,6 +18,7 @@ import CanBeRendered from '../../components/CanBeRendered';
 import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 interface proposalProps {
     data: ProposalType;
@@ -66,6 +67,7 @@ const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
             toast.error(
                 <RichText content={view.data.messageProposalsNotExecuted} />
             );
+            processTransactionError(error, 'execute_proposal');
             toggleLoadingButtonExecute(false);
         }
     };
@@ -101,6 +103,7 @@ const Proposal: React.FC<proposalProps> = ({ data, quorum }) => {
             toast.error(
                 <RichText content={view.data.messageVoteNotRegistered} />
             );
+            processTransactionError(error, 'vote_proposal');
             toggleLoadingButtonYes(undefined);
         }
     };

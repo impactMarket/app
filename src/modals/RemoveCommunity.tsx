@@ -16,6 +16,7 @@ import React, { useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 import config from '../../config';
+import processTransactionError from 'src/utils/processTransactionError';
 import router from 'next/router';
 
 const RemoveCommunity = () => {
@@ -60,6 +61,7 @@ const RemoveCommunity = () => {
             handleClose();
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'remove_community');
 
             setIsLoading(false);
             toast.error(modals?.data?.removeCommunityError);

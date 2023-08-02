@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Box,
     Button,
@@ -50,9 +51,10 @@ const DeleteStory = () => {
                     <RichText content={modals.data.deleteStorySuccess} />
                 );
             }
-        } catch (e) {
+        } catch (error) {
             toast.error(<RichText content={modals.data.deleteStoryError} />);
-            console.log(e);
+            Sentry.captureException(error);
+            console.log(error);
         }
     };
 

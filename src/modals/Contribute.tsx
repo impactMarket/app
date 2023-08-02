@@ -120,7 +120,7 @@ const Contribute = () => {
             setStep(1);
         } catch (error: any) {
             handleKnownErrors(error);
-            processTransactionError(error, 'approve');
+            processTransactionError(error, 'approve_contribution');
             toast.error(<Message id="errorOccurred" />);
         } finally {
             setLoading(false);

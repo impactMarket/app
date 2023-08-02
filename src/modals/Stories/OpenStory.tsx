@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Col,
     ModalWrapper,
@@ -72,6 +73,7 @@ const OpenStory: React.FC = () => {
             loveStoryById(id);
         } catch (error) {
             console.log(error);
+            Sentry.captureException(error);
         }
     };
 

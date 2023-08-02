@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Avatar,
     Box,
@@ -66,6 +67,7 @@ const Comments = (props: any) => {
         } catch (error) {
             toast.error(t('error'));
             console.log(error);
+            Sentry.captureException(error);
         }
     };
 

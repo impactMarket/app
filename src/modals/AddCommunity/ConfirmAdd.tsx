@@ -22,6 +22,7 @@ import PersonalForm from '../../views/AddCommunity/PersonalForm';
 import React, { useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const ConfirmAdd = () => {
@@ -94,6 +95,7 @@ const ConfirmAdd = () => {
                     if (success) personalForm(data);
                 } else {
                     console.log(error);
+                    processTransactionError(error, 'add_community');
                     toast.error(<Message id="errorOccurred" />);
                 }
             }

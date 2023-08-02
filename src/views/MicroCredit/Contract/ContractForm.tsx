@@ -248,6 +248,7 @@ const ContractForm = (props: any) => {
             }
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'submit_pdf');
             toast.error(<Message id="errorOccurred" />);
             setIsLoading(false);
         }

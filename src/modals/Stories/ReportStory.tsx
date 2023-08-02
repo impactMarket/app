@@ -16,6 +16,7 @@ import { useReportStoryMutation } from '../../api/story';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import Select from '../../components/Select';
+import processTransactionError from 'src/utils/processTransactionError';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -63,9 +64,10 @@ const ReportStory = () => {
                     <RichText content={modals.data.reportStorySuccess} />
                 );
             }
-        } catch (e) {
+        } catch (error) {
             toast.error(<RichText content={modals.data.reportStoryError} />);
-            console.log(e);
+            processTransactionError(error, 'report_story');
+            console.log(error);
         }
     };
 

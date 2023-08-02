@@ -1,4 +1,5 @@
 /* eslint-disable react-hooks/rules-of-hooks */
+import * as Sentry from '@sentry/browser';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import kebabCase from 'lodash/kebabCase';
 
@@ -51,6 +52,7 @@ export const getUserMenu = (roles: string[]) => {
         return deletedDuplicates;
     } catch (error) {
         console.log(error);
+        Sentry.captureException(error);
 
         return [];
     }

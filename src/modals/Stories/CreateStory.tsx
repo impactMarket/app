@@ -1,4 +1,5 @@
 /* eslint-disable max-depth */
+import * as Sentry from '@sentry/browser';
 import {
     Box,
     Button,
@@ -103,6 +104,7 @@ const CreateStory = () => {
             handleClose();
         } catch (error) {
             toast.error(<RichText content={modals.data.createStoryError} />);
+            Sentry.captureException(error);
             console.log(error);
         }
     };

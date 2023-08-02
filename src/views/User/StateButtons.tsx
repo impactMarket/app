@@ -36,6 +36,7 @@ const StateButtons: React.FC<{ beneficiary: any; community: string }> = (
             setLoadingBlockButton(false);
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'block_beneficiary');
 
             setLoadingBlockButton(false);
 
@@ -60,6 +61,7 @@ const StateButtons: React.FC<{ beneficiary: any; community: string }> = (
             setLoadingBlockButton(false);
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'unblock_beneficiary');
 
             setLoadingBlockButton(false);
 

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Box,
     Col,
@@ -45,6 +46,7 @@ const Settings: React.FC<{ isLoading?: boolean }> = (props) => {
             }
         } catch (e: any) {
             console.log(e);
+            Sentry.captureException(e);
 
             // TODO: instead of showing the error message directly, use codes in API and translate content in Prismic perhaps
             if (e?.data?.error) {

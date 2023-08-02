@@ -9,6 +9,7 @@ import { useYupValidationResolver, yup } from '../../helpers/yup';
 import CommunityForm from '../AddCommunity/CommunityForm';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect } from 'react';
+import processTransactionError from 'src/utils/processTransactionError';
 
 const schema = yup.object().shape({
     description: yup.string().min(240).max(2048).required(),
@@ -104,6 +105,7 @@ const CommunityDetailsForm = ({
             }
         } catch (error: any) {
             console.log(error);
+            processTransactionError(error, 'edit_community');
             toast.error(<Message id="errorOccurred" />);
         }
     };

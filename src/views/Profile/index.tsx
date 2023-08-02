@@ -1,4 +1,5 @@
 /* eslint-disable max-depth */
+import * as Sentry from '@sentry/browser';
 import {
     Box,
     Button,
@@ -100,6 +101,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
                 if (success) update(data);
             } else {
                 console.log(e);
+                Sentry.captureException(e);
                 toast.error(<Message id="errorOccurred" />);
             }
         }
@@ -164,6 +166,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
             }
         } catch (e) {
             console.log(e);
+            Sentry.captureException(e);
 
             toast.error(<Message id="errorOccurred" />);
 
@@ -182,6 +185,7 @@ const Profile: React.FC<{ isLoading?: boolean }> = (props) => {
             return router.push('/');
         } catch (e) {
             console.log(e);
+            Sentry.captureException(e);
 
             toast.error(<Message id="errorOccurred" />);
         }

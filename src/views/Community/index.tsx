@@ -20,6 +20,7 @@ import Dashboard from './Dashboard';
 import Header from './Header';
 import Message from '../../libs/Prismic/components/Message';
 import RolesTabs from './RolesTabs';
+import processTransactionError from 'src/utils/processTransactionError';
 
 const fetcher = (url: string, headers: any | {}) =>
     fetch(config.baseApiUrl + url, headers).then((res) => res.json());
@@ -174,6 +175,7 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any }> = (
             );
         } catch (error) {
             console.log(error);
+            processTransactionError(error, 'update_community_review_state');
 
             toast.error(<Message id="errorOcurred" />);
 
