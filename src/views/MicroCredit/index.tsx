@@ -7,6 +7,7 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
+// import LoanInReview from './LoanInReview';
 import LoanRepayment from './LoanRepayment';
 // import RepaymentHistory from './RepaymentHistory';
 import String from '../../libs/Prismic/components/String';
@@ -144,6 +145,7 @@ const MicroCredit = (props: any) => {
             </Display>
             <Box></Box>
             <Card mt="2rem" mb="2rem" padding={0}>
+                {/* <LoanInReview data={data[viewName].data} loanId={loanId} /> */}
                 {loan.loanStatus === LoanStatus.PENDING_CLAIM && (
                     <ClaimLoan
                         data={data[viewName].data}
