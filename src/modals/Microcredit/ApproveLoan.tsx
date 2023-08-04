@@ -97,13 +97,7 @@ const ApproveLoan = () => {
                 ];
             }
 
-            const { status } = await addLoans(
-                addressArray,
-                amounts,
-                periods,
-                dailyInterests,
-                startDates
-            );
+            const { status } = await addLoans(loans);
 
             if (status) {
                 mutate();
