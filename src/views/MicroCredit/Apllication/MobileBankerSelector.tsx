@@ -109,6 +109,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
                         setCountry(value);
                         fetchManagers(value);
                     }}
+                    placeholder={'Choose your country'}
                     isClearable
                     options={countries}
                     mt="1.5rem"

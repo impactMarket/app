@@ -1,4 +1,5 @@
 import { Box, Card, Display, Label, ViewContainer } from '@impact-market/ui';
+import { FormStatus } from '../../utils/formStatus';
 import { LoanStatus, useBorrower } from '@impact-market/utils';
 import { dateHelpers } from '../../helpers/dateHelpers';
 import { selectCurrentUser } from '../../state/slices/auth';
@@ -16,13 +17,22 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 // import LoanRejected from './LoanRejected';
 // import InfoAccordion from './InfoAccordion';
 
+import {
+    useGetBorrowerFormsMutation,
+} from '../../api/microcredit';
+
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
+    const [getBorrowerForms] = useGetBorrowerFormsMutation();
     const [loanId, setLoanId] = useState(0);
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);
     const auth = useSelector(selectCurrentUser);
     const { getActiveLoanId, loan, repayLoan, claimLoan, isReady } =
         useBorrower();
+
+        // console.log(isReady);
+        
+        // debugger
     const router = useRouter();
     const { getByKey } = useFilters();
     const { t } = useTranslations();
@@ -103,8 +113,39 @@ const MicroCredit = (props: any) => {
                     auth?.user?.address?.toString()
                 );
 
+                // debugger
+
                 if (activeLoanId === -1) {
-                    router.push('/');
+                    // Verificar se tem form:
+                    const { data: formData } = await getBorrowerForms(
+                        auth?.user?.address
+                    ) as any;
+
+                    // - Se não tiver -> apply
+                    console.log(FormStatus);
+                    console.log(formData?.forms);
+                    console.log(formData?.forms?.length);
+                    
+                    if (!formData?.forms?.length) {
+                        router.push('/microcredit/apply');
+                    } else {
+                        const form = formData?.forms[0];
+
+                        if (form.status === FormStatus.DRAFT ||
+                            form.status === FormStatus.PENDING) {
+                            // - Tem form submited false -> form
+                            router.push('/microcredit/application');
+                        } else if (form.status === FormStatus.IN_REVIEW) {
+                            // - Tem form submited -> success
+                            router.push(`/microcredit/apply?success=true&formId=${form?.id}`);
+                        }
+                        
+                    }
+
+                    // - Tem form requested_review -> page requested changes
+                    
+                    // Loan rejected 
+                    // router.push('/');
                 } else {
                     setLoanId(activeLoanId);
                 }

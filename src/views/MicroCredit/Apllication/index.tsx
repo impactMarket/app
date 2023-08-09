@@ -40,7 +40,8 @@ type MatrixJsonType = {
 const ApplicationForm = (props: any) => {
     const { data, view: viewName, readOnly } = props;
     const view = data[viewName];
-    // console.log(props);
+
+    console.log(props);
     
     // console.log(viewName);
     // console.log(data[viewName]);
@@ -67,6 +68,8 @@ const ApplicationForm = (props: any) => {
     const [getFormId] = useGetFormIdMutation();
     const [matrix, setMatrix] = useState<MatrixType>({});
     const mapRef = useRef<Map<string, string>>(new Map());
+
+
     const { firstName = '', lastName = '', age = '', gender = '', email = '', phone = '' } = auth?.user ?? {};
     const [profileData, setProfileData] = useState<{ [key: string]: any }>({
         age: age ?? '',
@@ -76,6 +79,16 @@ const ApplicationForm = (props: any) => {
         lastName: lastName ?? '',
         phone: phone ?? ''
     });
+
+
+    // const [profileData, setProfileData] = useState<{ [key: string]: any }>({
+    //     age: '',
+    //     email: '',
+    //     firstName: '',
+    //     gender: '',
+    //     lastName: '',
+    //     phone: ''
+    // });
     
     const [isValidating, setIsValidating] = useState(false);
     const [loanManagerId, setLoanManagerId] = useState(-1);
@@ -124,6 +137,7 @@ const ApplicationForm = (props: any) => {
     };
 
     useEffect(() => {
+        console.log(getMatrixWithValues());
         setReadyToProceed(true);
     }, [page]);
 
@@ -141,7 +155,6 @@ const ApplicationForm = (props: any) => {
                     if (!!formData?.error) {
                         return router.push('/');
                     }
-                    console.log(formData);
                     
                 } else {
                     if (!signature) {
@@ -151,9 +164,22 @@ const ApplicationForm = (props: any) => {
                     formData = await getBorrowerForms(
                         auth?.user?.address
                     ).then(async (borrowerData: any) => {
+                        // const { firstName = '', lastName = '', age = '', gender = '', email = '', phone = '' } = borrowerData?.data;
+                        // setProfileData({
+                        //     age: age ?? '',
+                        //     email: email ?? '',
+                        //     firstName: firstName ?? '',
+                        //     gender: gender !== 'u' ? gender : '',
+                        //     lastName: lastName ?? '',
+                        //     phone: phone ?? ''
+                        // });
+                        // debugger
                         // if borrower don't have data i don't need to make the next request
                         return await getFormId(borrowerData?.data?.forms[0]?.id);
                     });
+
+                    // console.log(formData);
+                    // debugger
                 }
 
                 setFormApiData(formData);
@@ -172,6 +198,9 @@ const ApplicationForm = (props: any) => {
         let currentForm: any, id: any;
 
         if (!!formApiData?.data) {
+            // console.log('hererre');
+            // debugger
+            
             const { prismicId, form, selectedLoanManagerId } = formApiData?.data ?? {
                 form: {},
                 prismicId: ''
@@ -216,8 +245,9 @@ const ApplicationForm = (props: any) => {
                 }
             }
         } else if (Array.isArray(view)) {
-            id = view[0]?.id;
-            currentForm = view[0]?.data;
+            // debugger
+            id = view[view.length-1]?.id;
+            currentForm = view[view.length-1]?.data;
         } else {
             id = view?.id;
             currentForm = view?.data;

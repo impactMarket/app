@@ -139,7 +139,7 @@ const FullWidthField = (props: FullWidthProps) => {
     const { t } = useTranslations();
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
-    const [currency, setCurrency] = useState('US Dollars (USD)');
+    const [currency, setCurrency] = useState('');
     const [income, setIncome] = useState('');
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
@@ -635,7 +635,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                     }
                                 ]}
                                 disabled={readOnly}
-                                title={t(currency)}
+                                title={!!currency ? t(currency) : 'Choose your currency'}
                             />
                         </Box>
                     </CurrencyWrapper>
