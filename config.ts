@@ -42,6 +42,11 @@ const config = {
     imagesBucket: process.env.NEXT_PUBLIC_IMAGES_BUCKET!,
 
     /*
+     * Microcredit Bucket
+     */
+    microcreditBucket: process.env.NEXT_PUBLIC_MICROCREDIT_BUCKET!,
+
+    /*
      * Explorer URL
      */
     explorerUrl: process.env.NEXT_PUBLIC_EXPLORER_URL!,

@@ -40,7 +40,11 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const { t } = useTranslations();
     const [getUser] = useGetUserByIdMutation();
 
-    const { borrower } = useMicrocreditBorrower([`address=${user?.address}`]);
+    const { borrower } = useMicrocreditBorrower([
+        `address=${user?.address}`,
+        `include=docs`,
+        `include=forms`
+    ]);
 
     const hasAddress =
         !!auth?.user?.manager?.community && !!user?.beneficiary?.community;
