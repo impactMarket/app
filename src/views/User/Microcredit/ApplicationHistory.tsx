@@ -16,10 +16,8 @@ import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../utils/formatAddress';
 import { getImage } from '../../../utils/images';
 import { getUserName } from '../../../utils/users';
-import { selectCurrentUser } from 'src/state/slices/auth';
+import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
-import { useRouter } from 'next/router';
-import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import Message from '../../../libs/Prismic/components/Message';
 import Table from '../../../components/Table';
@@ -102,27 +100,17 @@ const status = (status: any) => {
 
 const getColumns = (props: any) => {
     const { t } = useTranslations();
-    const router = useRouter();
-
     const { borrower } = props;
-
     const { extractFromView } = usePrismicData();
-    const {
-        // addNote,
-        // viewAllNotes,
-        appliedOn,
-        decisionOn,
-        approveLoan,
-        rejectLoan: rejectLoanText
-    } = extractFromView('messages') as any;
+    const { decisionOn, openApplication } = extractFromView(
+        'microcredit'
+    ) as any;
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
 
         toast.success(<Message id="copiedAddress" />);
     };
-
-    console.log('Borr: ', borrower);
 
     return [
         {
@@ -225,7 +213,7 @@ const getColumns = (props: any) => {
                     </Box>
                 );
             },
-            title: 'Decision On',
+            title: decisionOn,
             value: 'decisionOn',
             width: '10%'
         },
@@ -282,7 +270,7 @@ const getColumns = (props: any) => {
                 return (
                     <Link href={`/microcredit/form/${data?.id}`} passHref>
                         <TextLink medium p500 small>
-                            Open Application
+                            {openApplication}
                         </TextLink>
                     </Link>
                 );
@@ -293,22 +281,16 @@ const getColumns = (props: any) => {
 };
 
 const ApplicationHistory = (props: any) => {
-    const {
-        itemsPerPage,
-        selected,
-        setSelected,
-        applications,
-        count,
-        loadingApplications,
-        rejectLoan,
-        mutate,
-        borrower
-    } = props;
-    const auth = useSelector(selectCurrentUser);
+    const { itemsPerPage, user } = props;
     const { getByKey } = useFilters();
     const page = getByKey('page') ? +getByKey('page') : 1;
     const actualPage = page - 1 >= 0 ? page - 1 : 0;
-    const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
+    const [, setItemOffset] = useState(page * itemsPerPage || 0);
+
+    const { borrower, loadingBorrower } = useMicrocreditBorrower([
+        `address=${user?.address}`,
+        `include=forms`
+    ]);
 
     return (
         <Table
@@ -317,7 +299,7 @@ const ApplicationHistory = (props: any) => {
                 borrower
             })}
             itemsPerPage={itemsPerPage}
-            isLoading={loadingApplications}
+            isLoading={loadingBorrower}
             mt={2}
             page={page}
             // count={count}

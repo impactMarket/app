@@ -1,6 +1,7 @@
 import { Button, Img, ModalWrapper, Row, useModal } from '@impact-market/ui';
 import { styled } from 'styled-components';
 import React from 'react';
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const ImageStyled = styled(Img)`
     object-fit: contain;
@@ -9,17 +10,19 @@ const ImageStyled = styled(Img)`
 `;
 
 const PreviewFile: React.FC = () => {
+    const { t } = useTranslations();
     const { handleClose, filepath, type } = useModal();
 
     const fileExtension = type.split('.').pop().toLowerCase();
     const imageExtensions = ['jpg', 'jpeg', 'png', 'gif', 'bmp', 'tiff'];
+    const isImage = imageExtensions.includes(fileExtension);
 
     return (
         <ModalWrapper
             maxW={50}
             padding={1.5}
             w="100%"
-            h={imageExtensions.includes(fileExtension) ? 'fit-content' : 38}
+            h={isImage ? 'fit-content' : 38}
         >
             <Row
                 fDirection="column"
@@ -28,7 +31,7 @@ const PreviewFile: React.FC = () => {
                 margin={0}
                 h="100%"
             >
-                {imageExtensions.includes(fileExtension) ? (
+                {isImage ? (
                     <ImageStyled alt="" url={filepath} />
                 ) : (
                     <iframe src={filepath} width="100%" height="500px" />
@@ -39,7 +42,7 @@ const PreviewFile: React.FC = () => {
                     padding="0 3rem"
                     w="fit-content"
                 >
-                    Close
+                    {t('close')}
                 </Button>
             </Row>
         </ModalWrapper>

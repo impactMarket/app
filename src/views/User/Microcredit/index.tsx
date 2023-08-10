@@ -4,32 +4,34 @@ import ApplicationHistory from './ApplicationHistory';
 import Documents from './Documents';
 import RepaymentHistory from './RepaymentHistory';
 
-const Microcredit = (props: { borrower: any }) => {
-    const { borrower } = props;
+const Microcredit = (props: { user: any }) => {
+    const { user } = props;
     const { extractFromView } = usePrismicData();
-    const { repaymentHistory } = extractFromView('microcredit') as any;
+    const { repaymentHistory, documents, applicationHistory } = extractFromView(
+        'microcredit'
+    ) as any;
 
     return (
         <Tabs>
             {/* @ts-ignore */}
             <TabList buttonStyle>
                 <Tab title={repaymentHistory} />
-                <Tab title="Documents" />
-                <Tab title="Application History" />
+                <Tab title={documents} />
+                <Tab title={applicationHistory} />
             </TabList>
             <TabPanel>
                 <Box mt={0.5}>
-                    <RepaymentHistory borrower={borrower} />
+                    <RepaymentHistory user={user} />
                 </Box>
             </TabPanel>
             <TabPanel>
                 <Box mt={0.5}>
-                    <Documents docs={borrower?.docs} />
+                    <Documents user={user} />
                 </Box>
             </TabPanel>
             <TabPanel>
                 <Box mt={0.5}>
-                    <ApplicationHistory borrower={borrower} />
+                    <ApplicationHistory user={user} />
                 </Box>
             </TabPanel>
         </Tabs>

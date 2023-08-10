@@ -19,7 +19,6 @@ import { getImage } from '../../utils/images';
 import { getUserName } from '../../utils/users';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetUserByIdMutation } from '../../api/user';
-import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../libs/Prismic/components/Message';
@@ -39,12 +38,6 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const router = useRouter();
     const { t } = useTranslations();
     const [getUser] = useGetUserByIdMutation();
-
-    const { borrower } = useMicrocreditBorrower([
-        `address=${user?.address}`,
-        `include=docs`,
-        `include=forms`
-    ]);
 
     const hasAddress =
         !!auth?.user?.manager?.community && !!user?.beneficiary?.community;
@@ -165,7 +158,7 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
                                 <Tab title={t('ubi')} />
                             </>
                         )}
-                        {showMicrocredit && <Tab title="Microcredit" />}
+                        {showMicrocredit && <Tab title={t('microcredit')} />}
                     </TabList>
 
                     {userIsManager && (
@@ -199,7 +192,7 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
 
                     {showMicrocredit && (
                         <TabPanel>
-                            <Microcredit borrower={borrower} />
+                            <Microcredit user={user} />
                         </TabPanel>
                     )}
                 </Tabs>
