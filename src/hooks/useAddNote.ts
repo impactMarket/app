@@ -4,8 +4,9 @@ import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import config from 'config';
 
-async function getUserId(_auth: any) {
-    const url = `${config.baseApiUrl}/users`;
+async function getUserId(_auth: any, address: string ) {
+  console.log("address: ", address);
+    const url = `${config.baseApiUrl}/users/${address}`;
     const headers = {
       'Authorization': `Bearer ${_auth.token}`,
       'accept': '*/*',
@@ -31,13 +32,13 @@ const useAddNote = (handleClose: Function) => {
     const [error, setError] = useState<string | null>(null);
     const auth = useSelector(selectCurrentUser);
 
-    const addNote = async ( note: string): Promise<any> => {
+    const addNote = async ( note: string, address:string): Promise<any> => {
         
         setLoading(true);
         setError(null);
 
-        const userId = await getUserId(auth);
-
+        const userId = await getUserId(auth, address);
+        console.log("userId: ", userId);
        
         
         try {

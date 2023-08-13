@@ -1,12 +1,20 @@
-import { Box, Tab, TabList, TabPanel, Tabs, colors } from '@impact-market/ui';
+import { Box, Tab, TabList, TabPanel, Tabs, colors, Button, openModal } from '@impact-market/ui';
 import { styled } from 'styled-components';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import RepaymentHistory from './RepaymentHistory';
+import CommunicationHistory from './CommunicationHistory';
+import useFilters from 'src/hooks/useFilters';
 
 const Microcredit = (props: { borrower: any }) => {
     const { borrower } = props;
     const { extractFromView } = usePrismicData();
     const { repaymentHistory } = extractFromView('microcredit') as any;
+    const {  update,getByKey } = useFilters();
+
+
+
+  
+
 
     // PROVISORY STYLED -> Add new style on UI (TabList) and DELETE this one
     const TabListStyled = styled(TabList)`
@@ -50,21 +58,72 @@ const Microcredit = (props: { borrower: any }) => {
             }
         }
     `;
+    const setDefaultTab = () => {
+        const tab = getByKey('tab');
+        console.log("TAB: ",tab);
+        
+        switch (tab) {
+            case 'RepaymentHistory':
+                return 0;
+            case 'CommunicationHistory':
+                return 1;
+            default:
+                return 0;
+        }
+    }
+
 
     return (
         <>
-            <Tabs>
-                <TabListStyled>
-                    <Tab title={repaymentHistory} />
-                    {/* <Tab title="Communication History" />
-                    <Tab title="Application History" /> */}
-                </TabListStyled>
+            <Tabs defaultIndex={setDefaultTab()}>
+                <Box flex fLayout="center between" w="100%">
+                    <TabListStyled>
+                        <Tab 
+                            title={repaymentHistory} 
+                            onClick={() => {
+                                update({
+                                    tab: 'RepaymentHistory'
+                                });
+                            }}
+
+                        />
+                        <Tab 
+                            title="Communication History" 
+                            onClick={() => {
+                                update({
+                                    tab: 'CommunicationHistory'
+                                });
+                            }}
+                        />
+                    </TabListStyled>
+                    {setDefaultTab() === 1 ? 
+                        <Button 
+                            icon="coment"
+                            onClick={()=> {
+                                openModal('addNote',
+                                    {
+                                        borrowerAdd: borrower?.address,
+                                    }
+                                )
+                            }}
+                        >
+                            Add Note
+                        </Button>
+                        : 
+                        null}
+                </Box>
                 <TabPanel>
                     <Box mt={0.5}>
                         <RepaymentHistory borrower={borrower} />
                     </Box>
                 </TabPanel>
+                <TabPanel>
+                    <Box mt={0.5}>
+                        <CommunicationHistory borrower={borrower}/>
+                    </Box>
+                </TabPanel>
             </Tabs>
+            
         </>
     );
 };

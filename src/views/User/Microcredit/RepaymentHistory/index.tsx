@@ -1,6 +1,6 @@
 import { Text } from '@impact-market/ui';
 import { currencyFormat } from 'src/utils/currencies';
-import { dateHelpers } from '../../../helpers/dateHelpers';
+import { dateHelpers } from '../../../../helpers/dateHelpers';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { selectRates } from 'src/state/slices/rates';
 import { useMicrocreditBorrowerRepaymentHistory } from 'src/hooks/useMicrocredit';
@@ -9,7 +9,7 @@ import { useSelector } from 'react-redux';
 import React, { useState } from 'react';
 import Table from 'src/components/Table';
 import useFilters from 'src/hooks/useFilters';
-import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
+import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 4;
 
@@ -96,14 +96,14 @@ const RepaymentHistory = (props: { borrower: any }) => {
     const actualPage = page - 1 >= 0 ? page - 1 : 0;
     const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
 
-    const { repaymentHistory, loadingRepaymentHistory, count } =
-        useMicrocreditBorrowerRepaymentHistory([
+    const { repaymentHistory, loadingRepaymentHistory, count } = useMicrocreditBorrowerRepaymentHistory([
             `loanId=${borrower?.loans - 1}`,
             `borrower=${borrower?.address}`,
             `limit=${itemsPerPage}`,
             `offset=${itemOffset}`
         ]);
 
+        
     return (
         <Table
             actualPage={actualPage}

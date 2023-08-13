@@ -103,10 +103,10 @@ const App = (props: AppProps) => {
     if (hasCookie('SIGNATURE') || hasCookie('EIP712_SIGNATURE')) {
         store.dispatch(
             setSignature({
-                eip712_message: getCookie('EIP712_MESSAGE').toString(),
-                eip712_signature: getCookie('EIP712_SIGNATURE').toString(),
-                message: getCookie('MESSAGE').toString(),
-                signature: getCookie('SIGNATURE').toString()
+                eip712_message: getCookie('EIP712_MESSAGE')?.toString(),
+                eip712_signature: getCookie('EIP712_SIGNATURE')?.toString(),
+                message: getCookie('MESSAGE')?.toString(),
+                signature: getCookie('SIGNATURE')?.toString()
             })
         );
     }

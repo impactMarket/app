@@ -121,7 +121,7 @@ const getColumns = (props: any) => {
     const { t } = useTranslations();
     const router = useRouter();
 
-    const { auth, selected, setSelected, rejectLoan, limitReach, mutate } =
+    const { auth, selected, setSelected, rejectLoan, limitReach, mutate} =
         props;
 
     const { extractFromView } = usePrismicData();
@@ -235,7 +235,7 @@ const getColumns = (props: any) => {
         //     render: (data: any) => {
         //         const score = 734;
         //         const progress = (score / 850) * 100;
-
+        
         //         return (
         //             <>
         //                 <Box
@@ -444,17 +444,18 @@ const getColumns = (props: any) => {
                                 icon: 'upload',
                                 onClick: () => openModal('addNote',
                                 {
-                                    applicationId: data?.application?.id
+                                    borrowerAdd: data?.address,
                                 }
                                 ),
                                 title: addNote
                             },
                             {
                                 icon: 'cardsStack',
-                                onClick: () => {},
+                                onClick: () => router.push(`/user/${data.address}?tab=CommunicationHistory`),
                                 title: viewAllNotes
                             }
                         ]}
+                        className="dropdown"
                     /> 
                         <DropdownMenu
                             {...({} as any)}

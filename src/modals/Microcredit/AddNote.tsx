@@ -22,8 +22,8 @@ import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useAddNote from '../../hooks/useAddNote';
 
 const AddNote = () => {
-
     
+    const { borrowerAdd } = useModal();
     const { extractFromView } = usePrismicData();
     const {describeConvBorrower, addNote} = extractFromView('messages') as any;
 
@@ -54,7 +54,7 @@ const AddNote = () => {
     const onSubmit: SubmitHandler<any> = async (data) => {
         
         try {
-            await addNotePost(data.noteText);
+            await addNotePost(data.noteText, borrowerAdd);
             toast.success('Note Added');
         } catch (error) {
             toast.error(<Message id="errorOccurred" />);
@@ -95,7 +95,7 @@ const AddNote = () => {
                             render={({ field }) => (
                                 <Input
                                     {...field}
-                                    placeholder={`${describeConvBorrower[0].text}`}
+                                    placeholder={`${describeConvBorrower[0]?.text}`}
                                     rows={4}
                                     wrapperProps={{
                                         mt: 1,
