@@ -99,25 +99,14 @@ const RepaymentHistory = (props: { user: any }) => {
     const actualPage = page - 1 >= 0 ? page - 1 : 0;
     const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
 
-    const { borrower } = useMicrocreditBorrower([`address=${user?.address}`]);
-
-    const { repaymentHistory, loadingRepaymentHistory, count } =
-        useMicrocreditBorrowerRepaymentHistory([
-            `address=${borrower?.address}`,
+    const { repaymentHistory, loadingRepaymentHistory, count } = useMicrocreditBorrowerRepaymentHistory([
+            `loanId=${borrower?.loans - 1}`,
+            `borrower=${borrower?.address}`,
             `limit=${itemsPerPage}`,
             `offset=${itemOffset}`
         ]);
 
-    // Add to repaymentHistory array, the index of each row
-    const modifiedRepaymentHistory = repaymentHistory?.map(
-        (item: any, index: number) => {
-            return {
-                ...item,
-                rowIndex: repaymentHistory?.length - index
-            };
-        }
-    );
-
+        
     return (
         <Table
             actualPage={actualPage}
