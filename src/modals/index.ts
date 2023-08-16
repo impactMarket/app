@@ -24,6 +24,7 @@ const modals = {
         ssr: false
     }),
     openStory: dynamic(() => import('./Stories/OpenStory'), { ssr: false }),
+    previewFile: dynamic(() => import('./PreviewFile'), { ssr: false }),
     recoverAccount: dynamic(() => import('./RecoverAccount'), { ssr: false }),
     reloadInfoAddCommunity: dynamic(() => import('./AddCommunity/ReloadInfo'), {
         ssr: false

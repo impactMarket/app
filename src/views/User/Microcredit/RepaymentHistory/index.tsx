@@ -3,7 +3,10 @@ import { currencyFormat } from 'src/utils/currencies';
 import { dateHelpers } from '../../../../helpers/dateHelpers';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { selectRates } from 'src/state/slices/rates';
-import { useMicrocreditBorrowerRepaymentHistory } from 'src/hooks/useMicrocredit';
+import {
+    useMicrocreditBorrower,
+    useMicrocreditBorrowerRepaymentHistory
+} from 'src/hooks/useMicrocredit';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import React, { useState } from 'react';
@@ -35,7 +38,7 @@ const getColumns = () => {
             minWidth: 12,
             render: (data: any) => (
                 <Text g900 small medium>
-                    {`${loanRepayment} #${data?.index}`}
+                    {`${loanRepayment} #${data?.rowIndex}`}
                 </Text>
             ),
             title: loanRepayment,
@@ -89,21 +92,32 @@ const getColumns = () => {
     ];
 };
 
-const RepaymentHistory = (props: { borrower: any }) => {
-    const { borrower } = props;
+const RepaymentHistory = (props: { user: any }) => {
+    const { user } = props;
     const { getByKey } = useFilters();
     const page = getByKey('page') ? +getByKey('page') : 1;
     const actualPage = page - 1 >= 0 ? page - 1 : 0;
     const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
 
-    const { repaymentHistory, loadingRepaymentHistory, count } = useMicrocreditBorrowerRepaymentHistory([
-            `loanId=${borrower?.loans - 1}`,
+    const { borrower } = useMicrocreditBorrower([`address=${user?.address}`]);
+
+    const { repaymentHistory, loadingRepaymentHistory, count } =
+        useMicrocreditBorrowerRepaymentHistory([
             `borrower=${borrower?.address}`,
             `limit=${itemsPerPage}`,
             `offset=${itemOffset}`
         ]);
 
-        
+    // Add to repaymentHistory array, the index of each row
+    const modifiedRepaymentHistory = repaymentHistory?.map(
+        (item: any, index: number) => {
+            return {
+                ...item,
+                rowIndex: repaymentHistory?.length - index
+            };
+        }
+    );
+
     return (
         <Table
             actualPage={actualPage}
@@ -114,7 +128,7 @@ const RepaymentHistory = (props: { borrower: any }) => {
             page={page}
             count={count}
             pb={6}
-            prefix={repaymentHistory}
+            prefix={modifiedRepaymentHistory}
             setItemOffset={setItemOffset}
         />
     );
