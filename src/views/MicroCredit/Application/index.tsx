@@ -17,7 +17,6 @@ import {
     useGetFormIdMutation,
     useSubmitFormMutation
 } from '../../../api/microcredit';
-// import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useUpdateUserMutation } from '../../../api/user';
 import FormSection from './FormSection';
@@ -40,23 +39,16 @@ type MatrixJsonType = {
 const ApplicationForm = (props: any) => {
     const { data, view: viewName, readOnly } = props;
     const view = data[viewName];
-
-    console.log(props);
-    
-    // console.log(viewName);
-    // console.log(data[viewName]);
-    
-    
     const auth = useSelector(selectCurrentUser);
     const { signature } = useSelector(selectCurrentUser);
     const { t } = useTranslations();
-    // const { view } = usePrismicData();
     const [updateUser] = useUpdateUserMutation();
     const dispatch = useDispatch();
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [formArray, setFormArray] = useState([]);
     const [titleArray, setTitleArray] = useState([]);
+    const [address, setAddress] = useState('');
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [prismicId, setPrismicId] = useState('');
@@ -69,27 +61,15 @@ const ApplicationForm = (props: any) => {
     const [matrix, setMatrix] = useState<MatrixType>({});
     const mapRef = useRef<Map<string, string>>(new Map());
 
-
-    const { firstName = '', lastName = '', age = '', gender = '', email = '', phone = '' } = auth?.user ?? {};
     const [profileData, setProfileData] = useState<{ [key: string]: any }>({
-        age: age ?? '',
-        email: email ?? '',
-        firstName: firstName ?? '',
-        gender: gender !== 'u' ? gender : '',
-        lastName: lastName ?? '',
-        phone: phone ?? ''
+        age: '',
+        email: '',
+        firstName: '',
+        gender: '',
+        lastName: '',
+        phone: ''
     });
 
-
-    // const [profileData, setProfileData] = useState<{ [key: string]: any }>({
-    //     age: '',
-    //     email: '',
-    //     firstName: '',
-    //     gender: '',
-    //     lastName: '',
-    //     phone: ''
-    // });
-    
     const [isValidating, setIsValidating] = useState(false);
     const [loanManagerId, setLoanManagerId] = useState(-1);
 
@@ -137,50 +117,62 @@ const ApplicationForm = (props: any) => {
     };
 
     useEffect(() => {
-        console.log(getMatrixWithValues());
         setReadyToProceed(true);
     }, [page]);
 
     useEffect(() => {
         const fetchData = async () => {
-            let formData = {} as any;
+            let formData = {} as any,
+                borrowerData = {} as any;
 
             try {
                 if (props.readOnly) {
                     formData = await getFormId(props.id);
+                    const userAddress = !auth?.user?.roles.includes(
+                        'loanManager'
+                    )
+                        ? auth?.user?.address
+                        : '';
 
-                    console.log(!!formData?.error);
-                    
+                    borrowerData = await getBorrowerForms({
+                        address: userAddress,
+                        formId: formData?.data?.id
+                    }).unwrap();
 
                     if (!!formData?.error) {
                         return router.push('/');
                     }
-                    
                 } else {
                     if (!signature) {
                         return router.push('/microcredit/apply');
                     }
 
-                    formData = await getBorrowerForms(
-                        auth?.user?.address
-                    ).then(async (borrowerData: any) => {
-                        // const { firstName = '', lastName = '', age = '', gender = '', email = '', phone = '' } = borrowerData?.data;
-                        // setProfileData({
-                        //     age: age ?? '',
-                        //     email: email ?? '',
-                        //     firstName: firstName ?? '',
-                        //     gender: gender !== 'u' ? gender : '',
-                        //     lastName: lastName ?? '',
-                        //     phone: phone ?? ''
-                        // });
-                        // debugger
-                        // if borrower don't have data i don't need to make the next request
-                        return await getFormId(borrowerData?.data?.forms[0]?.id);
-                    });
+                    borrowerData = await getBorrowerForms({
+                        address: auth?.user?.address
+                    }).unwrap();
 
-                    // console.log(formData);
-                    // debugger
+                    formData = await getFormId(borrowerData?.forms[0]?.id);
                 }
+
+                const {
+                    address = '',
+                    firstName = '',
+                    lastName = '',
+                    age = '',
+                    gender = '',
+                    email = '',
+                    phone = ''
+                } = borrowerData;
+
+                setAddress(address);
+                setProfileData({
+                    age: age ?? '',
+                    email: email ?? '',
+                    firstName: firstName ?? '',
+                    gender: gender !== 'u' ? gender : '',
+                    lastName: lastName ?? '',
+                    phone: phone ?? ''
+                });
 
                 setFormApiData(formData);
                 setIsLoading(false);
@@ -198,13 +190,11 @@ const ApplicationForm = (props: any) => {
         let currentForm: any, id: any;
 
         if (!!formApiData?.data) {
-            // console.log('hererre');
-            // debugger
-            
-            const { prismicId, form, selectedLoanManagerId } = formApiData?.data ?? {
-                form: {},
-                prismicId: ''
-            };
+            const { prismicId, form, selectedLoanManagerId } =
+                formApiData?.data ?? {
+                    form: {},
+                    prismicId: ''
+                };
 
             id = prismicId;
 
@@ -215,7 +205,7 @@ const ApplicationForm = (props: any) => {
                 submit: false
             });
 
-            setLoanManagerId(selectedLoanManagerId)
+            setLoanManagerId(selectedLoanManagerId);
 
             let doc: any = [];
 
@@ -224,7 +214,6 @@ const ApplicationForm = (props: any) => {
             } else {
                 doc = view;
             }
-
 
             const element = doc?.find((obj: any) => obj.id === prismicId);
 
@@ -245,9 +234,8 @@ const ApplicationForm = (props: any) => {
                 }
             }
         } else if (Array.isArray(view)) {
-            // debugger
-            id = view[view.length-1]?.id;
-            currentForm = view[view.length-1]?.data;
+            id = view[view.length - 1]?.id;
+            currentForm = view[view.length - 1]?.data;
         } else {
             id = view?.id;
             currentForm = view?.data;
@@ -315,9 +303,13 @@ const ApplicationForm = (props: any) => {
         if (page === 0) {
             formArray[0]?.forEach((field: any) => {
                 const savedData = getElement(field?.id, 0) as any;
-                
-                if (field?.slice_type === 'full_width_form_field' && field?.id === 'full_width_form_field$a9552890-5f38-4bcd-b2ad-bf00e8999755' ) {
-                    if ( savedData?.data === '1') {
+
+                if (
+                    field?.slice_type === 'full_width_form_field' &&
+                    field?.id ===
+                        'full_width_form_field$a9552890-5f38-4bcd-b2ad-bf00e8999755'
+                ) {
+                    if (savedData?.data === '1') {
                         formIsReady = false;
                         setNoKeysError(true);
                     } else {
@@ -337,7 +329,11 @@ const ApplicationForm = (props: any) => {
                     const sectionId = section.id.toString();
                     const idxString = counter.toString();
 
-                    const value = formValues[sectionId] && formValues[sectionId][idxString] ? formValues[sectionId][idxString] : undefined as any;
+                    const value =
+                        formValues[sectionId] &&
+                        formValues[sectionId][idxString]
+                            ? formValues[sectionId][idxString]
+                            : (undefined as any);
 
                     if (value === undefined || !value?.data) {
                         formIsReady = false;
@@ -347,9 +343,16 @@ const ApplicationForm = (props: any) => {
                     const sectionId2 = section.id.toString();
                     const idxString2 = counter.toString();
 
-                    const value2 = formValues[sectionId2] && formValues[sectionId2][idxString2] ? formValues[sectionId2][idxString2] : undefined as any;
+                    const value2 =
+                        formValues[sectionId2] &&
+                        formValues[sectionId2][idxString2]
+                            ? formValues[sectionId2][idxString2]
+                            : (undefined as any);
 
-                    if (value2 === undefined || (!value2?.data && !!el?.type2)) {
+                    if (
+                        value2 === undefined ||
+                        (!value2?.data && !!el?.type2)
+                    ) {
                         formIsReady = false;
                     }
 
@@ -374,7 +377,11 @@ const ApplicationForm = (props: any) => {
                         const sectionId = section.id.toString();
                         const idxString = idx.toString();
 
-                        const value = formValues[sectionId] && formValues[sectionId][idxString] ? formValues[sectionId][idxString] : undefined as any;
+                        const value =
+                            formValues[sectionId] &&
+                            formValues[sectionId][idxString]
+                                ? formValues[sectionId][idxString]
+                                : (undefined as any);
 
                         if (value === undefined || !value?.data) {
                             formIsReady = false;
@@ -403,12 +410,13 @@ const ApplicationForm = (props: any) => {
 
     const handleButtonClick = () => {
         setIsValidating(true);
-        
 
         if (readOnly) {
             setPage(page + 1);
         } else {
             const formIsReady = validateFields();
+
+            // IF PROFILE PREVENT THE USER FROM PROCEED IF THERE'S AN ERROR
 
             if (formIsReady) {
                 const response = submitFormData(false);
@@ -433,8 +441,6 @@ const ApplicationForm = (props: any) => {
 
         const response = await submitForm(matrixJson as any);
 
-        console.log(response);
-
         return response;
     };
 
@@ -446,80 +452,71 @@ const ApplicationForm = (props: any) => {
         }
     };
 
-    console.log(auth?.user?.roles);
-    
-
     return (
         <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box fLayout="start between" fWrap="wrap" flex>
-                <Box flex >
-                    <Box style={{flex: '1'}}>
+                <Box flex>
+                    <Box style={{ flex: '1' }}>
                         <Display g900 medium>
                             {title}
                         </Display>
                         <RichText content={description} g500 mt={0.25} />
                     </Box>
-                    {
-                        readOnly && auth?.user?.roles?.includes('loanManager') && <Box style={{height: 'fit-content'}}>
+                    {readOnly && auth?.user?.roles?.includes('loanManager') && (
+                        <Box style={{ height: 'fit-content' }}>
                             <Button
                                 isLoading={isValidating}
                                 onClick={async () => {
-                                    console.log('review');
-
                                     try {
                                         const result = await fetch(
                                             `${config.baseApiUrl}/microcredit/applications`,
                                             {
-                                                body: JSON.stringify([{
-                                                    applicationId: props.id,
-                                                    status: 3
-                                                }]),
+                                                body: JSON.stringify([
+                                                    {
+                                                        applicationId: props.id,
+                                                        status: 3
+                                                    }
+                                                ]),
                                                 headers: {
                                                     Accept: 'application/json',
                                                     Authorization: `Bearer ${auth.token}`,
-                                                    'Content-Type': 'application/json',
-                                                    message: getCookie('MESSAGE').toString(),
-                                                    signature: getCookie('SIGNATURE').toString()
+                                                    'Content-Type':
+                                                        'application/json',
+                                                    message:
+                                                        getCookie(
+                                                            'MESSAGE'
+                                                        ).toString(),
+                                                    signature:
+                                                        getCookie(
+                                                            'SIGNATURE'
+                                                        ).toString()
                                                 },
                                                 method: 'PUT'
                                             }
                                         );
-                                
+
                                         if (result.status === 201) {
-                                            // mutate();
-                                            toast.success('Loan set for revision successfully');
+                                            toast.success(
+                                                'Loan set for revision successfully'
+                                            );
                                         } else {
-                                            toast.error(<Message id="errorOccurred" />);
+                                            toast.error(
+                                                <Message id="errorOccurred" />
+                                            );
                                         }
                                     } catch (error) {
                                         console.log(error);
-                                        toast.error(<Message id="errorOccurred" />);
+                                        toast.error(
+                                            <Message id="errorOccurred" />
+                                        );
                                         // processTransactionError(error, 'reject_loan');
                                     }
-                                    
-                                    // setIsValidating(true);
-                                    // const formIsReady = validateFields();
-
-                                    // if (formIsReady) {
-                                    //     const response = (await submitFormData(
-                                    //         true
-                                    //     )) as any;
-
-                                    //     if (!!response) {
-                                    //         router.push(
-                                    //             `/microcredit/apply?success=true&formId=${response?.data?.id}`
-                                    //         );
-                                    //     }
-                                    // } else {
-                                    //     setReadyToProceed(false);
-                                    // }
-                                    // setIsValidating(false);
                                 }}
                             >
                                 {'Request Borrower Revision'}
                             </Button>
                         </Box>
-                    }
+                    )}
                 </Box>
 
                 <Box padding="3rem 0" w="100%">
@@ -538,6 +535,7 @@ const ApplicationForm = (props: any) => {
                     return (
                         el.slice_type !== 'profile' && (
                             <FormSection
+                                address={address}
                                 items={el?.items}
                                 primary={el?.primary}
                                 fieldType={el.slice_type}
@@ -591,7 +589,7 @@ const ApplicationForm = (props: any) => {
                                 {t('nextStep')}
                             </Button>
                         )}
-                        {(page === formArray.length - 1 && !readOnly) && (
+                        {page === formArray.length - 1 && !readOnly && (
                             <Button
                                 isLoading={isValidating}
                                 onClick={async () => {
@@ -625,7 +623,7 @@ const ApplicationForm = (props: any) => {
                             </Text>
                         </Box>
                     )}
-                    {(noKeysError && page === 0) && (
+                    {noKeysError && page === 0 && (
                         <Box flex fLayout="end">
                             <Text e500 bold>
                                 {t('noKeys')}

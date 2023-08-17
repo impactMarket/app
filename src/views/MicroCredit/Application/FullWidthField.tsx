@@ -7,7 +7,8 @@ import {
     Input,
     Row,
     Text,
-    colors
+    colors,
+    openModal
 } from '@impact-market/ui';
 import { getCookie } from 'cookies-next';
 import { mq } from 'styled-gen';
@@ -110,19 +111,11 @@ const CurrencyWrapper = styled(Box)`
 `;
 
 export interface FullWidthProps {
+    address?: string;
     item: any;
     fieldType: string;
     idx: number;
     readOnly: boolean;
-    sectionId: string;
-    updateFormData: (rowKey: string, columnKey: number, value: any) => void;
-    getElement: (rowKey: any, columnKey: number) => any;
-}
-
-export interface FormDataProps {
-    item: any;
-    fieldType: string;
-    idx: number;
     sectionId: string;
     updateFormData: (rowKey: string, columnKey: number, value: any) => void;
     getElement: (rowKey: any, columnKey: number) => any;
@@ -134,8 +127,15 @@ const fetcher = () =>
     ).then((res) => res.json());
 
 const FullWidthField = (props: FullWidthProps) => {
-    const { item, sectionId, idx, readOnly, updateFormData, getElement } =
-        props;
+    const {
+        address,
+        item,
+        sectionId,
+        idx,
+        readOnly,
+        updateFormData,
+        getElement
+    } = props;
     const { t } = useTranslations();
     const [fileName, setFileName] = useState('');
     const [fileSize, setFileSize] = useState('');
@@ -144,7 +144,7 @@ const FullWidthField = (props: FullWidthProps) => {
     const { communitiesCountries } = useCommunitiesCountries('valid', fetcher);
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
     const auth = useSelector(selectCurrentUser);
-    const walletAddress = auth?.user?.address;
+    const walletAddress = address ?? auth?.user?.address;
 
     const toggleActive = (value: string, id: number) => {
         updateFormData(sectionId, idx, {
@@ -160,8 +160,6 @@ const FullWidthField = (props: FullWidthProps) => {
 
     useEffect(() => {
         if (item.type === 'CurrencyField' && value?.data) {
-            console.log(value?.data);
-
             setIncome(value?.data?.split('-')[0]);
             setCurrency(value?.data?.split('-')[1]);
         }
@@ -240,6 +238,28 @@ const FullWidthField = (props: FullWidthProps) => {
 
         setFileName('');
         setFileSize('');
+    };
+
+    const uploadedAction = (e: any) => {
+        e.stopPropagation();
+
+        const storedFile = getElement(sectionId, idx);
+
+        let filepath = '';
+
+        const obj = {
+            bucket: config.microcreditBucket,
+            key: storedFile?.data
+        };
+
+        const path = Buffer.from(JSON.stringify(obj)).toString('base64');
+
+        filepath = `${config.imagesUrl}${path}`;
+
+        openModal('previewFile', {
+            filepath,
+            type: storedFile?.data
+        });
     };
 
     return (
@@ -346,7 +366,9 @@ const FullWidthField = (props: FullWidthProps) => {
                         cancelUploadText={t('cancelUpload')}
                         disabled={readOnly}
                         uploadText={t('upload')}
-                        uploadedText={t('uploaded')}
+                        // TRADUÇÔES
+                        uploadedText={'View Document'}
+                        uploadedAction={uploadedAction}
                         uploadingText={t('uploading')}
                         handleFiles={handleFiles}
                         removeFiles={removeFiles}
@@ -585,6 +607,7 @@ const FullWidthField = (props: FullWidthProps) => {
                             <CurrencySelector
                                 {...({} as any)}
                                 icon="chevronDown"
+                                disabled={readOnly}
                                 items={[
                                     {
                                         onClick: () => {
@@ -634,8 +657,11 @@ const FullWidthField = (props: FullWidthProps) => {
                                         title: t('venezuelanBolivar')
                                     }
                                 ]}
-                                disabled={readOnly}
-                                title={!!currency ? t(currency) : 'Choose your currency'}
+                                title={
+                                    !!currency
+                                        ? t(currency)
+                                        : 'Choose your currency'
+                                }
                             />
                         </Box>
                     </CurrencyWrapper>

@@ -4,7 +4,6 @@ import FullWidthField from './FullWidthField';
 import MobileBankerSelector from './MobileBankerSelector';
 import RichText from '../../../libs/Prismic/components/RichText';
 import styled, { css } from 'styled-components';
-// import Profile from './Profile';
 
 const Section = styled(Row)`
     ${mq.phone(css`
@@ -28,6 +27,7 @@ const DoubleInputWrapper = styled(Row)`
 `;
 
 export interface FormSectionProps {
+    address: string;
     items: Array<any>;
     fieldType: string;
     primary: any;
@@ -40,6 +40,7 @@ export interface FormSectionProps {
 
 const FormSection = (props: FormSectionProps) => {
     const {
+        address,
         items,
         fieldType,
         primary,
@@ -90,6 +91,7 @@ const FormSection = (props: FormSectionProps) => {
                         if (fieldType === 'full_width_form_field') {
                             return (
                                 <FullWidthField
+                                    address={address}
                                     item={item}
                                     fieldType={fieldType}
                                     idx={idx}

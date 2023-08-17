@@ -1,6 +1,6 @@
 // import { ClientConfig } from '@prismicio/client';
 import { GetStaticPaths, GetStaticProps } from 'next';
-import ApplicationForm from 'src/views/MicroCredit/Apllication';
+import ApplicationForm from 'src/views/MicroCredit/Application';
 import Prismic from '../../../libs/Prismic/Prismic';
 
 export const getStaticPaths: GetStaticPaths<{ slug: string }> = () => {

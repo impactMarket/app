@@ -8,31 +8,28 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
-// import LoanInReview from './LoanInReview';
 import LoanRepayment from './LoanRepayment';
+import RequestChanges from './Form/RequestChanges';
 import RepaymentHistory from './RepaymentHistory';
+import LoanRejected from './LoanRejected';
 import String from '../../libs/Prismic/components/String';
 import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-// import LoanRejected from './LoanRejected';
 // import InfoAccordion from './InfoAccordion';
 
-import {
-    useGetBorrowerFormsMutation,
-} from '../../api/microcredit';
+import { useGetBorrowerFormsMutation } from '../../api/microcredit';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
     const [getBorrowerForms] = useGetBorrowerFormsMutation();
     const [loanId, setLoanId] = useState(0);
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);
+    const [formState, setFormState] = useState(-1);
     const auth = useSelector(selectCurrentUser);
+    const [loading, setLoading] = useState(true);
     const { getActiveLoanId, loan, repayLoan, claimLoan, isReady } =
         useBorrower();
 
-        // console.log(isReady);
-        
-        // debugger
     const router = useRouter();
     const { getByKey } = useFilters();
     const { t } = useTranslations();
@@ -113,39 +110,34 @@ const MicroCredit = (props: any) => {
                     auth?.user?.address?.toString()
                 );
 
-                // debugger
-
                 if (activeLoanId === -1) {
-                    // Verificar se tem form:
-                    const { data: formData } = await getBorrowerForms(
-                        auth?.user?.address
-                    ) as any;
+                    const { data: formData } = (await getBorrowerForms({
+                        address: auth?.user?.address
+                    })) as any;
 
-                    // - Se não tiver -> apply
-                    console.log(FormStatus);
-                    console.log(formData?.forms);
-                    console.log(formData?.forms?.length);
-                    
                     if (!formData?.forms?.length) {
                         router.push('/microcredit/apply');
                     } else {
                         const form = formData?.forms[0];
 
-                        if (form.status === FormStatus.DRAFT ||
-                            form.status === FormStatus.PENDING) {
-                            // - Tem form submited false -> form
-                            router.push('/microcredit/application');
-                        } else if (form.status === FormStatus.IN_REVIEW) {
-                            // - Tem form submited -> success
-                            router.push(`/microcredit/apply?success=true&formId=${form?.id}`);
-                        }
-                        
-                    }
+                        setFormState(form.status);
 
-                    // - Tem form requested_review -> page requested changes
-                    
-                    // Loan rejected 
-                    // router.push('/');
+                        if (
+                            form.status === FormStatus.DRAFT ||
+                            form.status === FormStatus.PENDING
+                        ) {
+                            router.push('/microcredit/application');
+                        } else if (
+                            form.status === FormStatus.IN_REVIEW ||
+                            form.status === FormStatus.INTERVIEW
+                        ) {
+                            router.push(
+                                `/microcredit/apply?success=true&formId=${form?.id}`
+                            );
+                        } else {
+                            setLoading(false);
+                        }
+                    }
                 } else {
                     setLoanId(activeLoanId);
                 }
@@ -162,7 +154,7 @@ const MicroCredit = (props: any) => {
     }, [isReady]);
 
     return (
-        <ViewContainer {...({} as any)} isLoading={!isReady}>
+        <ViewContainer {...({} as any)} isLoading={!isReady && loading}>
             {/* <Alert
                 warning
                 icon="alertTriangle"
@@ -186,7 +178,9 @@ const MicroCredit = (props: any) => {
             </Display>
             <Box></Box>
             <Card mt="2rem" mb="2rem" padding={0}>
-                {/* <LoanInReview data={data[viewName].data} loanId={loanId} /> */}
+                {!!formState && formState === FormStatus.REQUEST_CHANGES && (
+                    <RequestChanges data={data[viewName].data} />
+                )}
                 {loan.loanStatus === LoanStatus.PENDING_CLAIM && (
                     <ClaimLoan
                         data={data[viewName].data}
@@ -215,11 +209,9 @@ const MicroCredit = (props: any) => {
                     />
                 )}
 
-                {/* {loan.loanStatus ===   && (
-                    <LoanRejected
-                        data={data[viewName].data}
-                    />
-                )} */}
+                {!!formState && formState === FormStatus.REJECTED && (
+                    <LoanRejected data={data[viewName].data} />
+                )}
             </Card>
             {/* {loan.loanStatus ===   && (
                 <InfoAccordion

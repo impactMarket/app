@@ -70,8 +70,6 @@ const Profile = (props: ProfileProps) => {
     const { sectionId, idx, primary, profileData, readOnly, setProfileData } =
         props;
 
-    console.log(profileData);
-
     const { t } = useTranslations();
     const { title1, title2, description1, description2 } = primary;
     const { firstName, lastName, age, gender, email, phone } = profileData;
@@ -237,7 +235,6 @@ const Profile = (props: ProfileProps) => {
                                 content={t('yourPhone')}
                                 g700
                                 medium
-                                // small
                                 semibold
                             />
                             <Input
