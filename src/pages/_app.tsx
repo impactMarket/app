@@ -100,7 +100,7 @@ const App = (props: AppProps) => {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
 
-    if (hasCookie('SIGNATURE') || hasCookie('EIP712_SIGNATURE')) {
+    if (hasCookie('SIGNATURE') && hasCookie('EIP712_SIGNATURE') && hasCookie('MESSAGE') && hasCookie('EIP712_MESSAGE')) {
         store.dispatch(
             setSignature({
                 eip712_message: getCookie('EIP712_MESSAGE').toString(),

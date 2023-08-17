@@ -182,8 +182,9 @@ const ApproveRejectTab: React.FC<{}> = () => {
     const { count: countAll } = useMicrocreditApplications();
     const { count: countPending } = useMicrocreditApplications(['status=1']);
     const { count: countReqChanges } = useMicrocreditApplications(['status=3']);
-    const { count: countApproved } = useMicrocreditApplications(['status=4']);
-    const { count: countRejected } = useMicrocreditApplications(['status=5']);
+    const { count: countInterview } = useMicrocreditApplications(['status=4']);
+    const { count: countApproved } = useMicrocreditApplications(['status=5']);
+    const { count: countRejected } = useMicrocreditApplications(['status=6']);
 
     const tabs: TabItem[] = [
         {
@@ -200,18 +201,23 @@ const ApproveRejectTab: React.FC<{}> = () => {
         },
         {
             number: countApproved || 0,
-            onClick: () => update({ page: 1, status: '4' }),
+            onClick: () => update({ page: 1, status: '5' }),
             title: t('approved')
         },
         {
             number: countRejected || 0,
-            onClick: () => update({ page: 1, status: '5' }),
+            onClick: () => update({ page: 1, status: '6' }),
             title: t('rejected')
         },
         {
             number: countReqChanges || 0,
             onClick: () => update({ page: 1, status: '3' }),
             title: t('revise')
+        },
+        {
+            number: countInterview || 0,
+            onClick: () => update({ page: 1, status: '4' }),
+            title: 'Interview'
         }
     ];
 

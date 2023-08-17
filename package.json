@@ -25,7 +25,7 @@
         "@ethersproject/contracts": "5.7.0",
         "@ethersproject/providers": "5.7.2",
         "@ethersproject/strings": "5.7.0",
-        "@impact-market/ui": "1.6.1",
+        "@impact-market/ui": "1.6.2",
         "@impact-market/utils": "4.0.4",
         "@prismicio/client": "7.0.0",
         "@prismicio/helpers": "2.3.9",

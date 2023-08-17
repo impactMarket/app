@@ -16,6 +16,7 @@ import {
 } from '@impact-market/ui';
 import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../utils/formatAddress';
+import { getCookie } from 'cookies-next';
 import { getImage } from '../../../utils/images';
 import { getUserName } from '../../../utils/users';
 import { selectCurrentUser } from 'src/state/slices/auth';
@@ -27,6 +28,16 @@ import Message from '../../../libs/Prismic/components/Message';
 import Table from '../../../components/Table';
 import config from '../../../../config';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
+
+const TableWrapper = styled(Table)`
+    > div {
+        overflow: visible;
+
+        > div {
+            overflow: visible;
+        }
+    }
+`;
 
 const CheckBox = styled(Box)`
     border-radius: 0.5rem;
@@ -49,7 +60,7 @@ const loanStatus = (status: any) => {
     let bgColor = '';
 
     switch (status) {
-        case 1: // Pending
+        case 2: // Pending
             badgeContent = (
                 <>
                     <Icon icon={'clock'} g700 mr={0.2} />
@@ -71,7 +82,19 @@ const loanStatus = (status: any) => {
             );
             bgColor = 'bgP50';
             break;
-        case 4: // Approved
+
+        case 4: // INTERVIEW
+            badgeContent = (
+                <>
+                    <Icon icon={'menu'} p700 mr={0.2} />
+                    <Text p700 extrasmall medium>
+                        {'Interview'}
+                    </Text>
+                </>
+            );
+            bgColor = 'bgP50';
+            break;
+        case 5: // Approved
             badgeContent = (
                 <>
                     <Icon icon={'check'} s500 mr={0.2} />
@@ -82,7 +105,7 @@ const loanStatus = (status: any) => {
             );
             bgColor = 'bgS50';
             break;
-        case 5: // Rejected
+        case 6: // Rejected
             badgeContent = (
                 <>
                     <Icon icon={'close'} e500 mr={0.2} />
@@ -400,7 +423,8 @@ const getColumns = (props: any) => {
             render: (data: any) => {
                 const dropdownItems = [
                     !limitReach &&
-                        data?.application?.status !== 4 && {
+                        data?.application?.status !== 5 &&
+                        data?.application?.status !== 6 && {
                             icon: 'check',
                             onClick: () =>
                                 openModal('approveLoan', {
@@ -409,30 +433,81 @@ const getColumns = (props: any) => {
                                 }),
                             title: approveLoan
                         },
-                    data?.application?.status !== 5 &&
-                        data?.application?.status !== 4 && {
-                            icon: 'close',
-                            onClick: () =>
-                                rejectLoan(
-                                    auth,
-                                    data?.application?.id,
-                                    mutate,
-                                    loansRejectedSuccessfully
-                                ),
-                            title: rejectLoanText
+                    data?.application?.status !== 5 && {
+                        icon: 'close',
+                        onClick: () =>
+                            rejectLoan(
+                                auth,
+                                data?.application?.id,
+                                mutate,
+                                loansRejectedSuccessfully
+                            ),
+                        title: rejectLoanText
+                    },
+                    data?.application?.status !== 4 &&
+                        data?.application?.status !== 5 &&
+                        data?.application?.status !== 6 && {
+                            icon: 'userCheck',
+                            onClick: async () => {
+                                try {
+                                    const result = await fetch(
+                                        `${config.baseApiUrl}/microcredit/applications`,
+                                        {
+                                            body: JSON.stringify([
+                                                {
+                                                    applicationId:
+                                                        data?.application?.id,
+                                                    status: 4
+                                                }
+                                            ]),
+                                            headers: {
+                                                Accept: 'application/json',
+                                                Authorization: `Bearer ${auth.token}`,
+                                                'Content-Type':
+                                                    'application/json',
+                                                message:
+                                                    getCookie(
+                                                        'MESSAGE'
+                                                    ).toString(),
+                                                signature:
+                                                    getCookie(
+                                                        'SIGNATURE'
+                                                    ).toString()
+                                            },
+                                            method: 'PUT'
+                                        }
+                                    );
+
+                                    if (result.status === 201) {
+                                        mutate();
+                                        toast.success(
+                                            'Application set as ready for interview'
+                                        );
+                                    } else {
+                                        toast.error(
+                                            <Message id="errorOccurred" />
+                                        );
+                                    }
+                                } catch (error) {
+                                    console.log(error);
+                                    toast.error(<Message id="errorOccurred" />);
+                                    // processTransactionError(error, 'reject_loan');
+                                }
+                            },
+                            title: 'Ready for Interview'
                         },
-                    // {
-                    //     icon: 'bookOpen',
-                    //     onClick: () =>
-                    //         router.push(
-                    //             `/microcredit/form/${data?.application?.id}`
-                    //         ),
-                    //     title: 'Loan Application'
-                    // },
                     {
                         icon: 'user',
                         onClick: () => router.push(`/user/${data.address}`),
                         title: t('openProfile')
+                    },
+                    {
+                        icon: 'bookOpen',
+                        onClick: () =>
+                            router.push(
+                                `/microcredit/form/${data?.application?.id}`
+                            ),
+                        title: 'Loan Application'
                     }
                 ];
 
@@ -497,7 +572,7 @@ const BorrowersList = (props: any) => {
         managerDetails?.currentLentAmountLimit;
 
     return (
-        <Table
+        <TableWrapper
             actualPage={actualPage}
             columns={getColumns({
                 auth,
