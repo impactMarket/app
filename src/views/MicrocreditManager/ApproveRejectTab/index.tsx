@@ -17,10 +17,12 @@ import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 7;
 
-const rejectLoan = async (auth: any, selected: any, mutate: any) => {
-    const { extractFromView } = usePrismicData();
-    const { loansRejectedSuccessfully } = extractFromView('messages') as any;
-
+const rejectLoan = async (
+    auth: any,
+    selected: any,
+    mutate: any,
+    loansRejectedSuccessfully: any
+) => {
     let requestData: object[] = [];
 
     if (typeof selected === 'object') {
@@ -79,7 +81,8 @@ const DecisionCard: React.FC<{ selected: object; mutate: any }> = (props) => {
         selectBeneficiaryToApproveOrRejectLoan,
         microcreditApplicants,
         rejectSelectedLoans,
-        approveSelectedLoans
+        approveSelectedLoans,
+        loansRejectedSuccessfully
     } = extractFromView('messages') as any;
     const auth = useSelector(selectCurrentUser);
 
@@ -129,7 +132,12 @@ const DecisionCard: React.FC<{ selected: object; mutate: any }> = (props) => {
                     gray
                     icon="upload"
                     onClick={() => {
-                        rejectLoan(auth, selected, mutate);
+                        rejectLoan(
+                            auth,
+                            selected,
+                            mutate,
+                            loansRejectedSuccessfully
+                        );
                     }}
                 >
                     <RichText small content={rejectSelectedLoans} />
