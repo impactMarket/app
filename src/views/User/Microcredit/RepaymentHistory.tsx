@@ -103,7 +103,7 @@ const RepaymentHistory = (props: { user: any }) => {
 
     const { repaymentHistory, loadingRepaymentHistory, count } =
         useMicrocreditBorrowerRepaymentHistory([
-            `borrower=${borrower?.address}`,
+            `address=${borrower?.address}`,
             `limit=${itemsPerPage}`,
             `offset=${itemOffset}`
         ]);

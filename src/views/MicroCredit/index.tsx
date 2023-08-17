@@ -9,7 +9,7 @@ import ClaimLoan from './ClaimLoan';
 import LoanCompleted from './LoanCompleted';
 // import LoanInReview from './LoanInReview';
 import LoanRepayment from './LoanRepayment';
-// import RepaymentHistory from './RepaymentHistory';
+import RepaymentHistory from './RepaymentHistory';
 import String from '../../libs/Prismic/components/String';
 import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -155,14 +155,17 @@ const MicroCredit = (props: any) => {
                     />
                 )}
                 {loan.loanStatus === LoanStatus.LOAN_CLAIMED && (
-                    <LoanRepayment
-                        data={data[viewName].data}
-                        isOverviewOpen={isOverviewOpen}
-                        loan={loan}
-                        repayLoan={repayLoan}
-                        loanId={loanId}
-                        overviewData={loanData}
-                    />
+                    <>
+                        <LoanRepayment
+                            data={data[viewName].data}
+                            isOverviewOpen={isOverviewOpen}
+                            loan={loan}
+                            repayLoan={repayLoan}
+                            loanId={loanId}
+                            overviewData={loanData}
+                        />
+                        <RepaymentHistory />
+                    </>
                 )}
                 {loan.loanStatus === LoanStatus.LOAN_FULL_REPAID && (
                     <LoanCompleted
@@ -182,7 +185,6 @@ const MicroCredit = (props: any) => {
                     data={data[viewName].data}
                 />
             )}  */}
-            {/* <RepaymentHistory /> */}
         </ViewContainer>
     );
 };
