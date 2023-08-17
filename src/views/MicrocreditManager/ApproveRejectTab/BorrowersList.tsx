@@ -125,13 +125,15 @@ const getColumns = (props: any) => {
         props;
 
     const { extractFromView } = usePrismicData();
+
     const {
         addNote,
         viewAllNotes,
         appliedOn,
         decisionOn,
         approveLoan,
-        rejectLoan: rejectLoanText
+        rejectLoan: rejectLoanText,
+        loansRejectedSuccessfully
     } = extractFromView('messages') as any;
 
     const copyToClipboard = (address: any) => {
@@ -409,12 +411,18 @@ const getColumns = (props: any) => {
                                 }),
                             title: approveLoan
                         },
-                    data?.application?.status !== 5 && {
-                        icon: 'close',
-                        onClick: () =>
-                            rejectLoan(auth, data?.application?.id, mutate),
-                        title: rejectLoanText
-                    },
+                    data?.application?.status !== 5 &&
+                        data?.application?.status !== 4 && {
+                            icon: 'close',
+                            onClick: () =>
+                                rejectLoan(
+                                    auth,
+                                    data?.application?.id,
+                                    mutate,
+                                    loansRejectedSuccessfully
+                                ),
+                            title: rejectLoanText
+                        },
                     // {
                     //     icon: 'bookOpen',
                     //     onClick: () =>
