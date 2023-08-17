@@ -436,7 +436,12 @@ const getColumns = (props: any) => {
                     data?.application?.status !== 5 && {
                         icon: 'close',
                         onClick: () =>
-                            rejectLoan(auth, data?.application?.id, mutate),
+                            rejectLoan(
+                                auth,
+                                data?.application?.id,
+                                mutate,
+                                loansRejectedSuccessfully
+                            ),
                         title: rejectLoanText
                     },
                     data?.application?.status !== 4 &&
