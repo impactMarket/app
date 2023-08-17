@@ -1,7 +1,7 @@
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { useSelector } from 'react-redux';
-import useSWR from 'swr';  
-import config from 'config';
+import config from 'config';  
+import useSWR from 'swr';
 
 const useUserInfo = (address: string) => {
     const auth = useSelector(selectCurrentUser);
@@ -19,10 +19,10 @@ const useUserInfo = (address: string) => {
     const loadingUser = !data && !error;
 
     return {
-        userInfo: data?.data,
-        loadingUser,
         error,
-        mutate
+        loadingUser,
+        mutate,
+        userInfo: data?.data
     };
 };
 

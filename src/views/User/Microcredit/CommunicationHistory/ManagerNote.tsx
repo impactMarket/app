@@ -3,12 +3,13 @@ import {
     Avatar,
     Box,
     CircledIcon,
-    DropdownMenu,
-    Text,
-    Icon,
-    toast,
     Divider,
+    DropdownMenu,
+    Icon,
+    Text,
+    toast,
 } from '@impact-market/ui';
+import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../../utils/formatAddress';
 import { getImage } from '../../../../utils/images';
 import { getUserName } from '../../../../utils/users';
@@ -16,7 +17,6 @@ import { usePrismicData } from '../../../../libs/Prismic/components/PrismicDataP
 import Message from '../../../../libs/Prismic/components/Message';
 import config from '../../../../../config';
 import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
-import { dateHelpers } from 'src/helpers/dateHelpers';
 
 import useUserInfo from 'src/hooks/useUserInfo';
 

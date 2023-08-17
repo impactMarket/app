@@ -1,10 +1,10 @@
-import React, { useState, useEffect } from 'react';
 import {
     Box,
-    Pagination,
-    Card
+    Card,
+    Pagination
 } from '@impact-market/ui';
 import ManagerNote from './ManagerNote';
+import React, { useEffect, useState } from 'react';
 
 const itemsPerPage = 3;
 
@@ -24,16 +24,19 @@ const CommunicationHistory = (props: { borrower: any }) => {
     const handlePageClick = (event: any, direction?: number) => {
         if (event.selected >= 0) {
             const newOffset = (event.selected * itemsPerPage) % borrower?.notes?.length;
+
             setItemOffset(newOffset);
             setCurrentPage(event.selected);
         } else if (direction === 1 && currentPage > 0) {
             const newPage = currentPage - 1;
             const newOffset = (newPage * itemsPerPage) % borrower?.notes?.length;
+
             setItemOffset(newOffset);
             setCurrentPage(newPage);
         } else if (direction === 2 && currentPage < pageCount - 1) {
             const newPage = currentPage + 1;
             const newOffset = (newPage * itemsPerPage) % borrower?.notes?.length;
+
             setItemOffset(newOffset);
             setCurrentPage(newPage);
         }
@@ -42,6 +45,7 @@ const CommunicationHistory = (props: { borrower: any }) => {
     useEffect(() => {
         const endOffset = itemOffset + itemsPerPage;
         const slicedItems = borrower?.notes?.slice(itemOffset, endOffset);
+
         if (slicedItems && slicedItems.length > 0) {
             setCurrentItems(slicedItems);
         }

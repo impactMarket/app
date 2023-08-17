@@ -1,4 +1,3 @@
-import { useState, useEffect } from 'react';
 import {
     Box,
     Button,
@@ -15,18 +14,18 @@ import {
     useFormState,
     useWatch
 } from 'react-hook-form';
+import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import Message from 'src/libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
-
-import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useAddNote from '../../hooks/useAddNote';
+import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const AddNote = () => {
     
     const { borrowerAdd } = useModal();
-    const { extractFromView } = usePrismicData();
-    const {describeConvBorrower, addNote} = extractFromView('messages') as any;
+    const { modals } = usePrismicData();
+    const { addNoteAddNote, addNoteDescribeConvBorrower } = modals?.data;
 
     const { handleClose } = useModal();
     const { t } = useTranslations();
@@ -88,7 +87,7 @@ const AddNote = () => {
                         w="100%"
                     >
                         <CircledIcon icon="upload" medium />
-                        <RichText content={addNote} g900 large mt={1} semibold/>
+                        <RichText content={addNoteAddNote} g900 large mt={1} semibold/>
                         <Controller
                             control={control}
                             name="noteText"
@@ -96,7 +95,7 @@ const AddNote = () => {
                             render={({ field }) => (
                                 <Input
                                     {...field}
-                                    placeholder={`${describeConvBorrower[0]?.text}`}
+                                    placeholder={`${addNoteDescribeConvBorrower[0]?.text}`}
                                     rows={4}
                                     wrapperProps={{
                                         mt: 1,

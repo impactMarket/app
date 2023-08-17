@@ -1,9 +1,7 @@
 import { Box, Tab, TabList, TabPanel, Tabs,Button, openModal } from '@impact-market/ui';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
-import ApplicationHistory from './ApplicationHistory';
-import Documents from './Documents';
-import RepaymentHistory from './RepaymentHistory';
 import CommunicationHistory from './CommunicationHistory';
+import RepaymentHistory from './RepaymentHistory';
 import useFilters from 'src/hooks/useFilters';
 
 const Microcredit = (props: { user: any }) => {
@@ -15,6 +13,7 @@ const Microcredit = (props: { user: any }) => {
 
     const setDefaultTab = () => {
         const tab = getByKey('tab');
+
         console.log("TAB: ",tab);
         
         switch (tab) {
