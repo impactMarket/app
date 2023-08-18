@@ -1,8 +1,8 @@
 import { ImpactProvider } from '@impact-market/utils/ImpactProvider';
-import { WagmiConfig, useAccount, useNetwork, useWalletClient } from 'wagmi';
 import { Web3Modal } from '@web3modal/react';
 import { celo, celoAlfajores } from '@wagmi/chains';
-import { ethereumClient, projectId, wagmiConfig } from 'src/hooks/useWallet';
+import { ethereumClient, projectId } from 'src/hooks/useWallet';
+import { useAccount, useNetwork, useWalletClient } from 'wagmi';
 import React, { useEffect, useState } from 'react';
 import config from '../../config';
 
@@ -49,9 +49,7 @@ const WrapperProvider = (props: WithChildrenProps) => {
 
     return (
         <>
-            <WagmiConfig config={wagmiConfig}>
-                <KitWrapper>{children}</KitWrapper>
-            </WagmiConfig>
+            <KitWrapper>{children}</KitWrapper>
             <Web3Modal
                 projectId={projectId}
                 ethereumClient={ethereumClient}

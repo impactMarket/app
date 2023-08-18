@@ -9,6 +9,7 @@ import {
 } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider, useSelector } from 'react-redux';
+import { WagmiConfig, useAccount } from 'wagmi';
 import { getCookie, hasCookie } from 'cookies-next';
 import {
     selectCurrentUser,
@@ -17,8 +18,8 @@ import {
 } from '../state/slices/auth';
 import { setRates } from '../state/slices/rates';
 import { store } from '../state/store';
-import { useAccount } from 'wagmi';
 import { useGetExchangeRatesMutation } from '../api/generic';
+import { wagmiConfig } from '../hooks/useWallet';
 import ErrorPage from 'next/error';
 import GoogleAnalytics from '../components/GoogleAnalytics';
 import React, { useEffect } from 'react';
@@ -100,7 +101,12 @@ const App = (props: AppProps) => {
         store.dispatch(setToken({ token: getCookie('AUTH_TOKEN').toString() }));
     }
 
-    if (hasCookie('SIGNATURE') && hasCookie('EIP712_SIGNATURE') && hasCookie('MESSAGE') && hasCookie('EIP712_MESSAGE')) {
+    if (
+        hasCookie('SIGNATURE') &&
+        hasCookie('EIP712_SIGNATURE') &&
+        hasCookie('MESSAGE') &&
+        hasCookie('EIP712_MESSAGE')
+    ) {
         store.dispatch(
             setSignature({
                 eip712_message: getCookie('EIP712_MESSAGE').toString(),
@@ -112,21 +118,23 @@ const App = (props: AppProps) => {
     }
 
     return (
-        <PrismicDataProvider data={data} url={url} view={view}>
-            <DesignSystemProvider>
-                <WrapperProvider>
-                    <Provider store={store}>
-                        <ApolloProvider client={apolloClient}>
-                            <SEO meta={meta} />
-                            <ModalManager modals={modals} />
-                            <Toaster />
-                            <InnerApp {...props} />
-                            <GoogleAnalytics />
-                        </ApolloProvider>
-                    </Provider>
-                </WrapperProvider>
-            </DesignSystemProvider>
-        </PrismicDataProvider>
+        <WagmiConfig config={wagmiConfig}>
+            <PrismicDataProvider data={data} url={url} view={view}>
+                <DesignSystemProvider>
+                    <WrapperProvider>
+                        <Provider store={store}>
+                            <ApolloProvider client={apolloClient}>
+                                <SEO meta={meta} />
+                                <ModalManager modals={modals} />
+                                <Toaster />
+                                <InnerApp {...props} />
+                                <GoogleAnalytics />
+                            </ApolloProvider>
+                        </Provider>
+                    </WrapperProvider>
+                </DesignSystemProvider>
+            </PrismicDataProvider>
+        </WagmiConfig>
     );
 };
 
