@@ -58,7 +58,7 @@ const ManagerNote = (props: {note: any }) => {
                         )}
                         <Box pl={0.75}>
                             {(!!manager?.firstName || !!manager?.lastName) && (
-                                <Text g800 semibold small>
+                                <Text g700 semibold small>
                                     {getUserName(manager)}
                                 </Text>
                             )}
@@ -102,10 +102,8 @@ const ManagerNote = (props: {note: any }) => {
                     fLayout="center start" 
                     w="100%"
                     mb="10px"
-                    ml="2rem"
-                
                 >
-                    <Text g700 medium >
+                    <Text g800 regular base >
                         {note?.note}
                     </Text>
                 </Box>
