@@ -3,8 +3,7 @@
 // https://docs.sentry.io/platforms/javascript/guides/nextjs/
 
 import * as Sentry from '@sentry/nextjs';
-import { BrowserTracing } from '@sentry/tracing';
-import { Offline as OfflineIntegration } from '@sentry/integrations';
+import { BrowserTracing } from '@sentry/browser';
 import config from './config';
 
 Sentry.init({
@@ -14,7 +13,7 @@ Sentry.init({
     enabled:
         // eslint-disable-next-line no-process-env
         process.env.NODE_ENV !== 'development' && config.useTestNet !== true,
-    integrations: [new OfflineIntegration(), new BrowserTracing()],
+    integrations: [new BrowserTracing()],
     // Adjust this value in production, or use tracesSampler for greater control
     tracesSampler: (samplingContext) => {
         const error = samplingContext.transactionContext;
@@ -35,5 +34,6 @@ Sentry.init({
         }
 
         return 0.1;
-    }
+    },
+    transport: Sentry.makeBrowserOfflineTransport(Sentry.makeFetchTransport)
 });
