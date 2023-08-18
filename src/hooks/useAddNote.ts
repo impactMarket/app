@@ -60,7 +60,7 @@ const useAddNote = (handleClose: Function) => {
 
             const data = await response.json();
 
-            console.log(response);
+        
 
             setLoading(false);
             handleClose();
