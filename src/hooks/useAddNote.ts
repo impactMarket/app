@@ -51,14 +51,15 @@ const useAddNote = (handleClose: Function) => {
         try {
             const response = await fetch(`${config.baseApiUrl}/microcredit/notes`, {
                 body: JSON.stringify({
-                    userId,
-                    note
+                    note,
+                    userId
                 }),
                 headers,
                 method: 'POST'
             });
 
             const data = await response.json();
+
             console.log(response);
 
             setLoading(false);

@@ -1,15 +1,15 @@
 import {
     Box,
     Card,
+    Icon,
     Pagination,
     Spinner,
-    Text,
-    Icon
+    Text
 } from '@impact-market/ui';
+import { styled } from 'styled-components';
+import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import ManagerNote from './ManagerNote';
 import React, { useEffect, useState } from 'react';
-import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
-import { styled } from 'styled-components';
 
 
 const itemsPerPage = 3;

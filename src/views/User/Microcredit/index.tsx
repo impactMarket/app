@@ -1,11 +1,11 @@
-import { Box, Tab, TabList, TabPanel, Tabs,Button, openModal } from '@impact-market/ui';
+import { Box, Button, Tab, TabList, TabPanel,Tabs, openModal } from '@impact-market/ui';
+import { useEffect, useMemo, useRef, useState} from 'react';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
+import ApplicationHistory from './ApplicationHistory';
 import CommunicationHistory from './CommunicationHistory';
+import Documents from './Documents';
 import RepaymentHistory from './RepaymentHistory';
 import useFilters from 'src/hooks/useFilters';
-import Documents from './Documents';
-import ApplicationHistory from './ApplicationHistory';
-import { useEffect, useState, useMemo, useRef} from 'react';
 
 const Microcredit = (props: { user: any }) => {
     const { user } = props;
@@ -47,6 +47,7 @@ const Microcredit = (props: { user: any }) => {
         
         if (tabsRef.current) {
             const tabElement = tabsRef.current.querySelector(`[data-key="${tabKey}"]`);
+
             if (tabElement) {
                 tabElement.click();
             }
