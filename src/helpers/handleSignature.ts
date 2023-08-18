@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/nextjs';
 import { registerSignature } from '../helpers/registerSignature';
 import { toast } from '@impact-market/ui';
 import config from '../../config';
@@ -30,6 +31,7 @@ export const handleSignature = async (signMessage: any, _signTypedData: any) => 
         return { success: true };
     } catch (error) {
         console.log(error);
+        captureException(error);
 
         throw Error;
     }
