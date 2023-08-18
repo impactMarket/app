@@ -1,3 +1,4 @@
+import { captureException } from '@sentry/nextjs';
 import { registerSignature } from '../helpers/registerSignature';
 import { toast } from '@impact-market/ui';
 import config from '../../config';
@@ -22,7 +23,7 @@ export const handleSignature = async (signMessage: any, _signTypedData: any) => 
         const [signature, eip712_signature] = await Promise.all([
             signMessage(messageToSign),
             // signTypedData(messageToSign, options)
-            { message: {}, signature: '' }
+            { message: { x: 1 }, signature: 'xpto' }
         ]);
 
         registerSignature(signature, eip712_signature, messageToSign);
@@ -30,6 +31,7 @@ export const handleSignature = async (signMessage: any, _signTypedData: any) => 
         return { success: true };
     } catch (error) {
         console.log(error);
+        captureException(error);
 
         throw Error;
     }
