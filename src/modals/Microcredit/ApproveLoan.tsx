@@ -76,7 +76,7 @@ const ApproveLoan = () => {
                         new Date(new Date().getTime() + 1209600000).getTime() /
                             1000
                     ),
-                    dailyInterest: 0.1,
+                    dailyInterest: 0.2,
                     period: parseInt(data?.period, 10) * 2592000,
                     userAddress: addr
                 }));
@@ -89,7 +89,7 @@ const ApproveLoan = () => {
                                 new Date().getTime() + 1209600000
                             ).getTime() / 1000
                         ),
-                        dailyInterest: 0.1,
+                        dailyInterest: 0.2,
                         period: parseInt(data?.period, 10) * 2592000,
                         userAddress: address
                     }
