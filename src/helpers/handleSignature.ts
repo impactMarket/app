@@ -22,7 +22,7 @@ export const handleSignature = async (signMessage: any, _signTypedData: any) => 
         const [signature, eip712_signature] = await Promise.all([
             signMessage(messageToSign),
             // signTypedData(messageToSign, options)
-            { message: {}, signature: '' }
+            { message: { x: 1 }, signature: 'xpto' }
         ]);
 
         registerSignature(signature, eip712_signature, messageToSign);
