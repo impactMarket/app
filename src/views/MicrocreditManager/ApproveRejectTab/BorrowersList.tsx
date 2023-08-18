@@ -54,6 +54,10 @@ const CheckBox = styled(Box)`
     border-color: ${(props) => (props.color ? colors.p600 : colors.g300)};
 `;
 
+const EllipsisIcon = styled(Icon)`
+    transform: rotate(90deg);
+`;
+
 const loanStatus = (status: any) => {
     const { t } = useTranslations();
     let badgeContent = null;
@@ -149,8 +153,8 @@ const getColumns = (props: any) => {
     const { extractFromView } = usePrismicData();
 
     const {
-        // addNote,
-        // viewAllNotes,
+        addNote,
+        viewAllNotes,
         appliedOn,
         decisionOn,
         approveLoan,
@@ -508,35 +512,42 @@ const getColumns = (props: any) => {
                                 `/microcredit/form/${data?.application?.id}`
                             ),
                         title: 'Loan Application'
-                    }
+                    },
+
                 ];
 
                 const filteredItems = dropdownItems.filter((item) => !!item);
 
+
                 return (
                     <Box flex fLayout="center start" style={{ gap: '1rem' }}>
-                        {/* <DropdownMenu
-                        {...({} as any)}
-                        icon="cardsStack"
-                        titleColor="g400"
-                        rtl={true}
-                        items={[
-                            {
-                                icon: 'upload',
-                                onClick: () => openModal('addNote'),
-                                title: addNote
-                            },
-                            {
-                                icon: 'cardsStack',
-                                onClick: () => {},
-                                title: viewAllNotes
-                            }
-                        ]}
-                    /> */}
                         <DropdownMenu
                             {...({} as any)}
                             className="dropdown"
-                            icon="ellipsis"
+                            icon="cardsStack"
+                            titleColor="g400"
+                            rtl={true}
+                            items={[
+                                {
+                                    icon: 'upload',
+                                    onClick: () => openModal('addNote',
+                                    {
+                                        borrowerAdd: data?.address,
+                                    }
+                                    ),
+                                    title: addNote
+                                },
+                                {
+                                    icon: 'cardsStack',
+                                    onClick: () => router.push(`/user/${data.address}?tab=communicationHistory`),
+                                    title: viewAllNotes
+                                }
+                            ]}
+                        />
+                        <DropdownMenu
+                            {...({} as any)}
+                            className="dropdown"
+                            title={<EllipsisIcon icon="ellipsis" g400 />}
                             titleColor="g400"
                             rtl={true}
                             items={filteredItems}

@@ -13,17 +13,17 @@ import {
     toast
 } from '@impact-market/ui';
 import { dateHelpers } from 'src/helpers/dateHelpers';
-import { formatAddress } from '../../../utils/formatAddress';
-import { getImage } from '../../../utils/images';
-import { getUserName } from '../../../utils/users';
+import { formatAddress } from '../../../../utils/formatAddress';
+import { getImage } from '../../../../utils/images';
+import { getUserName } from '../../../../utils/users';
 import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
-import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
+import { usePrismicData } from '../../../../libs/Prismic/components/PrismicDataProvider';
 import Link from 'next/link';
-import Message from '../../../libs/Prismic/components/Message';
-import Table from '../../../components/Table';
-import config from '../../../../config';
+import Message from '../../../../libs/Prismic/components/Message';
+import Table from '../../../../components/Table';
+import config from '../../../../../config';
 import useFilters from 'src/hooks/useFilters';
-import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
+import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
 
 const status = (status: any) => {
     const { t } = useTranslations();

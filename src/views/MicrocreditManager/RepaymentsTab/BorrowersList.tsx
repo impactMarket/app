@@ -254,7 +254,7 @@ const getColumns = () => {
                     items={[
                         {
                             icon: 'user',
-                            onClick: () => router.push(`/user/${data.address}`),
+                            onClick: () => router.push(`/user/${data.address}?tab=repaymentHistory`),
                             title: t('openProfile')
                         }
                     ]}

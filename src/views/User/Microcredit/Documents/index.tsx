@@ -3,7 +3,7 @@ import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import React, { useState } from 'react';
 import Table from 'src/components/Table';
-import config from '../../../../config';
+import config from '../../../../../config';
 import useFilters from 'src/hooks/useFilters';
 
 const itemsPerPage = 4;
