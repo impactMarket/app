@@ -27,7 +27,7 @@
         "@ethersproject/strings": "5.7.0",
         "@impact-market/ui": "1.6.2",
         "@impact-market/utils": "4.0.4",
-        "@prismicio/client": "7.0.0",
+        "@prismicio/client": "7.1.1",
         "@prismicio/helpers": "2.3.9",
         "@prismicio/next": "1.1.0",
         "@prismicio/react": "2.6.1",
