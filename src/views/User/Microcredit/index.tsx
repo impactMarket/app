@@ -58,14 +58,13 @@ const Microcredit = (props: { user: any }) => {
 
 
 
-    const { repaymentHistory, documents, applicationHistory } = extractFromView(
+    const { repaymentHistory, documents, applicationHistory, communicationHistory } = extractFromView(
         'microcredit'
     ) as any;
 
     return (
 
         <Tabs defaultIndex={tab} >
-            {/* @ts-ignore */}
             <Box flex fLayout="center between" w="100%" ref={tabsRef} >
                 <TabList >
                     <Tab 
@@ -97,7 +96,7 @@ const Microcredit = (props: { user: any }) => {
                     />
                     <Tab 
                         data-key="communicationHistory"
-                        title="Communication History"
+                        title={communicationHistory}
                         onClick={() => {
                             update({
                                 tab: 'communicationHistory'
