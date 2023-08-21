@@ -32,6 +32,7 @@ import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import processTransactionError from 'src/utils/processTransactionError';
 import useWallet from '../../hooks/useWallet';
 
 const AddCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
@@ -281,13 +282,14 @@ const AddCommunity: React.FC<{ isLoading?: boolean }> = (props) => {
             }
 
             setSubmitting(false);
-        } catch (e: any) {
-            console.log(e);
+        } catch (error: any) {
+            console.log(error);
+            processTransactionError(error, 'add_community');
             setSubmitting(false);
 
             toast.error(
                 <Message
-                    id={toCamelCase(e.data?.error?.name, 'communityForm')}
+                    id={toCamelCase(error.data?.error?.name, 'communityForm')}
                 />
             );
         }

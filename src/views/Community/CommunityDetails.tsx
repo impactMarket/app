@@ -30,6 +30,7 @@ import { useEffect, useState } from 'react';
 import { useImpactMarketCouncil } from '@impact-market/utils/useImpactMarketCouncil';
 import Message from '../../libs/Prismic/components/Message';
 import generateCommunityProposal from '../../helpers/generateCommunityProposal';
+import processTransactionError from 'src/utils/processTransactionError';
 
 const CommunityWrapper = styled(Grid)`
     > .grid-col:nth-child(2) {
@@ -118,6 +119,7 @@ const CommunityDetails = ({
             toast.success(<Message id="generatedSuccess" />);
         } catch (error) {
             handleKnownErrors(error);
+            processTransactionError(error, 'add_proposal');
             toast.error(<Message id="generatedError" />);
         }
     };

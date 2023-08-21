@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Button,
     CircledIcon,
@@ -71,6 +72,7 @@ const RecoverAccount = () => {
             }
         } catch (error) {
             toast.error(<RichText content="Error" />);
+            Sentry.captureException(error);
             console.log(error);
         }
     };

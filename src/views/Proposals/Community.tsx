@@ -29,6 +29,7 @@ import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
 import generateCommunityProposal from '../../helpers/generateCommunityProposal';
+import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const Community = ({ data, requestsCount, setRequestsCount }: any) => {
@@ -93,6 +94,7 @@ const Community = ({ data, requestsCount, setRequestsCount }: any) => {
             toast.error(
                 <RichText content={view.data.messageRequestsNotGenerated} />
             );
+            processTransactionError(error, 'generate_community_proposal');
             setIsLoading(false);
         }
     };

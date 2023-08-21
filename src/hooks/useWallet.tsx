@@ -17,6 +17,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useWeb3Modal } from '@web3modal/react';
 import config from '../../config';
+import processTransactionError from 'src/utils/processTransactionError';
 import useCache from './useCache';
 
 const network = config.useTestNet ? celoAlfajores : celo;
@@ -104,6 +105,8 @@ const useWallet = () => {
                         return true;
                     }
 
+                    processTransactionError(error, 'wallet_connect');
+
                     return false;
                 }
             }
@@ -121,6 +124,7 @@ const useWallet = () => {
                     return true;
                 } catch (error) {
                     console.log('Error disconnecting from wallet!\n', error);
+                    processTransactionError(error, 'wallet_disconnect');
 
                     return false;
                 }

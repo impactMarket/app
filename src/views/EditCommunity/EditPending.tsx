@@ -28,6 +28,7 @@ import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const EditPending: React.FC<{
@@ -246,11 +247,12 @@ const EditPending: React.FC<{
 
                 toggleSubmitting(false);
             }
-        } catch (e: any) {
-            console.log(e);
+        } catch (error: any) {
+            console.log(error);
             toggleSubmitting(false);
+            processTransactionError(error, 'edit_pending_community');
 
-            console.log(e.data?.error?.name);
+            console.log(error.data?.error?.name);
 
             toast.error(<Message id="errorOccurred" />);
         }

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Box,
     Button,
@@ -63,9 +64,10 @@ const ReportStory = () => {
                     <RichText content={modals.data.reportStorySuccess} />
                 );
             }
-        } catch (e) {
+        } catch (error) {
             toast.error(<RichText content={modals.data.reportStoryError} />);
-            console.log(e);
+            Sentry.captureException(error);
+            console.log(error);
         }
     };
 

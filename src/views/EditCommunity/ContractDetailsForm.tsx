@@ -7,6 +7,7 @@ import ContractForm from '../AddCommunity/ContractForm';
 import Message from '../../libs/Prismic/components/Message';
 import React, { useEffect } from 'react';
 import config from '../../../config';
+import processTransactionError from 'src/utils/processTransactionError';
 
 const schema = yup.object().shape({
     baseInterval: yup.string().required(),
@@ -76,6 +77,10 @@ const ContractDetailsForm = ({ community, currency, rates, formData }: any) => {
             }
         } catch (error) {
             console.log(error);
+            processTransactionError(
+                error,
+                'edit_community_update_beneficiary_params'
+            );
             toast.error(<Message id="errorOccurred" />);
         }
     };

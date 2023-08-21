@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { Alert, Button, toast } from '@impact-market/ui';
 import { currencyFormat } from '../../utils/currencies';
 import { selectCurrentUser } from '../../state/slices/auth';
@@ -43,6 +44,7 @@ const Alerts: React.FC<{
             setRequestSuccess(true);
         } catch (error: any) {
             console.log(error);
+            Sentry.captureException(error);
 
             setLoading(false);
 
