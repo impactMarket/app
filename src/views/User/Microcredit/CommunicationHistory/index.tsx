@@ -8,9 +8,9 @@ import {
 } from '@impact-market/ui';
 import { styled } from 'styled-components';
 import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
-import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import ManagerNote from './ManagerNote';
 import React, { useEffect, useState } from 'react';
+import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
 
 
 const itemsPerPage = 3;
@@ -23,11 +23,7 @@ const StyledBox = styled(Box)`
 const CommunicationHistory = (props: { user: any }) => {
     const { user } = props;
 
-    const { extractFromView } = usePrismicData();
-    const { noResults } = extractFromView(
-        'microcredit'
-    ) as any;
-
+    const { t } = useTranslations();
     const { borrower,loadingBorrower } = useMicrocreditBorrower([
         `address=${user?.address}`,
         `include=notes`
@@ -89,8 +85,8 @@ const CommunicationHistory = (props: { user: any }) => {
                 <StyledBox fLayout="center start"  flex w="100%" h="100px" fDirection="column">
                     <StyledBox flex fLayout="center" w="100%" >
                         <StyledBox flex fLayout="center start">
-                            <Text mr="0.4rem" g700 small>
-                                {noResults}
+                            <Text mr="0.4rem" g700>
+                                {t('noResults')}
                             </Text>
                             <Icon icon="sad" g700 />
                         </StyledBox>

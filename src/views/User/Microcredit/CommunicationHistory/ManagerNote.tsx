@@ -58,7 +58,7 @@ const ManagerNote = (props: {note: any }) => {
                         )}
                         <Box pl={0.75}>
                             {(!!manager?.firstName || !!manager?.lastName) && (
-                                <Text g700 semibold small>
+                                <Text g800 semibold small>
                                     {getUserName(manager)}
                                 </Text>
                             )}
@@ -66,7 +66,7 @@ const ManagerNote = (props: {note: any }) => {
                                 <DropdownMenu
                                     {...({} as any)}
                                     icon="chevronDown"
-                                    notes={[
+                                    items={[
                                         {
                                             icon: 'open',
                                             onClick: () => {
