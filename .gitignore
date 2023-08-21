@@ -48,3 +48,5 @@ tsconfig.tsbuildinfo
 .sentryclirc
 
 .env.alfajores
+# Sentry Auth Token
+.sentryclirc
