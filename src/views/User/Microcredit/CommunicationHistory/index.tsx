@@ -13,6 +13,8 @@ import React, { useEffect, useState } from 'react';
 import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
 
 
+
+
 const itemsPerPage = 3;
 
 const StyledBox = styled(Box)`
@@ -22,7 +24,7 @@ const StyledBox = styled(Box)`
 
 const CommunicationHistory = (props: { user: any }) => {
     const { user } = props;
-
+    
     const { t } = useTranslations();
     const { borrower,loadingBorrower } = useMicrocreditBorrower([
         `address=${user?.address}`,
@@ -109,10 +111,10 @@ const CommunicationHistory = (props: { user: any }) => {
                                 currentPage={currentPage}
                                 handlePageClick={handlePageClick}
                                 nextIcon="arrowRight"
-                                nextLabel="Next"
+                                nextLabel={t('next')}
                                 pageCount={pageCount}
                                 previousIcon="arrowLeft"
-                                previousLabel="Previous"
+                                previousLabel={t('previous')}
                             />
                         )}
                     </Box>

@@ -23,8 +23,6 @@ import useUserInfo from 'src/hooks/useUserInfo';
 const ManagerNote = (props: {note: any }) => {
     const { note } = props;
     const { t } = useTranslations();
-    const { extractFromView } = usePrismicData();
-    const {} = extractFromView('messages') as any;
     const { userInfo: manager} = useUserInfo(note?.manager?.address);
 
     const copyToClipboard = (address: any) => {

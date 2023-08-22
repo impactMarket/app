@@ -6,10 +6,12 @@ import CommunicationHistory from './CommunicationHistory';
 import Documents from './Documents';
 import RepaymentHistory from './RepaymentHistory';
 import useFilters from 'src/hooks/useFilters';
+import { add } from 'lodash';
 
 const Microcredit = (props: { user: any }) => {
     const { user } = props;
     const { extractFromView } = usePrismicData();
+    const {addNote} = extractFromView('microcredit') as any;
     const { update, getByKey } = useFilters();
     const [tab, setTab] = useState(0);
     const tabsRef = useRef(null);
@@ -115,7 +117,7 @@ const Microcredit = (props: { user: any }) => {
                                 )
                             }}
                         >
-                            Add Note
+                            {addNote}
                         </Button>
                     : null
                 }

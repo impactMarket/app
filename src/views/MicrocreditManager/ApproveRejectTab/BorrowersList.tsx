@@ -147,8 +147,7 @@ const getColumns = (props: any) => {
     const { t } = useTranslations();
     const router = useRouter();
 
-    const { auth, selected, setSelected, rejectLoan, limitReach, mutate } =
-        props;
+    const { auth, selected, setSelected, rejectLoan, limitReach, mutate } = props;
 
     const { extractFromView } = usePrismicData();
 
@@ -159,6 +158,7 @@ const getColumns = (props: any) => {
         decisionOn,
         approveLoan,
         rejectLoan: rejectLoanText,
+        loanApplication,
         loansRejectedSuccessfully
     } = extractFromView('messages') as any;
 
@@ -511,7 +511,7 @@ const getColumns = (props: any) => {
                             router.push(
                                 `/microcredit/form/${data?.application?.id}`
                             ),
-                        title: 'Loan Application'
+                        title: loanApplication
                     },
 
                 ];
