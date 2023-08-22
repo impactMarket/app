@@ -114,7 +114,19 @@ const config = {
     /**
      * WalletConnect project id, mandatory for WalletConnect v2
      */
-    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!
+    walletConnectProjectId: process.env.NEXT_PUBLIC_WALLET_CONNECT_PROJECT_ID!,
+
+    /**
+     * Firebase: push notifications config
+     * */
+    fbApiKey: process.env.NEXT_PUBLIC_FB_API_KEY,
+    fbAuthDomain: process.env.NEXT_PUBLIC_FB_AUTH_DOMAIN,
+    fbProjectId: process.env.NEXT_PUBLIC_FB_PROJECT_ID,
+    fbStorageBucket: process.env.NEXT_PUBLIC_FB_STORAGE_BUCKET,
+    fbMessagingSenderId: process.env.NEXT_PUBLIC_FB_MESSAGING_SENDER_ID,
+    fbAppId: process.env.NEXT_PUBLIC_FB_APP_ID,
+    fbVapidKey: process.env.NEXT_PUBLIC_FB_VAPID_KEY,
+    fbMeasurementId: process.env.NEXT_PUBLIC_FB_MEASUREMENT_ID
 };
 
 export default config;

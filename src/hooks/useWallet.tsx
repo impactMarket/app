@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { EthereumClient, w3mConnectors } from '@web3modal/ethereum';
 import { celo, celoAlfajores } from '@wagmi/chains';
 import {
@@ -8,6 +9,7 @@ import {
     useNetwork
 } from 'wagmi';
 import { deleteCookie, hasCookie, setCookie } from 'cookies-next';
+import { deleteToken, getMessaging } from 'firebase/messaging';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
@@ -17,6 +19,7 @@ import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
 import { useWeb3Modal } from '@web3modal/react';
 import config from '../../config';
+import firebaseApp from 'src/utils/firebase/firebase';
 import processTransactionError from 'src/utils/processTransactionError';
 import useCache from './useCache';
 
@@ -54,91 +57,106 @@ const useWallet = () => {
     const { disconnect } = useDisconnect();
     const { address, isConnected } = useAccount();
 
-    useEffect(() => {
-        const connectUser = async (callback?: Function) => {
-            if (!hasCookie('AUTH_TOKEN')) {
-                try {
-                    const payload = await createUser({
-                        address: getAddress(address)
-                    }).unwrap();
+    const connectUser = async (callback?: Function) => {
+        if (!hasCookie('AUTH_TOKEN')) {
+            try {
+                const payload = await createUser({
+                    address: getAddress(address)
+                }).unwrap();
 
+                dispatch(
+                    setCredentials({
+                        token: payload.token,
+                        type: getUserTypes(payload),
+                        user: { ...payload }
+                    })
+                );
+
+                // Create cookie to save Auth Token
+                const expiryDate = new Date();
+
+                expiryDate.setTime(
+                    expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000
+                );
+                setCookie('AUTH_TOKEN', payload.token, {
+                    expires: expiryDate,
+                    path: '/'
+                });
+                deleteCookie('LOCALE', { path: '/' });
+
+                if (!!callback) {
+                    await callback();
+                }
+
+                return true;
+            } catch (error: any) {
+                console.log('Error connecting to wallet!', error);
+
+                if (error?.data?.error?.name === 'DELETION_PROCESS') {
                     dispatch(
                         setCredentials({
-                            token: payload.token,
-                            type: getUserTypes(payload),
-                            user: { ...payload }
+                            token: '',
+                            type: [],
+                            user: {
+                                deleteProcess: true,
+                                recoverAddress: getAddress(address)
+                            }
                         })
                     );
 
-                    // Create cookie to save Auth Token
-                    const expiryDate = new Date();
-
-                    expiryDate.setTime(
-                        expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000
-                    );
-                    setCookie('AUTH_TOKEN', payload.token, {
-                        expires: expiryDate,
-                        path: '/'
-                    });
-                    deleteCookie('LOCALE', { path: '/' });
-
-                    if (!!callback) {
-                        await callback();
-                    }
-
                     return true;
-                } catch (error: any) {
-                    console.log('Error connecting to wallet!', error);
-
-                    if (error?.data?.error?.name === 'DELETION_PROCESS') {
-                        dispatch(
-                            setCredentials({
-                                token: '',
-                                type: [],
-                                user: {
-                                    deleteProcess: true,
-                                    recoverAddress: getAddress(address)
-                                }
-                            })
-                        );
-
-                        return true;
-                    }
-
-                    processTransactionError(error, 'wallet_connect');
-
-                    return false;
                 }
+
+                processTransactionError(error, 'wallet_connect');
+
+                return false;
             }
-        };
+        }
+    };
 
-        const disconnectUser = async (callback?: Function) => {
-            if (hasCookie('AUTH_TOKEN')) {
-                try {
-                    cacheClear();
+    const disconnectUser = async (callback?: Function) => {
+        if (hasCookie('AUTH_TOKEN')) {
+            try {
+                cacheClear();
 
-                    if (!!callback) {
-                        await callback();
+                // Unregister service worker - Firebase
+                const permission = await Notification.requestPermission();
+                const messaging = getMessaging(firebaseApp);
+
+                if (permission) {
+                    try {
+                        await deleteToken(messaging);
+                        // Remove the token from your server or mark it as inactive
+                        console.log('Token deleted.');
+                    } catch (error) {
+                        console.error('Error deleting token:', error);
+                        Sentry.captureException(error);
                     }
-
-                    return true;
-                } catch (error) {
-                    console.log('Error disconnecting from wallet!\n', error);
-                    processTransactionError(error, 'wallet_disconnect');
-
-                    return false;
                 }
-            }
-        };
+                // ---
 
+                if (!!callback) {
+                    await callback();
+                }
+
+                return true;
+            } catch (error) {
+                console.log('Error disconnecting from wallet!\n', error);
+                processTransactionError(error, 'wallet_disconnect');
+
+                return false;
+            }
+        }
+    };
+
+    useEffect(() => {
         if (isConnected && address) {
             connectUser();
         }
-
         if (!isConnected && !address) {
             disconnectUser();
         }
-    }, [isConnected, address]);
+    }, []);
 
     return {
         address,

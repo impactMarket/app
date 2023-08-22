@@ -45,6 +45,7 @@
         "cookies-next": "2.1.1",
         "date-fns": "2.30.0",
         "embla-carousel-react": "8.0.0-rc03",
+        "firebase": "10.2.0",
         "graphql": "16.8.0",
         "graphql-request": "6.1.0",
         "html-react-parser": "3.0.16",

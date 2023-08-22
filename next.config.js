@@ -18,13 +18,19 @@ const languageRedirects = [
     { source: '/fr-FR/:path*', destination: '/fr/:path*' },
     { source: '/fr-fr/:path*', destination: '/fr/:path*' },
     { source: '/pt-br/:path*', destination: '/pt/:path*' },
-    { source: '/pt-BR/:path*', destination: '/pt/:path*' },
-].map(redirect => ({ ...redirect, permanent: true }));
+    { source: '/pt-BR/:path*', destination: '/pt/:path*' }
+].map((redirect) => ({ ...redirect, permanent: true }));
 
 const redirects = () => languageRedirects;
 
 const images = {
-    domains: ['impact-market.cdn.prismic.io', 'images.prismic.io', 'prismic-io.s3.amazonaws.com', 'dxdwf61ltxjyn.cloudfront.net', 'd3ma540h3o1zlk.cloudfront.net']
+    domains: [
+        'impact-market.cdn.prismic.io',
+        'images.prismic.io',
+        'prismic-io.s3.amazonaws.com',
+        'dxdwf61ltxjyn.cloudfront.net',
+        'd3ma540h3o1zlk.cloudfront.net'
+    ]
 };
 
 const webpack = (config, { webpack }) => {
@@ -55,14 +61,14 @@ const sentryWebpackPluginOptions = {
     setCommits: {
         auto: true,
         ignoreMissing: true,
-        ignoreEmpty:true,
+        ignoreEmpty: true
     },
     deploy: {
         // eslint-disable-next-line no-process-env
         env: process.env.VERCEL_ENV || 'development'
     },
     org: 'impactmarket',
-    project: 'pwa',
+    project: 'pwa'
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
@@ -88,21 +94,21 @@ module.exports = withBundleAnalyzer(
         {
             // For all available options, see:
             // https://docs.sentry.io/platforms/javascript/guides/nextjs/manual-setup/
-        
+
             // Upload a larger set of source maps for prettier stack traces (increases build time)
             widenClientFileUpload: true,
-        
+
             // Transpiles SDK to be compatible with IE11 (increases bundle size)
             transpileClientSDK: true,
-        
+
             // Routes browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers (increases server load)
             tunnelRoute: '/monitoring',
-        
+
             // Hides source maps from generated client bundles
             hideSourceMaps: true,
-        
+
             // Automatically tree-shake Sentry logger statements to reduce bundle size
-            disableLogger: true,
+            disableLogger: true
         }
     )
 );
