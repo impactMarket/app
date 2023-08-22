@@ -28,7 +28,7 @@ import StateButtons from './StateButtons';
 import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+
 
 const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;

@@ -6,7 +6,6 @@ import CommunicationHistory from './CommunicationHistory';
 import Documents from './Documents';
 import RepaymentHistory from './RepaymentHistory';
 import useFilters from 'src/hooks/useFilters';
-import { add } from 'lodash';
 
 const Microcredit = (props: { user: any }) => {
     const { user } = props;

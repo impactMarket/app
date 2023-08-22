@@ -13,7 +13,6 @@ import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../../utils/formatAddress';
 import { getImage } from '../../../../utils/images';
 import { getUserName } from '../../../../utils/users';
-import { usePrismicData } from '../../../../libs/Prismic/components/PrismicDataProvider';
 import Message from '../../../../libs/Prismic/components/Message';
 import config from '../../../../../config';
 import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
