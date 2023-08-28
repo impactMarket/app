@@ -42,7 +42,7 @@
         "@web3modal/ethereum": "2.7.1",
         "@web3modal/react": "2.7.1",
         "bignumber.js": "9.1.1",
-        "cookies-next": "2.1.1",
+        "cookies-next": "3.0.0",
         "date-fns": "2.30.0",
         "embla-carousel-react": "8.0.0-rc03",
         "graphql": "16.8.0",
