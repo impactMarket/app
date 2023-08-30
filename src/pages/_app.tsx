@@ -72,32 +72,23 @@ const InnerApp = (props: AppProps) => {
                     if (currentToken) {
                         // Send Firebase token to endpoint /user
                         try {
-                            const result = await fetch(
-                                `${config.baseApiUrl}/users`,
-                                {
-                                    body: JSON.stringify({
-                                        appPNT: currentToken
-                                    }),
-                                    headers: {
-                                        Accept: 'application/json',
-                                        Authorization: `Bearer ${getCookie(
-                                            'AUTH_TOKEN'
-                                        ).toString()}`,
-                                        'Content-Type': 'application/json',
-                                        eip712signature: eip712_signature,
-                                        eip712value: eip712_message,
-                                        message,
-                                        signature
-                                    },
-                                    method: 'PUT'
-                                }
-                            );
-
-                            if (result.status !== 200) {
-                                console.log(
-                                    'Error sending firebase token to /user'
-                                );
-                            }
+                            await fetch(`${config.baseApiUrl}/users`, {
+                                body: JSON.stringify({
+                                    appPNT: currentToken
+                                }),
+                                headers: {
+                                    Accept: 'application/json',
+                                    Authorization: `Bearer ${getCookie(
+                                        'AUTH_TOKEN'
+                                    ).toString()}`,
+                                    'Content-Type': 'application/json',
+                                    eip712signature: eip712_signature,
+                                    eip712value: eip712_message,
+                                    message,
+                                    signature
+                                },
+                                method: 'PUT'
+                            });
                         } catch (e: any) {
                             console.log(e);
                             Sentry.captureException(e);
