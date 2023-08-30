@@ -126,7 +126,6 @@ const useWallet = () => {
                 if (permission) {
                     try {
                         await deleteToken(messaging);
-                        // Remove the token from your server or mark it as inactive
                         console.log('Token deleted.');
                     } catch (error) {
                         console.error('Error deleting token:', error);
