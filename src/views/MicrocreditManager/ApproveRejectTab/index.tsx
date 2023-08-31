@@ -1,5 +1,6 @@
 import { Box, Button, Card, openModal, toast } from '@impact-market/ui';
 import { FlexibleTab, TabItem } from '../../../components/FlexibleTab';
+import { FormStatus } from '../../../utils/formStatus';
 import { getCookie } from 'cookies-next';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { useLoanManager } from '@impact-market/utils';
@@ -31,7 +32,7 @@ const rejectLoan = async (
                 if (item?.application && item?.application.id) {
                     return {
                         applicationId: item.application.id,
-                        status: 5
+                        status: FormStatus.REJECTED
                     };
                 }
             });
@@ -40,7 +41,7 @@ const rejectLoan = async (
         requestData = [
             {
                 applicationId: selected,
-                status: 5
+                status: FormStatus.REJECTED
             }
         ];
     }
@@ -196,27 +197,27 @@ const ApproveRejectTab: React.FC<{}> = () => {
         },
         {
             number: countPending || 0,
-            onClick: () => update({ page: 1, status: '1' }),
+            onClick: () => update({ page: 1, status: FormStatus.PENDING }),
             title: t('pending')
         },
         {
             number: countApproved || 0,
-            onClick: () => update({ page: 1, status: '5' }),
+            onClick: () => update({ page: 1, status: FormStatus.APPROVED }),
             title: t('approved')
         },
         {
             number: countRejected || 0,
-            onClick: () => update({ page: 1, status: '6' }),
+            onClick: () => update({ page: 1, status: FormStatus.REJECTED }),
             title: t('rejected')
         },
         {
             number: countReqChanges || 0,
-            onClick: () => update({ page: 1, status: '3' }),
+            onClick: () => update({ page: 1, status: FormStatus.REQUEST_CHANGES }),
             title: t('revise')
         },
         {
             number: countInterview || 0,
-            onClick: () => update({ page: 1, status: '4' }),
+            onClick: () => update({ page: 1, status: FormStatus.INTERVIEW }),
             title: 'Interview'
         }
     ];

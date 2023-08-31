@@ -56,6 +56,11 @@ const ApproveLoan = () => {
 
     const { addLoans, managerDetails } = useLoanManager();
 
+    const handleCancel = (event: any) => {
+        event.preventDefault();
+        handleClose();
+    };
+
     const validatePeriod =
         parseInt(period, 10) > 12 || parseInt(period, 10) <= 0;
     const validateAmount =
@@ -189,7 +194,7 @@ const ApproveLoan = () => {
                             gray
                             fluid={'xs'}
                             mt={{ sm: 1.5, xs: 1.5 }}
-                            onClick={() => handleClose()}
+                            onClick={handleCancel}
                         >
                             {t('cancel')}
                         </Button>

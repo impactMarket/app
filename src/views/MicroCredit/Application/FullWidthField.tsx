@@ -660,7 +660,7 @@ const FullWidthField = (props: FullWidthProps) => {
                                 title={
                                     !!currency
                                         ? t(currency)
-                                        : 'Choose your currency'
+                                        : t('chooseCurrency')
                                 }
                             />
                         </Box>

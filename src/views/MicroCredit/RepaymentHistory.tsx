@@ -122,7 +122,6 @@ const RepaymentHistory = () => {
             mt={1.25}
             page={page}
             count={count}
-            pb={6}
             prefix={modifiedRepaymentHistory}
             setItemOffset={setItemOffset}
         />

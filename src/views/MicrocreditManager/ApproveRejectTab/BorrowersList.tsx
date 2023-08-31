@@ -14,6 +14,7 @@ import {
     openModal,
     toast
 } from '@impact-market/ui';
+import { FormStatus } from '../../../utils/formStatus';
 import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../utils/formatAddress';
 import { getCookie } from 'cookies-next';
@@ -27,6 +28,7 @@ import { useSelector } from 'react-redux';
 import Message from '../../../libs/Prismic/components/Message';
 import Table from '../../../components/Table';
 import config from '../../../../config';
+import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const TableWrapper = styled(Table)`
@@ -64,7 +66,7 @@ const loanStatus = (status: any) => {
     let bgColor = '';
 
     switch (status) {
-        case 2: // Pending
+        case FormStatus.PENDING:
             badgeContent = (
                 <>
                     <Icon icon={'clock'} g700 mr={0.2} />
@@ -75,7 +77,7 @@ const loanStatus = (status: any) => {
             );
             bgColor = 'bgG50';
             break;
-        case 3: // Requested Changes
+        case FormStatus.REQUEST_CHANGES:
             badgeContent = (
                 <>
                     <Icon icon={'edit'} p700 mr={0.2} />
@@ -87,7 +89,7 @@ const loanStatus = (status: any) => {
             bgColor = 'bgP50';
             break;
 
-        case 4: // INTERVIEW
+        case FormStatus.INTERVIEW:
             badgeContent = (
                 <>
                     <Icon icon={'menu'} p700 mr={0.2} />
@@ -98,7 +100,7 @@ const loanStatus = (status: any) => {
             );
             bgColor = 'bgP50';
             break;
-        case 5: // Approved
+        case FormStatus.APPROVED:
             badgeContent = (
                 <>
                     <Icon icon={'check'} s500 mr={0.2} />
@@ -109,7 +111,7 @@ const loanStatus = (status: any) => {
             );
             bgColor = 'bgS50';
             break;
-        case 6: // Rejected
+        case FormStatus.REJECTED:
             badgeContent = (
                 <>
                     <Icon icon={'close'} e500 mr={0.2} />
@@ -158,7 +160,6 @@ const getColumns = (props: any) => {
         decisionOn,
         approveLoan,
         rejectLoan: rejectLoanText,
-        loanApplication,
         loansRejectedSuccessfully
     } = extractFromView('messages') as any;
 
@@ -427,8 +428,8 @@ const getColumns = (props: any) => {
             render: (data: any) => {
                 const dropdownItems = [
                     !limitReach &&
-                        data?.application?.status !== 5 &&
-                        data?.application?.status !== 6 && {
+                        data?.application?.status !== FormStatus.APPROVED &&
+                        data?.application?.status !== FormStatus.REJECTED && {
                             icon: 'check',
                             onClick: () =>
                                 openModal('approveLoan', {
@@ -437,7 +438,8 @@ const getColumns = (props: any) => {
                                 }),
                             title: approveLoan
                         },
-                    data?.application?.status !== 5 && {
+                    data?.application?.status !== FormStatus.APPROVED &&
+                    data?.application?.status !== FormStatus.REJECTED && {
                         icon: 'close',
                         onClick: () =>
                             rejectLoan(
@@ -448,9 +450,9 @@ const getColumns = (props: any) => {
                             ),
                         title: rejectLoanText
                     },
-                    data?.application?.status !== 4 &&
-                        data?.application?.status !== 5 &&
-                        data?.application?.status !== 6 && {
+                    data?.application?.status !== FormStatus.INTERVIEW &&
+                        data?.application?.status !== FormStatus.APPROVED &&
+                        data?.application?.status !== FormStatus.REJECTED && {
                             icon: 'userCheck',
                             onClick: async () => {
                                 try {
@@ -461,7 +463,7 @@ const getColumns = (props: any) => {
                                                 {
                                                     applicationId:
                                                         data?.application?.id,
-                                                    status: 4
+                                                        status: FormStatus.INTERVIEW
                                                 }
                                             ]),
                                             headers: {
@@ -485,7 +487,7 @@ const getColumns = (props: any) => {
                                     if (result.status === 201) {
                                         mutate();
                                         toast.success(
-                                            'Application set as ready for interview'
+                                            t('setForInterviewSuccess')
                                         );
                                     } else {
                                         toast.error(
@@ -495,10 +497,10 @@ const getColumns = (props: any) => {
                                 } catch (error) {
                                     console.log(error);
                                     toast.error(<Message id="errorOccurred" />);
-                                    // processTransactionError(error, 'reject_loan');
+                                    processTransactionError(error, 'set_interview_state');
                                 }
                             },
-                            title: 'Ready for Interview'
+                            title: t('readyForInterview')
                         },
                     {
                         icon: 'user',
@@ -511,9 +513,8 @@ const getColumns = (props: any) => {
                             router.push(
                                 `/microcredit/form/${data?.application?.id}`
                             ),
-                        title: loanApplication
-                    },
-
+                        title: t('loanApplication')
+                    }
                 ];
 
                 const filteredItems = dropdownItems.filter((item) => !!item);
