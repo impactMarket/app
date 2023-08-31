@@ -103,7 +103,7 @@ const Reports: React.FC<{ isLoading?: boolean }> = (props) => {
             </Text>
             <Box pt={2}>
                 <Card padding={0}>
-                    {data?.rows.map((report: any) => (
+                    {data?.rows?.map((report: any) => (
                         <>
                             <Box padding={1}>
                                 <Box fLayout="between" flex>
@@ -172,7 +172,9 @@ const Reports: React.FC<{ isLoading?: boolean }> = (props) => {
                                     </Box>
                                     <Box>
                                         <Text>
-                                            {dateHelpers.ago(report?.createdAt)}
+                                            {dateHelpers.agoISO(
+                                                report?.createdAt
+                                            )}
                                         </Text>
                                     </Box>
                                 </Box>

@@ -131,7 +131,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
     const cards = [
         {
             loading: loadingReports,
-            number: data?.count || '--',
+            number: data?.count,
             title: <String id="reportedSuspiciousActivity" />,
             type: 'SuspiciousReports',
             url: `/ambassador/reports?community=${
