@@ -29,7 +29,6 @@ import String from '../../libs/Prismic/components/String';
 import config from '../../../config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-
 const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const [loadingUser, toggleLoadingUser] = useState(true);
@@ -39,7 +38,6 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
     const router = useRouter();
     const { t } = useTranslations();
     const [getUser] = useGetUserByIdMutation();
-    
 
     const hasAddress =
         !!auth?.user?.manager?.community && !!user?.beneficiary?.community;
@@ -47,7 +45,8 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
         auth?.user?.manager?.community === user?.beneficiary?.community &&
         hasAddress;
     const showMicrocredit =
-        !!user?.borrower?.id && auth?.user?.roles.includes('loanManager');
+        !!user?.roles?.includes('borrower') &&
+        auth?.user?.roles?.includes('loanManager');
 
     useEffect(() => {
         const init = async () => {
