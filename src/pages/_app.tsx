@@ -101,7 +101,6 @@ const InnerApp = (props: AppProps) => {
                 } else {
                     console.log('Notification permission not granted');
                 }
-                // --
             };
 
             handleFirebaseServiceWorker();

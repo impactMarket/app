@@ -119,7 +119,7 @@ const useWallet = () => {
             try {
                 cacheClear();
 
-                // Unregister service worker - Firebase
+                // Delete token - Firebase
                 const permission = await Notification.requestPermission();
                 const messaging = getMessaging(firebaseApp);
 
@@ -132,7 +132,6 @@ const useWallet = () => {
                         Sentry.captureException(error);
                     }
                 }
-                // ---
 
                 if (!!callback) {
                     await callback();
