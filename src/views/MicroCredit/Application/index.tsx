@@ -497,7 +497,10 @@ const ApplicationForm = (props: any) => {
 
                                         if (result.status === 201) {
                                             toast.success(
-                                                'Loan set for revision successfully'
+                                                t('loanForRevision')
+                                            );
+                                            router.push(
+                                                `/microcredit-manager?tab=repayments`
                                             );
                                         } else {
                                             toast.error(
@@ -513,7 +516,7 @@ const ApplicationForm = (props: any) => {
                                     }
                                 }}
                             >
-                                {'Request Borrower Revision'}
+                                {t('requestRevision')}
                             </Button>
                         </Box>
                     )}

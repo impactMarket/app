@@ -7,6 +7,7 @@ import RichText from '../../../libs/Prismic/components/RichText';
 import Select from '../../../components/Select';
 import config from '../../../../config';
 import styled from 'styled-components';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const RadioWrapper = styled.label`
     align-items: center;
@@ -43,6 +44,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
         getElement,
         setLoanManagerId
     } = props;
+    const { t } = useTranslations();
     const formData = getElement(sectionId, idx)?.data;
     const [active, setActive] = useState(formData ?? -1);
     const auth = useSelector(selectCurrentUser);
@@ -109,7 +111,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
                         setCountry(value);
                         fetchManagers(value);
                     }}
-                    placeholder={'Choose your country'}
+                    placeholder={t('ChooseCountry')}
                     isClearable
                     options={countries}
                     mt="1.5rem"
