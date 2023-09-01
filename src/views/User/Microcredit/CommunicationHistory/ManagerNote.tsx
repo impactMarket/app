@@ -7,7 +7,7 @@ import {
     DropdownMenu,
     // Icon,
     Text,
-    toast,
+    toast
 } from '@impact-market/ui';
 import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../../utils/formatAddress';
@@ -18,11 +18,10 @@ import config from '../../../../../config';
 import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
 import useUserInfo from 'src/hooks/useUserInfo';
 
-
-const ManagerNote = (props: {note: any }) => {
+const ManagerNote = (props: { note: any }) => {
     const { note } = props;
     const { t } = useTranslations();
-    const { userInfo: manager} = useUserInfo(note?.manager?.address);
+    const { userInfo: manager } = useUserInfo(note?.manager?.address);
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
@@ -30,16 +29,17 @@ const ManagerNote = (props: {note: any }) => {
         toast.success(<Message id="copiedAddress" />);
     };
 
-    
-              
-    
-
-
-    return(
-        <Box >
-            <Box fLayout="center start" flex w="100%" fDirection="column"  padding="0rem 1rem 0rem 1rem" >
+    return (
+        <Box>
+            <Box
+                fLayout="center start"
+                flex
+                w="100%"
+                fDirection="column"
+                padding="0rem 1rem 0rem 1rem"
+            >
                 <Box flex fLayout="center between" w="100%" mb="10px">
-                    <Box flex fLayout="center start" >
+                    <Box flex fLayout="center start">
                         {!!manager?.avatarMediaPath ? (
                             <Avatar
                                 extrasmall
@@ -79,45 +79,42 @@ const ManagerNote = (props: {note: any }) => {
                                         {
                                             icon: 'copy',
                                             onClick: () =>
-                                                copyToClipboard(manager?.address),
+                                                copyToClipboard(
+                                                    manager?.address
+                                                ),
                                             title: t('copyAddress')
                                         }
                                     ]}
                                     title={
                                         <Text p500 small>
-                                            {formatAddress(manager?.address, [6, 5])}
+                                            {formatAddress(
+                                                manager?.address,
+                                                [6, 5]
+                                            )}
                                         </Text>
                                     }
                                 />
                             </Box>
-                        </Box> 
-                    </Box> 
+                        </Box>
+                    </Box>
                     {/* <Icon icon="trash" p500 /> */}
                 </Box>
-                <Box
-                    flex 
-                    fLayout="center start" 
-                    w="100%"
-                    mb="10px"
-                >
-                    <Text g800 regular base >
+                <Box flex fLayout="center start" w="100%" mb="10px">
+                    <Text g800 regular base>
                         {note?.note}
                     </Text>
                 </Box>
-                <Box
-                    flex 
-                    fLayout="center start" 
-                    w="100%"
-                
-                >
-                    <Text g500 small >
-                        {`${dateHelpers.getDateAndTime(note?.createdAt)[0]} · ${dateHelpers.getDateAndTime(note?.createdAt)[1]} `} 
+                <Box flex fLayout="center start" w="100%">
+                    <Text g500 small>
+                        {`${dateHelpers.getDateAndTime(note?.createdAt)[0]} · ${
+                            dateHelpers.getDateAndTime(note?.createdAt)[1]
+                        } `}
                     </Text>
                 </Box>
             </Box>
-            <Divider/>
+            <Divider />
         </Box>
-    )
+    );
 };
 
 export default ManagerNote;

@@ -497,7 +497,7 @@ const ApplicationForm = (props: any) => {
 
                                         if (result.status === 201) {
                                             toast.success(
-                                                t('loanForRevision')
+                                                <Message id="loanForRevision" />
                                             );
                                             router.push(
                                                 `/microcredit-manager?tab=repayments`

@@ -79,7 +79,15 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
 
     return (
         <ViewContainer {...({} as any)} isLoading={isLoading || loadingUser}>
-            <TextLink fLayout="center start" flex onClick={() => router.back()}>
+            <TextLink
+                fLayout="center start"
+                flex
+                onClick={() =>
+                    auth?.user?.roles?.includes('loanManager')
+                        ? router.push('/microcredit-manager')
+                        : router.back()
+                }
+            >
                 <Label content={<String id="back" />} icon="arrowLeft" ml={0} />
             </TextLink>
             <Box

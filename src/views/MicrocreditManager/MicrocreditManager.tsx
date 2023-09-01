@@ -35,14 +35,14 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     }, []);
 
-    const { managerDetails } = useLoanManager();
+    const { managerDetails, isReady } = useLoanManager();
 
     const limitReach =
         managerDetails?.currentLentAmount >=
         managerDetails?.currentLentAmountLimit;
 
     return (
-        <ViewContainer {...({} as any)} isLoading={isLoading}>
+        <ViewContainer {...({} as any)} isLoading={isLoading || !isReady}>
             {limitReach && (
                 <Alert
                     icon="alertCircle"
