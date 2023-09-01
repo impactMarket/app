@@ -11,6 +11,7 @@ export interface PutPostUser {
     address?: string;
     age?: number;
     ambassador?: any;
+    appPNT?: string;
     avatarMediaPath?: string;
     beneficiary?: any;
     bio?: string;

@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 import {
     AppContainer,
@@ -11,6 +12,8 @@ import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvi
 import { Provider, useSelector } from 'react-redux';
 import { WagmiConfig, useAccount } from 'wagmi';
 import { getCookie, hasCookie } from 'cookies-next';
+import { getMessaging, getToken } from 'firebase/messaging';
+import { registerFirebaseSW } from 'src/hooks/useServiceWorker';
 import {
     selectCurrentUser,
     setSignature,
@@ -27,6 +30,7 @@ import SEO from '../components/SEO';
 import Sidebar from '../components/Sidebar';
 import WrapperProvider from '../components/WrapperProvider';
 import config from '../../config';
+import firebaseApp from 'src/utils/firebase/firebase';
 import modals from '../modals';
 import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
@@ -47,11 +51,59 @@ const InnerApp = (props: AppProps) => {
     const [getRates] = useGetExchangeRatesMutation();
 
     const { isConnected } = useAccount();
-    const { signature, eip712_signature } = useSelector(selectCurrentUser);
+    const { signature, eip712_signature, message, eip712_message } =
+        useSelector(selectCurrentUser);
 
     useEffect(() => {
         if (isConnected && (!signature || !eip712_signature)) {
             openModal('signature');
+        }
+
+        if (isConnected && (signature || eip712_signature)) {
+            const handleFirebaseServiceWorker = async () => {
+                const messaging = getMessaging(firebaseApp);
+                const permission = await Notification.requestPermission();
+
+                if (permission === 'granted') {
+                    const currentToken = await getToken(messaging, {
+                        vapidKey: config.fbVapidKey
+                    });
+
+                    if (currentToken) {
+                        // Send Firebase token to endpoint /user
+                        try {
+                            await fetch(`${config.baseApiUrl}/users`, {
+                                body: JSON.stringify({
+                                    appPNT: currentToken
+                                }),
+                                headers: {
+                                    Accept: 'application/json',
+                                    Authorization: `Bearer ${getCookie(
+                                        'AUTH_TOKEN'
+                                    ).toString()}`,
+                                    'Content-Type': 'application/json',
+                                    eip712signature: eip712_signature,
+                                    eip712value: eip712_message,
+                                    message,
+                                    signature
+                                },
+                                method: 'PUT'
+                            });
+                        } catch (e: any) {
+                            console.log(e);
+                            Sentry.captureException(e);
+                        }
+                    } else {
+                        console.log(
+                            'No registration token available. Request permission to generate one.'
+                        );
+                    }
+                } else {
+                    console.log('Notification permission not granted');
+                }
+            };
+
+            handleFirebaseServiceWorker();
         }
     }, [isConnected, signature, eip712_signature]);
 
@@ -116,6 +168,10 @@ const App = (props: AppProps) => {
             })
         );
     }
+
+    useEffect(() => {
+        registerFirebaseSW();
+    }, []);
 
     return (
         <WagmiConfig config={wagmiConfig}>
