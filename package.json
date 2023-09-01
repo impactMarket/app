@@ -48,7 +48,7 @@
         "firebase": "10.2.0",
         "graphql": "16.8.0",
         "graphql-request": "6.1.0",
-        "html-react-parser": "3.0.16",
+        "html-react-parser": "4.2.1",
         "keyv": "4.5.2",
         "libphonenumber-js": "1.10.30",
         "mapbox-gl": "2.14.1",
