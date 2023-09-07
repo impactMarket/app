@@ -11,7 +11,7 @@ export const getStaticProps: GetStaticProps = async ({
     const data = await Prismic.getByTypes({
         clientOptions,
         lang,
-        types: 'pwa-view-notifications'
+        types: ['pwa-view-notifications', 'push_notifications_data']
     });
 
     return {

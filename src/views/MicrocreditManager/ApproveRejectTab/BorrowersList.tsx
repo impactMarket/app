@@ -94,7 +94,7 @@ const loanStatus = (status: any) => {
                 <>
                     <Icon icon={'menu'} p700 mr={0.2} />
                     <Text p700 extrasmall medium>
-                        {'Interview'}
+                        {t('interview')}
                     </Text>
                 </>
             );
@@ -149,7 +149,8 @@ const getColumns = (props: any) => {
     const { t } = useTranslations();
     const router = useRouter();
 
-    const { auth, selected, setSelected, rejectLoan, limitReach, mutate } = props;
+    const { auth, selected, setSelected, rejectLoan, limitReach, mutate } =
+        props;
 
     const { extractFromView } = usePrismicData();
 
@@ -428,8 +429,7 @@ const getColumns = (props: any) => {
             render: (data: any) => {
                 const dropdownItems = [
                     !limitReach &&
-                        data?.application?.status !== FormStatus.APPROVED &&
-                        data?.application?.status !== FormStatus.REJECTED && {
+                        data?.application?.status !== FormStatus.APPROVED && {
                             icon: 'check',
                             onClick: () =>
                                 openModal('approveLoan', {
@@ -439,17 +439,17 @@ const getColumns = (props: any) => {
                             title: approveLoan
                         },
                     data?.application?.status !== FormStatus.APPROVED &&
-                    data?.application?.status !== FormStatus.REJECTED && {
-                        icon: 'close',
-                        onClick: () =>
-                            rejectLoan(
-                                auth,
-                                data?.application?.id,
-                                mutate,
-                                loansRejectedSuccessfully
-                            ),
-                        title: rejectLoanText
-                    },
+                        data?.application?.status !== FormStatus.REJECTED && {
+                            icon: 'close',
+                            onClick: () =>
+                                rejectLoan(
+                                    auth,
+                                    data?.application?.id,
+                                    mutate,
+                                    loansRejectedSuccessfully
+                                ),
+                            title: rejectLoanText
+                        },
                     data?.application?.status !== FormStatus.INTERVIEW &&
                         data?.application?.status !== FormStatus.APPROVED &&
                         data?.application?.status !== FormStatus.REJECTED && {
@@ -463,7 +463,7 @@ const getColumns = (props: any) => {
                                                 {
                                                     applicationId:
                                                         data?.application?.id,
-                                                        status: FormStatus.INTERVIEW
+                                                    status: FormStatus.INTERVIEW
                                                 }
                                             ]),
                                             headers: {
@@ -497,7 +497,10 @@ const getColumns = (props: any) => {
                                 } catch (error) {
                                     console.log(error);
                                     toast.error(<Message id="errorOccurred" />);
-                                    processTransactionError(error, 'set_interview_state');
+                                    processTransactionError(
+                                        error,
+                                        'set_interview_state'
+                                    );
                                 }
                             },
                             title: t('readyForInterview')
@@ -519,7 +522,6 @@ const getColumns = (props: any) => {
 
                 const filteredItems = dropdownItems.filter((item) => !!item);
 
-
                 return (
                     <Box flex fLayout="center start" style={{ gap: '1rem' }}>
                         <DropdownMenu
@@ -531,16 +533,18 @@ const getColumns = (props: any) => {
                             items={[
                                 {
                                     icon: 'upload',
-                                    onClick: () => openModal('addNote',
-                                    {
-                                        borrowerAdd: data?.address,
-                                    }
-                                    ),
+                                    onClick: () =>
+                                        openModal('addNote', {
+                                            borrowerId: data?.id
+                                        }),
                                     title: addNote
                                 },
                                 {
                                     icon: 'cardsStack',
-                                    onClick: () => router.push(`/user/${data.address}?tab=communicationHistory`),
+                                    onClick: () =>
+                                        router.push(
+                                            `/user/${data.address}?tab=communicationHistory`
+                                        ),
                                     title: viewAllNotes
                                 }
                             ]}

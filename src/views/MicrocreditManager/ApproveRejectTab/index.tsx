@@ -172,20 +172,40 @@ const ApproveRejectTab: React.FC<{}> = () => {
     const actualPage = page - 1 >= 0 ? page - 1 : 0;
     const [itemOffset, setItemOffset] = useState(page * itemsPerPage || 0);
 
-    const { applications, count, loadingApplications, mutate } =
-        useMicrocreditApplications([
-            `limit=${itemsPerPage}`,
-            `offset=${itemOffset}`,
-            // `orderBy=${getByKey('orderBy') || 'appliedOn'}`,
-            `${getByKey('status') ? `status=${getByKey('status')}` : ''}`
-        ]);
+    const {
+        applications,
+        count,
+        loadingApplications,
+        mutate: mutateApplications
+    } = useMicrocreditApplications([
+        `limit=${itemsPerPage}`,
+        `offset=${itemOffset}`,
+        // `orderBy=${getByKey('orderBy') || 'appliedOn'}`,
+        `${getByKey('status') ? `status=${getByKey('status')}` : ''}`
+    ]);
 
-    const { count: countAll } = useMicrocreditApplications();
-    const { count: countPending } = useMicrocreditApplications(['status=1']);
-    const { count: countReqChanges } = useMicrocreditApplications(['status=3']);
-    const { count: countInterview } = useMicrocreditApplications(['status=4']);
-    const { count: countApproved } = useMicrocreditApplications(['status=5']);
-    const { count: countRejected } = useMicrocreditApplications(['status=6']);
+    const { count: countAll, mutate: mutateCountAll } =
+        useMicrocreditApplications();
+    const { count: countPending, mutate: mutateCountPending } =
+        useMicrocreditApplications([`status=${FormStatus.PENDING}`]);
+    const { count: countReqChanges, mutate: mutateCountReqChanges } =
+        useMicrocreditApplications([`status=${FormStatus.REQUEST_CHANGES}`]);
+    const { count: countInterview, mutate: mutateCountInterview } =
+        useMicrocreditApplications([`status=${FormStatus.INTERVIEW}`]);
+    const { count: countApproved, mutate: mutateCountApproved } =
+        useMicrocreditApplications([`status=${FormStatus.APPROVED}`]);
+    const { count: countRejected, mutate: mutateCountRejected } =
+        useMicrocreditApplications([`status=${FormStatus.REJECTED}`]);
+
+    const mutate = () => {
+        mutateApplications();
+        mutateCountAll();
+        mutateCountPending();
+        mutateCountReqChanges();
+        mutateCountInterview();
+        mutateCountApproved();
+        mutateCountRejected();
+    };
 
     const tabs: TabItem[] = [
         {
@@ -212,13 +232,14 @@ const ApproveRejectTab: React.FC<{}> = () => {
         },
         {
             number: countReqChanges || 0,
-            onClick: () => update({ page: 1, status: FormStatus.REQUEST_CHANGES }),
+            onClick: () =>
+                update({ page: 1, status: FormStatus.REQUEST_CHANGES }),
             title: t('revise')
         },
         {
             number: countInterview || 0,
             onClick: () => update({ page: 1, status: FormStatus.INTERVIEW }),
-            title: 'Interview'
+            title: t('interview')
         }
     ];
 

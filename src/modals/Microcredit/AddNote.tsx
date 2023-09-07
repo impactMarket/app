@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Box,
     Button,
@@ -5,7 +6,7 @@ import {
     Input,
     ModalWrapper,
     toast,
-    useModal,
+    useModal
 } from '@impact-market/ui';
 import {
     Controller,
@@ -14,25 +15,28 @@ import {
     useFormState,
     useWatch
 } from 'react-hook-form';
+import { getCookie } from 'cookies-next';
+import { selectCurrentUser } from 'src/state/slices/auth';
 import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { useSelector } from 'react-redux';
 import Message from 'src/libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
-import useAddNote from '../../hooks/useAddNote';
+import config from 'config';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
 const AddNote = () => {
-    const { borrowerAdd } = useModal();
+    const { borrowerId } = useModal();
     const { modals } = usePrismicData();
-    const { addNoteAddNote, addNoteDescribeConvBorrower } = modals?.data;
+    const { addNoteAddNote, addNoteDescribeConvBorrower, addNoteNoteAdded } =
+        modals?.data;
 
     const { handleClose } = useModal();
     const { t } = useTranslations();
 
-    const {
-        handleSubmit,
-        control
-    } = useForm({ defaultValues: { noteText: '' } });
+    const { handleSubmit, control } = useForm({
+        defaultValues: { noteText: '' }
+    });
 
     const noteText = useWatch({
         control,
@@ -47,16 +51,30 @@ const AddNote = () => {
     });
 
     const [submitSuccess, setSubmitSuccess] = useState(false);
-    const { addNote: addNotePost } = useAddNote(() => {
-        setSubmitSuccess(true);
-        handleClose();
-    });
+
+    const auth = useSelector(selectCurrentUser);
 
     const onSubmit: SubmitHandler<any> = async (data) => {
         try {
-            await addNotePost(data.noteText, borrowerAdd);
-            toast.success('Note Added');
+            await fetch(`${config.baseApiUrl}/microcredit/notes`, {
+                body: JSON.stringify({
+                    note: data.noteText,
+                    userId: borrowerId
+                }),
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${auth.token}`,
+                    'Content-Type': 'application/json',
+                    message: getCookie('MESSAGE').toString(),
+                    signature: getCookie('SIGNATURE').toString()
+                },
+                method: 'POST'
+            });
+            setSubmitSuccess(true);
+            toast.success(addNoteNoteAdded);
         } catch (error) {
+            console.log(error);
+            Sentry.captureException(error);
             toast.error(<Message id="errorOccurred" />);
         }
     };
@@ -75,7 +93,7 @@ const AddNote = () => {
                     fDirection={{ sm: 'column', xs: 'column' }}
                     style={{
                         alignItems: 'center',
-                        justifyContent: 'center',
+                        justifyContent: 'center'
                     }}
                 >
                     <Box
@@ -87,7 +105,13 @@ const AddNote = () => {
                         w="100%"
                     >
                         <CircledIcon icon="upload" medium />
-                        <RichText content={addNoteAddNote} g900 large mt={1} semibold/>
+                        <RichText
+                            content={addNoteAddNote}
+                            g900
+                            large
+                            mt={1}
+                            semibold
+                        />
                         <Controller
                             control={control}
                             name="noteText"
@@ -113,7 +137,7 @@ const AddNote = () => {
                         style={{
                             alignItems: 'center',
                             gap: '1rem',
-                            justifyContent: 'center',
+                            justifyContent: 'center'
                         }}
                     >
                         <Button

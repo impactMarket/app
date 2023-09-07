@@ -12,20 +12,22 @@ import {
 } from '@impact-market/ui';
 import { dateHelpers } from '../helpers/dateHelpers';
 import { useNotifications } from 'src/hooks/useNotifications';
-import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useUpdateNotificationsMutation } from '../api/user';
+import Message from 'src/libs/Prismic/components/Message';
 import React, { useEffect, useState } from 'react';
 import RichText from '../libs/Prismic/components/RichText';
 import String from '../libs/Prismic/components/String';
 import useFilters from '../hooks/useFilters';
 
-const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
-    const { isLoading } = props;
-    const { view } = usePrismicData({ list: true });
+const Notifications: React.FC<{ isLoading?: boolean; data?: any }> = (
+    props
+) => {
+    const { isLoading, data } = props;
     const [updataNotifications] = useUpdateNotificationsMutation();
     const router = useRouter();
     const { update, getByKey } = useFilters();
+    const translations = data?.push_notifications_data?.data;
 
     const limit = 7;
     const [offset, setItemOffset] = useState(0);
@@ -100,35 +102,6 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
         }
     };
 
-    // Redirects
-    const handlePageRedirect = (type: number, params: any) => {
-        const data = params?.contentId
-            ? params?.contentId
-            : params?.communityId && params?.communityId;
-
-        switch (type) {
-            case 0: {
-                router.push(`/stories?id=${data}`);
-                break;
-            }
-            case 1: {
-                router.push(`/communities/${data}`);
-                break;
-            }
-            case 2: {
-                router.push(`/communities/${data}`);
-                break;
-            }
-            case 3: {
-                router.push(`/communities/${data}`);
-                break;
-            }
-            default: {
-                break;
-            }
-        }
-    };
-
     return (
         <ViewContainer
             {...({} as any)}
@@ -139,7 +112,7 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                     <String id="notifications" />
                 </Display>
                 <Text g500>
-                    <RichText content={view.data.messageAllNotificationsSent} />
+                    <Message id="allNotificationsSent" />
                 </Text>
                 <Box pb={2} pt={2}>
                     {notifications?.rows?.length ? (
@@ -156,16 +129,16 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                                             <Row pl={1} pr={1}>
                                                 <TextLink
                                                     onClick={() =>
-                                                        handlePageRedirect(
-                                                            notification?.type,
+                                                        router.push(
                                                             notification?.params
+                                                                ?.path
                                                         )
                                                     }
                                                 >
                                                     <RichText
                                                         content={
-                                                            view?.data?.[
-                                                                `messageType${notification?.type}title`
+                                                            translations?.[
+                                                                `type${notification?.type}title`
                                                             ]
                                                         }
                                                         g700
@@ -184,8 +157,8 @@ const Notifications: React.FC<{ isLoading?: boolean }> = (props) => {
                                                 >
                                                     <RichText
                                                         content={
-                                                            view?.data?.[
-                                                                `messageType${notification?.type}description`
+                                                            translations?.[
+                                                                `type${notification?.type}description`
                                                             ]
                                                         }
                                                         g500
