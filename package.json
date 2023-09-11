@@ -64,7 +64,7 @@
         "react-infinite-scroll-hook": "4.1.1",
         "react-paginate": "8.2.0",
         "react-player": "2.12.0",
-        "react-redux": "8.0.5",
+        "react-redux": "8.1.2",
         "recharts": "2.7.3",
         "styled-components": "6.0.0-rc.1",
         "styled-gen": "1.4.8",
