@@ -24,7 +24,7 @@ Sentry.init({
                     name: location.pathname
                         .replace(/\/(es|fr|pt|en)\//g, '/[language]/')
                         .replace(
-                            /learn-and-earn\/[\w\d-]+\/[\w\d-]+/g,
+                            /learn-and-earn\/[\w\d-]+\/[\w\d-]+(\?.*)?/g,
                             '/learn-and-earn/[level]/[lesson]'
                         )
                         .replace(/\/\d+/g, '/[id]')
