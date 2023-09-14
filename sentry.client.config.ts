@@ -13,7 +13,25 @@ Sentry.init({
     enabled:
         // eslint-disable-next-line no-process-env
         process.env.NODE_ENV !== 'development' && config.useTestNet !== true,
-    integrations: [new BrowserTracing()],
+    integrations: [
+        new BrowserTracing({
+            beforeNavigate: (context) => {
+                return {
+                    ...context,
+                    // You could use your UI's routing library to find the matching
+                    // route template here. We don't have one right now, so do some basic
+                    // parameter replacements.
+                    name: location.pathname
+                        .replace(/\/(es|fr|pt|en)\//g, '/[language]/')
+                        .replace(
+                            /learn-and-earn\/[\w\d-]+\/[\w\d-]+/g,
+                            '/learn-and-earn/[level]/[lesson]'
+                        )
+                        .replace(/\/\d+/g, '/[id]')
+                };
+            }
+        })
+    ],
     // Adjust this value in production, or use tracesSampler for greater control
     tracesSampler: (samplingContext) => {
         const error = samplingContext.transactionContext;
