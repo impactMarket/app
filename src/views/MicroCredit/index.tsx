@@ -22,7 +22,7 @@ import processTransactionError from 'src/utils/processTransactionError';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
-    const [getBorrower] = useLazyGetBorrowerQuery();
+    const [getBorrower, { isError: isErrorGetBorrower, error: errorGetBorrower }] = useLazyGetBorrowerQuery();
     const [loanId, setLoanId] = useState(0);
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);
     const [formState, setFormState] = useState(-1);
@@ -105,6 +105,13 @@ const MicroCredit = (props: any) => {
     ];
 
     useEffect(() => {
+        if (isErrorGetBorrower) {
+            processTransactionError(errorGetBorrower, 'loading_borrower_page');
+            router.push('/');
+        }
+    }, [isErrorGetBorrower]);
+
+    useEffect(() => {
         const getLoans = async () => {
             if (auth?.user?.address) {
                 const activeLoanId = await getActiveLoanId(auth.user.address);
@@ -144,7 +151,6 @@ const MicroCredit = (props: any) => {
         };
 
         getLoans().catch((e) => {
-            // eslint-disable-next-line no-alert
             processTransactionError(e, 'loading_borrower_page');
             router.push('/');
         });
