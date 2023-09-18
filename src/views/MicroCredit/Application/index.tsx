@@ -13,8 +13,8 @@ import { selectCurrentUser, setUser } from '../../../state/slices/auth';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect, useRef, useState } from 'react';
 import {
-    useGetBorrowerFormsMutation,
     useGetFormIdMutation,
+    useLazyGetBorrowerQuery,
     useSubmitFormMutation
 } from '../../../api/microcredit';
 import { useRouter } from 'next/router';
@@ -56,7 +56,7 @@ const ApplicationForm = (props: any) => {
     const [readyToProceed, setReadyToProceed] = useState(true);
     const [noKeysError, setNoKeysError] = useState(false);
     const [submitForm] = useSubmitFormMutation();
-    const [getBorrowerForms] = useGetBorrowerFormsMutation();
+    const [getBorrowerForms] = useLazyGetBorrowerQuery();
     const [getFormId] = useGetFormIdMutation();
     const [matrix, setMatrix] = useState<MatrixType>({});
     const mapRef = useRef<Map<string, string>>(new Map());
