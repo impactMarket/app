@@ -62,6 +62,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
         { label: 'Uganda', value: 'UG' },
         { label: 'Brazil', value: 'BR' },
         { label: 'Nigeria', value: 'NG' },
+        { label: 'Ghana', value: 'GH' },
         { label: 'Venezuela', value: 'VE' }
     ];
 
