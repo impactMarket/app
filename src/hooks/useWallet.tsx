@@ -9,7 +9,7 @@ import {
     useNetwork
 } from 'wagmi';
 import { deleteCookie, hasCookie, setCookie } from 'cookies-next';
-import { deleteToken, getMessaging } from 'firebase/messaging';
+import { deleteToken, getMessaging, isSupported } from 'firebase/messaging';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
@@ -120,16 +120,19 @@ const useWallet = () => {
                 cacheClear();
 
                 // Delete token - Firebase
-                const permission = await Notification.requestPermission();
-                const messaging = getMessaging(firebaseApp);
+                if (isSupported) {
+                    const permission = await Notification.requestPermission();
+                    const messaging = getMessaging(firebaseApp);
 
-                if (permission) {
-                    try {
-                        await deleteToken(messaging);
-                        console.log('Token deleted.');
-                    } catch (error) {
-                        console.error('Error deleting token:', error);
-                        Sentry.captureException(error);
+                    if (permission) {
+                        // eslint-disable-next-line max-depth
+                        try {
+                            await deleteToken(messaging);
+                            console.log('Token deleted.');
+                        } catch (error) {
+                            console.error('Error deleting token:', error);
+                            Sentry.captureException(error);
+                        }
                     }
                 }
 

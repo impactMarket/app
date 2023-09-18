@@ -1,5 +1,5 @@
 import * as Sentry from '@sentry/browser';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging, getToken, isSupported } from 'firebase/messaging';
 import { useEffect, useState } from 'react';
 import config from 'config';
 import firebaseApp from '../../utils/firebase/firebase';
@@ -12,10 +12,7 @@ const useFcmToken = () => {
     useEffect(() => {
         const retrieveToken = async () => {
             try {
-                if (
-                    typeof window !== 'undefined' &&
-                    'serviceWorker' in navigator
-                ) {
+                if (isSupported) {
                     const messaging = getMessaging(firebaseApp);
 
                     // Retrieve the notification permission status
