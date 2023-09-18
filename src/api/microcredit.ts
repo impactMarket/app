@@ -16,6 +16,10 @@ interface Form {
     };
 }
 
+type BorrowerQueryResponse = {
+    forms: { id: number, status: number }[];
+};
+
 interface AplicationFormProps {
     form: Form;
     prismicId: string;
@@ -25,12 +29,12 @@ interface AplicationFormProps {
 // Define a service using a base URL and expected endpoints
 export const microcreditApi = emptySplitApi.injectEndpoints({
     endpoints: (builder) => ({
-        getBorrowerForms: builder.mutation<any, { address?: string; formId?: string }>({
+        getBorrower: builder.query<BorrowerQueryResponse, { address?: string; formId?: string }>({
             query: ({address, formId}) => ({
                 method: 'GET',
                 url: `microcredit/borrower?${!!address ? `address=${address}&` : ''}${!!formId ? `formId=${formId}&` : ''}include=forms`
             }),
-            transformResponse: (response: { data?: any }) => response.data
+            transformResponse: (response: { data: BorrowerQueryResponse }) => response.data
         }),
         getFormId: builder.mutation<any, { formId: string }>({
             query: (formId: any) => ({
@@ -61,7 +65,7 @@ export const microcreditApi = emptySplitApi.injectEndpoints({
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
 export const { 
-    useGetBorrowerFormsMutation,
+    useLazyGetBorrowerQuery,
     useGetFormIdMutation,
     useGetMicrocreditPreSignedMutation,
     useSubmitFormMutation,

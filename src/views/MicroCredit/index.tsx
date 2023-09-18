@@ -17,11 +17,12 @@ import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 // import InfoAccordion from './InfoAccordion';
 
-import { useGetBorrowerFormsMutation } from '../../api/microcredit';
+import { useLazyGetBorrowerQuery } from '../../api/microcredit';
+import processTransactionError from 'src/utils/processTransactionError';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
-    const [getBorrowerForms] = useGetBorrowerFormsMutation();
+    const [getBorrower] = useLazyGetBorrowerQuery();
     const [loanId, setLoanId] = useState(0);
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);
     const [formState, setFormState] = useState(-1);
@@ -105,15 +106,13 @@ const MicroCredit = (props: any) => {
 
     useEffect(() => {
         const getLoans = async () => {
-            if (!!auth?.user?.address) {
-                const activeLoanId = await getActiveLoanId(
-                    auth?.user?.address?.toString()
-                );
+            if (auth?.user?.address) {
+                const activeLoanId = await getActiveLoanId(auth.user.address);
 
                 if (activeLoanId === -1) {
-                    const { data: formData } = (await getBorrowerForms({
-                        address: auth?.user?.address
-                    })) as any;
+                    const { data: formData } = await getBorrower({
+                        address: auth.user.address
+                    });
 
                     if (!formData?.forms?.length) {
                         router.push('/microcredit/apply');
@@ -131,9 +130,7 @@ const MicroCredit = (props: any) => {
                             form.status === FormStatus.IN_REVIEW ||
                             form.status === FormStatus.INTERVIEW
                         ) {
-                            router.push(
-                                `/microcredit/apply?success=true&formId=${form?.id}`
-                            );
+                            router.push(`/microcredit/apply?success=true&formId=${form?.id}`);
                         } else {
                             setLoading(false);
                         }
@@ -146,7 +143,11 @@ const MicroCredit = (props: any) => {
             }
         };
 
-        getLoans();
+        getLoans().catch((e) => {
+            // eslint-disable-next-line no-alert
+            processTransactionError(e, 'loading_borrower_page');
+            router.push('/');
+        });
     }, []);
 
     useEffect(() => {
