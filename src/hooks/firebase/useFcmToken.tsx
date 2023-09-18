@@ -14,6 +14,7 @@ const useFcmToken = () => {
             try {
                 if (
                     typeof window !== 'undefined' &&
+                    'Notification' in window &&
                     'serviceWorker' in navigator
                 ) {
                     const messaging = getMessaging(firebaseApp);

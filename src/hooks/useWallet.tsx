@@ -120,16 +120,23 @@ const useWallet = () => {
                 cacheClear();
 
                 // Delete token - Firebase
-                const permission = await Notification.requestPermission();
-                const messaging = getMessaging(firebaseApp);
+                if (
+                    typeof window !== 'undefined' &&
+                    'Notification' in window &&
+                    'serviceWorker' in navigator
+                ) {
+                    const permission = await Notification.requestPermission();
+                    const messaging = getMessaging(firebaseApp);
 
-                if (permission) {
-                    try {
-                        await deleteToken(messaging);
-                        console.log('Token deleted.');
-                    } catch (error) {
-                        console.error('Error deleting token:', error);
-                        Sentry.captureException(error);
+                    if (permission) {
+                        // eslint-disable-next-line max-depth
+                        try {
+                            await deleteToken(messaging);
+                            console.log('Token deleted.');
+                        } catch (error) {
+                            console.error('Error deleting token:', error);
+                            Sentry.captureException(error);
+                        }
                     }
                 }
 
