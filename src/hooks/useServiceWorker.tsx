@@ -1,8 +1,8 @@
-import { getMessaging, onMessage } from 'firebase/messaging';
+import { getMessaging, isSupported, onMessage } from 'firebase/messaging';
 import firebaseApp from 'src/utils/firebase/firebase';
 
 export function registerFirebaseSW() {
-    if (typeof window !== 'undefined' && 'serviceWorker' in navigator) {
+    if (isSupported) {
         const messaging = getMessaging(firebaseApp);
         const unsubscribe = onMessage(messaging, (payload) => {
             console.log('Foreground push notification received:', payload);
@@ -18,7 +18,7 @@ export function registerFirebaseSW() {
 
 export async function unregisterFirebaseSW() {
     try {
-        if ('serviceWorker' in navigator) {
+        if (isSupported) {
             const registration = await navigator.serviceWorker.getRegistration(
                 '/firebase-messaging-sw.js'
             );
