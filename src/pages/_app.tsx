@@ -12,7 +12,7 @@ import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvi
 import { Provider, useSelector } from 'react-redux';
 import { WagmiConfig, useAccount } from 'wagmi';
 import { getCookie, hasCookie } from 'cookies-next';
-import { getMessaging, getToken } from 'firebase/messaging';
+import { getMessaging, getToken, isSupported } from 'firebase/messaging';
 import { registerFirebaseSW } from 'src/hooks/useServiceWorker';
 import {
     selectCurrentUser,
@@ -61,11 +61,7 @@ const InnerApp = (props: AppProps) => {
 
         if (isConnected && (signature || eip712_signature)) {
             const handleFirebaseServiceWorker = async () => {
-                if (
-                    typeof window !== 'undefined' &&
-                    'Notification' in window &&
-                    'serviceWorker' in navigator
-                ) {
+                if (isSupported) {
                     const messaging = getMessaging(firebaseApp);
                     const permission = await Notification.requestPermission();
 
