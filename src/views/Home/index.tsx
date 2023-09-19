@@ -76,7 +76,7 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
             setCards(prismic['cardsDefault']);
             setLinks(prismic['linksDefault']);
         }
-    }, [prismic]);
+    }, [prismic, user]);
 
     return (
         <ViewContainer {...({} as any)} isLoading={isLoading}>

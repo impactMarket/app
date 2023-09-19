@@ -32,7 +32,7 @@ export const handleFirebaseServiceWorker = async (
                             Accept: 'application/json',
                             Authorization: `Bearer ${getCookie(
                                 'AUTH_TOKEN'
-                            ).toString()}`,
+                            )?.toString()}`,
                             'Content-Type': 'application/json',
                             eip712signature: eip712_signature,
                             eip712value: eip712_message,

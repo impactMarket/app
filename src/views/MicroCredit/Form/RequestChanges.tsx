@@ -1,8 +1,8 @@
 import { Box, Button, Display, Text } from '@impact-market/ui';
-import { styled } from 'styled-components';
 import { useRouter } from 'next/router';
 import Image from '../../../libs/Prismic/components/Image';
 import RichText from '../../../libs/Prismic/components/RichText';
+import styled from 'styled-components';
 
 const RichTextStyled = styled(RichText)`
     ol {

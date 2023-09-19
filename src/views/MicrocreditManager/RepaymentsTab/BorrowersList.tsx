@@ -17,13 +17,13 @@ import { getImage } from '../../../utils/images';
 import { getUserName } from '../../../utils/users';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { selectRates } from 'src/state/slices/rates';
-import { styled } from 'styled-components';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../../libs/Prismic/components/Message';
 import React from 'react';
 import Table from '../../../components/Table';
 import config from '../../../../config';
+import styled from 'styled-components';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const PerformanceIcon = styled.div<{ performance: number }>`
@@ -119,7 +119,7 @@ const getColumns = () => {
                     </Box>
                 </Box>
             ),
-            title: t('beneficiary'),
+            title: t('borrower'),
             width: '35%'
         },
         {
@@ -254,7 +254,10 @@ const getColumns = () => {
                     items={[
                         {
                             icon: 'user',
-                            onClick: () => router.push(`/user/${data.address}?tab=repaymentHistory`),
+                            onClick: () =>
+                                router.push(
+                                    `/user/${data.address}?tab=repaymentHistory`
+                                ),
                             title: t('openProfile')
                         }
                     ]}
