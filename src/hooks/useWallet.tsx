@@ -119,8 +119,10 @@ const useWallet = () => {
             try {
                 cacheClear();
 
+                const hasFirebaseSupport = await isSupported();
+
                 // Delete token - Firebase
-                if (isSupported) {
+                if (hasFirebaseSupport) {
                     const permission = await Notification.requestPermission();
                     const messaging = getMessaging(firebaseApp);
 
