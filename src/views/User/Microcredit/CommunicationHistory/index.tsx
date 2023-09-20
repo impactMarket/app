@@ -1,8 +1,8 @@
 import { Box, Card, Icon, Pagination, Spinner, Text } from '@impact-market/ui';
-import { styled } from 'styled-components';
 import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import ManagerNote from './ManagerNote';
 import React, { useEffect, useState } from 'react';
+import styled from 'styled-components';
 import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 3;

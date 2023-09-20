@@ -255,7 +255,7 @@ const getColumns = (props: any) => {
                     </Box>
                 </Box>
             ),
-            title: t('beneficiary'),
+            title: t('borrower'),
             value: 'name',
             width: '35%'
         },

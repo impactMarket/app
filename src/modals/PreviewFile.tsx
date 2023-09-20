@@ -1,6 +1,6 @@
 import { Button, Img, ModalWrapper, Row, useModal } from '@impact-market/ui';
-import { styled } from 'styled-components';
 import React from 'react';
+import styled from 'styled-components';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const ImageStyled = styled(Img)`
