@@ -147,8 +147,6 @@ const getColumns = (props: any) => {
     const {
         addNote,
         viewAllNotes,
-        appliedOn,
-        decisionOn,
         approveLoan,
         rejectLoan: rejectLoanText,
         loansRejectedSuccessfully
@@ -318,13 +316,13 @@ const getColumns = (props: any) => {
                             </>
                         ) : (
                             <Text medium g400 small>
-                                {'- - -'}
+                                {'---'}
                             </Text>
                         )}
                     </Box>
                 );
             },
-            title: appliedOn,
+            title: t('applied'),
             value: 'appliedOn',
             width: '10%'
         },
@@ -358,13 +356,13 @@ const getColumns = (props: any) => {
                             </>
                         ) : (
                             <Text medium g400 small>
-                                {'- - -'}
+                                {'---'}
                             </Text>
                         )}
                     </Box>
                 );
             },
-            title: decisionOn,
+            title: t('decision'),
             value: 'decisionOn',
             width: '15%'
         },
@@ -398,13 +396,13 @@ const getColumns = (props: any) => {
                             </>
                         ) : (
                             <Text medium g400 small>
-                                {'- - -'}
+                                {'---'}
                             </Text>
                         )}
                     </Box>
                 );
             },
-            title: t('accepted'),
+            title: t('claimed'),
             value: 'lastRepaymentDate',
             width: '15%'
         },

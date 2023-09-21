@@ -60,7 +60,7 @@ const TooltipIcon: React.FC<Props> = (props) => {
         >
             <Icon g500 icon="infoCircle" />
             {tooltipOpen && (
-                <Tooltip black={black}>
+                <Tooltip black={black} className="tooltip">
                     <Card className="tooltip">
                         <RichText
                             content={children}

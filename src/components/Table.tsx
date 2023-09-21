@@ -32,6 +32,13 @@ const TableWrapper = styled(Box)`
             right: 0;
         }
     }
+
+    tr:last-child {
+        .tooltip {
+            bottom: 23px;
+            top: unset;
+        }
+    }
 `;
 
 type Partial<BaseTableProps> = {
