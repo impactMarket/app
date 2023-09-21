@@ -31,16 +31,6 @@ import config from '../../../../config';
 import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
-const TableWrapper = styled(Table)`
-    > div {
-        overflow: visible;
-
-        > div {
-            overflow: visible;
-        }
-    }
-`;
-
 const CheckBox = styled(Box)`
     border-radius: 0.5rem;
     border-width: 1px;
@@ -68,57 +58,57 @@ const loanStatus = (status: any) => {
     switch (status) {
         case FormStatus.PENDING:
             badgeContent = (
-                <>
+                <Box flex>
                     <Icon icon={'clock'} g700 mr={0.2} />
                     <Text g700 extrasmall medium>
                         {t('pending')}
                     </Text>
-                </>
+                </Box>
             );
             bgColor = 'bgG50';
             break;
         case FormStatus.REQUEST_CHANGES:
             badgeContent = (
-                <>
+                <Box flex>
                     <Icon icon={'edit'} p700 mr={0.2} />
                     <Text g900 extrasmall medium>
                         {t('revise')}
                     </Text>
-                </>
+                </Box>
             );
             bgColor = 'bgP50';
             break;
 
         case FormStatus.INTERVIEW:
             badgeContent = (
-                <>
+                <Box flex>
                     <Icon icon={'menu'} p700 mr={0.2} />
                     <Text p700 extrasmall medium>
                         {t('interview')}
                     </Text>
-                </>
+                </Box>
             );
             bgColor = 'bgP50';
             break;
         case FormStatus.APPROVED:
             badgeContent = (
-                <>
+                <Box flex>
                     <Icon icon={'check'} s500 mr={0.2} />
                     <Text s700 extrasmall medium>
                         {t('approved')}
                     </Text>
-                </>
+                </Box>
             );
             bgColor = 'bgS50';
             break;
         case FormStatus.REJECTED:
             badgeContent = (
-                <>
+                <Box flex>
                     <Icon icon={'close'} e500 mr={0.2} />
                     <Text e700 extrasmall medium>
                         {t('rejected')}
                     </Text>
-                </>
+                </Box>
             );
             bgColor = 'bgE50';
             break;
@@ -224,6 +214,7 @@ const getColumns = (props: any) => {
                         <Box>
                             <DropdownMenu
                                 {...({} as any)}
+                                className="dropdown"
                                 icon="chevronDown"
                                 items={[
                                     {
@@ -588,7 +579,7 @@ const BorrowersList = (props: any) => {
         managerDetails?.currentLentAmountLimit;
 
     return (
-        <TableWrapper
+        <Table
             actualPage={actualPage}
             columns={getColumns({
                 auth,

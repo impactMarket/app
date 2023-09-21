@@ -56,6 +56,9 @@ export const dateHelpers = {
     complete: (date: number) =>
         date ? format(new Date(fromUnixTime(date)), `MMM d, y • H:m`) : '',
 
+    completeAmPm: (date: number) =>
+        date ? format(new Date(fromUnixTime(date)), `MMM d, y • h:mm a`) : '',
+
     getDateAndTime: (timestamp: string) => {
         const date = new Date(timestamp);
         const dateString = dateFnsFormat(date, 'MMM d, y', {

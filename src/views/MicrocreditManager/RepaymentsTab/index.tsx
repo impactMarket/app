@@ -23,6 +23,7 @@ const RepaymentsTab: React.FC = () => {
     ]);
 
     const { count: countAll } = useMicrocreditBorrowers();
+    const { count: countUrgent } = useMicrocreditBorrowers(['filter=urgent']);
     const { count: countNeedHelp } = useMicrocreditBorrowers([
         'filter=need-help'
     ]);
@@ -42,6 +43,11 @@ const RepaymentsTab: React.FC = () => {
                 clear(['filter', 'page']);
             },
             title: t('all')
+        },
+        {
+            number: countUrgent || 0,
+            onClick: () => update({ filter: 'urgent', page: 1 }),
+            title: t('urgent')
         },
         {
             number: countOntrack || 0,
@@ -67,14 +73,16 @@ const RepaymentsTab: React.FC = () => {
 
     const tabsIndex = (() => {
         switch (getByKey('filter')) {
-            case 'ontrack':
+            case 'urgent':
                 return 1;
-            case 'need-help':
+            case 'ontrack':
                 return 2;
-            case 'repaid':
+            case 'need-help':
                 return 3;
-            case 'not-claimed':
+            case 'repaid':
                 return 4;
+            case 'not-claimed':
+                return 5;
             default:
                 return 0;
         }

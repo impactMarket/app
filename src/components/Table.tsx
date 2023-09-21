@@ -24,8 +24,13 @@ const TableWrapper = styled(Box)`
         left: auto;
     }
 
-    .dropdown.last > :nth-child(2) {
-        top: -3rem;
+    tr:nth-last-child(-n + 3) {
+        .dropdown > :nth-child(2) {
+            top: unset;
+            left: unset;
+            bottom: 30px;
+            right: 0;
+        }
     }
 `;
 
