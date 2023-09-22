@@ -1,34 +1,27 @@
-/* eslint-disable no-inline-comments */
-import React from 'react';
-import styled from 'styled-components';
-
 import {
     Avatar,
-    Badge,
     Box,
     CircledIcon,
     DropdownMenu,
     Icon,
     Text,
     colors,
-    openModal,
     toast
 } from '@impact-market/ui';
-import { FormStatus } from '../../../utils/formStatus';
+import { changeStatus } from './ChangeStatus';
 import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../utils/formatAddress';
-import { getCookie } from 'cookies-next';
 import { getImage } from '../../../utils/images';
 import { getUserName } from '../../../utils/users';
+import { loanStatus } from './StatusBadge';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { useLoanManager } from '@impact-market/utils';
-import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
-import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../../libs/Prismic/components/Message';
+import React from 'react';
 import Table from '../../../components/Table';
 import config from '../../../../config';
-import processTransactionError from 'src/utils/processTransactionError';
+import styled from 'styled-components';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const CheckBox = styled(Box)`
@@ -46,111 +39,11 @@ const CheckBox = styled(Box)`
     border-color: ${(props) => (props.color ? colors.p600 : colors.g300)};
 `;
 
-const EllipsisIcon = styled(Icon)`
-    transform: rotate(90deg);
-`;
-
-const loanStatus = (status: any) => {
-    const { t } = useTranslations();
-    let badgeContent = null;
-    let bgColor = '';
-
-    switch (status) {
-        case FormStatus.PENDING:
-            badgeContent = (
-                <Box flex>
-                    <Icon icon={'clock'} g700 mr={0.2} />
-                    <Text g700 extrasmall medium>
-                        {t('pending')}
-                    </Text>
-                </Box>
-            );
-            bgColor = 'bgG50';
-            break;
-        case FormStatus.REQUEST_CHANGES:
-            badgeContent = (
-                <Box flex>
-                    <Icon icon={'edit'} p700 mr={0.2} />
-                    <Text g900 extrasmall medium>
-                        {t('revise')}
-                    </Text>
-                </Box>
-            );
-            bgColor = 'bgP50';
-            break;
-
-        case FormStatus.INTERVIEW:
-            badgeContent = (
-                <Box flex>
-                    <Icon icon={'menu'} p700 mr={0.2} />
-                    <Text p700 extrasmall medium>
-                        {t('interview')}
-                    </Text>
-                </Box>
-            );
-            bgColor = 'bgP50';
-            break;
-        case FormStatus.APPROVED:
-            badgeContent = (
-                <Box flex>
-                    <Icon icon={'check'} s500 mr={0.2} />
-                    <Text s700 extrasmall medium>
-                        {t('approved')}
-                    </Text>
-                </Box>
-            );
-            bgColor = 'bgS50';
-            break;
-        case FormStatus.REJECTED:
-            badgeContent = (
-                <Box flex>
-                    <Icon icon={'close'} e500 mr={0.2} />
-                    <Text e700 extrasmall medium>
-                        {t('rejected')}
-                    </Text>
-                </Box>
-            );
-            bgColor = 'bgE50';
-            break;
-        default:
-            badgeContent = <></>;
-            bgColor = 'bgN01';
-    }
-
-    return (
-        <Box fLayout="center start" flex>
-            <Badge {...{ [bgColor]: true }} style={{ width: 'fit-content' }}>
-                <Box
-                    flex
-                    fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    {badgeContent}
-                </Box>
-            </Badge>
-        </Box>
-    );
-};
-
 const getColumns = (props: any) => {
     const { t } = useTranslations();
-    const router = useRouter();
 
     const { auth, selected, setSelected, rejectLoan, limitReach, mutate } =
         props;
-
-    const { extractFromView } = usePrismicData();
-
-    const {
-        addNote,
-        viewAllNotes,
-        approveLoan,
-        rejectLoan: rejectLoanText,
-        loansRejectedSuccessfully
-    } = extractFromView('messages') as any;
 
     const copyToClipboard = (address: any) => {
         navigator.clipboard.writeText(address);
@@ -160,7 +53,6 @@ const getColumns = (props: any) => {
 
     return [
         {
-            minWidth: 14,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
                     {!selected.some(
@@ -245,11 +137,9 @@ const getColumns = (props: any) => {
                 </Box>
             ),
             title: t('borrower'),
-            value: 'name',
-            width: '35%'
+            value: 'name'
         },
         // {
-        //     minWidth: 12,
         //     render: (data: any) => {
         //         const score = 734;
         //         const progress = (score / 850) * 100;
@@ -284,10 +174,8 @@ const getColumns = (props: any) => {
         //     sortable: true,
         //     title: 't(creditScore)',
         //     value: 'creditScore',
-        //     width: '20%'
         // },
         {
-            minWidth: 9,
             render: (data: any) => {
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
@@ -295,7 +183,6 @@ const getColumns = (props: any) => {
                             <>
                                 <Box
                                     flex
-                                    fLayout="center start"
                                     fDirection={{ sm: 'column', xs: 'column' }}
                                 >
                                     <Text medium g900 small>
@@ -323,11 +210,9 @@ const getColumns = (props: any) => {
                 );
             },
             title: t('applied'),
-            value: 'appliedOn',
-            width: '10%'
+            value: 'appliedOn'
         },
         {
-            minWidth: 8,
             render: (data: any) => {
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
@@ -335,7 +220,6 @@ const getColumns = (props: any) => {
                             <>
                                 <Box
                                     flex
-                                    fLayout="center start"
                                     fDirection={{ sm: 'column', xs: 'column' }}
                                 >
                                     <Text medium g900 small>
@@ -363,11 +247,9 @@ const getColumns = (props: any) => {
                 );
             },
             title: t('decision'),
-            value: 'decisionOn',
-            width: '15%'
+            value: 'decisionOn'
         },
         {
-            minWidth: 8,
             render: (data: any) => {
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
@@ -375,7 +257,6 @@ const getColumns = (props: any) => {
                             <>
                                 <Box
                                     flex
-                                    fLayout="center start"
                                     fDirection={{ sm: 'column', xs: 'column' }}
                                 >
                                     <Text medium g900 small>
@@ -403,153 +284,16 @@ const getColumns = (props: any) => {
                 );
             },
             title: t('claimed'),
-            value: 'lastRepaymentDate',
-            width: '15%'
+            value: 'lastRepaymentDate'
         },
         {
-            minWidth: 10,
             render: (data: any) => loanStatus(data?.application?.status),
             title: t('status'),
-            value: 'status',
-            width: '15%'
+            value: 'status'
         },
         {
-            minWidth: 4,
-            render: (data: any) => {
-                const dropdownItems = [
-                    !limitReach &&
-                        data?.application?.status !== FormStatus.APPROVED && {
-                            icon: 'check',
-                            onClick: () =>
-                                openModal('approveLoan', {
-                                    address: data?.address,
-                                    mutate
-                                }),
-                            title: approveLoan
-                        },
-                    data?.application?.status !== FormStatus.APPROVED &&
-                        data?.application?.status !== FormStatus.REJECTED && {
-                            icon: 'close',
-                            onClick: () =>
-                                rejectLoan(
-                                    auth,
-                                    data?.application?.id,
-                                    mutate,
-                                    loansRejectedSuccessfully
-                                ),
-                            title: rejectLoanText
-                        },
-                    data?.application?.status !== FormStatus.INTERVIEW &&
-                        data?.application?.status !== FormStatus.APPROVED &&
-                        data?.application?.status !== FormStatus.REJECTED && {
-                            icon: 'userCheck',
-                            onClick: async () => {
-                                try {
-                                    const result = await fetch(
-                                        `${config.baseApiUrl}/microcredit/applications`,
-                                        {
-                                            body: JSON.stringify([
-                                                {
-                                                    applicationId:
-                                                        data?.application?.id,
-                                                    status: FormStatus.INTERVIEW
-                                                }
-                                            ]),
-                                            headers: {
-                                                Accept: 'application/json',
-                                                Authorization: `Bearer ${auth.token}`,
-                                                'Content-Type':
-                                                    'application/json',
-                                                message:
-                                                    getCookie(
-                                                        'MESSAGE'
-                                                    ).toString(),
-                                                signature:
-                                                    getCookie(
-                                                        'SIGNATURE'
-                                                    ).toString()
-                                            },
-                                            method: 'PUT'
-                                        }
-                                    );
-
-                                    if (result.status === 201) {
-                                        mutate();
-                                        toast.success(
-                                            t('setForInterviewSuccess')
-                                        );
-                                    } else {
-                                        toast.error(
-                                            <Message id="errorOccurred" />
-                                        );
-                                    }
-                                } catch (error) {
-                                    console.log(error);
-                                    toast.error(<Message id="errorOccurred" />);
-                                    processTransactionError(
-                                        error,
-                                        'set_interview_state'
-                                    );
-                                }
-                            },
-                            title: t('readyForInterview')
-                        },
-                    {
-                        icon: 'user',
-                        onClick: () => router.push(`/user/${data.address}`),
-                        title: t('openProfile')
-                    },
-                    {
-                        icon: 'bookOpen',
-                        onClick: () =>
-                            router.push(
-                                `/microcredit/form/${data?.application?.id}`
-                            ),
-                        title: t('loanApplication')
-                    }
-                ];
-
-                const filteredItems = dropdownItems.filter((item) => !!item);
-
-                return (
-                    <Box flex fLayout="center start" style={{ gap: '1rem' }}>
-                        <DropdownMenu
-                            {...({} as any)}
-                            className="dropdown"
-                            icon="cardsStack"
-                            titleColor="g400"
-                            rtl={true}
-                            items={[
-                                {
-                                    icon: 'upload',
-                                    onClick: () =>
-                                        openModal('addNote', {
-                                            borrowerId: data?.id
-                                        }),
-                                    title: addNote
-                                },
-                                {
-                                    icon: 'cardsStack',
-                                    onClick: () =>
-                                        router.push(
-                                            `/user/${data.address}?tab=communicationHistory`
-                                        ),
-                                    title: viewAllNotes
-                                }
-                            ]}
-                        />
-                        <DropdownMenu
-                            {...({} as any)}
-                            className="dropdown"
-                            title={<EllipsisIcon icon="ellipsis" g400 />}
-                            titleColor="g400"
-                            rtl={true}
-                            items={filteredItems}
-                        />
-                    </Box>
-                );
-            },
-            width: '10%'
+            render: (data: any) =>
+                changeStatus(data, rejectLoan, limitReach, auth, mutate)
         }
     ];
 };

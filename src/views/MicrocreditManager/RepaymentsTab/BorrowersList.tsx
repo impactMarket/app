@@ -67,7 +67,6 @@ const getColumns = () => {
 
     return [
         {
-            minWidth: 15,
             render: (data: any) => (
                 <Box fLayout="center start" flex>
                     {!!data.avatarMediaPath ? (
@@ -123,11 +122,9 @@ const getColumns = () => {
                     </Box>
                 </Box>
             ),
-            title: t('borrower'),
-            width: '35%'
+            title: t('borrower')
         },
         {
-            minWidth: 7,
             render: (data: any) => (
                 <>
                     <Text g900 small center>
@@ -146,11 +143,9 @@ const getColumns = () => {
             ),
             sortable: true,
             title: t('loan'),
-            value: 'amount',
-            width: '10%'
+            value: 'amount'
         },
         {
-            minWidth: 9,
             render: (data: any) => {
                 return (
                     <Box flex>
@@ -167,11 +162,28 @@ const getColumns = () => {
                     </Box>
                 );
             },
-            title: t('claimed'),
-            width: '15%'
+            title: t('claimed')
         },
         {
-            minWidth: 10,
+            render: (data: any) => {
+                return (
+                    <Box flex>
+                        <Text g900 small>
+                            {data?.loan?.maturity
+                                ? dateHelpers.ago(data?.loan?.maturity)
+                                : '--'}
+                        </Text>
+                        {data?.loan?.maturity && (
+                            <TooltipIcon black>
+                                {dateHelpers.completeAmPm(data?.loan?.maturity)}
+                            </TooltipIcon>
+                        )}
+                    </Box>
+                );
+            },
+            title: 'Reach Maturity'
+        },
+        {
             render: (data: any) => {
                 return (
                     <>
@@ -203,11 +215,9 @@ const getColumns = () => {
             },
             sortable: true,
             title: t('lastRepayment'),
-            value: 'lastRepayment',
-            width: '13%'
+            value: 'lastRepayment'
         },
         {
-            minWidth: 7,
             render: (data: any) => {
                 const currentDebt = data?.loan?.amount - data?.loan?.repaid;
                 const currentDebtRound = currentDebt < 0 ? 0 : currentDebt;
@@ -218,7 +228,7 @@ const getColumns = () => {
 
                 return (
                     <>
-                        <Text g900 small center>
+                        <Text g900 small center style={{ textAlign: 'center' }}>
                             {currencyFormat(
                                 currentDebtRound,
                                 localeCurrency,
@@ -227,10 +237,10 @@ const getColumns = () => {
                         </Text>
                         <Box
                             flex
-                            fLayout="center start"
+                            fLayout="center center"
                             style={{ gap: '0.2rem' }}
                         >
-                            <ProgressBar progress={progress || 0} w="100%" />
+                            <ProgressBar progress={progress || 0} w="50%" />
                             <Text
                                 g700
                                 style={{
@@ -246,11 +256,9 @@ const getColumns = () => {
             },
             sortable: true,
             title: t('currentDebt'),
-            value: 'lastDebt',
-            width: '13%'
+            value: 'lastDebt'
         },
         {
-            minWidth: 5,
             render: (data: any) => {
                 return (
                     <Box flex fLayout="center" style={{ gap: '0.5rem' }}>
@@ -263,11 +271,9 @@ const getColumns = () => {
             },
             sortable: true,
             title: t('performance'),
-            value: 'performance',
-            width: '13%'
+            value: 'performance'
         },
         {
-            minWidth: 2,
             render: (data: any) => (
                 <DropdownMenu
                     {...({} as any)}
@@ -284,8 +290,7 @@ const getColumns = () => {
                     title={<EllipsisIcon icon="ellipsis" g400 />}
                     className="dropdown"
                 />
-            ),
-            width: '5%'
+            )
         }
     ];
 };
@@ -310,10 +315,17 @@ const BorrowersList: React.FC<{
     } = props;
 
     const { extractFromView } = usePrismicData();
-    const { performanceInfo } = extractFromView('messages') as any;
+    const { performanceInfo, urgentDescription } = extractFromView(
+        'messages'
+    ) as any;
 
     return (
         <>
+            <RichText
+                content={urgentDescription}
+                // @ts-ignore
+                style={{ color: '#101828' }}
+            />
             <RichText
                 content={performanceInfo}
                 g500

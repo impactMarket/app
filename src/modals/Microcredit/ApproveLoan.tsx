@@ -14,6 +14,7 @@ import {
     useWatch
 } from 'react-hook-form';
 import { handleKnownErrors } from 'src/helpers/handleKnownErrors';
+import { useEffect, useState } from 'react';
 import { useLoanManager } from '@impact-market/utils';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import Input from '../../components/Input';
@@ -28,8 +29,10 @@ const ApproveLoan = () => {
         enterLoanMaturity,
         approveLoan,
         loansApproved,
-        loanMaturityHint,
-        enterLoanAmount
+        enterLoanAmount,
+        loanAmount,
+        maximumMaturity,
+        maturity: maturityMonths
     } = extractFromView('messages') as any;
 
     const { handleClose, address, mutate } = useModal();
@@ -44,15 +47,35 @@ const ApproveLoan = () => {
         control
     });
 
+    const amount = useWatch({
+        control,
+        name: 'amount'
+    });
+
     const period = useWatch({
         control,
         name: 'period'
     });
 
-    const amount = useWatch({
-        control,
-        name: 'amount'
-    });
+    const [maturity, setMaturity] = useState(0);
+
+    const getMaturity = (loanAmount: number) => {
+        if (loanAmount <= 100) return 1;
+        if (loanAmount <= 200) return 2;
+        if (loanAmount <= 250) return 3;
+        if (loanAmount <= 300) return 4;
+        if (loanAmount <= 400) return 5;
+        if (loanAmount <= 500) return 6;
+        if (loanAmount >= 500) return 9;
+
+        return 0;
+    };
+
+    useEffect(() => {
+        const maturityValue = getMaturity(parseInt(amount, 10));
+
+        setMaturity(maturityValue);
+    }, [amount]);
 
     const { addLoans, managerDetails } = useLoanManager();
 
@@ -143,12 +166,33 @@ const ApproveLoan = () => {
                             large
                             mt={1}
                             semibold
+                            mb={1}
                         />
+                        <Box mb="1rem">
+                            <Input
+                                type="number"
+                                placeholder={enterLoanAmount}
+                                wrapperProps={{
+                                    w: '100%'
+                                }}
+                                suffix="cUSD"
+                                rules={{
+                                    required: true
+                                }}
+                                control={control}
+                                name="amount"
+                                withError={!!errors?.amount}
+                                hint={`Max. ${
+                                    managerDetails?.currentLentAmountLimit -
+                                    managerDetails?.currentLentAmount
+                                } cUSD`}
+                                label={loanAmount}
+                            />
+                        </Box>
                         <Input
                             type="number"
                             placeholder={enterLoanMaturity[0].text}
                             wrapperProps={{
-                                mt: 1,
                                 w: '100%'
                             }}
                             rules={{
@@ -157,26 +201,17 @@ const ApproveLoan = () => {
                             control={control}
                             name="period"
                             withError={!!errors?.period}
-                            hint={loanMaturityHint}
-                        />
-                        <Input
-                            type="number"
-                            placeholder={enterLoanAmount}
-                            wrapperProps={{
-                                mt: 1,
-                                w: '100%'
-                            }}
-                            suffix="cUSD"
-                            rules={{
-                                required: true
-                            }}
-                            control={control}
-                            name="amount"
-                            withError={!!errors?.amount}
-                            hint={`Max. ${
-                                managerDetails?.currentLentAmountLimit -
-                                managerDetails?.currentLentAmount
-                            } cUSD`}
+                            // @ts-ignore
+                            hint={
+                                !!maturity && (
+                                    <RichText
+                                        small
+                                        content={maximumMaturity}
+                                        variables={{ maturity }}
+                                    />
+                                )
+                            }
+                            label={maturityMonths}
                         />
                     </Box>
 
@@ -196,7 +231,7 @@ const ApproveLoan = () => {
                             mt={{ sm: 1.5, xs: 1.5 }}
                             onClick={handleCancel}
                         >
-                            {t('cancel')}
+                            {t('dismiss')}
                         </Button>
                         <Button
                             fluid={'xs'}
@@ -207,7 +242,8 @@ const ApproveLoan = () => {
                                 !period ||
                                 !amount ||
                                 validateAmount ||
-                                validatePeriod
+                                validatePeriod ||
+                                parseFloat(period) > maturity
                             }
                             isLoading={isSubmitting}
                         >

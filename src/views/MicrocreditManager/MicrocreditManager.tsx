@@ -52,7 +52,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                         <RichText
                             content={microcreditLimitReachMessage}
                             variables={{
-                                limit: managerDetails?.currentLentAmountLimit
+                                limit: managerDetails?.currentLentAmountLimit.toString()
                             }}
                         />
                     }

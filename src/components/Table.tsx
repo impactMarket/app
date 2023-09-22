@@ -11,12 +11,26 @@ import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const TableWrapper = styled(Box)`
-    > div > div {
+    /* > div > div {
         overflow-y: hidden;
+    } */
+
+    p {
+        word-break: normal;
+        white-space: nowrap;
+    }
+
+    th {
+        width: unset;
+        padding: 0.75rem 1rem;
     }
 
     td {
-        padding: 1rem 1.25rem;
+        padding: 1rem 1rem;
+
+        p {
+            text-align: left;
+        }
     }
 
     .dropdown > :nth-child(2) {
@@ -30,6 +44,14 @@ const TableWrapper = styled(Box)`
             left: unset;
             bottom: 30px;
             right: 0;
+        }
+    }
+
+    tr:first-child {
+        .dropdown > :nth-child(2) {
+            top: 2rem;
+            bottom: unset;
+            left: auto;
         }
     }
 
@@ -136,17 +158,6 @@ const Table: React.FC<TableProps & Partial<BaseTableProps>> = (props) => {
 
         setSortKey(newSort);
     };
-
-    // Add .last class to the last dropdown
-    useEffect(() => {
-        const elements = document.querySelectorAll('.dropdown');
-
-        if (elements.length > 0) {
-            const lastElement = elements[elements.length - 1];
-
-            lastElement.classList.add('last');
-        }
-    }, [data]);
 
     return (
         <TableWrapper ref={tableRef} {...forwardProps}>
