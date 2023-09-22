@@ -17,11 +17,14 @@ import { getImage } from '../../../utils/images';
 import { getUserName } from '../../../utils/users';
 import { selectCurrentUser } from 'src/state/slices/auth';
 import { selectRates } from 'src/state/slices/rates';
+import { usePrismicData } from 'src/libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Message from '../../../libs/Prismic/components/Message';
 import React from 'react';
+import RichText from 'src/libs/Prismic/components/RichText';
 import Table from '../../../components/Table';
+import TooltipIcon from 'src/components/TooltipIcon';
 import config from '../../../../config';
 import styled from 'styled-components';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
@@ -89,6 +92,7 @@ const getColumns = () => {
                         <Box>
                             <DropdownMenu
                                 {...({} as any)}
+                                className="dropdown"
                                 icon="chevronDown"
                                 items={[
                                     {
@@ -149,11 +153,18 @@ const getColumns = () => {
             minWidth: 9,
             render: (data: any) => {
                 return (
-                    <Text g900 small>
-                        {data?.loan?.claimed
-                            ? dateHelpers.ago(data?.loan?.claimed)
-                            : '--'}
-                    </Text>
+                    <Box flex>
+                        <Text g900 small>
+                            {data?.loan?.claimed
+                                ? dateHelpers.ago(data?.loan?.claimed)
+                                : '--'}
+                        </Text>
+                        {data?.loan?.claimed && (
+                            <TooltipIcon black>
+                                {dateHelpers.completeAmPm(data?.loan?.claimed)}
+                            </TooltipIcon>
+                        )}
+                    </Box>
                 );
             },
             title: t('claimed'),
@@ -173,11 +184,20 @@ const getColumns = () => {
                                   )
                                 : t('none')}
                         </Text>
-                        <Text g500 small center>
-                            {data?.loan?.lastRepayment
-                                ? dateHelpers.ago(data?.loan?.lastRepayment)
-                                : '--'}
-                        </Text>
+                        {data?.loan?.lastRepayment ? (
+                            <Box flex>
+                                <Text g500 small center>
+                                    {dateHelpers.ago(data?.loan?.lastRepayment)}
+                                </Text>
+                                <TooltipIcon black>
+                                    {dateHelpers.completeAmPm(
+                                        data?.loan?.lastRepayment
+                                    )}
+                                </TooltipIcon>
+                            </Box>
+                        ) : (
+                            ''
+                        )}
                     </>
                 );
             },
@@ -289,19 +309,31 @@ const BorrowersList: React.FC<{
         setItemOffset
     } = props;
 
+    const { extractFromView } = usePrismicData();
+    const { performanceInfo } = extractFromView('messages') as any;
+
     return (
-        <Table
-            actualPage={actualPage}
-            columns={getColumns()}
-            itemsPerPage={itemsPerPage}
-            isLoading={loadingBorrowers}
-            mt={1}
-            page={page}
-            count={count}
-            pb={6}
-            prefix={borrowers}
-            setItemOffset={setItemOffset}
-        />
+        <>
+            <RichText
+                content={performanceInfo}
+                g500
+                tAlign="right"
+                // @ts-ignore
+                style={{ fontSize: '0.75rem' }}
+            />
+            <Table
+                actualPage={actualPage}
+                columns={getColumns()}
+                itemsPerPage={itemsPerPage}
+                isLoading={loadingBorrowers}
+                mt={1}
+                page={page}
+                count={count}
+                pb={6}
+                prefix={borrowers}
+                setItemOffset={setItemOffset}
+            />
+        </>
     );
 };
 
