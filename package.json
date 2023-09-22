@@ -65,7 +65,7 @@
         "react-redux": "8.1.2",
         "recharts": "2.9.3",
         "styled-components": "6.0.8",
-        "styled-gen": "1.4.8",
+        "styled-gen": "2.0.1",
         "swr": "2.2.2",
         "use-subscription": "1.8.0",
         "viem": "1.18.7",
