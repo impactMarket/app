@@ -27,6 +27,7 @@ import Table from '../../../components/Table';
 import TooltipIcon from 'src/components/TooltipIcon';
 import config from '../../../../config';
 import styled from 'styled-components';
+import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const PerformanceIcon = styled.div<{ performance: number }>`
@@ -313,6 +314,7 @@ const BorrowersList: React.FC<{
         borrowers,
         setItemOffset
     } = props;
+    const { getByKey } = useFilters();
 
     const { extractFromView } = usePrismicData();
     const { performanceInfo, urgentDescription } = extractFromView(
@@ -321,15 +323,16 @@ const BorrowersList: React.FC<{
 
     return (
         <>
-            <RichText
-                content={urgentDescription}
-                // @ts-ignore
-                style={{ color: '#101828' }}
-            />
+            {getByKey('filter') === 'urgent' && (
+                <RichText
+                    content={urgentDescription}
+                    // @ts-ignore
+                    style={{ color: '#101828' }}
+                />
+            )}
             <RichText
                 content={performanceInfo}
                 g500
-                tAlign="right"
                 // @ts-ignore
                 style={{ fontSize: '0.75rem' }}
             />
