@@ -3777,12 +3777,12 @@
   dependencies:
     imgix-url-builder "^0.0.4"
 
-"@prismicio/react@2.6.1":
-  version "2.6.1"
-  resolved "https://registry.yarnpkg.com/@prismicio/react/-/react-2.6.1.tgz#8efc80b0016b2e68ab05cd399c05a2ceb5e2065a"
-  integrity sha512-A2mutbOixkvDjO6VNixONplqYhCiGGLuIj9l+x0Qw9fwU4Tio+azlTXGyceL2S1kgoTB50rJVIFkmGJFiToTqw==
+"@prismicio/react@2.7.3":
+  version "2.7.3"
+  resolved "https://registry.yarnpkg.com/@prismicio/react/-/react-2.7.3.tgz#ff8d4e9957969c78d7de5513d5c4afc75a5db599"
+  integrity sha512-4Fr19mcJPCDCQUvCYUjphgFH6bzoNeamIVubDvDTdedYYGT+SjKCwNRIElDJIh6QMCU8zqvVAT4jAS3Tok5hlw==
   dependencies:
-    "@prismicio/richtext" "^2.1.4"
+    "@prismicio/richtext" "^2.1.5"
 
 "@prismicio/richtext@^2.1.4", "@prismicio/richtext@^2.1.5":
   version "2.1.5"
