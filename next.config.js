@@ -74,6 +74,9 @@ const sentryWebpackPluginOptions = {
     // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
+// eslint-disable-next-line no-process-env
+const isDev = process.env.NODE_ENV === 'development';
+
 // https://github.com/GoogleChrome/workbox/issues/1790
 module.exports = withBundleAnalyzer(
     withSentryConfig(
