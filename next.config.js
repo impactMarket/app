@@ -3,6 +3,7 @@ const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 const localesConfig = require('./locales.config');
 const { withSentryConfig } = require('@sentry/nextjs');
+const nextSafe = require('next-safe');
 
 const i18n = {
     defaultLocale:
@@ -79,6 +80,23 @@ module.exports = withBundleAnalyzer(
         withPWA({
             i18n,
             images,
+            // eslint-disable-next-line require-await
+            async headers() {
+                return [
+                    {
+                        source: '/:path*',
+                        headers: nextSafe({
+                            isDev,
+                            contentSecurityPolicy: {
+                                'connect-src': [
+                                    "'self'",
+                                    'wss://relay.walletconnect.com',
+                                ],
+                            },
+                        }),
+                    },
+                ];
+            },
             pwa: {
                 dest: 'public',
                 // disabled for better dev experience
