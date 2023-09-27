@@ -3,7 +3,6 @@ const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 const localesConfig = require('./locales.config');
 const { withSentryConfig } = require('@sentry/nextjs');
-const nextSafe = require('next-safe');
 
 const i18n = {
     defaultLocale:
@@ -74,32 +73,12 @@ const sentryWebpackPluginOptions = {
     // https://github.com/getsentry/sentry-webpack-plugin#options.
 };
 
-// eslint-disable-next-line no-process-env
-const isDev = process.env.NODE_ENV === 'development';
-
 // https://github.com/GoogleChrome/workbox/issues/1790
 module.exports = withBundleAnalyzer(
     withSentryConfig(
         withPWA({
             i18n,
             images,
-            // eslint-disable-next-line require-await
-            async headers() {
-                return [
-                    {
-                        source: '/:path*',
-                        headers: nextSafe({
-                            isDev,
-                            contentSecurityPolicy: {
-                                'connect-src': [
-                                    "'self'",
-                                    'wss://relay.walletconnect.com',
-                                ],
-                            },
-                        }),
-                    },
-                ];
-            },
             pwa: {
                 dest: 'public',
                 // disabled for better dev experience
