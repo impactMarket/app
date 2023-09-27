@@ -8,8 +8,15 @@ import {
 } from '@impact-market/ui';
 import { Controller } from 'react-hook-form';
 import React, { useState } from 'react';
+import styled from 'styled-components';
 import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
+
+const SelectStyled = styled(BaseSelect)`
+    > div {
+        width: max-content;
+    }
+`;
 
 type Partial<BaseSelectProps> = {
     [P in keyof BaseSelectProps]?: BaseSelectProps[P];
@@ -113,7 +120,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
                         {label}
                     </Text>
                 )}
-                <BaseSelect
+                <SelectStyled
                     clearLabel={clearLabel}
                     disabled={disabled}
                     isMultiple={isMultiple}
@@ -124,6 +131,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
                     value={value}
                     {...field}
                     {...forwardProps}
+                    className="select"
                 />
             </>
         );
