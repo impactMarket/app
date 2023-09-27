@@ -19,21 +19,61 @@ const RepaymentsTab: React.FC = () => {
         `limit=${itemsPerPage}`,
         `offset=${itemOffset}`,
         `orderBy=${getByKey('orderBy') || 'lastRepayment'}`,
-        `${getByKey('filter') ? `filter=${getByKey('filter')}` : ''}`
+        `${getByKey('filter') ? `filter=${getByKey('filter')}` : ''}`,
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
     ]);
 
-    const { count: countAll } = useMicrocreditBorrowers();
-    const { count: countUrgent } = useMicrocreditBorrowers(['filter=urgent']);
+    const { count: countAll } = useMicrocreditBorrowers([
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
+    ]);
+    const { count: countUrgent } = useMicrocreditBorrowers([
+        'filter=urgent',
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
+    ]);
     const { count: countNeedHelp } = useMicrocreditBorrowers([
-        'filter=need-help'
+        'filter=need-help',
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
     ]);
     const { count: countFullyRepaid } = useMicrocreditBorrowers([
-        'filter=repaid'
+        'filter=repaid',
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
     ]);
-    const { count: countOntrack } = useMicrocreditBorrowers(['filter=ontrack']);
+    const { count: countOntrack } = useMicrocreditBorrowers([
+        'filter=ontrack',
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
+    ]);
 
     const { count: countNotClaimed } = useMicrocreditBorrowers([
-        'filter=not-claimed'
+        'filter=not-claimed',
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
     ]);
 
     const tabs = [

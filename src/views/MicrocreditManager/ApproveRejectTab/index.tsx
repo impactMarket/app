@@ -181,21 +181,67 @@ const ApproveRejectTab: React.FC<{}> = () => {
         `limit=${itemsPerPage}`,
         `offset=${itemOffset}`,
         // `orderBy=${getByKey('orderBy') || 'appliedOn'}`,
-        `${getByKey('status') ? `status=${getByKey('status')}` : ''}`
+        `${getByKey('status') ? `status=${getByKey('status')}` : ''}`,
+        `${
+            getByKey('manager')
+                ? `loanManagerAddress=${getByKey('manager')}`
+                : ''
+        }`
     ]);
 
     const { count: countAll, mutate: mutateCountAll } =
-        useMicrocreditApplications();
+        useMicrocreditApplications([
+            `${
+                getByKey('manager')
+                    ? `loanManagerAddress=${getByKey('manager')}`
+                    : ''
+            }`
+        ]);
     const { count: countPending, mutate: mutateCountPending } =
-        useMicrocreditApplications([`status=${FormStatus.PENDING}`]);
+        useMicrocreditApplications([
+            `status=${FormStatus.PENDING}`,
+            `${
+                getByKey('manager')
+                    ? `loanManagerAddress=${getByKey('manager')}`
+                    : ''
+            }`
+        ]);
     const { count: countReqChanges, mutate: mutateCountReqChanges } =
-        useMicrocreditApplications([`status=${FormStatus.REQUEST_CHANGES}`]);
+        useMicrocreditApplications([
+            `status=${FormStatus.REQUEST_CHANGES}`,
+            `${
+                getByKey('manager')
+                    ? `loanManagerAddress=${getByKey('manager')}`
+                    : ''
+            }`
+        ]);
     const { count: countInterview, mutate: mutateCountInterview } =
-        useMicrocreditApplications([`status=${FormStatus.INTERVIEW}`]);
+        useMicrocreditApplications([
+            `status=${FormStatus.INTERVIEW}`,
+            `${
+                getByKey('manager')
+                    ? `loanManagerAddress=${getByKey('manager')}`
+                    : ''
+            }`
+        ]);
     const { count: countApproved, mutate: mutateCountApproved } =
-        useMicrocreditApplications([`status=${FormStatus.APPROVED}`]);
+        useMicrocreditApplications([
+            `status=${FormStatus.APPROVED}`,
+            `${
+                getByKey('manager')
+                    ? `loanManagerAddress=${getByKey('manager')}`
+                    : ''
+            }`
+        ]);
     const { count: countRejected, mutate: mutateCountRejected } =
-        useMicrocreditApplications([`status=${FormStatus.REJECTED}`]);
+        useMicrocreditApplications([
+            `status=${FormStatus.REJECTED}`,
+            `${
+                getByKey('manager')
+                    ? `loanManagerAddress=${getByKey('manager')}`
+                    : ''
+            }`
+        ]);
 
     const mutate = () => {
         mutateApplications();
