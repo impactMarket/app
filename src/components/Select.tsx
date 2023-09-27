@@ -4,7 +4,8 @@ import {
     Box,
     CountryFlag,
     Icon,
-    Text
+    Text,
+    colors
 } from '@impact-market/ui';
 import { Controller } from 'react-hook-form';
 import React, { useState } from 'react';
@@ -12,11 +13,27 @@ import styled from 'styled-components';
 import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-const SelectStyled = styled(BaseSelect)<{ rtl?: boolean }>`
+const SelectStyled = styled(BaseSelect)<{ rtl?: boolean; smaller?: boolean }>`
     > div {
         width: max-content;
+        min-width: 200px;
         right: ${(props) => props.rtl && '0'};
     }
+
+    ${(props) =>
+        props.smaller &&
+        `
+        > a:first-child {
+            padding: 0.5rem 0.75rem;
+            width: fit-content;
+
+            p {
+                font-size: 0.875rem;
+                color: ${colors.g700};
+                font-weight: 500;
+            }
+        }
+    `}
 `;
 
 type Partial<BaseSelectProps> = {
@@ -35,6 +52,7 @@ type SelectProps = {
     rules?: Object;
     showFlag?: boolean;
     rtl?: boolean;
+    smaller?: boolean;
 };
 
 const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
@@ -50,6 +68,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
         rtl,
         rules,
         showFlag,
+        smaller,
         ...forwardProps
     } = props;
 
@@ -136,6 +155,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
                     {...forwardProps}
                     className="select"
                     rtl={rtl}
+                    smaller={smaller}
                 />
             </>
         );
