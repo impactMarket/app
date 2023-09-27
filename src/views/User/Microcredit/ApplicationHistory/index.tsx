@@ -3,11 +3,9 @@ import React, { useState } from 'react';
 
 import {
     Avatar,
-    Badge,
     Box,
     CircledIcon,
     DropdownMenu,
-    Icon,
     Text,
     TextLink,
     toast
@@ -16,6 +14,7 @@ import { dateHelpers } from 'src/helpers/dateHelpers';
 import { formatAddress } from '../../../../utils/formatAddress';
 import { getImage } from '../../../../utils/images';
 import { getUserName } from '../../../../utils/users';
+import { loanStatus } from 'src/views/MicrocreditManager/ApproveRejectTab/StatusBadge';
 import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import { usePrismicData } from '../../../../libs/Prismic/components/PrismicDataProvider';
 import Link from 'next/link';
@@ -24,79 +23,6 @@ import Table from '../../../../components/Table';
 import config from '../../../../../config';
 import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../../../libs/Prismic/hooks/useTranslations';
-
-const status = (status: any) => {
-    const { t } = useTranslations();
-    let badgeContent = null;
-    let bgColor = '';
-
-    switch (status) {
-        case 1: // Pending
-            badgeContent = (
-                <>
-                    <Icon icon={'clock'} g700 mr={0.2} />
-                    <Text g700 extrasmall medium>
-                        {t('pending')}
-                    </Text>
-                </>
-            );
-            bgColor = 'bgG50';
-            break;
-        case 3: // Requested Changes
-            badgeContent = (
-                <>
-                    <Icon icon={'edit'} p700 mr={0.2} />
-                    <Text g900 extrasmall medium>
-                        {t('revise')}
-                    </Text>
-                </>
-            );
-            bgColor = 'bgP50';
-            break;
-        case 4: // Approved
-            badgeContent = (
-                <>
-                    <Icon icon={'check'} s500 mr={0.2} />
-                    <Text s700 extrasmall medium>
-                        {t('approved')}
-                    </Text>
-                </>
-            );
-            bgColor = 'bgS50';
-            break;
-        case 5: // Rejected
-            badgeContent = (
-                <>
-                    <Icon icon={'close'} e500 mr={0.2} />
-                    <Text e700 extrasmall medium>
-                        {t('rejected')}
-                    </Text>
-                </>
-            );
-            bgColor = 'bgE50';
-            break;
-        default:
-            badgeContent = <></>;
-            bgColor = 'bgN01';
-    }
-
-    return (
-        <Box fLayout="center start" flex>
-            <Badge {...{ [bgColor]: true }} style={{ width: 'fit-content' }}>
-                <Box
-                    flex
-                    fDirection={{ sm: 'row', xs: 'column' }}
-                    style={{
-                        alignItems: 'center',
-                        justifyContent: 'center'
-                    }}
-                >
-                    {badgeContent}
-                </Box>
-            </Badge>
-        </Box>
-    );
-};
 
 const getColumns = (props: any) => {
     const { t } = useTranslations();
@@ -259,7 +185,7 @@ const getColumns = (props: any) => {
         },
         {
             minWidth: 8,
-            render: (data: any) => status(data?.status),
+            render: (data: any) => loanStatus(data?.status),
             title: t('status'),
             value: 'status',
             width: '10%'
