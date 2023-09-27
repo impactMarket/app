@@ -33,6 +33,12 @@ import config from '../../config';
 import modals from '../modals';
 import useGuard from '../hooks/useGuard';
 import type { AppProps } from 'next/app';
+// https://github.com/vercel/next.js/discussions/49474
+if (typeof window !== 'undefined' && !String.prototype.replaceAll) {
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    await import('core-js/actual/string/replace-all');
+}
 
 const { baseUrl, graphUrl } = config;
 

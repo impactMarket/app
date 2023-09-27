@@ -41,6 +41,7 @@ const webpack = (config, { webpack }) => {
         net: false,
         readline: false
     };
+    config.experiments = { ...config.experiments, topLevelAwait: true };
 
     return config;
 };

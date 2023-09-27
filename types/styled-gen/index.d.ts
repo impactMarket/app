@@ -1,5 +1,6 @@
 /* eslint-disable no-unused-vars */
 /* eslint-disable no-undef */
+declare module 'core-js/actual/string/replace-all';
 declare module 'styled-gen' {
     export type Breakpoint =
         | 'xs'
