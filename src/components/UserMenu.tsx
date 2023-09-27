@@ -30,8 +30,9 @@ export const getUserMenu = (roles: string[]) => {
         //  Merge menu's items
         const mergedItems: any[] = [];
 
-        activeRoles?.map((roleMenu) =>
-            roleMenu?.map((items: any) => mergedItems?.push(items))
+        activeRoles?.map(
+            (roleMenu) =>
+                roleMenu?.map((items: any) => mergedItems?.push(items))
         );
 
         //  Delete duplicated items

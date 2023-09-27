@@ -88,7 +88,8 @@ const CurrencySelector = styled(DropdownMenu)`
 
     > div:first-of-type {
         border-radius: 0.5rem;
-        box-shadow: 0 0.125rem 0.0625rem rgba(16, 24, 40, 0.05),
+        box-shadow:
+            0 0.125rem 0.0625rem rgba(16, 24, 40, 0.05),
             0 0 0 1px #d0d5dd;
         justify-content: space-between;
         padding: 0.68rem 0.875rem;

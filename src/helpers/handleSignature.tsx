@@ -4,7 +4,10 @@ import Message from 'src/libs/Prismic/components/Message';
 import config from '../../config';
 import processTransactionError from 'src/utils/processTransactionError';
 
-export const handleSignature = async (signMessage: any, _signTypedData: any) => {
+export const handleSignature = async (
+    signMessage: any,
+    _signTypedData: any
+) => {
     try {
         const currentDate = new Date();
         // const futureDate = new Date(

@@ -23,9 +23,8 @@ const Prismic = {
         clientOptions = {},
         lang: langCode = defaultLang
     }: any) => {
-        const lang = langConfig.find(
-            ({ shortCode }) => shortCode === langCode
-        )?.code;
+        const lang = langConfig.find(({ shortCode }) => shortCode === langCode)
+            ?.code;
 
         const api = await client(clientOptions);
 
@@ -52,9 +51,8 @@ const Prismic = {
         lang: langCode = defaultLang,
         document = ''
     }: any) => {
-        const lang = langConfig.find(
-            ({ shortCode }) => shortCode === langCode
-        )?.code;
+        const lang = langConfig.find(({ shortCode }) => shortCode === langCode)
+            ?.code;
         const api = await client(clientOptions);
         const response = await api.getAllByType(document, { lang });
 
@@ -86,9 +84,8 @@ const Prismic = {
         lang: langCode = defaultLang,
         types
     }: GetByTypesProps) => {
-        const lang = langConfig.find(
-            ({ shortCode }) => shortCode === langCode
-        )?.code;
+        const lang = langConfig.find(({ shortCode }) => shortCode === langCode)
+            ?.code;
 
         try {
             const api = await client(clientOptions);
@@ -171,9 +168,8 @@ const Prismic = {
         lang: langCode = defaultLang,
         lessonIds = []
     }: any) => {
-        const lang = langConfig.find(
-            ({ shortCode }) => shortCode === langCode
-        )?.code;
+        const lang = langConfig.find(({ shortCode }) => shortCode === langCode)
+            ?.code;
 
         const api = await client(clientOptions);
 
@@ -198,9 +194,8 @@ const Prismic = {
         lang: langCode = defaultLang,
         level = ''
     }: any) => {
-        const lang = langConfig.find(
-            ({ shortCode }) => shortCode === langCode
-        )?.code;
+        const lang = langConfig.find(({ shortCode }) => shortCode === langCode)
+            ?.code;
 
         const api = await client(clientOptions);
 

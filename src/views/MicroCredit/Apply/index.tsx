@@ -1,4 +1,12 @@
-import { Accordion, AccordionItem, Box, Button, Card, Display, ViewContainer } from '@impact-market/ui';
+import {
+    Accordion,
+    AccordionItem,
+    Box,
+    Button,
+    Card,
+    Display,
+    ViewContainer
+} from '@impact-market/ui';
 import { handleSignature } from '../../../helpers/handleSignature';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useRouter } from 'next/router';
@@ -120,7 +128,10 @@ const MicroCredit = (props: any) => {
                                     h={3.8}
                                     onClick={async () => {
                                         if (!signature) {
-                                            await handleSignature(signMessage, signTypedData);
+                                            await handleSignature(
+                                                signMessage,
+                                                signTypedData
+                                            );
                                         }
 
                                         router.push('/microcredit/application');

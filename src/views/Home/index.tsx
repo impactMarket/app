@@ -42,11 +42,11 @@ const Home: React.FC<{ isLoading?: boolean }> = (props) => {
         const mergedLinks: any[] = [];
 
         // Merge all cards/links in one array
-        rolesCards?.map((arr: any[]) =>
-            arr?.map((obj: any) => mergedCards.push(obj))
+        rolesCards?.map(
+            (arr: any[]) => arr?.map((obj: any) => mergedCards.push(obj))
         );
-        rolesLinks?.map((arr: any[]) =>
-            arr?.map((obj: any) => mergedLinks.push(obj))
+        rolesLinks?.map(
+            (arr: any[]) => arr?.map((obj: any) => mergedLinks.push(obj))
         );
 
         // If user is connected show the respective cards/links, if not show cardsDefault/linksDefault prismic tab

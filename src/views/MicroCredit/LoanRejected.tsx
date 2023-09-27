@@ -1,7 +1,6 @@
-import { Box,colors} from '@impact-market/ui';
+import { Box, colors } from '@impact-market/ui';
 import Image from '../../libs/Prismic/components/Image';
 import RichText from '../../libs/Prismic/components/RichText';
-
 
 const LoanRejected = (props: any) => {
     const { data } = props;
@@ -45,7 +44,7 @@ const LoanRejected = (props: any) => {
                     order={{ sm: 1, xs: 0 }}
                     style={{
                         flexBasis: '65%',
-                        justifyContent: 'space-evenly',
+                        justifyContent: 'space-evenly'
                     }}
                 >
                     <Box>

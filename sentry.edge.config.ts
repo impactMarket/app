@@ -10,9 +10,9 @@ Sentry.init({
     // Setting this option to true will print useful information to the console while you're setting up Sentry.
     // eslint-disable-next-line no-process-env
     debug: process.env.NODE_ENV === 'development',
-    
+
     dsn: config.sentryDSN,
 
     // Adjust this value in production, or use tracesSampler for greater control
-    tracesSampleRate: 0.1,
+    tracesSampleRate: 0.1
 });
