@@ -162,6 +162,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                                 showFlag
                                 value="wat"
                                 withOptionsSearch
+                                rtl
                             />
                         </Col>
                     </Row>

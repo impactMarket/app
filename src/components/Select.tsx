@@ -12,9 +12,10 @@ import styled from 'styled-components';
 import useFilters from '../hooks/useFilters';
 import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
-const SelectStyled = styled(BaseSelect)`
+const SelectStyled = styled(BaseSelect)<{ rtl?: boolean }>`
     > div {
         width: max-content;
+        right: ${(props) => props.rtl && '0'};
     }
 `;
 
@@ -33,6 +34,7 @@ type SelectProps = {
     name?: string;
     rules?: Object;
     showFlag?: boolean;
+    rtl?: boolean;
 };
 
 const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
@@ -45,6 +47,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
         label,
         placeholder,
         name,
+        rtl,
         rules,
         showFlag,
         ...forwardProps
@@ -132,6 +135,7 @@ const Select: React.FC<SelectProps & Partial<BaseSelectProps>> = (props) => {
                     {...field}
                     {...forwardProps}
                     className="select"
+                    rtl={rtl}
                 />
             </>
         );
