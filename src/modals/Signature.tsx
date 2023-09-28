@@ -13,7 +13,6 @@ import { useSignatures } from '@impact-market/utils/useSignatures';
 import Message from 'src/libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import String from '../libs/Prismic/components/String';
-import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 import useWallet from 'src/hooks/useWallet';
 
@@ -34,12 +33,9 @@ const Signature = () => {
             setIsLoading(false);
             toast.success(t('loggedIn'));
             handleClose();
-        } catch (error) {
-            console.log(error);
-            processTransactionError(error, 'global_signature');
-            toast.error(<Message id="errorOccurred" />);
-        }
-        setIsLoading(false);
+        } finally {
+            setIsLoading(false);
+        }        
     };
 
     const handleDisconnectClick = async () => {
