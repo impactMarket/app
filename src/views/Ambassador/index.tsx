@@ -176,7 +176,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                                 isLoading={card?.loading}
                                 style={{ height: '2rem', width: '20%' }}
                             >
-                                {card.number}
+                                {card.number ? card.number : 0}
                             </ShimmerEffect>
                         </Display>
                     </Box>
