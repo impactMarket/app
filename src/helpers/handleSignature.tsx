@@ -36,7 +36,11 @@ export const handleSignature = async (
     } catch (error: any) {
         console.log(error);
 
-        if (error.code === 4001 || JSON.stringify(error).includes('rejected') || JSON.stringify(error).includes('denied')) {
+        if (
+            error.code === 4001 ||
+            JSON.stringify(error).includes('rejected') ||
+            JSON.stringify(error).includes('denied')
+        ) {
             toast.error(<Message id="signatureRejected" />);
         } else {
             toast.error(<Message id="errorOccurred" />);

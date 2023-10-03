@@ -35,7 +35,7 @@ const Signature = () => {
             handleClose();
         } finally {
             setIsLoading(false);
-        }        
+        }
     };
 
     const handleDisconnectClick = async () => {

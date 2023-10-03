@@ -30,10 +30,10 @@ export function useMicrocreditManagersByCountry(country: any) {
         fetcher
     );
 
-    const managers = data?.data?.map((item: any )=> ({
+    const managers = data?.data?.map((item: any) => ({
         label: item.firstName,
         value: item.address
-      }));
+    }));
 
     const loadingManagers = !data && !error;
 
@@ -60,10 +60,7 @@ export function useMicrocreditCountries() {
             }
         }).then((res) => res.json());
 
-    const { data, mutate, error } = useSWR(
-        `/microcredit`,
-        fetcher
-    );
+    const { data, mutate, error } = useSWR(`/microcredit`, fetcher);
 
     const countries = data?.data
         .map((country: string) => ({
