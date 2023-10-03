@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     Box,
     Button,
@@ -234,41 +235,49 @@ const Lesson = (props: any) => {
                                     }, [])
                                     .reverse();
 
-                                const res = await fetch(
-                                    `${config.baseApiUrl}/learn-and-earn/lessons`,
-                                    {
-                                        body: JSON.stringify({
-                                            answers,
-                                            lesson: id
-                                        }),
-                                        headers: {
-                                            Accept: 'application/json',
-                                            Authorization: `Bearer ${auth.token}`,
-                                            'Content-Type': 'application/json'
-                                        },
-                                        method: 'PUT'
-                                    }
-                                );
-
-                                const response = await res.json();
-
-                                if (response?.data?.success === false) {
-                                    openModal('laeFailedLesson', {
-                                        attempts: response?.data?.attempts,
-                                        onClose: () => {
-                                            toggleQuiz(false);
-                                            setUserAnswers(initialAnswers);
+                                try {
+                                    const res = await fetch(
+                                        `${config.baseApiUrl}/learn-and-earn/lessons`,
+                                        {
+                                            body: JSON.stringify({
+                                                answers,
+                                                lesson: id
+                                            }),
+                                            headers: {
+                                                Accept: 'application/json',
+                                                Authorization: `Bearer ${auth.token}`,
+                                                'Content-Type':
+                                                    'application/json'
+                                            },
+                                            method: 'PUT'
                                         }
-                                    });
-                                } else if (response?.data?.success) {
-                                    openModal('laeSuccessLesson', {
-                                        onClose: () =>
-                                            router.push(
-                                                `/${lang}/learn-and-earn/${params.level}`
-                                            )
-                                    });
-                                } else {
-                                    toast.error(<Message id="errorOccurred" />);
+                                    );
+
+                                    const response = await res.json();
+
+                                    if (response?.data?.success === false) {
+                                        openModal('laeFailedLesson', {
+                                            attempts: response?.data?.attempts,
+                                            onClose: () => {
+                                                toggleQuiz(false);
+                                                setUserAnswers(initialAnswers);
+                                            }
+                                        });
+                                    } else if (response?.data?.success) {
+                                        openModal('laeSuccessLesson', {
+                                            onClose: () =>
+                                                router.push(
+                                                    `/${lang}/learn-and-earn/${params.level}`
+                                                )
+                                        });
+                                    } else {
+                                        toast.error(
+                                            <Message id="errorOccurred" />
+                                        );
+                                    }
+                                } catch (error) {
+                                    console.log(error);
+                                    Sentry.captureException(error);
                                 }
                             }}
                         >

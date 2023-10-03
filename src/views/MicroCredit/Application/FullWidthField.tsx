@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import {
     EnhancedInputUpload as BaseInputUpload,
     Box,
@@ -88,7 +89,8 @@ const CurrencySelector = styled(DropdownMenu)`
 
     > div:first-of-type {
         border-radius: 0.5rem;
-        box-shadow: 0 0.125rem 0.0625rem rgba(16, 24, 40, 0.05),
+        box-shadow:
+            0 0.125rem 0.0625rem rgba(16, 24, 40, 0.05),
             0 0 0 1px #d0d5dd;
         justify-content: space-between;
         padding: 0.68rem 0.875rem;
@@ -183,40 +185,50 @@ const FullWidthField = (props: FullWidthProps) => {
             return null;
         }
 
-        await fetch(preSigned?.uploadURL, {
-            body: file[0],
-            method: 'PUT'
-        });
-
-        const res = await fetch(`${config.baseApiUrl}/microcredit/docs`, {
-            body: JSON.stringify([
-                {
-                    category: 2,
-                    filepath: preSigned?.filePath
-                }
-            ]),
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${auth.token}`,
-                'Content-Type': 'application/json',
-                message: getCookie('MESSAGE').toString(),
-                signature: getCookie('SIGNATURE').toString()
-            },
-            method: 'POST'
-        });
-
-        if (res?.ok) {
-            updateFormData(sectionId, idx, {
-                data: preSigned?.filePath,
-                hint: '',
-                review: ''
+        try {
+            await fetch(preSigned?.uploadURL, {
+                body: file[0],
+                method: 'PUT'
             });
-
-            setFileName(file[0].name);
-            setFileSize(`${Math.floor(file[0].size / 1024)} KB`);
+        } catch (error) {
+            console.log(error);
+            Sentry.captureException(error);
         }
 
-        return res;
+        try {
+            const res = await fetch(`${config.baseApiUrl}/microcredit/docs`, {
+                body: JSON.stringify([
+                    {
+                        category: 2,
+                        filepath: preSigned?.filePath
+                    }
+                ]),
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${auth.token}`,
+                    'Content-Type': 'application/json',
+                    message: getCookie('MESSAGE').toString(),
+                    signature: getCookie('SIGNATURE').toString()
+                },
+                method: 'POST'
+            });
+
+            if (res?.ok) {
+                updateFormData(sectionId, idx, {
+                    data: preSigned?.filePath,
+                    hint: '',
+                    review: ''
+                });
+
+                setFileName(file[0].name);
+                setFileSize(`${Math.floor(file[0].size / 1024)} KB`);
+            }
+
+            return res;
+        } catch (error) {
+            console.log(error);
+            Sentry.captureException(error);
+        }
     };
 
     const updateIncome = (value: string, curr: string) => {

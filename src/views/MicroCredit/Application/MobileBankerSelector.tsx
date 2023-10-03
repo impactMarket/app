@@ -1,3 +1,4 @@
+import * as Sentry from '@sentry/browser';
 import { Avatar, Box, Row, Text, colors } from '@impact-market/ui';
 import { getImage } from '../../../utils/images';
 import { selectCurrentUser } from '../../../state/slices/auth';
@@ -76,18 +77,24 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
     }, [country]);
 
     const fetchManagers = async (country: string) => {
-        const managers = await fetch(
-            `${config.baseApiUrl}/microcredit/managers/${country}`,
-            {
-                headers: {
-                    Authorization: `Bearer ${auth.token}`,
-                    message,
-                    signature
+        try {
+            const managers = await fetch(
+                `${config.baseApiUrl}/microcredit/managers/${country}`,
+                {
+                    headers: {
+                        Authorization: `Bearer ${auth.token}`,
+                        message,
+                        signature
+                    },
+                    method: 'GET'
                 }
-            }
-        ).then((res) => res.json());
+            ).then((res) => res.json());
 
-        setManagers(managers?.data);
+            setManagers(managers?.data);
+        } catch (error) {
+            console.log(error);
+            Sentry.captureException(error);
+        }
     };
 
     return (
