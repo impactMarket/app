@@ -37,7 +37,7 @@ const StoryContent = (props: any) => {
 
     return (
         <Col
-            colSize={{ sm: 5, xs: 12 }}
+            colSize={{ sm: story?.storyMedia ? 5 : 12, xs: 12 }}
             fDirection="column"
             flex
             h="100%"

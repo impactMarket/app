@@ -15,11 +15,13 @@ import useContract from '../../hooks/useContract';
 import useMerchants from '../../hooks/useMerchants';
 import usePromoter from '../../hooks/usePromoter';
 
+import { getImage } from 'src/utils/images';
 import CommunityDetails from './CommunityDetails';
 import Dashboard from './Dashboard';
 import Header from './Header';
 import Message from '../../libs/Prismic/components/Message';
 import RolesTabs from './RolesTabs';
+import SEO from 'src/components/SEO';
 import processTransactionError from 'src/utils/processTransactionError';
 
 const fetcher = (url: string, headers: any | {}) =>
@@ -202,38 +204,57 @@ const Community: React.FC<{ isLoading?: boolean; communityData: any }> = (
         loadingContract;
 
     return (
-        <ViewContainer {...({} as any)} isLoading={loadingData}>
-            <Header
-                buttonLoading={buttonLoading}
-                community={community}
-                updateReview={functionUpdateReview}
-                thegraphData={data?.communityEntity}
+        <>
+            <SEO
+                meta={{
+                    description: community?.description,
+                    image: {
+                        url: getImage({
+                            filePath: community?.coverMediaPath,
+                            fit: 'cover',
+                            height: 0,
+                            width: 0
+                        } as any)
+                    },
+                    title: community?.name,
+                    url: `${config?.publicUrl}/communities/${community?.id}`
+                }}
             />
-            <CommunityDetails
-                claimsLocation={claimsLocation}
-                community={community}
-                data={data?.communityEntity ?? contract}
-                promoter={promoter}
-            />
-            <RolesTabs
-                //  If community exists in thegraph (it has contract address) get the data from thegraph.
-                //  If not, get from API
-                ambassador={ambassador}
-                community={
-                    !!data?.communityEntity ? data?.communityEntity : contract
-                }
-                communityId={community.id}
-                merchants={merchants}
-                requestedCommunity={!!!data?.communityEntity}
-                status={communityData?.status}
-            />
-            {community?.status !== 'pending' && (
-                <Dashboard
-                    data={data?.communityDailyEntities}
-                    daysInterval={daysInterval}
+            <ViewContainer {...({} as any)} isLoading={loadingData}>
+                <Header
+                    buttonLoading={buttonLoading}
+                    community={community}
+                    updateReview={functionUpdateReview}
+                    thegraphData={data?.communityEntity}
                 />
-            )}
-        </ViewContainer>
+                <CommunityDetails
+                    claimsLocation={claimsLocation}
+                    community={community}
+                    data={data?.communityEntity ?? contract}
+                    promoter={promoter}
+                />
+                <RolesTabs
+                    //  If community exists in thegraph (it has contract address) get the data from thegraph.
+                    //  If not, get from API
+                    ambassador={ambassador}
+                    community={
+                        !!data?.communityEntity
+                            ? data?.communityEntity
+                            : contract
+                    }
+                    communityId={community.id}
+                    merchants={merchants}
+                    requestedCommunity={!!!data?.communityEntity}
+                    status={communityData?.status}
+                />
+                {community?.status !== 'pending' && (
+                    <Dashboard
+                        data={data?.communityDailyEntities}
+                        daysInterval={daysInterval}
+                    />
+                )}
+            </ViewContainer>
+        </>
     );
 };
 
