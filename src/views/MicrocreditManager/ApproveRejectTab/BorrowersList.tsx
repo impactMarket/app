@@ -253,7 +253,7 @@ const getColumns = (props: any) => {
             render: (data: any) => {
                 return (
                     <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
-                        {data?.application?.createdAt ? (
+                        {data?.application?.signedOn ? (
                             <>
                                 <Box
                                     flex
@@ -262,14 +262,50 @@ const getColumns = (props: any) => {
                                     <Text medium g900 small>
                                         {`${
                                             dateHelpers.getDateAndTime(
-                                                data?.application?.createdAt
+                                                data?.application?.signedOn
                                             )[0]
                                         }`}
                                     </Text>
                                     <Text medium g400 extrasmall>
                                         {` ${
                                             dateHelpers.getDateAndTime(
-                                                data?.application?.createdAt
+                                                data?.application?.signedOn
+                                            )[1]
+                                        }`}
+                                    </Text>
+                                </Box>
+                            </>
+                        ) : (
+                            <Text medium g400 small>
+                                {'---'}
+                            </Text>
+                        )}
+                    </Box>
+                );
+            },
+            title: t('signed')
+        },
+        {
+            render: (data: any) => {
+                return (
+                    <Box flex fDirection={{ sm: 'column', xs: 'column' }}>
+                        {data?.application?.claimedOn ? (
+                            <>
+                                <Box
+                                    flex
+                                    fDirection={{ sm: 'column', xs: 'column' }}
+                                >
+                                    <Text medium g900 small>
+                                        {`${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.claimedOn
+                                            )[0]
+                                        }`}
+                                    </Text>
+                                    <Text medium g400 extrasmall>
+                                        {` ${
+                                            dateHelpers.getDateAndTime(
+                                                data?.application?.claimedOn
                                             )[1]
                                         }`}
                                     </Text>
@@ -284,7 +320,7 @@ const getColumns = (props: any) => {
                 );
             },
             title: t('claimed'),
-            value: 'lastRepaymentDate'
+            value: 'claimedOn'
         },
         {
             render: (data: any) => loanStatus(data?.application?.status),
