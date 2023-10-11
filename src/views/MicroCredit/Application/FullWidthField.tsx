@@ -189,12 +189,16 @@ const FullWidthField = (props: FullWidthProps) => {
         });
 
         const res = await fetch(`${config.baseApiUrl}/microcredit/docs`, {
-            body: JSON.stringify([
-                {
-                    category: 2,
-                    filepath: preSigned?.filePath
-                }
-            ]),
+            body: JSON.stringify({
+                applicationId: 109,
+                docs: [
+                    {
+                        // categories need to be unique, so we are adding a prefix to the idx
+                        category: 20000000 + idx,
+                        filepath: preSigned?.filePath
+                    }
+                ]
+            }),
             headers: {
                 Accept: 'application/json',
                 Authorization: `Bearer ${auth.token}`,
