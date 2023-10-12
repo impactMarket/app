@@ -28,6 +28,7 @@ const DoubleInputWrapper = styled(Row)`
 
 export interface FormSectionProps {
     address: string;
+    applicationId?: string;
     items: Array<any>;
     fieldType: string;
     primary: any;
@@ -41,6 +42,7 @@ export interface FormSectionProps {
 const FormSection = (props: FormSectionProps) => {
     const {
         address,
+        applicationId,
         items,
         fieldType,
         primary,
@@ -92,6 +94,7 @@ const FormSection = (props: FormSectionProps) => {
                             return (
                                 <FullWidthField
                                     address={address}
+                                    applicationId={applicationId}
                                     item={item}
                                     fieldType={fieldType}
                                     idx={idx}
@@ -134,6 +137,7 @@ const FormSection = (props: FormSectionProps) => {
                                             style={{ flexBasis: '50%' }}
                                         >
                                             <FullWidthField
+                                                applicationId={applicationId}
                                                 item={id === 1 ? item1 : item2}
                                                 fieldType={fieldType}
                                                 idx={counter++}

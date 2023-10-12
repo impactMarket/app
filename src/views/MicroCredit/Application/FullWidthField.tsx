@@ -112,6 +112,7 @@ const CurrencyWrapper = styled(Box)`
 
 export interface FullWidthProps {
     address?: string;
+    applicationId?: string;
     item: any;
     fieldType: string;
     idx: number;
@@ -129,6 +130,7 @@ const fetcher = () =>
 const FullWidthField = (props: FullWidthProps) => {
     const {
         address,
+        applicationId,
         item,
         sectionId,
         idx,
@@ -190,7 +192,7 @@ const FullWidthField = (props: FullWidthProps) => {
 
         const res = await fetch(`${config.baseApiUrl}/microcredit/docs`, {
             body: JSON.stringify({
-                applicationId: 109,
+                applicationId,
                 docs: [
                     {
                         // categories need to be unique, so we are adding a prefix to the idx

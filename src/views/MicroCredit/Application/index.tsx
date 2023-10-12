@@ -47,6 +47,7 @@ const ApplicationForm = (props: any) => {
     const [page, setPage] = useState(0);
     const [isLoading, setIsLoading] = useState(true);
     const [formArray, setFormArray] = useState([]);
+    const [applicationId, setApplicationId] = useState('');
     const [titleArray, setTitleArray] = useState([]);
     const [address, setAddress] = useState('');
     const [title, setTitle] = useState('');
@@ -439,7 +440,9 @@ const ApplicationForm = (props: any) => {
             submit: status
         };
 
-        const response = await submitForm(matrixJson as any);
+        const response = await submitForm(matrixJson as any) as any;
+
+        setApplicationId(response?.data?.id);
 
         return response;
     };
@@ -539,6 +542,7 @@ const ApplicationForm = (props: any) => {
                         el.slice_type !== 'profile' && (
                             <FormSection
                                 address={address}
+                                applicationId={applicationId}
                                 items={el?.items}
                                 primary={el?.primary}
                                 fieldType={el.slice_type}
@@ -606,7 +610,7 @@ const ApplicationForm = (props: any) => {
 
                                         if (!!response) {
                                             router.push(
-                                                `/microcredit/apply?success=true&formId=${response?.data?.id}`
+                                                `/microcredit/apply?success=true&formId=${applicationId}`
                                             );
                                         }
                                     } else {
