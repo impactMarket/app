@@ -33,16 +33,16 @@ export const changeStatus = (
     const router = useRouter();
 
     const dropdownItems = [
-        !limitReach &&
-            data?.application?.status !== FormStatus.APPROVED && {
-                icon: 'check',
-                onClick: () =>
-                    openModal('approveLoan', {
-                        address: data?.address,
-                        mutate
-                    }),
-                title: approveLoan
-            },
+        data?.application?.status !== FormStatus.APPROVED && {
+            icon: 'check',
+            onClick: () =>
+                openModal('approveLoan', {
+                    address: data?.address,
+                    limitReach,
+                    mutate
+                }),
+            title: approveLoan
+        },
         data?.application?.status !== FormStatus.APPROVED &&
             data?.application?.status !== FormStatus.REJECTED && {
                 icon: 'close',
