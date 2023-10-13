@@ -1,5 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 import {
+    Alert,
     Box,
     Button,
     CircledIcon,
@@ -32,10 +33,11 @@ const ApproveLoan = () => {
         enterLoanAmount,
         loanAmount,
         maximumMaturity,
-        maturity: maturityMonths
+        maturity: maturityMonths,
+        microcreditLimitReached
     } = extractFromView('messages') as any;
 
-    const { handleClose, address, mutate } = useModal();
+    const { handleClose, address, limitReach, mutate } = useModal();
     const { t } = useTranslations();
 
     const {
@@ -168,6 +170,14 @@ const ApproveLoan = () => {
                             semibold
                             mb={1}
                         />
+                        {limitReach && (
+                            <Alert
+                                icon="alertCircle"
+                                error
+                                mb={1.5}
+                                title={microcreditLimitReached}
+                            />
+                        )}
                         <Box mb="1rem">
                             <Input
                                 type="number"
@@ -187,6 +197,7 @@ const ApproveLoan = () => {
                                     managerDetails?.currentLentAmount
                                 } cUSD`}
                                 label={loanAmount}
+                                disabled={limitReach}
                             />
                         </Box>
                         <Input
@@ -212,6 +223,7 @@ const ApproveLoan = () => {
                                 )
                             }
                             label={maturityMonths}
+                            disabled={limitReach}
                         />
                     </Box>
 
