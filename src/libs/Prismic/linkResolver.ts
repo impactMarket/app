@@ -28,9 +28,8 @@ const clearPrefix = (type?: string, prefix: string = '') => {
 };
 
 const linkResolver = (doc: FilledLinkToDocumentField) => {
-    const lang = langConfig.find(
-        ({ code }) => code.toLowerCase() === doc?.lang
-    )?.shortCode;
+    const lang = langConfig.find(({ code }) => code.toLowerCase() === doc?.lang)
+        ?.shortCode;
 
     if (exceptions.includes(doc.type)) {
         return '';

@@ -141,9 +141,8 @@ const AddBeneficiary = () => {
                     await canUsersBeBeneficiaries([beneficiaryAddress])
                         .then(async () => {
                             toast.info(<Message id="approveTransaction" />);
-                            const { status } = await addBeneficiary(
-                                beneficiaryAddress
-                            );
+                            const { status } =
+                                await addBeneficiary(beneficiaryAddress);
 
                             if (status) {
                                 handleClose();

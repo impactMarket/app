@@ -4,7 +4,10 @@ import Message from 'src/libs/Prismic/components/Message';
 import config from '../../config';
 import processTransactionError from 'src/utils/processTransactionError';
 
-export const handleSignature = async (signMessage: any, _signTypedData: any) => {
+export const handleSignature = async (
+    signMessage: any,
+    _signTypedData: any
+) => {
     try {
         const currentDate = new Date();
         // const futureDate = new Date(
@@ -33,7 +36,11 @@ export const handleSignature = async (signMessage: any, _signTypedData: any) => 
     } catch (error: any) {
         console.log(error);
 
-        if (error.code === 4001 || JSON.stringify(error).includes('rejected') || JSON.stringify(error).includes('denied')) {
+        if (
+            error.code === 4001 ||
+            JSON.stringify(error).includes('rejected') ||
+            JSON.stringify(error).includes('denied')
+        ) {
             toast.error(<Message id="signatureRejected" />);
         } else {
             toast.error(<Message id="errorOccurred" />);

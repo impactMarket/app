@@ -5,5 +5,5 @@ export const FormStatus = {
     INTERVIEW: 4,
     PENDING: 1,
     REJECTED: 6,
-    REQUEST_CHANGES: 3,
-}
+    REQUEST_CHANGES: 3
+};

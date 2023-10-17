@@ -62,11 +62,13 @@ const Form = ({ onSubmit }: any) => {
                 <Input
                     control={control}
                     hint={
+                        // rip, this is a conflict between prettier and eslint
                         errors?.children
-                            // @ts-ignore
-                            ? t(errors?.children?.message?.key)?.replace(
+                            ? // eslint-disable-next-line no-inline-comments
+                              // @ts-ignore
+                              t(errors?.children?.message?.key)?.replace(
                                   '{{ value }}',
-                                // @ts-ignore
+                                  // @ts-ignore
                                   errors?.children?.message?.value
                               )
                             : ''

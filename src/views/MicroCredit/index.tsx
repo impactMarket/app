@@ -22,7 +22,10 @@ import processTransactionError from 'src/utils/processTransactionError';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
-    const [getBorrower, { isError: isErrorGetBorrower, error: errorGetBorrower }] = useLazyGetBorrowerQuery();
+    const [
+        getBorrower,
+        { isError: isErrorGetBorrower, error: errorGetBorrower }
+    ] = useLazyGetBorrowerQuery();
     const [loanId, setLoanId] = useState(0);
     const [isOverviewOpen, setIsOverviewOpen] = useState(false);
     const [formState, setFormState] = useState(-1);
@@ -137,7 +140,9 @@ const MicroCredit = (props: any) => {
                             form.status === FormStatus.IN_REVIEW ||
                             form.status === FormStatus.INTERVIEW
                         ) {
-                            router.push(`/microcredit/apply?success=true&formId=${form?.id}`);
+                            router.push(
+                                `/microcredit/apply?success=true&formId=${form?.id}`
+                            );
                         } else {
                             setLoading(false);
                         }

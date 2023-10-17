@@ -34,9 +34,9 @@ const Filters = ({ status }: any) => {
                     isClearable
                     isMultiple
                     options={communitiesCountries}
-                    placeholder={`${t('allCountries')} (${
-                        communitiesCountries?.length
-                    })`}
+                    placeholder={`${t(
+                        'allCountries'
+                    )} (${communitiesCountries?.length})`}
                     showFlag
                     value={selectedCountries}
                     withOptionsSearch

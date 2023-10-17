@@ -60,9 +60,8 @@ const CommunityDetailsForm = ({
                 const type = communityImage.type?.split('/')[1] || '';
 
                 if (type) {
-                    const preSigned = await getCommunityPreSigned(
-                        type
-                    ).unwrap();
+                    const preSigned =
+                        await getCommunityPreSigned(type).unwrap();
 
                     if (preSigned?.uploadURL) {
                         await fetch(preSigned.uploadURL, {

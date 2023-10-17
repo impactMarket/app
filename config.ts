@@ -131,7 +131,7 @@ const config = {
     /*
      * Microcredit Manager Admin
      */
-    microcreditManagerAdmin: process.env.NEXT_PUBLIC_MICROCREDIT_MANAGER_ADMIN,
+    microcreditManagerAdmin: process.env.NEXT_PUBLIC_MICROCREDIT_MANAGER_ADMIN
 };
 
 export default config;

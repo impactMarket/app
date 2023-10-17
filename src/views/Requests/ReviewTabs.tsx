@@ -48,15 +48,16 @@ const ReviewTabs = ({
 
         !!Object.keys(reviewsCount).length &&
             (!!countries?.length
-                ? reviewsCount?.map((countryReview: any) =>
-                      countries?.map(
-                          (country: any) =>
-                              countryReview?.country === country &&
-                              selectedCountries?.push(countryReview)
-                      )
+                ? reviewsCount?.map(
+                      (countryReview: any) =>
+                          countries?.map(
+                              (country: any) =>
+                                  countryReview?.country === country &&
+                                  selectedCountries?.push(countryReview)
+                          )
                   )
-                : reviewsCount?.map((data: any) =>
-                      selectedCountries?.push(data)
+                : reviewsCount?.map(
+                      (data: any) => selectedCountries?.push(data)
                   ));
 
         selectedCountries?.map((country: any) => {

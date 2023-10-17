@@ -78,9 +78,8 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
         const getSingleStoryMethod = async () => {
             try {
                 if (getByKey('id')) {
-                    const SingleRequest: any = await getSingleStory(
-                        filterId
-                    ).unwrap();
+                    const SingleRequest: any =
+                        await getSingleStory(filterId).unwrap();
 
                     if (SingleRequest?.error) {
                         clear('id');
@@ -376,10 +375,9 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                                             hideSeeMore
                                                             rows={1}
                                                             limit={20}
-                                                            message={`${
-                                                                story?.community
-                                                                    ?.city
-                                                            }, ${getCountryNameFromInitials(
+                                                            message={`${story
+                                                                ?.community
+                                                                ?.city}, ${getCountryNameFromInitials(
                                                                 story?.community
                                                                     ?.country
                                                             )}`}

@@ -17,7 +17,7 @@ interface Form {
 }
 
 type BorrowerQueryResponse = {
-    forms: { id: number, status: number }[];
+    forms: { id: number; status: number }[];
 };
 
 interface AplicationFormProps {
@@ -29,12 +29,18 @@ interface AplicationFormProps {
 // Define a service using a base URL and expected endpoints
 export const microcreditApi = emptySplitApi.injectEndpoints({
     endpoints: (builder) => ({
-        getBorrower: builder.query<BorrowerQueryResponse, { address?: string; formId?: string }>({
-            query: ({address, formId}) => ({
+        getBorrower: builder.query<
+            BorrowerQueryResponse,
+            { address?: string; formId?: string }
+        >({
+            query: ({ address, formId }) => ({
                 method: 'GET',
-                url: `microcredit/borrower?${!!address ? `address=${address}&` : ''}${!!formId ? `formId=${formId}&` : ''}include=forms`
+                url: `microcredit/borrower?${
+                    !!address ? `address=${address}&` : ''
+                }${!!formId ? `formId=${formId}&` : ''}include=forms`
             }),
-            transformResponse: (response: { data: BorrowerQueryResponse }) => response.data
+            transformResponse: (response: { data: BorrowerQueryResponse }) =>
+                response.data
         }),
         getFormId: builder.mutation<any, { formId: string }>({
             query: (formId: any) => ({
@@ -64,9 +70,9 @@ export const microcreditApi = emptySplitApi.injectEndpoints({
 
 // Export hooks for usage in functional components, which are
 // auto-generated based on the defined endpoints
-export const { 
+export const {
     useLazyGetBorrowerQuery,
     useGetFormIdMutation,
     useGetMicrocreditPreSignedMutation,
-    useSubmitFormMutation,
- } = microcreditApi;
+    useSubmitFormMutation
+} = microcreditApi;
