@@ -1,0 +1,314 @@
+{
+  "id": "eda800bd-11aa-45d1-91e7-9251401f7bd2",
+  "version": "2.0",
+  "name": "impactmarket-pwa",
+  "url": "https://app-alfajores.impactmarket.com",
+  "tests": [{
+    "id": "26d11e61-4147-4917-8714-3c98412dc9a8",
+    "name": "load communities",
+    "commands": [{
+      "id": "e9efe890-c07c-4ad3-8e11-baa8193c7aa0",
+      "comment": "",
+      "command": "open",
+      "target": "/pt",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "d4643c31-a8c9-4893-bad9-384506603042",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1861x1400",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "a3f7bc4e-9122-4add-a29a-4230b725cf75",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-eGgFai:nth-child(1) .sc-dVdRry:nth-child(1) > .sc-gLLuHO",
+      "targets": [
+        ["css=.sc-eGgFai:nth-child(1) .sc-dVdRry:nth-child(1) > .sc-gLLuHO", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div/div[2]/div/div/div/div/a/p", "xpath:idRelative"],
+        ["xpath=//p", "xpath:position"],
+        ["xpath=//p[contains(.,'Comunidades')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "cfd75b3d-dd06-4559-be4c-6116d08a466a",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.sc-hLQTFJ:nth-child(1) > .sc-guDMob",
+      "targets": [
+        ["css=.sc-hLQTFJ:nth-child(1) > .sc-guDMob", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[2]/div[4]/div/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/pt/communities/7085')]", "xpath:href"],
+        ["xpath=//div[4]/div/div/div/div/a", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "ba705ebd-6bff-448e-81e8-a001618601a8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-hLQTFJ:nth-child(1) > .sc-guDMob",
+      "targets": [
+        ["css=.sc-hLQTFJ:nth-child(1) > .sc-guDMob", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[2]/div[4]/div/div/div/div/a", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/pt/communities/7085')]", "xpath:href"],
+        ["xpath=//div[4]/div/div/div/div/a", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "fb026f99-d4dc-437c-b746-f1308f521efa",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-beyTiQ:nth-child(1) > .sc-dQmiQg > .sc-bCvmwx path",
+      "targets": [
+        ["css=.sc-beyTiQ:nth-child(1) > .sc-dQmiQg > .sc-bCvmwx path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "739d521d-1ae6-4123-b408-fcca31c9b7e3",
+      "comment": "",
+      "command": "click",
+      "target": "css=.iwQYeK .sc-BCDlb:nth-child(2) > .sc-gLLuHO",
+      "targets": [
+        ["css=.iwQYeK .sc-BCDlb:nth-child(2) > .sc-gLLuHO", "css:finder"],
+        ["xpath=//div[@id='react-tabs-11']/div/div/div/div/div/div[2]/div/div/div[2]/div/div[2]/p", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/div/div/div[2]/div/div/div[2]/div/div[2]/p", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "2026ca9b-9a17-48ce-b86b-3981a540adf6",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.dKpBjO > path",
+      "targets": [
+        ["css=.dKpBjO > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "3e933adf-72b2-4c5a-8546-f4212a92a05c",
+      "comment": "",
+      "command": "click",
+      "target": "css=#react-tabs-4 .sc-gLLuHO",
+      "targets": [
+        ["css=#react-tabs-4 .sc-gLLuHO", "css:finder"],
+        ["xpath=//li[@id='react-tabs-4']/div/p", "xpath:idRelative"],
+        ["xpath=//li[2]/div/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Embaixadores')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "4cc03b0a-1ca8-4273-987c-c4e80e926f57",
+      "comment": "",
+      "command": "click",
+      "target": "css=.cNobqm .sc-bCvmwx > .sc-iBdoyZ",
+      "targets": [
+        ["css=.cNobqm .sc-bCvmwx > .sc-iBdoyZ", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "a19a5b89-8089-4de3-a518-40ea4280bff0",
+      "comment": "",
+      "command": "click",
+      "target": "css=.iwQYeK .sc-BCDlb:nth-child(2) > .sc-gLLuHO",
+      "targets": [
+        ["css=.iwQYeK .sc-BCDlb:nth-child(2) > .sc-gLLuHO", "css:finder"],
+        ["xpath=//div[@id='react-tabs-5']/div/div/div/div/div/div[2]/div/div/div[2]/div/div[2]/p", "xpath:idRelative"],
+        ["xpath=//div[3]/div/div/div/div/div/div[2]/div/div/div[2]/div/div[2]/p", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "c7d6c907-959a-4499-b87d-af4ed74dc6a8",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.dKpBjO > path",
+      "targets": [
+        ["css=.dKpBjO > path", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "8f857004-bedf-475a-8d11-6fa8b5f1d4b8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.dnflHW .sc-bCvmwx > .sc-iBdoyZ",
+      "targets": [
+        ["css=.dnflHW .sc-bCvmwx > .sc-iBdoyZ", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "08c268c9-e020-4d91-bfcd-b4055707a733",
+      "comment": "",
+      "command": "click",
+      "target": "css=.iwQYeK .sc-BCDlb:nth-child(2) > .sc-gLLuHO",
+      "targets": [
+        ["css=.iwQYeK .sc-BCDlb:nth-child(2) > .sc-gLLuHO", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[3]/div[2]/div[2]/div[7]/div/div[2]/div/div[2]/p", "xpath:idRelative"],
+        ["xpath=//div[7]/div/div[2]/div/div[2]/p", "xpath:position"],
+        ["xpath=//p[contains(.,'Copiar endereço')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "015be0ea-c608-41d2-9d07-abafdd178c04",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-hLQTFJ:nth-child(1) img",
+      "targets": [
+        ["css=.sc-hLQTFJ:nth-child(1) img", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[2]/div[4]/div/div/div/div/a/div/span/img", "xpath:idRelative"],
+        ["xpath=//span/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "dcce9a5f-6ca9-4fc8-a8e7-615cf148285e",
+      "comment": "",
+      "command": "assertElementPresent",
+      "target": "css=.sc-beyTiQ:nth-child(3) .sc-hLQTFJ:nth-child(1) .sc-guDMob",
+      "targets": [
+        ["css=.sc-beyTiQ:nth-child(3) .sc-hLQTFJ:nth-child(1) .sc-guDMob", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[6]/div[3]/div[2]/div/div/div", "xpath:idRelative"],
+        ["xpath=//div[6]/div[3]/div[2]/div/div/div", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "5a3e45ec-6d3a-4529-8923-584b360df814",
+      "comment": "",
+      "command": "click",
+      "target": "css=.btfMMp > .sc-jdHHBG",
+      "targets": [
+        ["css=.btfMMp > .sc-jdHHBG", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[3]/div[2]/div[2]/div[2]/button/span", "xpath:idRelative"],
+        ["xpath=//div[2]/button/span", "xpath:position"],
+        ["xpath=//span[contains(.,'Doar')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "98c930a8-dda9-45ff-9173-85c7fc05f426",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=w3m-modal",
+      "targets": [
+        ["css=w3m-modal", "css:finder"],
+        ["xpath=//div[@id='__next']/w3m-modal", "xpath:idRelative"],
+        ["xpath=//w3m-modal", "xpath:position"]
+      ],
+      "value": "30000"
+    }]
+  }, {
+    "id": "2268d747-678d-4036-8674-2841b251629c",
+    "name": "load stories",
+    "commands": [{
+      "id": "fd32667a-5410-4487-8d47-75dcef4f54df",
+      "comment": "",
+      "command": "open",
+      "target": "/pt",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "4a407be7-cd7e-42a0-9c98-fe2702c9f723",
+      "comment": "",
+      "command": "setWindowSize",
+      "target": "1861x1400",
+      "targets": [],
+      "value": ""
+    }, {
+      "id": "786adb1e-da0c-430a-924d-8603d2335b97",
+      "comment": "",
+      "command": "click",
+      "target": "linkText=Histórias",
+      "targets": [
+        ["linkText=Histórias", "linkText"],
+        ["css=.isvErW", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div/div[2]/div/div/div/div/a[2]", "xpath:idRelative"],
+        ["xpath=//a[contains(@href, '/pt/stories')]", "xpath:href"],
+        ["xpath=//a[2]", "xpath:position"],
+        ["xpath=//a[contains(.,'Histórias')]", "xpath:innerText"]
+      ],
+      "value": ""
+    }, {
+      "id": "ea95f7cd-6daa-4cc2-91c4-2edfcbaecbe9",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-dmyDmy:nth-child(1) .sc-guDMob > .sc-beyTiQ img",
+      "targets": [
+        ["css=.sc-dmyDmy:nth-child(1) .sc-guDMob > .sc-beyTiQ img", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[3]/div/div/div/div/span/img", "xpath:idRelative"],
+        ["xpath=//span/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "be4dbb97-a30a-482d-83f5-24d6a238bed3",
+      "comment": "",
+      "command": "waitForElementNotPresent",
+      "target": "css=.nFWGb",
+      "targets": [
+        ["css=.nFWGb", "css:finder"],
+        ["xpath=//div[@id='modal-wrapper']/div/div[2]/div[2]/div[2]/div[5]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[5]/div/div/button", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "848f6124-6b4b-46d0-93de-1db7bd5dcad8",
+      "comment": "",
+      "command": "click",
+      "target": "css=.caotms",
+      "targets": [
+        ["css=.caotms", "css:finder"]
+      ],
+      "value": ""
+    }, {
+      "id": "699d80ad-b7d3-4556-9ad9-e5d63fb6d649",
+      "comment": "",
+      "command": "waitForElementNotPresent",
+      "target": "css=.nFWGb",
+      "targets": [
+        ["css=.nFWGb", "css:finder"],
+        ["xpath=//div[@id='modal-wrapper']/div/div[2]/div[2]/div[2]/div[5]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[5]/div/div/button", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "cbb4231f-dadf-4d47-9b5a-ecfdbe0d876d",
+      "comment": "",
+      "command": "click",
+      "target": "css=.sc-dmyDmy:nth-child(2) .sc-guDMob > .sc-beyTiQ img",
+      "targets": [
+        ["css=.sc-dmyDmy:nth-child(2) .sc-guDMob > .sc-beyTiQ img", "css:finder"],
+        ["xpath=//div[@id='__next']/div[2]/div[2]/div/div[3]/div[2]/div/div/div/span/img", "xpath:idRelative"],
+        ["xpath=//div[2]/div/div/div/span/img", "xpath:position"]
+      ],
+      "value": ""
+    }, {
+      "id": "cbe617b2-b203-4ae3-a9df-2734af93ec71",
+      "comment": "",
+      "command": "waitForElementPresent",
+      "target": "css=.nFWGb",
+      "targets": [
+        ["css=.nFWGb", "css:finder"],
+        ["xpath=//div[@id='modal-wrapper']/div/div[2]/div[2]/div[2]/div[5]/div/div/button", "xpath:idRelative"],
+        ["xpath=//div[2]/div[5]/div/div/button", "xpath:position"]
+      ],
+      "value": "30000"
+    }, {
+      "id": "19530337-365a-4da5-904e-6a792749c5bf",
+      "comment": "",
+      "command": "click",
+      "target": "css=.nFWGb .sc-gLLuHO",
+      "targets": [
+        ["css=.nFWGb .sc-gLLuHO", "css:finder"],
+        ["xpath=//div[@id='modal-wrapper']/div/div[2]/div[2]/div[2]/div[5]/div/div/button/span/div", "xpath:idRelative"],
+        ["xpath=//div[2]/div[5]/div/div/button/span/div", "xpath:position"]
+      ],
+      "value": ""
+    }]
+  }],
+  "suites": [{
+    "id": "5ea1e8a8-43b2-4ba7-acb3-0a5dd0132631",
+    "name": "Default Suite",
+    "persistSession": false,
+    "parallel": false,
+    "timeout": 300,
+    "tests": []
+  }],
+  "urls": ["https://app-alfajores.impactmarket.com/"],
+  "plugins": []
+}
