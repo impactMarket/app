@@ -19,7 +19,7 @@ import { handleSignature } from 'src/helpers/handleSignature';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { selectRates } from '../../../state/slices/rates';
 import { useEffect, useRef, useState } from 'react';
-import { useGetMicrocreditPreSignedMutation } from 'src/api/microcredit';
+import { useGetMicrocreditPreSignedMutation, useLazyGetBorrowerQuery } from 'src/api/microcredit';
 import { usePDF } from '@react-pdf/renderer';
 import { useSelector } from 'react-redux';
 import { useSignatures } from '@impact-market/utils/useSignatures';
@@ -72,6 +72,7 @@ const ContractForm = (props: any) => {
     const { signMessage, signTypedData } = useSignatures();
 
     const [getMicrocreditPreSigned] = useGetMicrocreditPreSignedMutation();
+    const [getBorrower] = useLazyGetBorrowerQuery();
 
     const localeCurrency = new Intl.NumberFormat(
         auth?.user?.currency?.language || 'en-US',
@@ -213,15 +214,21 @@ const ContractForm = (props: any) => {
             });
 
             if (result?.status === 200) {
+                const { data: formData } = await getBorrower({
+                    address: auth.user.address
+                });
                 const res = await fetch(
                     `${config.baseApiUrl}/microcredit/docs`,
                     {
-                        body: JSON.stringify([
-                            {
-                                category: 1,
-                                filepath: preSigned?.filePath
-                            }
-                        ]),
+                        body: JSON.stringify({
+                            applicationId: formData?.forms[formData?.forms.length - 1]?.id || 1,
+                            docs: [
+                                {
+                                    category: 1,
+                                    filepath: preSigned?.filePath
+                                }
+                            ]
+                        }),
                         headers: {
                             Accept: 'application/json',
                             Authorization: `Bearer ${auth.token}`,
