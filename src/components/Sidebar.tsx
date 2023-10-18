@@ -342,26 +342,26 @@ const Sidebar = () => {
             }
         `;
 
-        const browserLanguage = navigator.language.split('-')[0];
+        // const browserLanguage = navigator.language.split('-')[0];
 
         const expiryDate = new Date();
 
         expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-        useEffect(() => {
-            if (!hasCookie('LOCALE')) {
-                setCookie('LOCALE', browserLanguage, {
-                    expires: expiryDate,
-                    path: '/'
-                });
-                replace('/', undefined, { locale: browserLanguage });
-            }
-            if (getCookie('LOCALE') !== locale) {
-                replace('/', undefined, {
-                    locale: getCookie('LOCALE').toString()
-                });
-            }
-        }, []);
+        // useEffect(() => {
+        //     if (!hasCookie('LOCALE')) {
+        //         setCookie('LOCALE', browserLanguage, {
+        //             expires: expiryDate,
+        //             path: '/'
+        //         });
+        //         replace('/', undefined, { locale: browserLanguage });
+        //     }
+        //     if (getCookie('LOCALE') !== locale) {
+        //         replace('/', undefined, {
+        //             locale: getCookie('LOCALE').toString()
+        //         });
+        //     }
+        // }, []);
 
         const changeLanguage = (data: string) => {
             setCookie('LOCALE', data, { expires: expiryDate, path: '/' });
