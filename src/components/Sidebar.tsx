@@ -12,7 +12,7 @@ import {
     openModal
 } from '@impact-market/ui';
 import { formatAddress } from '../utils/formatAddress';
-import { getCookie, hasCookie, setCookie } from 'cookies-next';
+import { getCookie, setCookie } from 'cookies-next';
 import { getImage } from '../utils/images';
 import { getUserMenu } from './UserMenu';
 import { getUserName } from '../utils/users';
