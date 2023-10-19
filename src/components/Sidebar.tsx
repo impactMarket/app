@@ -12,7 +12,6 @@ import {
     openModal
 } from '@impact-market/ui';
 import { formatAddress } from '../utils/formatAddress';
-import { getCookie, setCookie } from 'cookies-next';
 import { getImage } from '../utils/images';
 import { getUserMenu } from './UserMenu';
 import { getUserName } from '../utils/users';
@@ -364,8 +363,8 @@ const Sidebar = () => {
         // }, []);
 
         const changeLanguage = (data: string) => {
-            setCookie('LOCALE', data, { expires: expiryDate, path: '/' });
-            replace(asPath, '/', { locale: data });
+            // setCookie('LOCALE', data, { expires: expiryDate, path: '/' });
+            replace(asPath, asPath, { locale: data });
         };
 
         return (
@@ -380,7 +379,10 @@ const Sidebar = () => {
                     onChange={changeLanguage}
                     options={languagesOptions}
                     optionsSearchPlaceholder="language"
-                    value={getCookie('LOCALE')?.toString()}
+                    value={
+                        langConfig.find(({ shortCode }) => shortCode === locale)
+                            ?.label
+                    }
                     renderLabel={() =>
                         langConfig.find(({ shortCode }) => shortCode === locale)
                             ?.label
