@@ -19,7 +19,10 @@ import { handleSignature } from 'src/helpers/handleSignature';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { selectRates } from '../../../state/slices/rates';
 import { useEffect, useRef, useState } from 'react';
-import { useGetMicrocreditPreSignedMutation, useLazyGetBorrowerQuery } from 'src/api/microcredit';
+import {
+    useGetMicrocreditPreSignedMutation,
+    useLazyGetBorrowerQuery
+} from 'src/api/microcredit';
 import { usePDF } from '@react-pdf/renderer';
 import { useSelector } from 'react-redux';
 import { useSignatures } from '@impact-market/utils/useSignatures';
@@ -221,7 +224,9 @@ const ContractForm = (props: any) => {
                     `${config.baseApiUrl}/microcredit/docs`,
                     {
                         body: JSON.stringify({
-                            applicationId: formData?.forms[formData?.forms.length - 1]?.id || 1,
+                            applicationId:
+                                formData?.forms[formData?.forms.length - 1]
+                                    ?.id || 1,
                             docs: [
                                 {
                                     category: 1,
