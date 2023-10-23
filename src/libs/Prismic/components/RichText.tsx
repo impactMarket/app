@@ -1,6 +1,6 @@
 import { Box, GeneratedPropTypes, Text, TextProps } from '@impact-market/ui';
 import { PrismicRichText } from '@prismicio/react';
-import { RichTextField } from '@prismicio/types';
+import { RichTextField } from '@prismicio/client';
 import React from 'react';
 import TextLink from '../../../components/TextLink';
 import bracked from '../helpers/bracked';
@@ -120,7 +120,7 @@ export type RichTextProps = {
     components?: {
         [key: string]: any;
     };
-    content?: RichTextField | string;
+    content?: RichTextField | string | null | undefined;
     serializerProps?: {
         paragraph?: TextProps;
         hyperlink?: TextProps;
@@ -152,22 +152,26 @@ const RichText = (props: RichTextProps) => {
     return (
         <Text as="div" {...forwardProps}>
             {/* TODO use UI RichContent comp to wrap this */}
-            <PrismicRichText
-                // eslint-disable-next-line max-params
-                components={(type, node, content, children, key) =>
-                    serializer({
-                        children,
-                        components,
-                        content,
-                        key,
-                        node,
-                        serializerProps,
-                        type,
-                        variables
-                    })
-                }
-                field={content}
-            />
+            {typeof content === 'string' ? (
+                content
+            ) : (
+                <PrismicRichText
+                    // eslint-disable-next-line max-params
+                    components={(type, node, content, children, key) =>
+                        serializer({
+                            children,
+                            components,
+                            content,
+                            key,
+                            node,
+                            serializerProps,
+                            type,
+                            variables
+                        })
+                    }
+                    field={content}
+                />
+            )}
         </Text>
     );
 };
