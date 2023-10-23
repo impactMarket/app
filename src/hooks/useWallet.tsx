@@ -8,10 +8,10 @@ import {
     useDisconnect,
     useNetwork
 } from 'wagmi';
-import { deleteCookie, hasCookie, setCookie } from 'cookies-next';
 import { deleteToken, getMessaging, isSupported } from 'firebase/messaging';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
+import { hasCookie, setCookie } from 'cookies-next';
 import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
 import { setCredentials } from '../state/slices/auth';
 import { useCreateUserMutation } from '../api/user';
@@ -82,7 +82,6 @@ const useWallet = () => {
                     expires: expiryDate,
                     path: '/'
                 });
-                deleteCookie('LOCALE', { path: '/' });
 
                 if (!!callback) {
                     await callback();

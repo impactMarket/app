@@ -12,7 +12,6 @@ import {
     openModal
 } from '@impact-market/ui';
 import { formatAddress } from '../utils/formatAddress';
-import { getCookie, hasCookie, setCookie } from 'cookies-next';
 import { getImage } from '../utils/images';
 import { getUserMenu } from './UserMenu';
 import { getUserName } from '../utils/users';
@@ -342,30 +341,30 @@ const Sidebar = () => {
             }
         `;
 
-        const browserLanguage = navigator.language.split('-')[0];
+        // const browserLanguage = navigator.language.split('-')[0];
 
         const expiryDate = new Date();
 
         expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
 
-        useEffect(() => {
-            if (!hasCookie('LOCALE')) {
-                setCookie('LOCALE', browserLanguage, {
-                    expires: expiryDate,
-                    path: '/'
-                });
-                replace('/', undefined, { locale: browserLanguage });
-            }
-            if (getCookie('LOCALE') !== locale) {
-                replace('/', undefined, {
-                    locale: getCookie('LOCALE').toString()
-                });
-            }
-        }, []);
+        // useEffect(() => {
+        //     if (!hasCookie('LOCALE')) {
+        //         setCookie('LOCALE', browserLanguage, {
+        //             expires: expiryDate,
+        //             path: '/'
+        //         });
+        //         replace('/', undefined, { locale: browserLanguage });
+        //     }
+        //     if (getCookie('LOCALE') !== locale) {
+        //         replace('/', undefined, {
+        //             locale: getCookie('LOCALE').toString()
+        //         });
+        //     }
+        // }, []);
 
         const changeLanguage = (data: string) => {
-            setCookie('LOCALE', data, { expires: expiryDate, path: '/' });
-            replace(asPath, '/', { locale: data });
+            // setCookie('LOCALE', data, { expires: expiryDate, path: '/' });
+            replace(asPath, asPath, { locale: data });
         };
 
         return (
@@ -380,7 +379,10 @@ const Sidebar = () => {
                     onChange={changeLanguage}
                     options={languagesOptions}
                     optionsSearchPlaceholder="language"
-                    value={getCookie('LOCALE')?.toString()}
+                    value={
+                        langConfig.find(({ shortCode }) => shortCode === locale)
+                            ?.label
+                    }
                     renderLabel={() =>
                         langConfig.find(({ shortCode }) => shortCode === locale)
                             ?.label
