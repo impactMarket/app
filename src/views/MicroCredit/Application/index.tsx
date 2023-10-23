@@ -440,7 +440,7 @@ const ApplicationForm = (props: any) => {
             submit: status
         };
 
-        const response = await submitForm(matrixJson as any) as any;
+        const response = (await submitForm(matrixJson as any)) as any;
 
         setApplicationId(response?.data?.id);
 

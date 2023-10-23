@@ -47,6 +47,7 @@ const LevelsTable = (props: any) => {
                                     {ctaText(
                                         elem?.status,
                                         elem?.data?.reward,
+                                        elem?.asset,
                                         isLAEUser
                                     )}
                                 </Button>
