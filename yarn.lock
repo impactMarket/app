@@ -3801,12 +3801,11 @@
   resolved "https://registry.yarnpkg.com/@popperjs/core/-/core-2.11.6.tgz#cee20bd55e68a1720bdab363ecf0c821ded4cd45"
   integrity sha512-50/17A98tWUfQ176raKiOGXuYpLyyVMkxxG6oylzL3BPOlA6ADGdK7EYunSa4I064xerltq9TGXs8HmOk5E+vw==
 
-"@prismicio/client@7.2.0":
-  version "7.2.0"
-  resolved "https://registry.yarnpkg.com/@prismicio/client/-/client-7.2.0.tgz#8e1aab9183e98a390bff335be4c405e04c474ea8"
-  integrity sha512-bfbs2ZMLd3ba7Bp1qI4qAz+13FIWE/JDT9+h+3hL/MVpK4iDpjz3vmOlYJs25myhryU9HP8Og7qKoaeE9hPzmA==
+"@prismicio/client@7.3.1":
+  version "7.3.1"
+  resolved "https://registry.yarnpkg.com/@prismicio/client/-/client-7.3.1.tgz#26855d8759d5f424c388bcb14ab0cb4f2bfcd26a"
+  integrity sha512-9MKR/atr4dIQz8rZsQ4Fe7588qSQF2CYXutYW8O9bJOqlrjvAcC8b1Yvu7AIOksXlxE/aAWPtriQ2JZMiTFjNw==
   dependencies:
-    "@prismicio/richtext" "^2.1.5"
     imgix-url-builder "^0.0.4"
 
 "@prismicio/helpers@2.3.9":
