@@ -40,6 +40,7 @@ export const managerRoutes: Routes = [
     '/manager/beneficiaries',
     '/manager/managers',
     '/user/[id]',
+    '/beneficiaries',
     ...laePrivateRoutes
 ];
 
@@ -48,7 +49,8 @@ export const ambassadorRoutes: Routes = [
     '/ambassador',
     '/ambassador/reports',
     '/communities/edit/[id]',
-    '/manager/beneficiaries'
+    '/manager/beneficiaries',
+    '/beneficiaries'
 ];
 
 export const councilMemberRoutes: Routes = ['/communities/edit/[id]'];

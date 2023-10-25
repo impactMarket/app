@@ -14,7 +14,7 @@ const homepageRedirects = [
 const viewRedirects = {
     'community-requests': 'requests',
     'manager-add-community': 'manager/communities/add',
-    'manager-beneficiaries': 'manager/beneficiaries',
+    'manager-beneficiaries': '/beneficiaries',
     'manager-dashboard': 'manager',
     'manager-managers': 'manager/managers'
 } as any;

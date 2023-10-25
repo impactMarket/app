@@ -91,14 +91,6 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
         init();
     }, []);
 
-    useEffect(() => {
-        if (!getByKey('state') || !getByKey('page')) {
-            router.push(
-                '/manager/beneficiaries?state=0&orderBy=since:desc&page=1'
-            );
-        }
-    }, [getByKey('state'), getByKey('page')]);
-
     const inactiveBeneficiaries = useQuery(getInactiveBeneficiaries, {
         variables: {
             address: community?.contractAddress?.toLowerCase(),
