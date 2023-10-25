@@ -1,8 +1,13 @@
 /* eslint-disable sort-keys */
-const withPWA = require('next-pwa');
 const runtimeCaching = require('next-pwa/cache');
 const localesConfig = require('./locales.config');
 const { withSentryConfig } = require('@sentry/nextjs');
+const withPWA = require('next-pwa')({
+    dest: 'public',
+    // temporarly disabled!
+    disable: true,
+    runtimeCaching
+});
 
 const i18n = {
     defaultLocale:
@@ -80,13 +85,6 @@ module.exports = withBundleAnalyzer(
         withPWA({
             i18n,
             images,
-            pwa: {
-                dest: 'public',
-                // disabled for better dev experience
-                // eslint-disable-next-line no-process-env
-                disable: true,
-                runtimeCaching
-            },
             redirects,
             styledComponents: true,
             webpack
