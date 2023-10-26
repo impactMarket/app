@@ -111,7 +111,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = (props) => {
                 number:
                     communityEntity?.data?.communityEntity?.beneficiaries || 0,
                 title: t('totalBeneficiaries'),
-                url: '/manager/beneficiaries'
+                url: '/beneficiaries'
             },
             {
                 number: communityEntity?.data?.communityEntity?.managers || 0,
@@ -124,12 +124,12 @@ const Manager: React.FC<{ isLoading?: boolean }> = (props) => {
             // {
             //     number: 0,
             //     title: t('suspiciousActivity'),
-            //     url: '/manager/beneficiaries'
+            //     url: '/beneficiaries'
             // },
             // {
             //     number: 0,
             //     title: t('blocked'),
-            //     url: '/manager/beneficiaries'
+            //     url: '/beneficiaries'
             // },
             {
                 number: totalActiveBeneficiaries || 0,
@@ -139,7 +139,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = (props) => {
                 tooltipVariables: {
                     days: '12'
                 },
-                url: '/manager/beneficiaries'
+                url: '/beneficiaries'
             },
             {
                 number: totalInactiveBeneficiaries || 0,
@@ -149,7 +149,7 @@ const Manager: React.FC<{ isLoading?: boolean }> = (props) => {
                 tooltipVariables: {
                     days: '12'
                 },
-                url: '/manager/beneficiaries?state=3&orderBy=since:desc'
+                url: '/beneficiaries?state=3&orderBy=since:desc'
             }
         ]);
     }, [communityEntity?.data, inactiveBeneficiaries?.data]);

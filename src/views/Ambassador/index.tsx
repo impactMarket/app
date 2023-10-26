@@ -144,9 +144,9 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
             number: totalBeneficiaries,
             title: 'Beneficiaries',
             type: 'Beneficiaries',
-            url: `/manager/beneficiaries?community=${
+            url: `/beneficiaries?community=${
                 currentCommunity ? currentCommunity.id : ''
-            }&state=0`
+            }&state=0&orderBy=since:desc&page=1`
         }
     ];
 
