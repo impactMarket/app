@@ -38,6 +38,7 @@ export const changeStatus = (
             onClick: () =>
                 openModal('approveLoan', {
                     address: data?.address,
+                    id: data?.application?.id,
                     limitReach,
                     mutate
                 }),
