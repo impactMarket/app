@@ -220,21 +220,15 @@ const getColumns = () => {
         },
         {
             render: (data: any) => {
-                const currentDebt = data?.loan?.amount - data?.loan?.repaid;
-                const currentDebtRound = currentDebt < 0 ? 0 : currentDebt;
+                const currentDebt = data?.loan?.lastDebt || 0;
                 const progress =
-                    ((data?.loan?.amount - currentDebtRound) /
-                        data?.loan?.amount) *
+                    ((data?.loan?.amount - currentDebt) / data?.loan?.amount) *
                     100;
 
                 return (
                     <>
                         <Text g900 small center style={{ textAlign: 'center' }}>
-                            {currencyFormat(
-                                currentDebtRound,
-                                localeCurrency,
-                                rates
-                            )}
+                            {currencyFormat(currentDebt, localeCurrency, rates)}
                         </Text>
                         <Box
                             flex
