@@ -22,7 +22,7 @@ Sentry.init({
                     // route template here. We don't have one right now, so do some basic
                     // parameter replacements.
                     name: location.pathname
-                        .replace(/\/(es|fr|pt|en)\//g, '/[language]/')
+                        .replace(/\/(es|fr|pt|en|lg)\//g, '/[language]/')
                         .replace(
                             /learn-and-earn\/[\w\d-]+\/[\w\d-]+(\?.*)?/g,
                             '/learn-and-earn/[level]/[lesson]'
