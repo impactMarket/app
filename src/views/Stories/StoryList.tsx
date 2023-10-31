@@ -10,7 +10,8 @@ import {
     Spinner,
     Text,
     TextLink,
-    openModal
+    openModal,
+    toast
 } from '@impact-market/ui';
 import { Pagination } from '../../components/Slider/SliderButtons';
 import {
@@ -26,10 +27,12 @@ import { useSelector } from 'react-redux';
 import CanBeRendered from '../../components/CanBeRendered';
 import Image from '../../components/Image';
 import Link from 'next/link';
+import Message from 'src/libs/Prismic/components/Message';
 import NoStoriesFound from './NoStoriesFound';
 import React, { useEffect, useState } from 'react';
 import String from '../../libs/Prismic/components/String';
 import Trim from '../../components/Trim';
+import config from 'config';
 import useFilters from '../../hooks/useFilters';
 import useInfiniteScroll from 'react-infinite-scroll-hook';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
@@ -202,6 +205,22 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
     };
 
     const renderStory = (story: any, index: number) => {
+        const copyToClipboard = (content: string) => {
+            navigator?.clipboard.writeText(content);
+            toast.success(<Message id="copiedAddress" />);
+        };
+
+        const shareItems = [
+            {
+                icon: 'copy',
+                onClick: () =>
+                    copyToClipboard(
+                        `${config?.publicUrl}/stories?id=${story?.id}`
+                    ),
+                title: 'Copy Link'
+            }
+        ];
+
         const items = [];
 
         if (story?.isDeletable) {
@@ -484,7 +503,7 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                 </Col>
                                 {story?.engagement?.loves > 0 && (
                                     <Col
-                                        colSize={{ sm: 6, xs: 12 }}
+                                        colSize={{ sm: 6, xs: 6 }}
                                         padding={0}
                                         pl={{ sm: 1, xs: 0 }}
                                         pt={{ sm: 0, xs: 1 }}
@@ -495,6 +514,23 @@ const StoryList: React.FC<storyListProps> = ({ refreshStory }) => {
                                         </Text>
                                     </Col>
                                 )}
+                                <Col
+                                    colSize={{ sm: 3, xs: 6 }}
+                                    padding={0}
+                                    pr={1}
+                                    pt={{ sm: 0, xs: 1 }}
+                                    style={{ textAlign: 'right' }}
+                                    ml="auto"
+                                >
+                                    <DropdownMenu
+                                        {...({} as any)}
+                                        icon="share"
+                                        items={shareItems}
+                                        rtl
+                                        title={t('share')}
+                                        titleColor="g900"
+                                    />
+                                </Col>
                             </Row>
                             <CanBeRendered types={['beneficiary', 'manager']}>
                                 <Box pl={{ sm: 0, xs: 1 }}>

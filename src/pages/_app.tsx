@@ -108,7 +108,7 @@ const App = (props: AppProps) => {
     const { asPath, locale } = router;
     const url = `${baseUrl}/${locale}${asPath}`;
 
-    const { data, meta = {}, view } = pageProps;
+    const { data, view } = pageProps;
 
     if (!view) {
         const ErrorContent = ErrorPage as any;
@@ -152,10 +152,10 @@ const App = (props: AppProps) => {
         <WagmiConfig config={wagmiConfig}>
             <PrismicDataProvider data={data} url={url} view={view}>
                 <DesignSystemProvider>
+                    <SEO />
                     <WrapperProvider>
                         <Provider store={store}>
                             <ApolloProvider client={apolloClient}>
-                                <SEO meta={meta} />
                                 <ModalManager modals={modals} />
                                 <Toaster />
                                 <InnerApp {...props} />

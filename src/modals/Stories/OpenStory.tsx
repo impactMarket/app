@@ -8,6 +8,7 @@ import {
     useModal
 } from '@impact-market/ui';
 import { Story, useLoveStoryMutation } from '../../api/story';
+import { getImage } from '../../utils/images';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useGetCommunityMutation } from '../../api/community';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
@@ -15,7 +16,9 @@ import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Content from '../../components/Stories/Content';
 import React, { useEffect, useState } from 'react';
+import SEO from 'src/components/SEO';
 import Slider from '../../components/Slider/Slider';
+import config from '../../../config';
 import useFilters from '../../hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 import useWallet from '../../hooks/useWallet';
@@ -139,19 +142,21 @@ const OpenStory: React.FC = () => {
                     pr={{ sm: 0.5, xs: 0 }}
                     w="100%"
                 >
-                    <Col
-                        bTopLeftRadius={{ sm: 0, xs: 0.5 }}
-                        bTopRightRadius={{ sm: 0, xs: 0.5 }}
-                        bgColor="g100"
-                        colSize={{ sm: 7, xs: 12 }}
-                        fLayout="center"
-                        flex
-                        h={{ sm: '100%', xs: '50%' }}
-                        padding={0}
-                        style={{ overflow: 'hidden', position: 'relative' }}
-                    >
-                        <Slider slides={story?.storyMedia} />
-                    </Col>
+                    {story?.storyMedia && (
+                        <Col
+                            bTopLeftRadius={{ sm: 0, xs: 0.5 }}
+                            bTopRightRadius={{ sm: 0, xs: 0.5 }}
+                            bgColor="g100"
+                            colSize={{ sm: 7, xs: 12 }}
+                            fLayout="center"
+                            flex
+                            h={{ sm: '100%', xs: '50%' }}
+                            padding={0}
+                            style={{ overflow: 'hidden', position: 'relative' }}
+                        >
+                            <Slider slides={story?.storyMedia} />
+                        </Col>
+                    )}
                     <Content
                         community={community}
                         handleClose={handleClose}
@@ -165,25 +170,42 @@ const OpenStory: React.FC = () => {
     };
 
     return (
-        <ModalWrapper
-            h={{ phone: 'unset', tablet: '100%' }}
-            maxH={{ phone: 'unset', tablet: '100%' }}
-            onCloseButton={() => {
-                handleClose();
-                clear('id');
-            }}
-            padding={{ sm: 1, xs: 0 }}
-            pb={0.5}
-            w="100%"
-        >
-            {loading ? (
-                <Row fLayout="center" h="50vh" mt={2}>
-                    <Spinner isActive />
-                </Row>
-            ) : (
-                renderStory()
-            )}
-        </ModalWrapper>
+        <>
+            <SEO
+                meta={{
+                    description: story?.message,
+                    image: {
+                        url: getImage({
+                            filePath: story?.storyMedia[0],
+                            fit: 'cover',
+                            height: 0,
+                            width: 0
+                        } as any)
+                    },
+                    title: story?.community?.name,
+                    url: `${config?.publicUrl}/stories?id=${story?.id}`
+                }}
+            />
+            <ModalWrapper
+                h={{ phone: 'unset', tablet: '100%' }}
+                maxH={{ phone: 'unset', tablet: '100%' }}
+                onCloseButton={() => {
+                    handleClose();
+                    clear('id');
+                }}
+                padding={{ sm: 1, xs: 0 }}
+                pb={0.5}
+                w="100%"
+            >
+                {loading ? (
+                    <Row fLayout="center" h="50vh" mt={2}>
+                        <Spinner isActive />
+                    </Row>
+                ) : (
+                    renderStory()
+                )}
+            </ModalWrapper>
+        </>
     );
 };
 
