@@ -235,8 +235,15 @@ const ApplicationForm = (props: any) => {
                 }
             }
         } else if (Array.isArray(view)) {
-            id = view[view.length - 1]?.id;
-            currentForm = view[view.length - 1]?.data;
+            const latestForm = view.reduce((latest, currentItem) => {
+                const latestDate = new Date(latest.first_publication_date);
+                const currentDate = new Date(currentItem.first_publication_date);
+              
+                return currentDate > latestDate ? currentItem : latest;
+              });
+
+            id = latestForm?.id;
+            currentForm = latestForm?.data;
         } else {
             id = view?.id;
             currentForm = view?.data;
