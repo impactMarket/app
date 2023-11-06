@@ -27,54 +27,32 @@ const RepaymentsTab: React.FC = () => {
         }`
     ]);
 
-    const { count: countAll } = useMicrocreditBorrowers([
-        `${
-            getByKey('manager')
-                ? `loanManagerAddress=${getByKey('manager')}`
-                : ''
-        }`
-    ]);
-    const { count: countUrgent } = useMicrocreditBorrowers([
-        'filter=urgent',
-        `${
-            getByKey('manager')
-                ? `loanManagerAddress=${getByKey('manager')}`
-                : ''
-        }`
-    ]);
-    const { count: countNeedHelp } = useMicrocreditBorrowers([
-        'filter=need-help',
-        `${
-            getByKey('manager')
-                ? `loanManagerAddress=${getByKey('manager')}`
-                : ''
-        }`
-    ]);
-    const { count: countFullyRepaid } = useMicrocreditBorrowers([
-        'filter=repaid',
-        `${
-            getByKey('manager')
-                ? `loanManagerAddress=${getByKey('manager')}`
-                : ''
-        }`
-    ]);
-    const { count: countOntrack } = useMicrocreditBorrowers([
-        'filter=ontrack',
-        `${
-            getByKey('manager')
-                ? `loanManagerAddress=${getByKey('manager')}`
-                : ''
-        }`
-    ]);
+    const useMicrocreditBorrowersCountWithFilter = (filter: string) => {
+        const { count } = useMicrocreditBorrowers([
+            filter,
+            `${
+                getByKey('manager')
+                    ? `loanManagerAddress=${getByKey('manager')}`
+                    : ''
+            }`
+        ]);
 
-    const { count: countNotClaimed } = useMicrocreditBorrowers([
-        'filter=not-claimed',
-        `${
-            getByKey('manager')
-                ? `loanManagerAddress=${getByKey('manager')}`
-                : ''
-        }`
-    ]);
+        return count;
+    };
+
+    const countAll = useMicrocreditBorrowersCountWithFilter('');
+    const countUrgent = useMicrocreditBorrowersCountWithFilter('filter=urgent');
+    const countNeedHelp =
+        useMicrocreditBorrowersCountWithFilter('filter=need-help');
+    const countFullyRepaid =
+        useMicrocreditBorrowersCountWithFilter('filter=repaid');
+    const countOntrack =
+        useMicrocreditBorrowersCountWithFilter('filter=ontrack');
+    const countNotClaimed =
+        useMicrocreditBorrowersCountWithFilter('filter=not-claimed');
+    const countFiledRepayment = useMicrocreditBorrowersCountWithFilter(
+        'filter=failed-repayment'
+    );
 
     const tabs = [
         {
@@ -108,6 +86,11 @@ const RepaymentsTab: React.FC = () => {
             number: countNotClaimed || 0,
             onClick: () => update({ filter: 'not-claimed', page: 1 }),
             title: t('unclaimed')
+        },
+        {
+            number: countFiledRepayment || 0,
+            onClick: () => update({ filter: 'failed-repayment', page: 1 }),
+            title: t('failedRepayment')
         }
     ];
 
@@ -123,6 +106,8 @@ const RepaymentsTab: React.FC = () => {
                 return 4;
             case 'not-claimed':
                 return 5;
+            case 'failed-repayment':
+                return 6;
             default:
                 return 0;
         }

@@ -4,6 +4,7 @@ import {
     Box,
     Button,
     CircledIcon,
+    Icon,
     ModalWrapper,
     toast,
     useModal
@@ -14,13 +15,18 @@ import {
     useFormState,
     useWatch
 } from 'react-hook-form';
+import { getCookie } from 'cookies-next';
 import { handleKnownErrors } from 'src/helpers/handleKnownErrors';
+import { selectCurrentUser } from 'src/state/slices/auth';
 import { useEffect, useState } from 'react';
 import { useLoanManager } from '@impact-market/utils';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { useSelector } from 'react-redux';
 import Input from '../../components/Input';
 import Message from 'src/libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
+import Select from 'src/components/Select';
+import config from 'config';
 import processTransactionError from 'src/utils/processTransactionError';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
@@ -31,13 +37,16 @@ const ApproveLoan = () => {
         approveLoan,
         loansApproved,
         enterLoanAmount,
-        loanAmount,
         maximumMaturity,
-        maturity: maturityMonths,
-        microcreditLimitReached
+        maturityMonths,
+        microcreditLimitReached,
+        repaymentRate: repaymentRateString,
+        loanAmount,
+        selectRepaymentRate
     } = extractFromView('messages') as any;
+    const auth = useSelector(selectCurrentUser);
 
-    const { handleClose, address, limitReach, mutate } = useModal();
+    const { handleClose, address, id, limitReach, mutate } = useModal();
     const { t } = useTranslations();
 
     const {
@@ -58,6 +67,8 @@ const ApproveLoan = () => {
         control,
         name: 'period'
     });
+
+    const [repaymentRate, setRepaymentRate] = useState();
 
     const [maturity, setMaturity] = useState(0);
 
@@ -128,7 +139,27 @@ const ApproveLoan = () => {
 
             const { status } = await addLoans(loans);
 
-            if (status) {
+            const result = await fetch(
+                `${config.baseApiUrl}/microcredit/applications`,
+                {
+                    body: JSON.stringify([
+                        {
+                            applicationId: id,
+                            repaymentRate: parseInt(repaymentRate, 10)
+                        }
+                    ]),
+                    headers: {
+                        Accept: 'application/json',
+                        Authorization: `Bearer ${auth.token}`,
+                        'Content-Type': 'application/json',
+                        message: getCookie('MESSAGE').toString(),
+                        signature: getCookie('SIGNATURE').toString()
+                    },
+                    method: 'PUT'
+                }
+            );
+
+            if (status && result.status === 201) {
                 mutate();
                 toast.success(loansApproved);
                 handleClose();
@@ -200,30 +231,67 @@ const ApproveLoan = () => {
                                 disabled={limitReach}
                             />
                         </Box>
-                        <Input
-                            type="number"
-                            placeholder={enterLoanMaturity[0].text}
-                            wrapperProps={{
-                                w: '100%'
+                        <Box mb="1rem">
+                            <Input
+                                type="number"
+                                placeholder={enterLoanMaturity[0].text}
+                                wrapperProps={{
+                                    w: '100%'
+                                }}
+                                rules={{
+                                    required: true
+                                }}
+                                control={control}
+                                name="period"
+                                withError={!!errors?.period}
+                                // @ts-ignore
+                                hint={
+                                    !!maturity && (
+                                        <RichText
+                                            small
+                                            content={maximumMaturity}
+                                            variables={{ maturity }}
+                                        />
+                                    )
+                                }
+                                label={maturityMonths}
+                                disabled={limitReach}
+                            />
+                        </Box>
+                        <Select
+                            callback={(value: any) => {
+                                setRepaymentRate(value);
                             }}
-                            rules={{
-                                required: true
-                            }}
-                            control={control}
-                            name="period"
-                            withError={!!errors?.period}
+                            initialValue={repaymentRate}
+                            options={[
+                                {
+                                    label: t('monthly'),
+                                    value: '2629800'
+                                },
+                                {
+                                    label: t('weekly'),
+                                    value: '604800'
+                                },
+                                {
+                                    label: t('oneTime'),
+                                    value: '1'
+                                }
+                            ]}
+                            value={repaymentRate}
+                            label={repaymentRateString}
                             // @ts-ignore
-                            hint={
-                                !!maturity && (
-                                    <RichText
-                                        small
-                                        content={maximumMaturity}
-                                        variables={{ maturity }}
-                                    />
-                                )
+                            placeholder={
+                                <Box
+                                    flex
+                                    style={{
+                                        alignItems: 'center',
+                                        gap: '0.2rem'
+                                    }}
+                                >
+                                    <Icon icon="user" mr={0.2} />{' '}
+                                    {selectRepaymentRate}
+                                </Box>
                             }
-                            label={maturityMonths}
-                            disabled={limitReach}
                         />
                     </Box>
 
@@ -255,6 +323,7 @@ const ApproveLoan = () => {
                                 !amount ||
                                 validateAmount ||
                                 validatePeriod ||
+                                !repaymentRate ||
                                 parseFloat(period) > maturity
                             }
                             isLoading={isSubmitting}
