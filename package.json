@@ -68,7 +68,7 @@
         "styled-gen": "1.4.8",
         "swr": "2.2.2",
         "use-subscription": "1.8.0",
-        "viem": "1.10.14",
+        "viem": "1.18.7",
         "wagmi": "1.3.8",
         "yup": "1.3.2"
     },
