@@ -46,8 +46,6 @@ const ApproveLoan = () => {
     } = extractFromView('messages') as any;
     const auth = useSelector(selectCurrentUser);
 
-    console.log(extractFromView('messages'));
-
     const { handleClose, address, id, limitReach, mutate } = useModal();
     const { t } = useTranslations();
 
