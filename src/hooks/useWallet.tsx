@@ -1,6 +1,7 @@
 import * as Sentry from '@sentry/browser';
-import { EthereumClient, w3mConnectors } from '@web3modal/ethereum';
-import { celo, celoAlfajores } from '@wagmi/chains';
+import { InjectedConnector } from 'wagmi/connectors/injected';
+import { WalletConnectConnector } from 'wagmi/connectors/walletConnect';
+import { celo, celoAlfajores } from 'viem/chains';
 import {
     configureChains,
     createConfig,
@@ -12,12 +13,13 @@ import { deleteToken, getMessaging, isSupported } from 'firebase/messaging';
 import { getAddress } from '@ethersproject/address';
 import { getUserTypes } from '../utils/users';
 import { hasCookie, setCookie } from 'cookies-next';
-import { jsonRpcProvider } from 'wagmi/providers/jsonRpc';
+import { publicProvider } from 'wagmi/providers/public';
 import { setCredentials } from '../state/slices/auth';
 import { useCreateUserMutation } from '../api/user';
 import { useDispatch } from 'react-redux';
 import { useEffect } from 'react';
-import { useWeb3Modal } from '@web3modal/react';
+import { useWeb3Modal } from '@web3modal/wagmi/react';
+import { walletConnectProvider } from '@web3modal/wagmi';
 import config from '../../config';
 import firebaseApp from 'src/utils/firebase/firebase';
 import processTransactionError from 'src/utils/processTransactionError';
@@ -27,22 +29,29 @@ const network = config.useTestNet ? celoAlfajores : celo;
 
 export const projectId = config.walletConnectProjectId;
 
-const { chains, publicClient } = configureChains(
+const metadata = {
+    description: 'impactMarket',
+    icons: ['https://avatars.githubusercontent.com/u/42247406'],
+    name: 'impactMarket',
+    url: 'https://impactmarket.com'
+};
+
+export const { chains, publicClient } = configureChains(
     [config.chainId === 42220 ? celo : celoAlfajores],
-    [
-        jsonRpcProvider({
-            rpc: (chain) => ({ http: chain.rpcUrls.default.http[0] })
-        })
-    ]
+    [walletConnectProvider({ projectId }), publicProvider()]
 );
 
 export const wagmiConfig = createConfig({
     autoConnect: true,
-    connectors: w3mConnectors({ chains, projectId }),
+    connectors: [
+        new WalletConnectConnector({
+            chains,
+            options: { metadata, projectId, showQrModal: false }
+        }),
+        new InjectedConnector({ chains, options: { shimDisconnect: true } })
+    ],
     publicClient
 });
-
-export const ethereumClient = new EthereumClient(wagmiConfig, chains);
 
 const useWallet = () => {
     const dispatch = useDispatch();
