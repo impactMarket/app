@@ -243,7 +243,10 @@ const getColumns = () => {
                                     lineHeight: 'inherit'
                                 }}
                             >
-                                {parseInt(progress.toString(), 10) || 0}%
+                                {progress >= 0
+                                    ? parseInt(progress.toString(), 10)
+                                    : 0}
+                                %
                             </Text>
                         </Box>
                     </>
@@ -257,9 +260,11 @@ const getColumns = () => {
             render: (data: any) => {
                 return (
                     <Box flex fLayout="center" style={{ gap: '0.5rem' }}>
-                        <PerformanceIcon performance={data?.performance} />
+                        <PerformanceIcon
+                            performance={data?.loan?.performance}
+                        />
                         <Text g900 small center>
-                            {data?.performance}%
+                            {data?.loan?.performance}%
                         </Text>
                     </Box>
                 );
