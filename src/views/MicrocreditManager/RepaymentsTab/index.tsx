@@ -50,9 +50,11 @@ const RepaymentsTab: React.FC = () => {
         useMicrocreditBorrowersCountWithFilter('filter=ontrack');
     const countNotClaimed =
         useMicrocreditBorrowersCountWithFilter('filter=not-claimed');
-    const countFiledRepayment = useMicrocreditBorrowersCountWithFilter(
+    const countFailedRepayment = useMicrocreditBorrowersCountWithFilter(
         'filter=failed-repayment'
     );
+    const countDefaulters =
+        useMicrocreditBorrowersCountWithFilter('filter=in-default');
 
     const tabs = [
         {
@@ -88,9 +90,14 @@ const RepaymentsTab: React.FC = () => {
             title: t('unclaimed')
         },
         {
-            number: countFiledRepayment || 0,
+            number: countFailedRepayment || 0,
             onClick: () => update({ filter: 'failed-repayment', page: 1 }),
             title: t('failedRepayment')
+        },
+        {
+            number: countDefaulters || 0,
+            onClick: () => update({ filter: 'in-default', page: 1 }),
+            title: t('defaulters')
         }
     ];
 
@@ -108,6 +115,8 @@ const RepaymentsTab: React.FC = () => {
                 return 5;
             case 'failed-repayment':
                 return 6;
+            case 'in-default':
+                return 7;
             default:
                 return 0;
         }
