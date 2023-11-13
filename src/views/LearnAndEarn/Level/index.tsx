@@ -12,14 +12,14 @@ import {
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
+import GenerateCertificate from 'learn-and-earn-submodule/components/GenerateCertificate';
 import RichText from '../../../libs/Prismic/components/RichText';
 import String from '../../../libs/Prismic/components/String';
 import Tooltip from '../../../components/Tooltip';
 import config from '../../../../config';
-import useLessons from '../../../hooks/learn-and-earn/useLessons';
-import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
-
 import styled from 'styled-components';
+import useLessons from 'learn-and-earn-submodule/hooks/useLessons';
+import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const Cell = styled(Box)`
     display: flex;
@@ -32,25 +32,64 @@ const Level = (props: any) => {
     const { prismic, params, lang, data } = props;
     const view = data['view-learn-and-earn'];
     const { level, lessons, categories } = prismic;
-    const { title, category } = level.data;
+    const { title, category, sponsor } = level.data;
     const { t } = useTranslations();
     const {
+        cardHeading,
+        cardTip,
+        certificateCompletedOn,
+        certificateHeading,
+        certificateSupportText,
+        dismiss,
+        downloadCertificate,
+        firstNamePlaceholder,
+        generate,
         instructions,
-        thresholdTooltip,
-        onlyBeneficiariesTooltip,
+        lastNamePlaceholder,
         noRewardsTooltip,
         noRewardsTooltipTitle,
+        on,
+        onlyBeneficiariesTooltip,
+        startLesson: startLessonLabel,
+        thresholdTooltip,
         totalPoints: totalPointsLabel,
-        startLesson: startLessonLabel
+        viewCertificate
     } = view.data;
+
     const { text: tooltip } = thresholdTooltip[0];
+
+    const cardData = {
+        cardHeading,
+        cardTip,
+        certificate: {
+            completedOn: certificateCompletedOn,
+            heading: certificateHeading,
+            on,
+            supportText: certificateSupportText
+        },
+        dismiss,
+        downloadCertificate,
+        firstNamePlaceholder,
+        generate,
+        lastNamePlaceholder,
+        viewCertificate
+    };
+
     const auth = useSelector(selectCurrentUser);
     const {
         data: lessonsData,
         totalPoints,
         completedToday,
         rewardAvailable = true
-    } = useLessons(lessons, level?.id, auth);
+    } = useLessons(lessons, level?.id, lang, config.baseApiUrl, auth?.token);
+
+    const certificateDetails = !!lessonsData && {
+        ...cardData,
+        completionDate: lessonsData[lessonsData?.length - 1]?.completionDate,
+        sponsor: sponsor?.url,
+        title
+    };
+
     const router = useRouter();
 
     const startLesson = async (lessonId: number, uid: string) => {
@@ -114,7 +153,11 @@ const Level = (props: any) => {
 
             <Box flex style={{ justifyContent: 'center' }}>
                 <Box maxW="36.25rem">
-                    <RichText content={instructions} g500 />
+                    <RichText content={instructions} g500 mb={1} />
+
+                    {!!certificateDetails?.completionDate && (
+                        <GenerateCertificate {...certificateDetails} />
+                    )}
 
                     <Box margin="1rem 0">
                         <RichText content={totalPointsLabel} g500 small />

@@ -5,17 +5,18 @@ import {
     Divider,
     Label,
     OptionItem,
-    Pagination,
     Text,
     ViewContainer,
     openModal,
     toast
 } from '@impact-market/ui';
+import { Breakpoints } from 'learn-and-earn-submodule/helpers/Breakpoints';
 import { selectCurrentUser } from '../../../state/slices/auth';
+import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
-import { useState } from 'react';
+import EnhancedPagination from 'learn-and-earn-submodule/components/EnhancedPagination';
 import Message from '../../../libs/Prismic/components/Message';
 import RichText from '../../../libs/Prismic/components/RichText';
 import String from '../../../libs/Prismic/components/String';
@@ -54,8 +55,11 @@ const Lesson = (props: any) => {
     const router = useRouter();
     const [progress, setProgress] = useState([currentPage]);
     const [userAnswers, setUserAnswers] = useState(initialAnswers);
+    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [desktopLayout, setDesktopLayout] = useState(false);
 
     const canGotoQuiz = progress.length === content.length;
+    const pageCount = isQuiz ? QUIZ_LENGTH : content.length;
 
     const slide =
         content[currentPage]?.slice_type === 'video_section'
@@ -116,6 +120,68 @@ const Lesson = (props: any) => {
 
         return <></>;
     };
+
+    const postAnswers = async () => {
+        // Post answers
+        setIsSubmitting(true);
+        const answers = userAnswers
+            .reduce((next: any, current: any) => {
+                return [current.findIndex((el: any) => el), ...next];
+            }, [])
+            .reverse();
+
+        const res = await fetch(`${config.baseApiUrl}/learn-and-earn/lessons`, {
+            body: JSON.stringify({
+                answers,
+                lesson: id
+            }),
+            headers: {
+                Accept: 'application/json',
+                Authorization: `Bearer ${auth.token}`,
+                'Content-Type': 'application/json'
+            },
+            method: 'PUT'
+        });
+
+        const response = await res.json();
+
+        if (response?.data?.success === false) {
+            openModal('laeFailedLesson', {
+                attempts: response?.data?.attempts,
+                onClose: () => {
+                    toggleQuiz(false);
+                    setUserAnswers(initialAnswers);
+                }
+            });
+        } else if (response?.data?.success) {
+            openModal('laeSuccessLesson', {
+                onClose: () =>
+                    router.push(`/${lang}/learn-and-earn/${params.level}`)
+            });
+        } else {
+            toast.error(<Message id="errorOccurred" />);
+        }
+
+        setIsSubmitting(false);
+    };
+
+    useEffect(() => {
+        const checkWindowSize = () => {
+            if (window.innerWidth >= +Breakpoints.medium.slice(0, -2)) {
+                setDesktopLayout(true);
+            } else {
+                setDesktopLayout(false);
+            }
+        };
+
+        window.addEventListener('resize', checkWindowSize);
+
+        checkWindowSize();
+
+        return () => {
+            window.removeEventListener('resize', checkWindowSize);
+        };
+    }, []);
 
     return (
         <ViewContainer {...({} as any)}>
@@ -196,19 +262,21 @@ const Lesson = (props: any) => {
                     </Box>
                 )}
 
-                {!isQuiz && currentPage + 1 === content.length && (
-                    <Box mt="1rem">
-                        <Button
-                            disabled={!canGotoQuiz}
-                            fluid
-                            secondary
-                            xl
-                            onClick={() => toggleQuiz(true)}
-                        >
-                            <RichText content={startQuiz} />
-                        </Button>
-                    </Box>
-                )}
+                {!isQuiz &&
+                    currentPage + 1 === content.length &&
+                    desktopLayout && (
+                        <Box mt="1rem">
+                            <Button
+                                disabled={!canGotoQuiz}
+                                fluid
+                                secondary
+                                xl
+                                onClick={() => toggleQuiz(true)}
+                            >
+                                <RichText content={startQuiz} />
+                            </Button>
+                        </Box>
+                    )}
 
                 {!canGotoQuiz && currentPage + 1 === content.length && (
                     <Text pt="1rem" g500 small>
@@ -216,81 +284,38 @@ const Lesson = (props: any) => {
                     </Text>
                 )}
 
-                {isQuiz && currentPage + 1 === QUIZ_LENGTH && (
+                {isQuiz && currentPage + 1 === QUIZ_LENGTH && desktopLayout && (
                     <Box mt="1rem">
                         <Button
                             fluid
                             secondary
                             xl
                             disabled={!(progress.length == content.length)}
-                            onClick={async () => {
-                                // Post answers
-                                const answers = userAnswers
-                                    .reduce((next: any, current: any) => {
-                                        return [
-                                            current.findIndex((el: any) => el),
-                                            ...next
-                                        ];
-                                    }, [])
-                                    .reverse();
-
-                                const res = await fetch(
-                                    `${config.baseApiUrl}/learn-and-earn/lessons`,
-                                    {
-                                        body: JSON.stringify({
-                                            answers,
-                                            lesson: id
-                                        }),
-                                        headers: {
-                                            Accept: 'application/json',
-                                            Authorization: `Bearer ${auth.token}`,
-                                            'Content-Type': 'application/json'
-                                        },
-                                        method: 'PUT'
-                                    }
-                                );
-
-                                const response = await res.json();
-
-                                if (response?.data?.success === false) {
-                                    openModal('laeFailedLesson', {
-                                        attempts: response?.data?.attempts,
-                                        onClose: () => {
-                                            toggleQuiz(false);
-                                            setUserAnswers(initialAnswers);
-                                        }
-                                    });
-                                } else if (response?.data?.success) {
-                                    openModal('laeSuccessLesson', {
-                                        onClose: () =>
-                                            router.push(
-                                                `/${lang}/learn-and-earn/${params.level}`
-                                            )
-                                    });
-                                } else {
-                                    toast.error(<Message id="errorOccurred" />);
-                                }
-                            }}
+                            onClick={postAnswers}
                         >
                             {t('submit')}
                         </Button>
                     </Box>
                 )}
 
-                <Box w="100%">
+                <Box w="100%" pt={5.375}>
                     <Divider />
                     <Box>
-                        <Pagination
+                        <EnhancedPagination
                             currentPage={currentPage}
                             handlePageClick={handlePageClick}
-                            mt={2}
-                            mobileText
-                            nextIcon="arrowRight"
                             nextLabel={t('next')}
-                            pageCount={isQuiz ? QUIZ_LENGTH : content.length}
-                            pb={2}
-                            previousIcon="arrowLeft"
+                            pageCount={pageCount}
                             previousLabel={t('previous')}
+                            submitLabel={t('submit')}
+                            infoLabel={`Slide ${currentPage + 1} ${t(
+                                'of'
+                            )} ${pageCount}`}
+                            goToQuiz={toggleQuiz}
+                            isQuiz={isQuiz}
+                            canGotoQuiz={canGotoQuiz}
+                            postAnswers={postAnswers}
+                            isLoading={isSubmitting}
                         />
                     </Box>
                 </Box>
