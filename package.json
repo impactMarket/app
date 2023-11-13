@@ -33,7 +33,7 @@
         "@prismicio/types": "0.2.7",
         "@react-pdf/renderer": "3.1.12",
         "@reduxjs/toolkit": "1.9.5",
-        "@sentry/integrations": "7.77.0",
+        "@sentry/integrations": "7.80.0",
         "@sentry/nextjs": "7.77.0",
         "@sentry/tracing": "7.77.0",
         "@tippyjs/react": "4.2.6",
