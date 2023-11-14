@@ -141,7 +141,8 @@ const LoanRepayment = (props: any) => {
                     variables={{
                         currentDebt: loan.currentDebt.toFixed(3),
                         debtAccrues: (
-                            loan.currentDebt * loan.dailyInterest
+                            loan.currentDebt *
+                            (loan.dailyInterest / 100)
                         ).toFixed(3),
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
