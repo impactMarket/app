@@ -3426,10 +3426,10 @@
     styled-gen "1.4.8"
     styled-reset "4.4.7"
 
-"@impact-market/utils@4.2.0-beta.1":
-  version "4.2.0-beta.1"
-  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-4.2.0-beta.1.tgz#75a94c39ba4e7b42f7bc3f0f6710f7bea27cdf6e"
-  integrity sha512-91NU/m6M2ytnpQgx5Z0yYVojywmlpIwWu0u2QxoDGQxCaVFxVgaZzZF+pGJgQQw8Ron3bArM3PxO81BCsgGmtw==
+"@impact-market/utils@4.2.0-beta.2":
+  version "4.2.0-beta.2"
+  resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-4.2.0-beta.2.tgz#56b377c83d3bc0be5fbc7ba322dd2f9bcf84d00f"
+  integrity sha512-lwwPzWCrCPC/xssaXSQ7npfsBdA0eDtgz4GvnmmQt7VJ0B8G7qSiWo7ij+Uawmn7S3tSx4fHkmLBkemIUWb3Ig==
 
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"
