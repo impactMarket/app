@@ -13,6 +13,9 @@
         "noEmit": true,
         "noUnusedLocals": true,
         "noUnusedParameters": true,
+        "paths": {
+            "learn-and-earn-submodule/*": ["./learn-and-earn-submodule/*"]
+          },
         "resolveJsonModule": true,
         "skipLibCheck": true,
         "strict": true,
@@ -30,5 +33,5 @@
         "sourceRoot": "/"
     },
     "exclude": [".github", ".next", "_content_cache", "node_modules", "public"],
-    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js"]
+    "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", "**/*.js", "./learn-and-earn-submodule/**/*.tsx"]
 }
