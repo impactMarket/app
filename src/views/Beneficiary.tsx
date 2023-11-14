@@ -17,13 +17,16 @@ import {
     openModal,
     toast
 } from '@impact-market/ui';
+import {
+    RequestFundsStatus,
+    useBeneficiary
+} from '@impact-market/utils/useBeneficiary';
 import { checkUserPermission, userBeneficiary } from '../utils/users';
 import { currencyFormat } from '../utils/currencies';
 import { getLocation } from '../utils/position';
 import { gql, useQuery } from '@apollo/client';
 import { handleKnownErrors } from '../helpers/handleKnownErrors';
 import { selectCurrentUser } from '../state/slices/auth';
-import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { usePrismicData } from '../libs/Prismic/components/PrismicDataProvider';
 import { useRouter } from 'next/router';
 import { useSaveClaimLocationMutation } from '../api/claim';
@@ -104,8 +107,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
             claimedAmount,
             claimCooldown,
             isClaimable,
-            fundsRemainingDays,
-            community: { claimAmount, hasFunds, maxClaim }
+            isFinished,
+            community: { claimAmount, maxClaim, requestFundsStatus }
         }
     } = useBeneficiary(auth?.user?.beneficiary?.community);
 
@@ -113,6 +116,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         auth?.user?.beneficiary?.community,
         fetcher
     );
+
+    console.log(useBeneficiary(auth?.user?.beneficiary?.community).beneficiary);
 
     // If the User hasn't already accepted the Community Rules, show the modal
     useEffect(() => {
@@ -204,7 +209,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
 
     useEffect(() => {
         if (isClaimable || claimAllowed) {
-            if (hasFunds) {
+            if (requestFundsStatus === RequestFundsStatus.READY) {
                 setCardType(2);
             } else {
                 setCardType(1);
@@ -212,7 +217,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         } else {
             setCardType(0);
         }
-    }, [isClaimable, hasFunds, claimAllowed]);
+    }, [isClaimable, requestFundsStatus, claimAllowed]);
 
     useEffect(() => {
         setCardIcon(
@@ -239,7 +244,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
             {...({} as any)}
             isLoading={!isReady || isLoading || loadingCommunity}
         >
-            {fundsRemainingDays <= 3 && fundsRemainingDays > 0 && (
+            {/* {fundsRemainingDays <= 3 && fundsRemainingDays > 0 && (
                 <Alert
                     icon="alertTriangle"
                     mb={1.5}
@@ -256,14 +261,25 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                     }
                     warning
                 />
-            )}
-            {!hasFunds && (
+            )} */}
+            {requestFundsStatus === RequestFundsStatus.NOT_ENOUGH_FUNDS && (
                 <Alert
                     error
                     icon="alertCircle"
                     mb={1.5}
                     message={
                         <Message id="communityFundsHaveRunOut" medium small />
+                    }
+                />
+            )}
+            {requestFundsStatus === RequestFundsStatus.NOT_YET && (
+                <Alert
+                    error
+                    icon="alertCircle"
+                    mb={1.5}
+                    message={
+                        // <Message id="communityFundsHaveRunOut" medium small />
+                        "It's not yet possible to request funds from the reserve!"
                     }
                 />
             )}
@@ -323,6 +339,15 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                         <Text g900 large medium>
                                             {cardTitle}
                                         </Text>
+                                        <RichText
+                                            content={cardMessage}
+                                            g500
+                                            mt={0.5}
+                                            small
+                                            variables={{
+                                                amount: claimAmountDisplay
+                                            }}
+                                        />
                                         {!isClaimable && !claimAllowed && (
                                             <RichText
                                                 content={cardMessage}
@@ -335,7 +360,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                             />
                                         )}
                                         {(isClaimable || claimAllowed) &&
-                                            hasFunds && (
+                                            requestFundsStatus ===
+                                                RequestFundsStatus.READY && (
                                                 <RichText
                                                     content={cardMessage}
                                                     g500
@@ -360,7 +386,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                             />
                                         )}
                                         {(isClaimable || claimAllowed) &&
-                                            hasFunds && (
+                                            requestFundsStatus ===
+                                                RequestFundsStatus.READY && (
                                                 <Button
                                                     default
                                                     disabled={loadingButton}
