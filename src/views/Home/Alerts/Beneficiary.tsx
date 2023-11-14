@@ -1,7 +1,10 @@
 import { Alert, Button, openModal } from '@impact-market/ui';
+import {
+    RequestFundsStatus,
+    useBeneficiary
+} from '@impact-market/utils/useBeneficiary';
 import { gql, useQuery } from '@apollo/client';
 import { selectCurrentUser } from '../../../state/slices/auth';
-import { useBeneficiary } from '@impact-market/utils/useBeneficiary';
 import { useSelector } from 'react-redux';
 import Link from 'next/link';
 import Message from '../../../libs/Prismic/components/Message';
@@ -35,9 +38,8 @@ const BeneficiaryAlerts = () => {
     const {
         isReady,
         beneficiary: {
-            fundsRemainingDays,
             isClaimable,
-            community: { hasFunds }
+            community: { requestFundsStatus }
         }
     } = useBeneficiary(auth?.user?.beneficiary?.community);
 
@@ -66,40 +68,22 @@ const BeneficiaryAlerts = () => {
         <>
             {isReady && (
                 <>
-                    {fundsRemainingDays <= 3 &&
-                        fundsRemainingDays > 0 &&
+                    {requestFundsStatus ===
+                        RequestFundsStatus.NOT_ENOUGH_FUNDS &&
                         !auth?.user?.roles.includes('manager') && (
                             <Alert
-                                icon="alertTriangle"
+                                error
+                                icon="alertCircle"
                                 mb={1}
                                 message={
                                     <Message
-                                        id="communityFundsWillRunOut"
+                                        id="communityFundsHaveRunOut"
                                         medium
                                         small
-                                        variables={{
-                                            count: fundsRemainingDays,
-                                            timeUnit: t('days').toLowerCase()
-                                        }}
                                     />
                                 }
-                                warning
                             />
                         )}
-                    {!hasFunds && !auth?.user?.roles.includes('manager') && (
-                        <Alert
-                            error
-                            icon="alertCircle"
-                            mb={1}
-                            message={
-                                <Message
-                                    id="communityFundsHaveRunOut"
-                                    medium
-                                    small
-                                />
-                            }
-                        />
-                    )}
                     {!auth?.user?.active && (
                         <Alert
                             error
@@ -114,26 +98,29 @@ const BeneficiaryAlerts = () => {
                             }
                         />
                     )}
-                    {isClaimable && hasFunds && (
-                        <Alert
-                            button={openUbi()}
-                            icon="coinStack"
-                            mb={1}
-                            message={
-                                <Message
-                                    id="claimUbiDescription"
-                                    small
-                                    g800
-                                    variables={{
-                                        time:
-                                            queryInterval?.communityEntity
-                                                ?.incrementInterval / 12
-                                    }}
-                                />
-                            }
-                            title={<Message id="claimUbi" medium small g800 />}
-                        />
-                    )}
+                    {isClaimable &&
+                        requestFundsStatus === RequestFundsStatus.READY && (
+                            <Alert
+                                button={openUbi()}
+                                icon="coinStack"
+                                mb={1}
+                                message={
+                                    <Message
+                                        id="claimUbiDescription"
+                                        small
+                                        g800
+                                        variables={{
+                                            time:
+                                                queryInterval?.communityEntity
+                                                    ?.incrementInterval / 12
+                                        }}
+                                    />
+                                }
+                                title={
+                                    <Message id="claimUbi" medium small g800 />
+                                }
+                            />
+                        )}
                 </>
             )}
         </>
