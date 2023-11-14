@@ -42,7 +42,6 @@ import config from '../../config';
 import processTransactionError from '../utils/processTransactionError';
 import styled from 'styled-components';
 import useCommunity from '../hooks/useCommunity';
-import useTranslations from '../libs/Prismic/hooks/useTranslations';
 
 const fetcher = (url: string, headers: any | {}) =>
     fetch(config.baseApiUrl + url, headers).then((res) => res.json());
@@ -83,7 +82,6 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         style: 'currency'
     });
     const router = useRouter();
-    const { t } = useTranslations();
 
     // Check if current User has access to this page
     if (!checkUserPermission([userBeneficiary])) {
@@ -107,7 +105,6 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
             claimedAmount,
             claimCooldown,
             isClaimable,
-            isFinished,
             community: { claimAmount, maxClaim, requestFundsStatus }
         }
     } = useBeneficiary(auth?.user?.beneficiary?.community);
@@ -116,8 +113,6 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         auth?.user?.beneficiary?.community,
         fetcher
     );
-
-    console.log(useBeneficiary(auth?.user?.beneficiary?.community).beneficiary);
 
     // If the User hasn't already accepted the Community Rules, show the modal
     useEffect(() => {
@@ -211,6 +206,8 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         if (isClaimable || claimAllowed) {
             if (requestFundsStatus === RequestFundsStatus.READY) {
                 setCardType(2);
+            } else if (requestFundsStatus === RequestFundsStatus.NOT_YET) {
+                setCardType(3);
             } else {
                 setCardType(1);
             }
@@ -244,24 +241,16 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
             {...({} as any)}
             isLoading={!isReady || isLoading || loadingCommunity}
         >
-            {/* {fundsRemainingDays <= 3 && fundsRemainingDays > 0 && (
+            {!auth?.user?.active && (
                 <Alert
-                    icon="alertTriangle"
+                    error
+                    icon="key"
                     mb={1.5}
                     message={
-                        <Message
-                            id="communityFundsWillRunOut"
-                            medium
-                            small
-                            variables={{
-                                count: fundsRemainingDays,
-                                timeUnit: t('days').toLowerCase()
-                            }}
-                        />
+                        <Message id="yourAccountHasBeenLocked" medium small />
                     }
-                    warning
                 />
-            )} */}
+            )}
             {requestFundsStatus === RequestFundsStatus.NOT_ENOUGH_FUNDS && (
                 <Alert
                     error
@@ -277,22 +266,10 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                     error
                     icon="alertCircle"
                     mb={1.5}
-                    message={
-                        // <Message id="communityFundsHaveRunOut" medium small />
-                        "It's not yet possible to request funds from the reserve!"
-                    }
+                    message={<Message id="communityFundsNotYet" medium small />}
                 />
             )}
-            {!auth?.user?.active && (
-                <Alert
-                    error
-                    icon="key"
-                    mb={1.5}
-                    message={
-                        <Message id="yourAccountHasBeenLocked" medium small />
-                    }
-                />
-            )}
+
             <Display g900 medium>
                 {title}
             </Display>
@@ -345,37 +322,22 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
                                             mt={0.5}
                                             small
                                             variables={{
-                                                amount: claimAmountDisplay
+                                                // Is not claimable
+                                                amount:
+                                                    !isClaimable &&
+                                                    !claimAllowed &&
+                                                    claimAmountDisplay,
+                                                // Is claimable
+                                                time:
+                                                    (isClaimable ||
+                                                        claimAllowed) &&
+                                                    requestFundsStatus ===
+                                                        RequestFundsStatus.READY &&
+                                                    queryInterval
+                                                        ?.communityEntity
+                                                        ?.incrementInterval / 12
                                             }}
                                         />
-                                        {!isClaimable && !claimAllowed && (
-                                            <RichText
-                                                content={cardMessage}
-                                                g500
-                                                mt={0.5}
-                                                small
-                                                variables={{
-                                                    amount: claimAmountDisplay
-                                                }}
-                                            />
-                                        )}
-                                        {(isClaimable || claimAllowed) &&
-                                            requestFundsStatus ===
-                                                RequestFundsStatus.READY && (
-                                                <RichText
-                                                    content={cardMessage}
-                                                    g500
-                                                    mt={0.5}
-                                                    small
-                                                    variables={{
-                                                        time:
-                                                            queryInterval
-                                                                ?.communityEntity
-                                                                ?.incrementInterval /
-                                                            12
-                                                    }}
-                                                />
-                                            )}
                                     </Box>
                                     <Box margin="0 auto" maxW={22}>
                                         {!isClaimable && !claimAllowed && (
