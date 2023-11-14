@@ -64,7 +64,11 @@ const Filters = ({ myCommunityTitle, filters, filterProperty }: any) => {
                     }}
                 />
             )}
-            <NameFilter margin="0 1 0 0" property={filterProperty} />
+            <NameFilter
+                margin="0 1 0 0"
+                property={filterProperty}
+                placeholder={t('searchForName')}
+            />
 
             {!loadingCountries ? (
                 <Select

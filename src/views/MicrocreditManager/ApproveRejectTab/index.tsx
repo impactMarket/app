@@ -10,6 +10,7 @@ import BorrowersList from './BorrowersList';
 import Message from 'src/libs/Prismic/components/Message';
 import React, { useState } from 'react';
 import RichText from 'src/libs/Prismic/components/RichText';
+import SearchFilter from '../../../components/Filters';
 import config from '../../../../config';
 import processTransactionError from 'src/utils/processTransactionError';
 import useFilters from 'src/hooks/useFilters';
@@ -180,6 +181,7 @@ const ApproveRejectTab: React.FC<{}> = () => {
     } = useMicrocreditApplications([
         `limit=${itemsPerPage}`,
         `offset=${itemOffset}`,
+        `${getByKey('search') ? `search=${getByKey('search')}` : ''}`,
         // `orderBy=${getByKey('orderBy') || 'appliedOn'}`,
         `${getByKey('status') ? `status=${getByKey('status')}` : ''}`,
         `${
@@ -307,16 +309,12 @@ const ApproveRejectTab: React.FC<{}> = () => {
     return (
         <Box>
             <FlexibleTab tabs={tabs} index={tabsIndex} />
-            {/* <Input
-
-                icon="search"
-                placeholder="Search by name or wallet address"
-                rows={0}
-                wrapperProps={{
-                    mt: 2
-                }}
-            /> */}
-            <Box mt={2}>
+            <SearchFilter
+                margin="2 0 2 0"
+                property="search"
+                placeholder={t('searchByNameOrWalletAddress')}
+            />
+            <Box>
                 {selected.length > 0 && (
                     <DecisionCard selected={selected} mutate={mutate} />
                 )}

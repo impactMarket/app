@@ -10,10 +10,11 @@ interface FilterProps {
     property: string;
     maxW?: number;
     margin?: string;
+    placeholder?: string;
 }
 
 const Filters = (props: FilterProps) => {
-    const { property, maxW, margin } = props;
+    const { property, maxW, margin, placeholder } = props;
     const { t } = useTranslations();
     const { update } = useFilters();
 
@@ -33,7 +34,7 @@ const Filters = (props: FilterProps) => {
                 onKeyUp={(e: any) =>
                     onInputChange(property, e.target.value, 500)
                 }
-                placeholder={t('searchForName')}
+                placeholder={placeholder || t('search')}
             />
         </Box>
     );
