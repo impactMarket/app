@@ -662,6 +662,16 @@ const FullWidthField = (props: FullWidthProps) => {
                                             setCurrency('venezuelanBolivar');
                                         },
                                         title: t('venezuelanBolivar')
+                                    },
+                                    {
+                                        onClick: () => {
+                                            updateIncome(
+                                                income,
+                                                'peruvianNuevoSol'
+                                            );
+                                            setCurrency('peruvianNuevoSol');
+                                        },
+                                        title: t('peruvianNuevoSol')
                                     }
                                 ]}
                                 title={
