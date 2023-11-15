@@ -210,6 +210,7 @@ const MicroCredit = (props: any) => {
                             repayLoan={repayLoan}
                             loanId={loanId}
                             overviewData={loanData}
+                            userAddress={auth?.user?.address}
                         />
                         <RepaymentHistory />
                     </>

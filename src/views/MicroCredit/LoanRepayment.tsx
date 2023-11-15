@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 import {
     Box,
     Button,
+    Card,
     Display,
     Icon,
     Input,
@@ -11,6 +13,7 @@ import {
 import { localeFormat } from '../../utils/currencies';
 import { mq } from 'styled-gen';
 import { useBorrower, useCUSDBalance } from '@impact-market/utils';
+import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import { useState } from 'react';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
@@ -20,6 +23,23 @@ import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled, { css } from 'styled-components';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+
+const CleanCard = styled(Card)`
+    box-shadow: none;
+    background-color: ${colors.e50};
+`;
+
+const PerformanceIcon = styled.div<{ performance: number }>`
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: ${(props) =>
+        props.performance < 50
+            ? '#FF4405'
+            : props.performance < 100
+            ? colors.w300
+            : props.performance >= 100 && colors.s300};
+`;
 
 const BorderWrapper = styled(Box)`
     padding: 0.6rem;
@@ -55,8 +75,15 @@ const ActionWrapper = styled(Box)`
 `;
 
 const LoanRepayment = (props: any) => {
-    const { data, isOverviewOpen, overviewData, repayLoan, loanId, loan } =
-        props;
+    const {
+        data,
+        isOverviewOpen,
+        overviewData,
+        repayLoan,
+        loanId,
+        loan,
+        userAddress
+    } = props;
     const { t } = useTranslations();
     const balanceCUSD = useCUSDBalance();
     const { approve } = useBorrower();
@@ -80,6 +107,10 @@ const LoanRepayment = (props: any) => {
     const [approved, setApproved] = useState(false);
     const [isLoadingApprove, setIsLoadingApprove] = useState(false);
     const [isLoadingRepay, setIsLoadingRepay] = useState(false);
+
+    const { borrower, loadingBorrower } = useMicrocreditBorrower([
+        `address=${userAddress}`
+    ]);
 
     const repay = async () => {
         setIsLoadingRepay(true);
@@ -123,6 +154,8 @@ const LoanRepayment = (props: any) => {
         setIsLoadingApprove(false);
     };
 
+    console.log('Data: ', borrower);
+
     return (
         <Box
             flex
@@ -146,6 +179,25 @@ const LoanRepayment = (props: any) => {
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
+
+                {!loadingBorrower && (
+                    <CleanCard>
+                        <Box>
+                            <PerformanceIcon performance={20} />
+                            <Text g900 semibold>
+                                Your repayment performance is 20%
+                            </Text>
+                        </Box>
+
+                        <RichText
+                            content={
+                                'Your journey is underway. Incremental increases in your repayment amount can substantially raise your score.'
+                            }
+                            g600
+                            small
+                        />
+                    </CleanCard>
+                )}
 
                 <LoanOverview
                     overviewData={overviewData}
