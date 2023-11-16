@@ -24,9 +24,15 @@ import processTransactionError from '../../utils/processTransactionError';
 import styled, { css } from 'styled-components';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
-const CleanCard = styled(Card)`
+const PerformanceWarning = styled(Card)<{ performance: number }>`
     box-shadow: none;
-    background-color: ${colors.e50};
+    margin-top: 2rem;
+    background-color: ${(props) =>
+        props.performance < 50
+            ? colors.e50
+            : props.performance < 100
+            ? colors.w50
+            : props.performance >= 100 && '#DCFAE6'};
 `;
 
 const PerformanceIcon = styled.div<{ performance: number }>`
@@ -100,7 +106,11 @@ const LoanRepayment = (props: any) => {
         repayLoanReady,
         repayLoanApproveLabel,
         repayLoanApprovedLabel,
-        repayLoanAmountToPay
+        repayLoanAmountToPay,
+        repayLoanPerformanceWarningTitle,
+        repayLoanPerformanceHigh,
+        repayLoanPerformanceMedium,
+        repayLoanPerformanceLow
     } = data;
 
     const [amount, setAmount] = useState('');
@@ -154,8 +164,6 @@ const LoanRepayment = (props: any) => {
         setIsLoadingApprove(false);
     };
 
-    console.log('Data: ', borrower);
-
     return (
         <Box
             flex
@@ -181,22 +189,42 @@ const LoanRepayment = (props: any) => {
                 />
 
                 {!loadingBorrower && (
-                    <CleanCard>
-                        <Box>
-                            <PerformanceIcon performance={20} />
-                            <Text g900 semibold>
-                                Your repayment performance is 20%
-                            </Text>
+                    <PerformanceWarning
+                        performance={borrower?.lastLoanPerformance}
+                    >
+                        <Box
+                            flex
+                            fLayout="center"
+                            fWrap="wrap"
+                            style={{ gap: '0.5rem' }}
+                            mb={0.5}
+                        >
+                            <PerformanceIcon
+                                performance={borrower?.lastLoanPerformance}
+                            />
+                            <RichText
+                                content={repayLoanPerformanceWarningTitle}
+                                variables={{
+                                    value: borrower?.lastLoanPerformance
+                                }}
+                                g900
+                                semibold
+                                w="fit-content"
+                            />
                         </Box>
-
                         <RichText
                             content={
-                                'Your journey is underway. Incremental increases in your repayment amount can substantially raise your score.'
+                                borrower?.lastLoanPerformance < 50
+                                    ? repayLoanPerformanceLow
+                                    : borrower?.lastLoanPerformance < 100
+                                    ? repayLoanPerformanceMedium
+                                    : borrower?.lastLoanPerformance >= 100 &&
+                                      repayLoanPerformanceHigh
                             }
                             g600
                             small
                         />
-                    </CleanCard>
+                    </PerformanceWarning>
                 )}
 
                 <LoanOverview
