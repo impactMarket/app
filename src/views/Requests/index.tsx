@@ -13,6 +13,7 @@ import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
 import useCommunitiesReviewsByCountry from '../../hooks/useCommunitiesReviewsByCountry';
 import useFilters from '../../hooks/useFilters';
+import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
 const itemsPerPage = 8;
 
@@ -23,6 +24,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
     const { isLoading } = props;
     const { getByKey } = useFilters();
     const { asPath } = useRouter();
+    const { t } = useTranslations();
 
     const { extractFromView } = usePrismicData();
     const { title, content } = extractFromView('heading') as any;
@@ -110,7 +112,7 @@ const Requests: React.FC<{ isLoading?: boolean }> = (props) => {
                 {title}
             </Display>
             <RichText content={content} g500 mt={0.25} />
-            <Filters status="pending" />
+            <Filters status="pending" placeholder={t('searchForName')} />
             <ReviewTabs
                 communities={communities}
                 currentPage={currentPage}

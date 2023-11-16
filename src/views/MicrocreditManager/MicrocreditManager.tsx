@@ -149,6 +149,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                                 filter: '',
                                 orderBy: '',
                                 page: '',
+                                search: '',
                                 status: '',
                                 tab: 'repayments'
                             });
@@ -161,6 +162,7 @@ const MicrocreditManager: React.FC<{ isLoading?: boolean }> = (props) => {
                                 filter: '',
                                 orderBy: '',
                                 page: '',
+                                search: '',
                                 status: '',
                                 tab: 'approveReject'
                             });

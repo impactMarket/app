@@ -159,7 +159,12 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
                             />
                         </TabList>
                     </Tabs>
-                    <Filters margin="1.5 0 0 0" maxW={20} property="search" />
+                    <Filters
+                        margin="1.5 0 0 0"
+                        maxW={20}
+                        property="search"
+                        placeholder={t('searchForName')}
+                    />
                     <BeneficiariesList
                         community={community}
                         lastActivity={lastActivity}

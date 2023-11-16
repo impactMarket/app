@@ -3,6 +3,7 @@ import { FlexibleTab } from 'src/components/FlexibleTab';
 import { useMicrocreditBorrowers } from 'src/hooks/useMicrocredit';
 import BorrowersList from './BorrowersList';
 import React, { useState } from 'react';
+import SearchFilter from '../../../components/Filters';
 import useFilters from 'src/hooks/useFilters';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
 
@@ -18,6 +19,7 @@ const RepaymentsTab: React.FC = () => {
     const { borrowers, count, loadingBorrowers } = useMicrocreditBorrowers([
         `limit=${itemsPerPage}`,
         `offset=${itemOffset}`,
+        `${getByKey('search') ? `search=${getByKey('search')}` : ''}`,
         `orderBy=${getByKey('orderBy') || 'lastRepayment'}`,
         `${getByKey('filter') ? `filter=${getByKey('filter')}` : ''}`,
         `${
@@ -125,16 +127,12 @@ const RepaymentsTab: React.FC = () => {
     return (
         <Box>
             <FlexibleTab tabs={tabs} index={tabsIndex} />
-            {/* <Input
-
-                icon="search"
-                placeholder="Search by name or wallet address"
-                rows={0}
-                wrapperProps={{
-                    mt: 2
-                }}
-            /> */}
-            <Box mt={2}>
+            <SearchFilter
+                margin="2 0 2 0"
+                property="search"
+                placeholder={t('searchByNameOrWalletAddress')}
+            />
+            <Box>
                 <BorrowersList
                     actualPage={actualPage}
                     itemsPerPage={itemsPerPage}

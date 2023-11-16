@@ -116,7 +116,12 @@ const Beneficiaries: React.FC<{ isLoading?: boolean }> = (props) => {
                         <FakeTabPanel />
                         <FakeTabPanel />
                     </Tabs>
-                    <Filters margin="1.5 0 0 0" maxW={20} property="search" />
+                    <Filters
+                        margin="1.5 0 0 0"
+                        maxW={20}
+                        property="search"
+                        placeholder={t('searchForName')}
+                    />
                     <ManagersList community={community?.id} />
                 </Box>
             ) : (

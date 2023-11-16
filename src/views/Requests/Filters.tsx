@@ -22,7 +22,11 @@ const Filters = ({ status }: any) => {
 
     return (
         <Box fLayout="center start" inlineFlex mt={0.8} w="100%">
-            <NameFilter margin="0 1 0 0" property="search" />
+            <NameFilter
+                margin="0 1 0 0"
+                property="search"
+                placeholder={t('searchForName')}
+            />
 
             {!loadingCountries ? (
                 <Select

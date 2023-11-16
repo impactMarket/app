@@ -226,7 +226,10 @@ const LearnAndEarn = (props: any) => {
                     </Box>
 
                     <Box padding=".5rem 0rem" fGrow={1}>
-                        <Filters property="search" />
+                        <Filters
+                            property="search"
+                            placeholder={t('searchForName')}
+                        />
                     </Box>
                 </Box>
 
