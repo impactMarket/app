@@ -152,7 +152,9 @@ const ApplicationForm = (props: any) => {
                         address: auth?.user?.address
                     }).unwrap();
 
-                    formData = await getFormId(borrowerData?.forms[0]?.id);
+                    if (borrowerData?.forms[0]?.status !== 5) {
+                        formData = await getFormId(borrowerData?.forms[0]?.id);
+                    } 
                 }
 
                 const {
