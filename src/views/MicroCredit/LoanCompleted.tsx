@@ -1,5 +1,6 @@
 import { Box, Display } from '@impact-market/ui';
 import Image from '../../libs/Prismic/components/Image';
+import Link from 'next/link';
 import LoanOverview from './LoanOverview';
 import RichText from '../../libs/Prismic/components/RichText';
 
@@ -26,6 +27,7 @@ const LoanCompleted = (props: any) => {
                 />
 
                 <LoanOverview overviewData={overviewData} />
+                <Link href="/microcredit/apply">Get a new loan</Link>
             </Box>
             <Box
                 style={{ flexBasis: '50%' }}
