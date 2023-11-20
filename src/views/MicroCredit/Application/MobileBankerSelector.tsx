@@ -2,6 +2,7 @@ import { Avatar, Box, Row, Text, colors } from '@impact-market/ui';
 import { getImage } from '../../../utils/images';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useEffect, useState } from 'react';
+import { useMicrocreditCountries } from 'src/hooks/useMicrocreditManagersCountry';
 import { useSelector } from 'react-redux';
 import RichText from '../../../libs/Prismic/components/RichText';
 import Select from '../../../components/Select';
@@ -58,17 +59,11 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
     );
     const [countryLabel, setCountryLabel] = useState('');
 
-    const countries = [
-        { label: 'Uganda', value: 'UG' },
-        { label: 'Brazil', value: 'BR' },
-        { label: 'Nigeria', value: 'NG' },
-        { label: 'Ghana', value: 'GH' },
-        { label: 'Venezuela', value: 'VE' }
-    ];
+    const { countries } = useMicrocreditCountries();
 
     useEffect(() => {
-        const selectedCountry = countries.find(
-            (field) => field.value === country
+        const selectedCountry = countries?.find(
+            (field: any) => field.value === country
         );
 
         setCountryLabel(selectedCountry?.label ?? '');
