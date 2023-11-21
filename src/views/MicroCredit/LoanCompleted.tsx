@@ -1,13 +1,18 @@
-import { Box, Display } from '@impact-market/ui';
+import { Box, Button, Display, Text } from '@impact-market/ui';
+import { useRouter } from 'next/router';
 import Image from '../../libs/Prismic/components/Image';
-import Link from 'next/link';
 import LoanOverview from './LoanOverview';
 import RichText from '../../libs/Prismic/components/RichText';
 
 const LoanCompleted = (props: any) => {
     const { data, overviewData } = props;
-    const { completedLoanTitle, completedLoanDescription, completedLoanImage } =
-        data;
+    const {
+        completedLoanTitle,
+        completedLoanDescription,
+        completedLoanImage,
+        completedLoanButton
+    } = data;
+    const router = useRouter();
 
     return (
         <Box
@@ -27,7 +32,13 @@ const LoanCompleted = (props: any) => {
                 />
 
                 <LoanOverview overviewData={overviewData} />
-                <Link href="/microcredit/apply">Get a new loan</Link>
+                <Button
+                    onClick={() => router.push(`/microcredit/apply`)}
+                    mt={2}
+                    mb={2}
+                >
+                    <Text medium>{completedLoanButton}</Text>
+                </Button>
             </Box>
             <Box
                 style={{ flexBasis: '50%' }}
