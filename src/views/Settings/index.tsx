@@ -37,6 +37,8 @@ const Settings: React.FC<{ isLoading?: boolean }> = (props) => {
                 ...data
             }).unwrap();
 
+            console.log('Result: ', result?.token);
+
             if (result) {
                 dispatch(setUser({ user: { ...result } }));
 

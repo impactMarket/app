@@ -1,4 +1,5 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
+import { setCookie } from 'cookies-next';
 import type { RootState } from '../store';
 
 type User = any;
@@ -61,6 +62,15 @@ const slice = createSlice({
         setUser: (state, action: PayloadAction<{ user: User }>) => {
             // console.log('setUser', action);
             state.user = action.payload.user;
+
+            const expiryDate = new Date();
+
+            expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+
+            setCookie('AUTH_TOKEN', action.payload.user.token, {
+                expires: expiryDate,
+                path: '/'
+            });
         }
     }
 });
