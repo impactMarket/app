@@ -1,17 +1,21 @@
 import { Box, Button, Card, Col, Input, Row, colors } from '@impact-market/ui';
 import { mq } from 'styled-gen';
+import React from 'react';
 import RichText from '../../../libs/Prismic/components/RichText';
 import styled, { css } from 'styled-components';
 import useTranslations from '../../../libs/Prismic/hooks/useTranslations';
 
 const Section = styled(Row)`
-    ${mq.phone(css`
-        margin-bottom: 3rem;
+    ${mq.from(
+        'xs',
+        css`
+            margin-bottom: 3rem;
 
-        .section-info {
-            margin-bottom: 1rem;
-        }
-    `)};
+            .section-info {
+                margin-bottom: 1rem;
+            }
+        `
+    )};
 `;
 
 const SelectElement = styled(Button)`

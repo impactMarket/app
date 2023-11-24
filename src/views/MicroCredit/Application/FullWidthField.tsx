@@ -14,7 +14,7 @@ import { getCookie } from 'cookies-next';
 import { mq } from 'styled-gen';
 import { selectCurrentUser } from '../../../state/slices/auth';
 import { useEffect, useState } from 'react';
-import { useGetMicrocreditPreSignedMutation } from 'src/api/microcredit';
+import { useGetMicrocreditPreSignedMutation } from '../../../api/microcredit';
 import { useSelector } from 'react-redux';
 
 import RichText from '../../../libs/Prismic/components/RichText';
@@ -67,9 +67,12 @@ const CheckBox = styled(Box)`
 `;
 
 const Spacer = styled(Box)`
-    ${mq.phone(css`
-        display: none;
-    `)};
+    ${mq.from(
+        'xs',
+        css`
+            display: none;
+        `
+    )};
 `;
 
 const CurrencySelector = styled(DropdownMenu)`
@@ -101,14 +104,17 @@ const CurrencyWrapper = styled(Box)`
         flex-basis: 49%;
     }
 
-    ${mq.phone(css`
-        flex-wrap: wrap;
+    ${mq.from(
+        'xs',
+        css`
+            flex-wrap: wrap;
 
-        .column {
-            min-width: 10rem;
-            flex-basis: 100%;
-        }
-    `)};
+            .column {
+                min-width: 10rem;
+                flex-basis: 100%;
+            }
+        `
+    )};
 `;
 
 export interface FullWidthProps {

@@ -28,30 +28,36 @@ const BorderWrapper = styled(Box)`
 `;
 
 const ActionWrapper = styled(Box)`
-    ${mq.phone(css`
-        flex-direction: column;
+    ${mq.from(
+        'xs',
+        css`
+            flex-direction: column;
 
-        > .approve,
-        .repay {
-            width: 100%;
-        }
+            > .approve,
+            .repay {
+                width: 100%;
+            }
 
-        > svg {
-            transform: rotate(90deg);
-        }
-    `)}
+            > svg {
+                transform: rotate(90deg);
+            }
+        `
+    )}
 
-    ${mq.tabletLandscape(css`
-        flex-direction: row;
+    ${mq.from(
+        'md',
+        css`
+            flex-direction: row;
 
-        > .approve {
-            flex: 1;
-        }
+            > .approve {
+                flex: 1;
+            }
 
-        > svg {
-            transform: rotate(0deg);
-        }
-    `)}
+            > svg {
+                transform: rotate(0deg);
+            }
+        `
+    )}
 `;
 
 const LoanRepayment = (props: any) => {

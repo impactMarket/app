@@ -2,28 +2,35 @@ import { Box, Card, Col, Row } from '@impact-market/ui';
 import { mq } from 'styled-gen';
 import FullWidthField from './FullWidthField';
 import MobileBankerSelector from './MobileBankerSelector';
+import React from 'react';
 import RichText from '../../../libs/Prismic/components/RichText';
 import styled, { css } from 'styled-components';
 
 const Section = styled(Row)`
-    ${mq.phone(css`
-        margin-bottom: 3rem;
+    ${mq.from(
+        'xs',
+        css`
+            margin-bottom: 3rem;
 
-        .section-info {
-            margin-bottom: 1rem;
-        }
-    `)};
+            .section-info {
+                margin-bottom: 1rem;
+            }
+        `
+    )};
 `;
 
 const DoubleInputWrapper = styled(Row)`
-    ${mq.phone(css`
-        flex-direction: column;
+    ${mq.from(
+        'xs',
+        css`
+            flex-direction: column;
 
-        > .column {
-            flex-basis: 100% !important;
-            width: 100%;
-        }
-    `)};
+            > .column {
+                flex-basis: 100% !important;
+                width: 100%;
+            }
+        `
+    )};
 `;
 
 export interface FormSectionProps {
