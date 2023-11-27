@@ -2,7 +2,7 @@ import { Box } from '@impact-market/ui';
 import { FlexibleTab } from 'src/components/FlexibleTab';
 import { useMicrocreditBorrowers } from 'src/hooks/useMicrocredit';
 import BorrowersList from './BorrowersList';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SearchFilter from '../../../components/Filters';
 import useFilters from 'src/hooks/useFilters';
 import useTranslations from 'src/libs/Prismic/hooks/useTranslations';
@@ -123,6 +123,10 @@ const RepaymentsTab: React.FC = () => {
                 return 0;
         }
     })();
+
+    useEffect(() => {
+        update({ page: 0 });
+    }, [getByKey('search')]);
 
     return (
         <Box>
