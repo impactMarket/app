@@ -65,7 +65,7 @@
         "react-paginate": "8.2.0",
         "react-player": "2.13.0",
         "react-redux": "8.1.2",
-        "recharts": "2.9.3",
+        "recharts": "2.10.1",
         "styled-components": "6.0.8",
         "styled-gen": "1.4.8",
         "swr": "2.2.2",
