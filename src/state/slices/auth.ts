@@ -65,7 +65,7 @@ const slice = createSlice({
 
             const expiryDate = new Date();
 
-            expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+            expiryDate.setTime(expiryDate.getTime() + 60 * 24 * 60 * 60 * 1000);
 
             setCookie('AUTH_TOKEN', action.payload.user.token, {
                 expires: expiryDate,

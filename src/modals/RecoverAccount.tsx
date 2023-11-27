@@ -57,7 +57,7 @@ const RecoverAccount = () => {
                 const expiryDate = new Date();
 
                 expiryDate.setTime(
-                    expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000
+                    expiryDate.getTime() + 60 * 24 * 60 * 60 * 1000
                 );
                 setCookie('AUTH_TOKEN', payload?.data.token, {
                     expires: expiryDate,
