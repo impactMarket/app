@@ -8,7 +8,7 @@
         "dev": "next dev",
         "build": "next build",
         "start": "next start",
-        "prettier": "prettier -wl \"./**/*.{ts,tsx}\"",
+        "prettier": "prettier -l \"./**/*.{ts,tsx}\"",
         "eslint": "eslint --fix --max-warnings=0 \"./**/*.{ts,tsx}\"",
         "prettier:dryrun": "prettier -l \"./**/*.{ts,tsx}\"",
         "eslint:dryrun": "eslint \"./**/*.{ts,tsx}\" --max-warnings=0",

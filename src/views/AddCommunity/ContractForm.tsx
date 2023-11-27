@@ -118,16 +118,17 @@ const ContractForm: React.FC<{
                                     !currency
                                         ? t('selectCountryFirst')
                                         : errors?.claimAmount?.message?.key
-                                        ? t(
-                                              errors?.claimAmount?.message?.key
-                                          )?.replace(
-                                              '{{ value }}',
-                                              errors?.claimAmount?.message
-                                                  ?.value
-                                          )
-                                        : errors?.claimAmount
-                                        ? t('fieldRequired')
-                                        : ''
+                                          ? t(
+                                                errors?.claimAmount?.message
+                                                    ?.key
+                                            )?.replace(
+                                                '{{ value }}',
+                                                errors?.claimAmount?.message
+                                                    ?.value
+                                            )
+                                          : errors?.claimAmount
+                                            ? t('fieldRequired')
+                                            : ''
                                 }
                                 label={t('amountPerClaim')}
                                 name="claimAmount"
@@ -153,15 +154,15 @@ const ContractForm: React.FC<{
                                     !currency
                                         ? t('selectCountryFirst')
                                         : errors?.maxClaim?.message?.key
-                                        ? t(
-                                              errors?.maxClaim?.message?.key
-                                          )?.replace(
-                                              '{{ value }}',
-                                              errors?.maxClaim?.message?.value
-                                          )
-                                        : errors?.maxClaim
-                                        ? t('fieldRequired')
-                                        : ''
+                                          ? t(
+                                                errors?.maxClaim?.message?.key
+                                            )?.replace(
+                                                '{{ value }}',
+                                                errors?.maxClaim?.message?.value
+                                            )
+                                          : errors?.maxClaim
+                                            ? t('fieldRequired')
+                                            : ''
                                 }
                                 label={t('maxClaim')}
                                 name="maxClaim"
@@ -215,8 +216,8 @@ const ContractForm: React.FC<{
                                                   ?.value
                                           )
                                         : errors?.incrementInterval
-                                        ? t('fieldRequired')
-                                        : ''
+                                          ? t('fieldRequired')
+                                          : ''
                                 }
                                 label={t('totalTimeIncrement')}
                                 name="incrementInterval"

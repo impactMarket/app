@@ -63,8 +63,8 @@ const CountryTabs = ({
                 getByKey('country') === 'mycountry'
                     ? 0
                     : getByKey('country') === 'othercountries'
-                    ? 1
-                    : 0
+                      ? 1
+                      : 0
             }
         >
             <TabList>

@@ -38,8 +38,8 @@ const PerformanceIcon = styled.div<{ performance: number }>`
         props.performance < 50
             ? '#FF4405'
             : props.performance < 100
-            ? colors.w300
-            : props.performance >= 100 && colors.s300};
+              ? colors.w300
+              : props.performance >= 100 && colors.s300};
 `;
 
 const EllipsisIcon = styled(Icon)`

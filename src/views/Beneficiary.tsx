@@ -221,15 +221,15 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
             cardType === 0
                 ? 'clock'
                 : cardType === 1
-                ? 'alertCircle'
-                : 'coinStack'
+                  ? 'alertCircle'
+                  : 'coinStack'
         );
         setCardIconState(
             cardType === 0
                 ? { warning: true }
                 : cardType === 1
-                ? { error: true }
-                : { success: true }
+                  ? { error: true }
+                  : { success: true }
         );
         setCardTitle(view.data.claimCardStates[cardType].title);
         setCardMessage(view.data.claimCardStates[cardType].text);

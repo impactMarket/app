@@ -123,8 +123,8 @@ const PersonalForm: React.FC<{
                                               errors?.firstName?.message?.value
                                           )
                                         : errors?.firstName
-                                        ? t('fieldRequired')
-                                        : ''
+                                          ? t('fieldRequired')
+                                          : ''
                                 }
                                 label={t('firstName')}
                                 name="firstName"
@@ -149,8 +149,8 @@ const PersonalForm: React.FC<{
                                               errors?.lastName?.message?.value
                                           )
                                         : errors?.lastName
-                                        ? t('fieldRequired')
-                                        : ''
+                                          ? t('fieldRequired')
+                                          : ''
                                 }
                                 label={t('lastName')}
                                 name="lastName"

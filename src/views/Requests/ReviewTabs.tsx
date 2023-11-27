@@ -82,10 +82,10 @@ const ReviewTabs = ({
                 getByKey('review') === 'pending'
                     ? 0
                     : getByKey('review') === 'claimed'
-                    ? 1
-                    : getByKey('review') === 'declined'
-                    ? 2
-                    : getByKey('review') === 'all' && 3
+                      ? 1
+                      : getByKey('review') === 'declined'
+                        ? 2
+                        : getByKey('review') === 'all' && 3
             }
         >
             <TabList>

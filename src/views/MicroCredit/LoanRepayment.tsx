@@ -31,8 +31,8 @@ const PerformanceWarning = styled(Card)<{ performance: number }>`
         props.performance < 50
             ? colors.e50
             : props.performance < 100
-            ? colors.w50
-            : props.performance >= 100 && '#DCFAE6'};
+              ? colors.w50
+              : props.performance >= 100 && '#DCFAE6'};
 `;
 
 const PerformanceIcon = styled.div<{ performance: number }>`
@@ -43,8 +43,8 @@ const PerformanceIcon = styled.div<{ performance: number }>`
         props.performance < 50
             ? '#FF4405'
             : props.performance < 100
-            ? colors.w300
-            : props.performance >= 100 && colors.s300};
+              ? colors.w300
+              : props.performance >= 100 && colors.s300};
 `;
 
 const BorderWrapper = styled(Box)`
@@ -224,9 +224,9 @@ const LoanRepayment = (props: any) => {
                                 borrower?.lastLoanPerformance < 50
                                     ? repayLoanPerformanceLow
                                     : borrower?.lastLoanPerformance < 100
-                                    ? repayLoanPerformanceMedium
-                                    : borrower?.lastLoanPerformance >= 100 &&
-                                      repayLoanPerformanceHigh
+                                      ? repayLoanPerformanceMedium
+                                      : borrower?.lastLoanPerformance >= 100 &&
+                                        repayLoanPerformanceHigh
                             }
                             g600
                             small

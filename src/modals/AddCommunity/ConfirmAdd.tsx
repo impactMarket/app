@@ -51,8 +51,8 @@ const ConfirmAdd = () => {
         data.baseInterval === 'day'
             ? t('perDay')
             : data.baseInterval === 'week'
-            ? t('perWeek')
-            : '';
+              ? t('perWeek')
+              : '';
     const maxAmount = currencyFormat(data.maxClaim, localeCurrency);
     const minutes = data.incrementInterval;
 
