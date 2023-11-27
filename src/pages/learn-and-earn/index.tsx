@@ -15,10 +15,11 @@ export const getStaticProps: GetStaticProps = async ({
         lang,
         types: 'pwa-lae-category'
     });
-    const levels = await Prismic.getAllLevels({
+
+    const levels = await Prismic.getByTypes({
         clientOptions,
-        document: 'pwa-lae-level',
-        lang
+        lang,
+        types: 'pwa-lae-level'
     });
     const data = await fetcher({
         lang,

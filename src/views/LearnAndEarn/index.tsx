@@ -20,7 +20,7 @@ import RichText from '../../libs/Prismic/components/RichText';
 import config from '../../../config';
 import styled from 'styled-components';
 import useFilters from '../../hooks/useFilters';
-import useLevels from '../../hooks/learn-and-earn/useLevels';
+import useLevels from 'learn-and-earn-submodule/hooks/useLevels';
 import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 
@@ -45,8 +45,15 @@ const LearnAndEarn = (props: any) => {
     } = view.data;
 
     const { levels, categories } = prismic;
-    const { data } = useLevels(levels);
     const auth = useSelector(selectCurrentUser);
+    const { data } = useLevels(
+        levels['lae-level'],
+        lang,
+        config.clientId,
+        config.baseApiUrl,
+        auth?.token,
+        config.useTestNet
+    );
     const { update, getByKey, clear } = useFilters();
     const [currentPage, setCurrentPage] = useState(+getByKey('page') ?? 0);
     const [search, setSearch] = useState(getByKey('search') ?? '');

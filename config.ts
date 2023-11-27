@@ -131,7 +131,12 @@ const config = {
     /*
      * Microcredit Manager Admin
      */
-    microcreditManagerAdmin: process.env.NEXT_PUBLIC_MICROCREDIT_MANAGER_ADMIN
+    microcreditManagerAdmin: process.env.NEXT_PUBLIC_MICROCREDIT_MANAGER_ADMIN,
+
+    /*
+     * ClientId for L&E
+     */
+    clientId: process.env.NEXT_PUBLIC_CLIENT_ID
 };
 
 export default config;

@@ -1,0 +1,3 @@
+[submodule "learn-and-earn-submodule"]
+	path = learn-and-earn-submodule
+	url = https://github.com/impactMarket/learn-and-earn-submodule.git
