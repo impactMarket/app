@@ -5926,7 +5926,7 @@
     "@web3modal/polyfills" "3.3.2"
     "@web3modal/scaffold" "3.3.2"
 
-"@web3modal/wagmi@^3.3.2":
+"@web3modal/wagmi@3.3.2":
   version "3.3.2"
   resolved "https://registry.yarnpkg.com/@web3modal/wagmi/-/wagmi-3.3.2.tgz#12069ef982c63d1a1eee0c046c93cab11a0b9150"
   integrity sha512-fsHB1pO86V/UXs2W6GWLobTrUdjm2f/j8d8bWMNFpj9MimbNaVTrMFLKSszri9SDUoBCQ6536hgibJQKvQvqgg==
