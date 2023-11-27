@@ -27,59 +27,71 @@ const GridStyled = styled.div`
         }
     }
 
-    ${mq.phone(css`
-        grid-template-areas: 'love comment report' 'numbers numbers numbers';
-        grid-template-columns: repeat(3, auto);
+    ${mq.from(
+        'xs',
+        css`
+            grid-template-areas: 'love comment report' 'numbers numbers numbers';
+            grid-template-columns: repeat(3, auto);
 
-        .numbers {
-            flex-direction: row;
-            justify-content: center;
+            .numbers {
+                flex-direction: row;
+                justify-content: center;
 
-            .dot {
-                display: block;
+                .dot {
+                    display: block;
+                }
             }
-        }
-    `)}
+        `
+    )}
 
-    ${mq.tablet(css`
-        grid-template-areas: 'love comment' 'numbers report';
-        grid-template-columns: repeat(2, auto);
+    ${mq.from(
+        'sm',
+        css`
+            grid-template-areas: 'love comment' 'numbers report';
+            grid-template-columns: repeat(2, auto);
 
-        .numbers {
-            flex-direction: column;
+            .numbers {
+                flex-direction: column;
 
-            .dot {
-                display: none;
+                .dot {
+                    display: none;
+                }
             }
-        }
-    `)}
+        `
+    )}
 
-    ${mq.tabletLandscape(css`
-        grid-template-areas: 'love comment report' 'numbers numbers numbers';
-        grid-template-columns: repeat(3, auto);
+    ${mq.from(
+        'md',
+        css`
+            grid-template-areas: 'love comment report' 'numbers numbers numbers';
+            grid-template-columns: repeat(3, auto);
 
-        .numbers {
-            flex-direction: row;
-            justify-content: center;
+            .numbers {
+                flex-direction: row;
+                justify-content: center;
 
-            .dot {
-                display: block;
+                .dot {
+                    display: block;
+                }
             }
-        }
-    `)}
+        `
+    )}
 
-    ${mq.desktop(css`
-        grid-template-areas: 'love comment numbers report';
-        grid-template-columns: repeat(4, auto);
+    ${mq.from(
+        'lg',
+        css`
+            grid-template-areas: 'love comment numbers report';
+            grid-template-columns: repeat(4, auto);
 
-        .numbers {
-            flex-direction: column;
+            .numbers {
+                flex-direction: column;
 
-            .dot {
-                display: none;
+                .dot {
+                    display: none;
+                }
             }
-        }
-    `)}
+        `
+    )}
 `;
 
 const StoryInfo = (props: any) => {

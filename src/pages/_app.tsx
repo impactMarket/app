@@ -9,11 +9,14 @@ import {
 } from '@impact-market/ui';
 import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider, useSelector } from 'react-redux';
+import { ThemeProvider } from 'styled-components';
 import { WagmiConfig, useAccount } from 'wagmi';
 import { getCookie, hasCookie } from 'cookies-next';
-import { handleFirebaseServiceWorker } from 'src/hooks/firebase/handleFirebaseServiceWorker';
+import { handleFirebaseServiceWorker } from '../hooks/firebase/handleFirebaseServiceWorker';
 import { isSupported } from 'firebase/messaging';
-import { registerFirebaseSW } from 'src/hooks/useServiceWorker';
+import { registerFirebaseSW } from '../hooks/useServiceWorker';
+import { theme } from '../theme/theme';
+
 import {
     selectCurrentUser,
     setSignature,
@@ -156,9 +159,11 @@ const App = (props: AppProps) => {
                     <WrapperProvider>
                         <Provider store={store}>
                             <ApolloProvider client={apolloClient}>
-                                <ModalManager modals={modals} />
-                                <Toaster />
-                                <InnerApp {...props} />
+                                <ThemeProvider theme={theme}>
+                                    <ModalManager modals={modals} />
+                                    <Toaster />
+                                    <InnerApp {...props} />
+                                </ThemeProvider>
                                 <GoogleAnalytics />
                             </ApolloProvider>
                         </Provider>
