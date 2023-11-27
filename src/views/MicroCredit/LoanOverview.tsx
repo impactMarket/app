@@ -9,7 +9,7 @@ const CleanCard = styled(Card)`
     overflow: hidden;
     transition: max-height 0.5s;
     max-height: 3rem;
-    margin-top: 2rem;
+    margin-top: 1rem;
 
     &.active {
         max-height: 100rem;

@@ -1,6 +1,8 @@
+/* eslint-disable no-nested-ternary */
 import {
     Box,
     Button,
+    Card,
     Display,
     Icon,
     Input,
@@ -11,6 +13,7 @@ import {
 import { localeFormat } from '../../utils/currencies';
 import { mq } from 'styled-gen';
 import { useBorrower, useCUSDBalance } from '@impact-market/utils';
+import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
 import { useState } from 'react';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
@@ -20,6 +23,29 @@ import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled, { css } from 'styled-components';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+
+const PerformanceWarning = styled(Card)<{ performance: number }>`
+    box-shadow: none;
+    margin-top: 2rem;
+    background-color: ${(props) =>
+        props.performance < 50
+            ? colors.e50
+            : props.performance < 100
+            ? colors.w50
+            : props.performance >= 100 && '#DCFAE6'};
+`;
+
+const PerformanceIcon = styled.div<{ performance: number }>`
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: ${(props) =>
+        props.performance < 50
+            ? '#FF4405'
+            : props.performance < 100
+            ? colors.w300
+            : props.performance >= 100 && colors.s300};
+`;
 
 const BorderWrapper = styled(Box)`
     padding: 0.6rem;
@@ -55,8 +81,15 @@ const ActionWrapper = styled(Box)`
 `;
 
 const LoanRepayment = (props: any) => {
-    const { data, isOverviewOpen, overviewData, repayLoan, loanId, loan } =
-        props;
+    const {
+        data,
+        isOverviewOpen,
+        overviewData,
+        repayLoan,
+        loanId,
+        loan,
+        userAddress
+    } = props;
     const { t } = useTranslations();
     const balanceCUSD = useCUSDBalance();
     const { approve } = useBorrower();
@@ -73,13 +106,21 @@ const LoanRepayment = (props: any) => {
         repayLoanReady,
         repayLoanApproveLabel,
         repayLoanApprovedLabel,
-        repayLoanAmountToPay
+        repayLoanAmountToPay,
+        repayLoanPerformanceWarningTitle,
+        repayLoanPerformanceHigh,
+        repayLoanPerformanceMedium,
+        repayLoanPerformanceLow
     } = data;
 
     const [amount, setAmount] = useState('');
     const [approved, setApproved] = useState(false);
     const [isLoadingApprove, setIsLoadingApprove] = useState(false);
     const [isLoadingRepay, setIsLoadingRepay] = useState(false);
+
+    const { borrower, loadingBorrower } = useMicrocreditBorrower([
+        `address=${userAddress}`
+    ]);
 
     const repay = async () => {
         setIsLoadingRepay(true);
@@ -147,6 +188,45 @@ const LoanRepayment = (props: any) => {
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
+
+                {!loadingBorrower && (
+                    <PerformanceWarning
+                        performance={borrower?.lastLoanPerformance}
+                    >
+                        <Box
+                            flex
+                            fLayout="center"
+                            fWrap="wrap"
+                            style={{ gap: '0.5rem' }}
+                            mb={0.5}
+                        >
+                            <PerformanceIcon
+                                performance={borrower?.lastLoanPerformance}
+                            />
+                            <RichText
+                                content={repayLoanPerformanceWarningTitle}
+                                variables={{
+                                    value: borrower?.lastLoanPerformance
+                                }}
+                                g900
+                                semibold
+                                w="fit-content"
+                            />
+                        </Box>
+                        <RichText
+                            content={
+                                borrower?.lastLoanPerformance < 50
+                                    ? repayLoanPerformanceLow
+                                    : borrower?.lastLoanPerformance < 100
+                                    ? repayLoanPerformanceMedium
+                                    : borrower?.lastLoanPerformance >= 100 &&
+                                      repayLoanPerformanceHigh
+                            }
+                            g600
+                            small
+                        />
+                    </PerformanceWarning>
+                )}
 
                 <LoanOverview
                     overviewData={overviewData}
