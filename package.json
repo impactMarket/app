@@ -89,6 +89,6 @@
         "eslint-config-impact-market": "2.2.0",
         "eslint-config-next": "14.0.1",
         "prettier": "3.0.3",
-        "typescript": "5.2.2"
+        "typescript": "5.3.2"
     }
 }
