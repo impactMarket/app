@@ -345,7 +345,7 @@ const Sidebar = () => {
 
         const expiryDate = new Date();
 
-        expiryDate.setTime(expiryDate.getTime() + 30 * 24 * 60 * 60 * 1000);
+        expiryDate.setTime(expiryDate.getTime() + 60 * 24 * 60 * 60 * 1000);
 
         // useEffect(() => {
         //     if (!hasCookie('LOCALE')) {
