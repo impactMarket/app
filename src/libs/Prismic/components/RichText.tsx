@@ -29,6 +29,20 @@ const serializer: SerializerFunction = ({
     } = options || ({} as SerializerOptions);
     const forwardProps = serializerProps?.[type] || {};
 
+    if (type === 'preformatted') {
+        const { text } = node;
+
+        return (
+            <Box>
+                <pre>
+                    <Text as="div" {...forwardProps}>
+                        {parse(text)}
+                    </Text>
+                </pre>
+            </Box>
+        );
+    }
+
     if (type === 'hyperlink') {
         const { url: href, ...otherProps } = node?.data;
 

@@ -61,10 +61,10 @@ const Lesson = (props: any) => {
     const canGotoQuiz = progress.length === content.length;
     const pageCount = isQuiz ? QUIZ_LENGTH : content.length;
 
-    const slide =
-        content[currentPage]?.slice_type === 'video_section'
-            ? content[currentPage] ?? {}
-            : content[currentPage]?.primary?.content ?? {};
+    const slide = prismicLesson
+        ? content[currentPage]?.primary?.content ??
+          content[currentPage]?.primary?.html
+        : {};
 
     const currentQuestion = questions[currentPage];
 
