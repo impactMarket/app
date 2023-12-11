@@ -133,6 +133,7 @@ const MobileBankerSelector = (props: MobileBankerProps) => {
                         justifyContent: 'space-between'
                     }}
                     flex
+                    fDirection={{ sm: 'row', xs: 'column' }}
                 >
                     {managers?.map((option: any, id: number) => (
                         <RadioWrapper
