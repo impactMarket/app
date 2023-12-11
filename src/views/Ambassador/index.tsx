@@ -96,8 +96,7 @@ const Ambassador: React.FC<{ isLoading?: boolean }> = (props) => {
                 setLoading(true);
 
                 const communities: any = await getCommunities({
-                    ambassadorAddress: auth?.user?.address,
-                    limit: 999
+                    ambassadorAddress: auth?.user?.address
                 });
 
                 const myCommunities = communities?.data?.rows?.map(
