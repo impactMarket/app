@@ -99,9 +99,8 @@ const ManagersList: React.FC<{ community: string }> = (props) => {
         orderBy: getByKey('orderBy')
             ? getByKey('orderBy').toString()
             : 'since:desc',
-        search: search ?? '',
-        state: state ?? 0,
-        ...{ community }
+        search: search ?? ' ',
+        state: state ?? 0
     });
 
     return (

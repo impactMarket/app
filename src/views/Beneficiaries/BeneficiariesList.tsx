@@ -136,7 +136,7 @@ const BeneficiariesList: React.FC<{ community: any; lastActivity: number }> = (
             orderBy: getByKey('orderBy')
                 ? getByKey('orderBy').toString()
                 : 'since:desc',
-            search: search ?? '',
+            search: search ?? ' ',
             state: state ?? 0
         }
     );
