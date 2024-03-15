@@ -188,10 +188,12 @@ const DonateCard = (props: DonateCardProps) => {
             <Box fLayout="between" flex>
                 <Box left>
                     <Text g900 semibold small>
-                        {currencyFormat(raised)} (
-                        {formatPercentage(
-                            Number.isFinite(quotient) ? quotient : 0
-                        )}
+                        {raised > goal ? goal : currencyFormat(raised)} (
+                        {raised > goal
+                            ? '100%'
+                            : formatPercentage(
+                                  Number.isFinite(quotient) ? quotient : 0
+                              )}
                         )
                     </Text>
                 </Box>
