@@ -154,7 +154,7 @@ const ApplicationForm = (props: any) => {
 
                     if (borrowerData?.forms[0]?.status !== 5) {
                         formData = await getFormId(borrowerData?.forms[0]?.id);
-                    } 
+                    }
                 }
 
                 const {
@@ -239,10 +239,12 @@ const ApplicationForm = (props: any) => {
         } else if (Array.isArray(view)) {
             const latestForm = view.reduce((latest, currentItem) => {
                 const latestDate = new Date(latest.first_publication_date);
-                const currentDate = new Date(currentItem.first_publication_date);
-              
+                const currentDate = new Date(
+                    currentItem.first_publication_date
+                );
+
                 return currentDate > latestDate ? currentItem : latest;
-              });
+            });
 
             id = latestForm?.id;
             currentForm = latestForm?.data;
@@ -467,15 +469,28 @@ const ApplicationForm = (props: any) => {
     return (
         <ViewContainer {...({} as any)} isLoading={isLoading}>
             <Box fLayout="start between" fWrap="wrap" flex>
-                <Box flex>
+                <Box
+                    flex
+                    fDirection={{ sm: 'row', xs: 'column' }}
+                    style={{
+                        justifyContent: 'space-between',
+                        width: '100%'
+                    }}
+                >
                     <Box style={{ flex: '1' }}>
                         <Display g900 medium>
                             {title}
                         </Display>
-                        <RichText content={description} g500 mt={0.25} />
+                        {page === 0 && (
+                            <RichText content={description} g500 mt={0.25} />
+                        )}
                     </Box>
                     {readOnly && auth?.user?.roles?.includes('loanManager') && (
-                        <Box style={{ height: 'fit-content' }}>
+                        <Box
+                            style={{ height: 'fit-content' }}
+                            mt={{ sm: 0, xs: 1 }}
+                            ml={{ sm: 1, xs: 0 }}
+                        >
                             <Button
                                 isLoading={isValidating}
                                 onClick={async () => {
@@ -534,7 +549,7 @@ const ApplicationForm = (props: any) => {
                     )}
                 </Box>
 
-                <Box padding="3rem 0" w="100%">
+                <Box padding="3rem 0" w="100%" style={{ zIndex: 0 }}>
                     <Box>
                         <ProgressIndicator
                             currentStep={page + 1}
