@@ -17,6 +17,9 @@ const modals = {
     contribute: dynamic(() => import('./Contribute'), { ssr: false }),
     createStory: dynamic(() => import('./Stories/CreateStory'), { ssr: false }),
     deleteStory: dynamic(() => import('./Stories/DeleteStory'), { ssr: false }),
+    editWalletAddress: dynamic(() => import('./EditWalletAddress'), {
+        ssr: false
+    }),
     laeFailedLesson: dynamic(() => import('./LearnAndEarn/WrongAnswer'), {
         ssr: false
     }),
