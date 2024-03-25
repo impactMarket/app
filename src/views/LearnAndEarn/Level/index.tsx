@@ -28,11 +28,18 @@ const Cell = styled(Box)`
     justify-content: center;
 `;
 
+const AlertStyled = styled(Alert)`
+    & > div > div {
+        display: flex;
+        gap: 1rem;
+    }
+`;
+
 const Level = (props: any) => {
     const { prismic, params, lang, data } = props;
     const view = data['view-learn-and-earn'];
     const { level, lessons, categories } = prismic;
-    const { title, category, sponsor } = level.data;
+    const { title, category, sponsor, minimum } = level.data;
     const { t } = useTranslations();
     const {
         cardHeading,
@@ -154,6 +161,14 @@ const Level = (props: any) => {
             <Box flex style={{ justifyContent: 'center' }}>
                 <Box maxW="36.25rem">
                     <RichText content={instructions} g500 mb={1} />
+
+                    {minimum && (
+                        <AlertStyled
+                            warning
+                            icon="alertTriangle"
+                            title={minimum}
+                        />
+                    )}
 
                     {!!certificateDetails?.completionDate && (
                         <GenerateCertificate {...certificateDetails} />

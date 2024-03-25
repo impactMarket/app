@@ -56,7 +56,6 @@ const Metrics = (props: any) => {
 
     const claimRewards = async () => {
         setIsLoading(true);
-        let response;
 
         const {
             amount = false,
@@ -65,36 +64,44 @@ const Metrics = (props: any) => {
         } = metrics?.claimRewards[0];
 
         try {
-            response = await claimRewardForLevels(
+            const response = await claimRewardForLevels(
                 auth.user.address.toString(),
                 [levelId],
                 [amount],
                 [signatures]
             );
+
+            const { transactionHash } = response;
+
+            await fetch(`${config.baseApiUrl}/learn-and-earn/levels`, {
+                body: JSON.stringify({
+                    transactionHash
+                }),
+                headers: {
+                    Accept: 'application/json',
+                    Authorization: `Bearer ${auth.token}`,
+                    'Content-Type': 'application/json'
+                },
+                method: 'PUT'
+            });
+
+            toast.success(<Message id="successfullyClaimed" />);
+            setIsLoading(false);
         } catch (error) {
             setIsLoading(false);
             processTransactionError(error, 'claim_lae_rewards');
             console.log(error);
-            toast.error(<Message id="errorOccurred" />);
+
+            if (error.toString().includes('insufficient')) {
+                toast.error(
+                    'Insufficient funds in your wallet to claim rewards.'
+                );
+            } else {
+                toast.error(<Message id="errorOccurred" />);
+            }
+
             throw Error;
         }
-
-        const { transactionHash } = response;
-
-        await fetch(`${config.baseApiUrl}/learn-and-earn/levels`, {
-            body: JSON.stringify({
-                transactionHash
-            }),
-            headers: {
-                Accept: 'application/json',
-                Authorization: `Bearer ${auth.token}`,
-                'Content-Type': 'application/json'
-            },
-            method: 'PUT'
-        });
-
-        toast.success(<Message id="successfullyClaimed" />);
-        setIsLoading(false);
     };
 
     return (
