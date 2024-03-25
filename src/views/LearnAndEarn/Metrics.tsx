@@ -97,7 +97,7 @@ const Metrics = (props: any) => {
                     'Insufficient funds in your wallet to claim rewards.'
                 );
             } else {
-                toast.error('An error has occurred.');
+                toast.error(<Message id="errorOccurred" />);
             }
 
             throw Error;
