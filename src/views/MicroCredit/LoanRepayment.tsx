@@ -10,11 +10,20 @@ import {
     colors,
     toast
 } from '@impact-market/ui';
+import { GetNetworkResult } from '@wagmi/core';
+import {
+    getPACTTradingMetrics,
+    useBorrower,
+    useCUSDBalance,
+    useRewards
+} from '@impact-market/utils';
 import { localeFormat } from '../../utils/currencies';
 import { mq } from 'styled-gen';
-import { useBorrower, useCUSDBalance } from '@impact-market/utils';
+import { useEffect, useState } from 'react';
 import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
-import { useState } from 'react';
+import BigNumber from 'bignumber.js';
+
+import { useNetwork } from 'wagmi';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
@@ -86,6 +95,22 @@ const ActionWrapper = styled(Box)`
     )}
 `;
 
+function useTokenPriceUSD(network: GetNetworkResult) {
+    const [priceUSD, setPriceUSD] = useState<number | null>(null);
+
+    useEffect(() => {
+        async function fetchPrice() {
+            const response = await getPACTTradingMetrics(network?.chain.id);
+
+            setPriceUSD(parseFloat(response.priceUSD));
+        }
+
+        fetchPrice();
+    }, [network]);
+
+    return priceUSD;
+}
+
 const LoanRepayment = (props: any) => {
     const {
         data,
@@ -103,6 +128,7 @@ const LoanRepayment = (props: any) => {
         maximumFractionDigits: 6,
         maximumSignificantDigits: 6
     });
+    const { estimateDonationRewards, rewards } = useRewards();
     const {
         repayLoanTitle,
         repayLoanDescription,
@@ -123,6 +149,27 @@ const LoanRepayment = (props: any) => {
     const [approved, setApproved] = useState(false);
     const [isLoadingApprove, setIsLoadingApprove] = useState(false);
     const [isLoadingRepay, setIsLoadingRepay] = useState(false);
+    const network = useNetwork();
+
+    const pactPriceUSD = useTokenPriceUSD(network);
+
+    useEffect(() => {
+        console.debug(loan);
+        const result = new BigNumber(
+            (
+                (loan.amountRepayed + loan.currentDebt - loan.amountBorrowed) *
+                10 *
+                30 *
+                3
+            ).toFixed(0)
+        ).toString();
+
+        estimateDonationRewards(result);
+    }, [loan]);
+
+    useEffect(() => {
+        console.debug(rewards, pactPriceUSD);
+    }, [rewards.estimated, pactPriceUSD]);
 
     const { borrower, loadingBorrower } = useMicrocreditBorrower([
         `address=${userAddress}`
@@ -191,6 +238,11 @@ const LoanRepayment = (props: any) => {
                             loan.currentDebt *
                             (loan.dailyInterest / 100)
                         ).toFixed(3),
+                        estimatedFiatRewards: (
+                            rewards.estimated * pactPriceUSD
+                        ).toFixed(3),
+                        estimatedRewards: rewards.estimated.toFixed(3),
+
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
