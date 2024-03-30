@@ -3438,6 +3438,7 @@
   resolved "https://registry.yarnpkg.com/@impact-market/utils/-/utils-4.2.0-beta.12.7.tgz#53f17238c3684282d650af91717491fd97bb942b"
   integrity sha512-QrPhGukm/E3cWf7kudgKPsSvQM5ODSc9KNE0ZhorwwwEz24XIfB8Hq046WtHb0M+KWRbPs6jf6MJqtNnnDRglg==
 
+
 "@jridgewell/gen-mapping@^0.1.0":
   version "0.1.1"
   resolved "https://registry.npmjs.org/@jridgewell/gen-mapping/-/gen-mapping-0.1.1.tgz"
