@@ -55,7 +55,6 @@ const MicroCredit = (props: any) => {
         getEstimatedLoanRewards(result);
     }, [loan]);
 
-
     const router = useRouter();
     const { getByKey } = useFilters();
     const { t } = useTranslations();
