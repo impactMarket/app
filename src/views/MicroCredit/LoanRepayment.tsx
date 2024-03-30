@@ -19,10 +19,11 @@ import {
 } from '@impact-market/utils';
 import { localeFormat } from '../../utils/currencies';
 import { mq } from 'styled-gen';
-import { useNetwork } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { useMicrocreditBorrower } from 'src/hooks/useMicrocredit';
+import BigNumber from 'bignumber.js';
 
+import { useNetwork } from 'wagmi';
 import Image from '../../libs/Prismic/components/Image';
 import LoanOverview from './LoanOverview';
 import Message from '../../libs/Prismic/components/Message';
@@ -31,7 +32,6 @@ import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled, { css } from 'styled-components';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-import BigNumber from 'bignumber.js';
 
 const PerformanceWarning = styled(Card)<{ performance: number }>`
     box-shadow: none;
@@ -101,6 +101,7 @@ function useTokenPriceUSD(network: GetNetworkResult) {
     useEffect(() => {
         async function fetchPrice() {
             const response = await getPACTTradingMetrics(network?.chain.id);
+            
             setPriceUSD(parseFloat(response.priceUSD));
         }
 
@@ -232,15 +233,16 @@ const LoanRepayment = (props: any) => {
                     small
                     mt={0.5}
                     variables={{
-                        estimatedRewards: rewards.estimated.toFixed(3),
-                        estimatedFiatRewards: (
-                            rewards.estimated * pactPriceUSD
-                        ).toFixed(3),
                         currentDebt: loan.currentDebt.toFixed(3),
                         debtAccrues: (
                             loan.currentDebt *
                             (loan.dailyInterest / 100)
                         ).toFixed(3),
+                        estimatedFiatRewards: (
+                            rewards.estimated * pactPriceUSD
+                        ).toFixed(3),
+                        estimatedRewards: rewards.estimated.toFixed(3),
+                       
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
