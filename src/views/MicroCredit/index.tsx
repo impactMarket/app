@@ -47,7 +47,6 @@ const MicroCredit = (props: any) => {
             (
                 (loan.amountRepayed + loan.currentDebt - loan.amountBorrowed) *
                 10 *
-                30 *
                 3
             ).toFixed(0)
         ).toString();
