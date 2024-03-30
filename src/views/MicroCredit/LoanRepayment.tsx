@@ -195,8 +195,8 @@ const LoanRepayment = (props: any) => {
                         ).toFixed(3),
                         estimatedFiatRewards: (
                             (Number(rewards) ?? 0) * pactPriceUSD
-                        ).toFixed(3),
-                        estimatedRewards: Number(rewards).toFixed(3),
+                        ).toFixed(2),
+                        estimatedRewards: Number(rewards).toFixed(0),
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
