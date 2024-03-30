@@ -101,7 +101,7 @@ function useTokenPriceUSD(network: GetNetworkResult) {
     useEffect(() => {
         async function fetchPrice() {
             const response = await getPACTTradingMetrics(network?.chain.id);
-            
+
             setPriceUSD(parseFloat(response.priceUSD));
         }
 
@@ -242,7 +242,7 @@ const LoanRepayment = (props: any) => {
                             rewards.estimated * pactPriceUSD
                         ).toFixed(3),
                         estimatedRewards: rewards.estimated.toFixed(3),
-                       
+
                         totalToPay: loan.currentDebt.toFixed(3)
                     }}
                 />
