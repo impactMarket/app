@@ -1,9 +1,10 @@
 import { Box, Card, Display, Label, ViewContainer } from '@impact-market/ui';
 import { FormStatus } from '../../utils/formStatus';
-import { LoanStatus, useBorrower } from '@impact-market/utils';
+import { LoanStatus, useBorrower, useLoanRewards } from '@impact-market/utils';
 import { dateHelpers } from '../../helpers/dateHelpers';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useEffect, useState } from 'react';
+import { useLazyGetBorrowerQuery } from '../../api/microcredit';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
@@ -17,8 +18,9 @@ import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 // import InfoAccordion from './InfoAccordion';
 
-import { useLazyGetBorrowerQuery } from '../../api/microcredit';
+import BigNumber from 'bignumber.js';
 import processTransactionError from 'src/utils/processTransactionError';
+import usePactPriceUSD from 'src/hooks/usePactPriceUSD';
 
 const MicroCredit = (props: any) => {
     const { data, view: viewName } = props;
@@ -33,6 +35,26 @@ const MicroCredit = (props: any) => {
     const [loading, setLoading] = useState(true);
     const { getActiveLoanId, loan, repayLoan, claimLoan, isReady } =
         useBorrower();
+    const {
+        rewards,
+        isReady: isRewardsReady,
+        getEstimatedLoanRewards
+    } = useLoanRewards();
+    const { priceUSD, isReady: isPactPriceReady } = usePactPriceUSD();
+
+    useEffect(() => {
+        const result = new BigNumber(
+            (
+                (loan.amountRepayed + loan.currentDebt - loan.amountBorrowed) *
+                10 *
+                30 *
+                3
+            ).toFixed(0)
+        ).toString();
+
+        getEstimatedLoanRewards(result);
+    }, [loan]);
+
 
     const router = useRouter();
     const { getByKey } = useFilters();
@@ -166,7 +188,12 @@ const MicroCredit = (props: any) => {
     }, [isReady]);
 
     return (
-        <ViewContainer {...({} as any)} isLoading={!isReady && loading}>
+        <ViewContainer
+            {...({} as any)}
+            isLoading={
+                (!isReady && loading) || !isPactPriceReady || !isRewardsReady
+            }
+        >
             {/* <Alert
                 warning
                 icon="alertTriangle"
@@ -207,6 +234,8 @@ const MicroCredit = (props: any) => {
                             data={data[viewName].data}
                             isOverviewOpen={isOverviewOpen}
                             loan={loan}
+                            rewards={rewards}
+                            pactPriceUSD={priceUSD}
                             repayLoan={repayLoan}
                             loanId={loanId}
                             overviewData={loanData}
