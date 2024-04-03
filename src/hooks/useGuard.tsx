@@ -12,6 +12,7 @@ import {
     getUserTypes,
     userAmbassador,
     userBeneficiary,
+    userBorrower,
     userCouncilMember,
     userLoanManager,
     userManager
@@ -90,6 +91,10 @@ const useGuard = (options: UseGuardType) => {
 
                     if (type?.includes(userCouncilMember)) {
                         userPaths = userPaths.concat(councilMemberRoutes);
+                    }
+
+                    if (type?.includes(userBorrower)) {
+                        userPaths = userPaths.concat(borrowerRoutes);
                     }
                 }
 

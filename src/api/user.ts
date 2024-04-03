@@ -15,6 +15,7 @@ export interface PutPostUser {
     avatarMediaPath?: string;
     beneficiary?: any;
     bio?: string;
+    borrower?: any;
     children?: number;
     councilMember?: any;
     country?: string;
