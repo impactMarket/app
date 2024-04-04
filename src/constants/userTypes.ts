@@ -1,6 +1,7 @@
 const types = {
     ambassador: 'ambassador',
     beneficiary: 'beneficiary',
+    borrower: 'borrower',
     councilMember: 'councilMember',
     demo: 'demo',
     donor: 'donor',

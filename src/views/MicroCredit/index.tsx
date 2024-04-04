@@ -8,6 +8,7 @@ import { useLazyGetBorrowerQuery } from '../../api/microcredit';
 import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import ClaimLoan from './ClaimLoan';
+import ConnectWallet from 'src/components/ConnectWallet';
 import LoanCompleted from './LoanCompleted';
 import LoanRejected from './LoanRejected';
 import LoanRepayment from './LoanRepayment';
@@ -17,7 +18,6 @@ import String from '../../libs/Prismic/components/String';
 import useFilters from 'src/hooks/useFilters';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
 // import InfoAccordion from './InfoAccordion';
-
 import BigNumber from 'bignumber.js';
 import processTransactionError from 'src/utils/processTransactionError';
 import usePactPriceUSD from 'src/hooks/usePactPriceUSD';
@@ -53,7 +53,7 @@ const MicroCredit = (props: any) => {
         ).toString();
 
         getEstimatedLoanRewards(result);
-    }, [loan]);
+    }, [loan, auth?.user?.address]);
 
     const router = useRouter();
     const { getByKey } = useFilters();
@@ -131,9 +131,8 @@ const MicroCredit = (props: any) => {
     useEffect(() => {
         if (isErrorGetBorrower) {
             processTransactionError(errorGetBorrower, 'loading_borrower_page');
-            router.push('/');
         }
-    }, [isErrorGetBorrower]);
+    }, [isErrorGetBorrower, auth?.user?.address]);
 
     useEffect(() => {
         const getLoans = async () => {
@@ -171,20 +170,20 @@ const MicroCredit = (props: any) => {
                 } else {
                     setLoanId(activeLoanId);
                 }
-            } else {
-                router.push('/');
             }
         };
 
         getLoans().catch((e) => {
+            console.log(e);
             processTransactionError(e, 'loading_borrower_page');
-            router.push('/');
         });
-    }, []);
+    }, [auth?.user?.address]);
 
     useEffect(() => {
         setIsOverviewOpen(loan.startDate === 0);
-    }, [isReady]);
+    }, [isReady, auth?.user?.address]);
+
+    if (!auth?.user?.address) return <ConnectWallet title={headingTitle} />;
 
     return (
         <ViewContainer
@@ -193,12 +192,6 @@ const MicroCredit = (props: any) => {
                 (!isReady && loading) || !isPactPriceReady || !isRewardsReady
             }
         >
-            {/* <Alert
-                warning
-                icon="alertTriangle"
-                mb={1.5}
-                message={'This is a warning'}
-            /> */}
             {getByKey('contractAddress') && (
                 <Box as="a" onClick={() => router.back()}>
                     <Label

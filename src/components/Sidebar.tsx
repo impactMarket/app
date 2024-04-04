@@ -86,6 +86,9 @@ const getUserType = (user: User) => {
     if (user?.roles?.includes('loanManager')) {
         return 'loan-manager';
     }
+    if (user?.roles?.includes('borrower')) {
+        return 'borrower';
+    }
 
     return 'donor';
 };
