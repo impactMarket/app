@@ -212,12 +212,14 @@ const LoanRepayment = (props: any) => {
                             mb={0.5}
                         >
                             <PerformanceIcon
-                                performance={borrower?.lastLoanPerformance}
+                                performance={borrower?.lastLoanPerformance ?? 0}
                             />
                             <RichText
                                 content={repayLoanPerformanceWarningTitle}
                                 variables={{
-                                    value: borrower?.lastLoanPerformance
+                                    value: (
+                                        borrower?.lastLoanPerformance ?? 0
+                                    ).toString()
                                 }}
                                 g900
                                 semibold
