@@ -110,7 +110,7 @@ const Contribute = () => {
             const response = await approve(amount, contractAddress);
 
             if (!response?.status) {
-                processTransactionError(response, 'approve');
+                processTransactionError(response, 'approve_contribution');
 
                 return toast.error(<Message id="errorOccurred" />);
             }
@@ -144,7 +144,7 @@ const Contribute = () => {
                 : await donateToTreasury(amount);
 
             if (!response?.status) {
-                processTransactionError(response, 'donate');
+                processTransactionError(response, 'donate_contribution');
 
                 return toast.error(<Message id="errorOccurred" />);
             }
@@ -152,7 +152,7 @@ const Contribute = () => {
             toast.success('Thanks for your donation.');
             closeModal();
         } catch (error) {
-            processTransactionError(error, 'donate');
+            processTransactionError(error, 'donate_contribution');
             toast.error(<Message id="errorOccurred" />);
         } finally {
             setLoading(false);

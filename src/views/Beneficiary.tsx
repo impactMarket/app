@@ -170,7 +170,7 @@ const Beneficiary: React.FC<{ isLoading?: boolean }> = (props) => {
         } catch (error: any) {
             handleKnownErrors(error);
 
-            processTransactionError(error, 'claim');
+            processTransactionError(error, 'beneficiary_claim');
 
             toggleLoadingButton(false);
             toggleClaim(false);

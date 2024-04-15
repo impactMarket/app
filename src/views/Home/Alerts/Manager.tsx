@@ -47,7 +47,7 @@ const ManagerAlerts = () => {
             setRequestSuccess(true);
         } catch (error) {
             handleKnownErrors(error);
-            processTransactionError(error, 'request_funds');
+            processTransactionError(error, 'manager_request_funds');
 
             setLoading(false);
 
