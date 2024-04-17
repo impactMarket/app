@@ -188,7 +188,7 @@ const ContractForm = (props: any) => {
             }
         } catch (error) {
             console.log(error);
-            processTransactionError(error, 'claim_loan');
+            processTransactionError(error, 'pdf_claim_loan');
             toast.error(<Message id="errorOccurred" />);
             clear('contractAddress');
         }

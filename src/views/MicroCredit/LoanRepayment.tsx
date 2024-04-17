@@ -165,7 +165,7 @@ const LoanRepayment = (props: any) => {
             }
         } catch (error) {
             console.log(error);
-            processTransactionError(error, 'approve_loan');
+            processTransactionError(error, 'approve_repay_loan');
             toast.error(<Message id="errorOccurred" />);
         }
 
