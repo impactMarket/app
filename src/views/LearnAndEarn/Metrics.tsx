@@ -5,10 +5,12 @@ import {
     Display,
     Grid,
     ProgressCard,
+    Text,
     toast
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
 import { useLearnAndEarn } from '@impact-market/utils/useLearnAndEarn';
+import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
 import { useSelector } from 'react-redux';
 import { useState } from 'react';
 import Message from '../../libs/Prismic/components/Message';
@@ -34,6 +36,7 @@ const RewardsButton = styled(Button)`
 `;
 
 const Metrics = (props: any) => {
+    const { view } = usePrismicData();
     const { metrics } = props;
     const {
         amount = false,
@@ -159,6 +162,17 @@ const Metrics = (props: any) => {
                     >
                         <String id="claimRewards" />
                     </RewardsButton>
+                    <Text small semibold style={{ marginTop: '.5rem' }}>
+                        <a
+                            href={`mailto:external-issues-aaaamvozkp6sgugn64lldg5n64@ipctmarket.slack.com?subject=Learn%20and%20Earn%20-%20Opera&body=Please%20Describe%20Your%20Problem:%0A%0A%0A------------------------------%0A%0AYour%20Wallet%20Address:%0A${auth?.user?.address.toString()}%0A%0AWe%20collected%20your%20wallet%20address%20to%20analyze%20and%20resolve%20reported%20bugs.%20Without%20this%20information%20it%20may%20be%20difficult%20to%20provide%20proper%20help.%20Your%20funds%20remain%20secure.`}
+                            style={{
+                                color: '#5A6FEF',
+                                textDecoration: 'none'
+                            }}
+                        >
+                            {view?.data['needHelp']}
+                        </a>
+                    </Text>
                 </Box>
             </Card>
         </CardsGrid>
