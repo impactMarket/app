@@ -1,17 +1,22 @@
 import {
     Alert,
     Box,
+    Card,
     Display,
     DropdownMenu,
     Pagination,
     Tab,
     TabList,
     Tabs,
-    ViewContainer
+    Text,
+    ViewContainer,
+    colors
 } from '@impact-market/ui';
 import { selectCurrentUser } from '../../state/slices/auth';
+import { useBalance } from 'wagmi';
 import { useEffect, useState } from 'react';
 import { usePrismicData } from '../../libs/Prismic/components/PrismicDataProvider';
+import { useRouter } from 'next/router';
 import { useSelector } from 'react-redux';
 import Filters from '../../components/Filters';
 import LevelsTable from './LevelsTable';
@@ -23,6 +28,7 @@ import useFilters from '../../hooks/useFilters';
 import useLevels from 'learn-and-earn-submodule/hooks/useLevels';
 import useSWR from 'swr';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import useWallet from 'src/hooks/useWallet';
 
 const ITEMS_PER_PAGE = 3;
 
@@ -32,9 +38,20 @@ const Dropdown = styled(DropdownMenu)`
     }
 `;
 
+const BalanceCard = styled(Card)`
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 1rem;
+    margin-top: 1rem;
+`;
+
 const LearnAndEarn = (props: any) => {
     const { prismic, lang } = props;
+    const { address } = useWallet();
     const { view } = usePrismicData();
+    const router = useRouter();
     const { t } = useTranslations();
     const {
         headingTitle: heading,
@@ -43,6 +60,13 @@ const LearnAndEarn = (props: any) => {
         claimDisabled = null,
         onlyBeneficiariesTooltip
     } = view.data;
+
+    const balance = useBalance({
+        address,
+        token: '0x46c9757C5497c5B1f2eb73aE79b6B67D119B0B58'
+    })?.data;
+
+    console.log('balance: ', balance);
 
     const { levels, categories } = prismic;
     const auth = useSelector(selectCurrentUser);
@@ -197,6 +221,32 @@ const LearnAndEarn = (props: any) => {
                     <RichText content={content} g500 small />
                 </Box>
             </Box>
+
+            <BalanceCard>
+                <Box>
+                    <Text extrasmall medimum style={{ color: colors.g500 }}>
+                        Your PACT Balance
+                    </Text>
+                    <Text large semibold>
+                        {/* {`${parseFloat(balance?.formatted || '0').toFixed(
+                            0
+                        )} PACT`} */}
+                        0000
+                    </Text>
+                </Box>
+                <Box>
+                    <Text
+                        small
+                        semibold
+                        style={{ color: '#5A6FEF', cursor: 'pointer' }}
+                        onClick={() => {
+                            router.push('/learn-and-earn/pact');
+                        }}
+                    >
+                        How To Use $PACT
+                    </Text>
+                </Box>
+            </BalanceCard>
 
             {<Progress />}
             <Tabs defaultIndex={0}>

@@ -168,6 +168,8 @@ const SidebarFooter = (props: { user?: User; isActive: boolean }) => {
     const { user } = props;
     const { address, wrongNetwork } = useWallet();
 
+    console.log('User: ', user);
+
     useEffect(() => {
         if (wrongNetwork) {
             openModal('wrongNetwork');
