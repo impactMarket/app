@@ -1,9 +1,8 @@
-/* eslint-disable */
-import { Box, Button, Text, toast, ViewContainer } from '@impact-market/ui';
-import React, { useEffect, useState } from 'react';
-import CheckPermission from 'src/components/CheckPermission';
-import useFilters from 'src/hooks/useFilters';
+import { Box, Button, Text, ViewContainer, toast } from '@impact-market/ui';
 import { useVerifyEmailMutation } from 'src/api/user';
+import CheckPermission from 'src/components/CheckPermission';
+import React, { useEffect, useState } from 'react';
+import useFilters from 'src/hooks/useFilters';
 
 const VerifyEmail: React.FC<{ isLoading?: boolean }> = () => {
     const { getByKey, update } = useFilters();
@@ -50,7 +49,7 @@ const VerifyEmail: React.FC<{ isLoading?: boolean }> = () => {
                 column
                 fLayout="start"
                 flex
-                style={{ gap: '2rem', maxWidth: '500px', margin: '0 auto' }}
+                style={{ gap: '2rem', margin: '0 auto', maxWidth: '500px' }}
             >
                 <img
                     alt="impactMarket logo"

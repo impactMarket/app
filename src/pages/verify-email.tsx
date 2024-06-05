@@ -1,7 +1,7 @@
 import { ClientConfig } from '@prismicio/client';
 import { GetStaticProps } from 'next';
-import VerifyEmail from 'src/views/VerifyEmail';
 import Prismic from '../libs/Prismic/Prismic';
+import VerifyEmail from 'src/views/VerifyEmail';
 
 export const getStaticProps: GetStaticProps = async ({
     locale: lang,
