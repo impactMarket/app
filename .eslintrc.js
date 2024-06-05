@@ -9,7 +9,6 @@ module.exports = {
     rules: {
         'max-params': ['error', 9],
         'no-underscore-dangle': 'off',
-        'prefer-destructuring': 'off',
-        'sort-imports-es6-autofix/sort-imports-es6': 'off'
+        'prefer-destructuring': 'off'
     }
 };

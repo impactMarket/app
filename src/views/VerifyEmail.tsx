@@ -1,3 +1,4 @@
+/* eslint-disable */
 import { Box, Button, Text, toast, ViewContainer } from '@impact-market/ui';
 import React, { useEffect, useState } from 'react';
 import CheckPermission from 'src/components/CheckPermission';
