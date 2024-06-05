@@ -7,28 +7,16 @@ import {
     ViewContainer,
     openModal
 } from '@impact-market/ui';
-import { getCookie, hasCookie } from 'cookies-next';
-import { isSupported } from 'firebase/messaging';
+import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { Provider, useSelector } from 'react-redux';
 import { ThemeProvider } from 'styled-components';
 import { WagmiConfig, useAccount } from 'wagmi';
+import { getCookie, hasCookie } from 'cookies-next';
 import { handleFirebaseServiceWorker } from '../hooks/firebase/handleFirebaseServiceWorker';
+import { isSupported } from 'firebase/messaging';
 import { registerFirebaseSW } from '../hooks/useServiceWorker';
-import { PrismicDataProvider } from '../libs/Prismic/components/PrismicDataProvider';
 import { theme } from '../theme/theme';
 
-import type { AppProps } from 'next/app';
-import ErrorPage from 'next/error';
-import { useEffect } from 'react';
-import config from '../../config';
-import { useGetExchangeRatesMutation } from '../api/generic';
-import GoogleAnalytics from '../components/GoogleAnalytics';
-import SEO from '../components/SEO';
-import Sidebar from '../components/Sidebar';
-import WrapperProvider from '../components/WrapperProvider';
-import useGuard from '../hooks/useGuard';
-import { wagmiConfig } from '../hooks/useWallet';
-import modals from '../modals';
 import {
     selectCurrentUser,
     setSignature,
@@ -36,6 +24,18 @@ import {
 } from '../state/slices/auth';
 import { setRates } from '../state/slices/rates';
 import { store } from '../state/store';
+import { useGetExchangeRatesMutation } from '../api/generic';
+import { wagmiConfig } from '../hooks/useWallet';
+import ErrorPage from 'next/error';
+import GoogleAnalytics from '../components/GoogleAnalytics';
+import React, { useEffect } from 'react';
+import SEO from '../components/SEO';
+import Sidebar from '../components/Sidebar';
+import WrapperProvider from '../components/WrapperProvider';
+import config from '../../config';
+import modals from '../modals';
+import useGuard from '../hooks/useGuard';
+import type { AppProps } from 'next/app';
 // https://github.com/vercel/next.js/discussions/49474
 if (typeof window !== 'undefined' && !String.prototype.replaceAll) {
     // eslint-disable-next-line @typescript-eslint/ban-ts-comment

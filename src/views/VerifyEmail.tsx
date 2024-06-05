@@ -1,4 +1,4 @@
-import { Box, Button, Text, ViewContainer, toast } from '@impact-market/ui';
+import { Box, Button, Text, toast, ViewContainer } from '@impact-market/ui';
 import React, { useEffect, useState } from 'react';
 import { useVerifyEmailMutation } from 'src/api/user';
 import CheckPermission from 'src/components/CheckPermission';
