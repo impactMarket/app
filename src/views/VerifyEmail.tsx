@@ -1,8 +1,8 @@
 import { Box, Button, Text, toast, ViewContainer } from '@impact-market/ui';
 import React, { useEffect, useState } from 'react';
-import { useVerifyEmailMutation } from 'src/api/user';
 import CheckPermission from 'src/components/CheckPermission';
 import useFilters from 'src/hooks/useFilters';
+import { useVerifyEmailMutation } from 'src/api/user';
 
 const VerifyEmail: React.FC<{ isLoading?: boolean }> = () => {
     const { getByKey, update } = useFilters();
