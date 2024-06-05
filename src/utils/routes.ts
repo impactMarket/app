@@ -27,7 +27,8 @@ export const publicRoutes: Routes = [
     '/microcredit/application',
     '/microcredit/apply',
     '/microcredit/form/[id]',
-    '/microcredit'
+    '/microcredit',
+    '/verify-email'
 ];
 
 export const privateRoutes: Routes = ['/profile', '/settings', '/mycommunity'];

@@ -51,7 +51,8 @@ const apolloClient = new ApolloClient({
 });
 
 const InnerApp = (props: AppProps) => {
-    const { Component, pageProps } = props;
+    const { Component, pageProps, router } = props;
+    const { asPath } = router;
 
     const { withPreview } = pageProps;
     const { authorized, isLoading } = useGuard({ withPreview });
@@ -96,7 +97,7 @@ const InnerApp = (props: AppProps) => {
 
     return (
         <AppContainer>
-            <Sidebar />
+            {!asPath.includes('/verify-email') && <Sidebar />}
             {isLoading ? (
                 <ViewContainer isLoading />
             ) : (
