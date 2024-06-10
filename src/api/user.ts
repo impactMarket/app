@@ -151,6 +151,15 @@ export const userApi = emptySplitApi.injectEndpoints({
             transformResponse: (response: { data: RecoverUser }) =>
                 response.data
         }),
+        // Send Email
+        sendVerifyEmail: builder.mutation<any, any>({
+            query: (body) => ({
+                body,
+                method: 'POST',
+                url: '/users/request-verify'
+            }),
+            transformResponse: (response: { data: any }) => response.data
+        }),
         // Mark notifications as read
         updateNotifications: builder.mutation<Notification[], { body: any }>({
             query: ({ body }) => ({
@@ -167,15 +176,6 @@ export const userApi = emptySplitApi.injectEndpoints({
                 url: 'users'
             }),
             transformResponse: (response: { data: User }) => response.data
-        }),
-        // Send Email
-        sendVerifyEmail: builder.mutation<any, any>({
-            query: (body) => ({
-                body,
-                method: 'POST',
-                url: '/users/request-verify'
-            }),
-            transformResponse: (response: { data: any }) => response.data
         }),
         // Verify Email
         verifyEmail: builder.mutation<any, any>({

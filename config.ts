@@ -139,7 +139,7 @@ const config = {
     clientId: process.env.NEXT_PUBLIC_CLIENT_ID,
 
     /*
-     *	Email verification URL
+     * Email Verification URL
      */
     verifyEmailUrl: process.env.NEXT_PUBLIC_VERIFY_EMAIL_URL
 };

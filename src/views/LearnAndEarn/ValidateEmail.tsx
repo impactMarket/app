@@ -11,15 +11,15 @@ import {
     colors,
     toast
 } from '@impact-market/ui';
-import { useEffect, useState } from 'react';
-import styled from 'styled-components';
-import RichText from '../../libs/Prismic/components/RichText';
-import processTransactionError from '../../utils/processTransactionError';
 import { selectCurrentUser } from 'src/state/slices/auth';
+import { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
-import router from 'next/router';
 import { useSendVerifyEmailMutation } from 'src/api/user';
+import RichText from '../../libs/Prismic/components/RichText';
 import config from 'config';
+import processTransactionError from '../../utils/processTransactionError';
+import router from 'next/router';
+import styled from 'styled-components';
 
 const ConsentWrapper = styled(Box)`
     display: flex;
@@ -67,12 +67,13 @@ const ValidateEmail = () => {
     const verifyEmail = async () => {
         if (!validateEmail(email)) {
             setIsEmailValid(false);
+
             return;
         }
 
         try {
             await sendVerifyEmail({
-                email: email,
+                email,
                 url: config.verifyEmailUrl
             }).unwrap();
 
@@ -88,12 +89,13 @@ const ValidateEmail = () => {
 
     const validateEmail = (email: string) => {
         const re = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
         return re.test(email);
     };
 
     const handleEmailChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setEmail(e.target.value);
-        setIsEmailValid(true); // Reset email validation state when user types
+        setIsEmailValid(true);
     };
 
     return (
@@ -119,8 +121,8 @@ const ValidateEmail = () => {
                 <RichText
                     style={{
                         color: `${colors.g700}`,
-                        textAlign: 'center',
-                        marginTop: '0.5rem'
+                        marginTop: '0.5rem',
+                        textAlign: 'center'
                     }}
                     content={
                         !success
@@ -218,9 +220,9 @@ const ValidateEmail = () => {
                                         setOpenForm(true);
                                     }}
                                     style={{
-                                        marginTop: '1rem',
                                         display: 'flex',
-                                        justifyContent: 'center'
+                                        justifyContent: 'center',
+                                        marginTop: '1rem'
                                     }}
                                 >
                                     <Text style={{ color: colors.s400 }}>
@@ -236,9 +238,9 @@ const ValidateEmail = () => {
                         router.reload();
                     }}
                     style={{
-                        marginTop: '1rem',
                         display: 'flex',
-                        justifyContent: 'center'
+                        justifyContent: 'center',
+                        marginTop: '1rem'
                     }}
                 >
                     <Text extrasmall>Refresh page</Text>

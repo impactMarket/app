@@ -16,11 +16,11 @@ import { useState } from 'react';
 import Message from '../../libs/Prismic/components/Message';
 import RichText from '../../libs/Prismic/components/RichText';
 import String from '../../libs/Prismic/components/String';
+import ValidateEmail from './ValidateEmail';
 import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled from 'styled-components';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
-import ValidateEmail from './ValidateEmail';
 
 const CardsGrid = styled(Grid)`
     flex-wrap: wrap;
