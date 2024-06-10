@@ -1,5 +1,4 @@
 import {
-    Alert,
     Box,
     Display,
     DropdownMenu,
@@ -40,8 +39,7 @@ const LearnAndEarn = (props: any) => {
         headingTitle: heading,
         headingContent: content,
         claimAvailable = null,
-        claimDisabled = null,
-        onlyBeneficiariesTooltip
+        claimDisabled = null
     } = view.data;
 
     const { levels, categories } = prismic;
@@ -240,11 +238,11 @@ const LearnAndEarn = (props: any) => {
                     </Box>
                 </Box>
 
-                <Alert
+                {/* <Alert
                     icon="infoCircle"
                     mb={1}
                     title={onlyBeneficiariesTooltip}
-                />
+                /> */}
 
                 <LevelsTable
                     data={filteredData}

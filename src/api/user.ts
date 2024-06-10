@@ -168,6 +168,15 @@ export const userApi = emptySplitApi.injectEndpoints({
             }),
             transformResponse: (response: { data: User }) => response.data
         }),
+        // Send Email
+        sendVerifyEmail: builder.mutation<any, any>({
+            query: (body) => ({
+                body,
+                method: 'POST',
+                url: '/users/request-verify'
+            }),
+            transformResponse: (response: { data: any }) => response.data
+        }),
         // Verify Email
         verifyEmail: builder.mutation<any, any>({
             query: (body) => ({
@@ -193,5 +202,6 @@ export const {
     useUpdateNotificationsMutation,
     useUpdateUserMutation,
     useGetPreSignedMutation,
+    useSendVerifyEmailMutation,
     useVerifyEmailMutation
 } = userApi;

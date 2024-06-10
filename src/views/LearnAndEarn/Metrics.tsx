@@ -20,6 +20,7 @@ import config from '../../../config';
 import processTransactionError from '../../utils/processTransactionError';
 import styled from 'styled-components';
 import useTranslations from '../../libs/Prismic/hooks/useTranslations';
+import ValidateEmail from './ValidateEmail';
 
 const CardsGrid = styled(Grid)`
     flex-wrap: wrap;
@@ -134,47 +135,53 @@ const Metrics = (props: any) => {
                     </Display>
                 </ProgressCard>
             ))}
-            <Card
-                flex
-                style={{ alignItems: 'center', justifyContent: 'center' }}
-                h="100%"
-            >
-                <Box
+            {auth?.user?.emailValidated ? (
+                <Card
                     flex
-                    fDirection={'column'}
-                    style={{ alignItems: 'center' }}
+                    style={{ alignItems: 'center', justifyContent: 'center' }}
+                    h="100%"
                 >
-                    <RichText
-                        center
-                        g500
-                        medium
-                        small
-                        mb="1rem"
-                        content={
-                            hasRewards ? props.copy.success : props.copy.failed
-                        }
-                    />
-                    <RewardsButton
-                        onClick={claimRewards}
-                        {...disabled}
-                        disabled={!hasRewards}
-                        isLoading={isLoading}
+                    <Box
+                        flex
+                        fDirection={'column'}
+                        style={{ alignItems: 'center' }}
                     >
-                        <String id="claimRewards" />
-                    </RewardsButton>
-                    <Text small semibold style={{ marginTop: '.5rem' }}>
-                        <a
-                            href={`mailto:external-issues-aaaamvozkp6sgugn64lldg5n64@ipctmarket.slack.com?subject=Learn%20and%20Earn%20-%20Opera&body=Please%20Describe%20Your%20Problem:%0A%0A%0A------------------------------%0A%0AYour%20Wallet%20Address:%0A${auth?.user?.address.toString()}%0A%0AWe%20collected%20your%20wallet%20address%20to%20analyze%20and%20resolve%20reported%20bugs.%20Without%20this%20information%20it%20may%20be%20difficult%20to%20provide%20proper%20help.%20Your%20funds%20remain%20secure.`}
-                            style={{
-                                color: '#5A6FEF',
-                                textDecoration: 'none'
-                            }}
+                        <RichText
+                            center
+                            g500
+                            medium
+                            small
+                            mb="1rem"
+                            content={
+                                hasRewards
+                                    ? props.copy.success
+                                    : props.copy.failed
+                            }
+                        />
+                        <RewardsButton
+                            onClick={claimRewards}
+                            {...disabled}
+                            disabled={!hasRewards}
+                            isLoading={isLoading}
                         >
-                            {view?.data['needHelp']}
-                        </a>
-                    </Text>
-                </Box>
-            </Card>
+                            <String id="claimRewards" />
+                        </RewardsButton>
+                        <Text small semibold style={{ marginTop: '.5rem' }}>
+                            <a
+                                href={`mailto:external-issues-aaaamvozkp6sgugn64lldg5n64@ipctmarket.slack.com?subject=Learn%20and%20Earn%20-%20Opera&body=Please%20Describe%20Your%20Problem:%0A%0A%0A------------------------------%0A%0AYour%20Wallet%20Address:%0A${auth?.user?.address.toString()}%0A%0AWe%20collected%20your%20wallet%20address%20to%20analyze%20and%20resolve%20reported%20bugs.%20Without%20this%20information%20it%20may%20be%20difficult%20to%20provide%20proper%20help.%20Your%20funds%20remain%20secure.`}
+                                style={{
+                                    color: '#5A6FEF',
+                                    textDecoration: 'none'
+                                }}
+                            >
+                                {view?.data['needHelp']}
+                            </a>
+                        </Text>
+                    </Box>
+                </Card>
+            ) : (
+                <ValidateEmail />
+            )}
         </CardsGrid>
     );
 };
