@@ -12,6 +12,7 @@ import {
     Text,
     TextLink,
     ViewContainer,
+    openModal,
     toast
 } from '@impact-market/ui';
 import { formatAddress } from '../../utils/formatAddress';
@@ -142,6 +143,14 @@ const User: React.FC<{ isLoading?: boolean }> = (props) => {
                                     icon: 'copy',
                                     onClick: () => copyToClipboard(),
                                     title: t('copyAddress')
+                                },
+                                {
+                                    icon: 'edit',
+                                    onClick: () =>
+                                        openModal('editWalletAddress', {
+                                            address: user?.address
+                                        }),
+                                    title: 'Edit wallet address'
                                 }
                             ]}
                             title={formatAddress(user?.address, [6, 4])}
